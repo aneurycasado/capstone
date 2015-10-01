@@ -78,7 +78,7 @@ function GridNode(x, y, opts){
 	this.contains = false;
 
 	if(opts){
-		if(opts.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/js/images/background-tilesets/" + opts.img + ".png"));
+		if(opts.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/background-tilesets/" + opts.img + ".png"));
 		this.img.position.x = this.coords.x;
 		this.img.position.y = this.coords.y;
 		game.stages["play"].addChild(this.img);
