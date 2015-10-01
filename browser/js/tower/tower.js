@@ -6,10 +6,10 @@ class Tower {
         this.options = options ? options : {};
         if(options){
             if(options.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + ".png"));
-            this.img.position.x = this.position.x * game.cellWidth + .5*game.cellWidth;
+            this.img.position.x = this.position.x * game.cellSize + .5*game.cellSize;
             this.img.anchor.x = .5;
             this.img.anchor.y = .5;
-            this.img.position.y = this.position.y * game.cellHeight + .5*game.cellHeight;
+            this.img.position.y = this.position.y * game.cellSize + .5*game.cellSize;
             game.stages["play"].addChild(this.img);
         }
         this.codeSnippets = [];
@@ -34,8 +34,10 @@ var towers = {IceTower: IceTower};
 
 
 document.onclick = function(e) {
-    var towerPositionX = Math.floor(e.clientX / game.cellWidth)
-    var towerPositionY = Math.floor(e.clientY / game.cellHeight)
+    console.log(e.clientX);
+    console.log(game.cellSize);
+    var towerPositionX = Math.floor(e.clientX / game.cellSize)
+    var towerPositionY = Math.floor(e.clientY / game.cellSize)
     console.log('x:', towerPositionX);
     console.log('y:', towerPositionY);
     createTower(towerPositionX, towerPositionY, 'IceTower');
