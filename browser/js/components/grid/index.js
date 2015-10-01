@@ -1,5 +1,6 @@
 'use strict'
 let PIXI = require('pixi.js');
+let config = require('../game/config.js');
 
 let createGrid = (rows, cols, cellSize) => {
     let grid = [];
@@ -16,11 +17,10 @@ let createGrid = (rows, cols, cellSize) => {
 }
 
 class GridNode {
-    constructor(x, y, cellSize, opts) {
-        console.log('cellSize', cellSize);
+    constructor(x, y, opts) {
         this.x = x;
         this.y = y;
-        this.coords = {x: x * cellSize, y: y * cellSize};
+        this.coords = {x: x * config.cellSize, y: y * config.cellSize};
         this.enterable = true;
         this.contains = false;
 
@@ -33,5 +33,6 @@ class GridNode {
 }
 
 module.exports = {
-    createGrid
+    createGrid,
+    GridNode
 }
