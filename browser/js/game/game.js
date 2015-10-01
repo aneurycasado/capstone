@@ -36,6 +36,7 @@ game.main = function(){
 	requestAnimationFrame(game.main);
 };
 
+
 game.update = function(){
 
 	//game logic
@@ -80,3 +81,4 @@ game.start = function(map){
 };
 
 game.init();
+
