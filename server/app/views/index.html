@@ -8,8 +8,18 @@
           margin: 0;
           padding: 0;
           background-color: #000000;
+          width: 100%
+      }
+      #editor {
+        position: fixed;
+        top: 0;
+        right: 0%;
+        bottom: 0;
+        width: 21%;
       }
     </style>
+
+    <!-- front-end -->
     <link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="/style.css" />
     <script src="/lodash/index.js"></script>
@@ -17,12 +27,22 @@
     <script src="/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="/angular-bootstrap/ui-bootstrap.js"></script>
     <script src="/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src = "/pixi/pixi.min.js"></script>
+    <script src = "/lib/pixi/pixi.min.js"></script>
+    <script src="/lib/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="/socket.io-client/socket.io.js"></script>
-    <script src="/main.js"></script>
+
 </head>
-<body ng-app="FullstackGeneratedApp">
-    <navbar></navbar>
-    <div id="main" ui-view></div>
-</body>
+  <body>
+
+    <div id="editor"></div>
+    <script>
+      var editor = ace.edit("editor");
+      editor.setTheme("ace/theme/monokai");
+      editor.getSession().setMode("ace/mode/javascript");
+    </script>
+
+
+     <!-- game -->
+    <script src = "js/game/game.js"></script>
+  </body>
 </html>
