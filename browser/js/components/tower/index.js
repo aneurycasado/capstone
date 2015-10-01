@@ -21,7 +21,6 @@ class Tower {
 
 
 function createTower(x, y, type) {
-    console.log(towers);
     var towerConstructor = towers[type];
     return new towerConstructor(x,y);
 }
