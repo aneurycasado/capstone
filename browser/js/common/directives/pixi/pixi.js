@@ -53,9 +53,8 @@ function Game(rows,cols,towers){
 
 
 app.controller("PixiController", function($scope, $rootScope){
-  if(!$rootScope.called){
-    $rootScope.called = true;
-     console.log("Called");
+  // if(!$rootScope.called){
+    // $rootScope.called = true;
      var stage = new PIXI.Stage(0x66FF99);
      var renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight);
      document.body.appendChild(renderer.view);
@@ -76,7 +75,11 @@ app.controller("PixiController", function($scope, $rootScope){
          requestAnimationFrame( animate );
          renderer.render(stage);
      }
-   }else{
-     console.log("Sucks");
-   }
+     document.onclick = function(e){
+       console.log(e); 
+     }
+
+  //  }else{
+  //    console.log("Sucks");
+  //  }
 })
