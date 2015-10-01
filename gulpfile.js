@@ -17,6 +17,9 @@ var eslint = require('gulp-eslint');
 var mocha = require('gulp-mocha');
 var karma = require('karma').server;
 var istanbul = require('gulp-istanbul');
+var babelify = require('babelify');
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
 
 // Development tasks
 // --------------------------------------------------------------
@@ -39,14 +42,16 @@ gulp.task('lintJS', function () {
 
 });
 
-gulp.task('buildJS', ['lintJS'], function () {
-    return gulp.src(['./browser/js/app.js', './browser/js/**/*.js'])
-        .pipe(plumber())
-        .pipe(sourcemaps.init())
-        .pipe(concat('main.js'))
-        .pipe(babel())
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest('./public'));
+gulp.task('buildJS', function () {
+    gulp.task('buildJS', function() {
+        var bundler = browserify();
+        bundler.add('./browser/js/app.js');
+        bundler.transform(babelify);
+        return bundler.bundle()
+            .pipe(source('main.js'))
+            .pipe(gulp.dest('./public'));
+    })
+
 });
 
 gulp.task('testServerJS', function () {
