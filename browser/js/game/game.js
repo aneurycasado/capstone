@@ -12,7 +12,7 @@ var game = {
 }
 
 game.init = function(){
-	
+
 	game.endRow = game.rows-2;
 	game.endCol  = game.cols-1;
 	game.cellWidth = window.innerWidth / game.cols;
@@ -22,7 +22,7 @@ game.init = function(){
 
 	document.body.appendChild(game.renderer.view);
 	game.grid = createGrid(game.rows, game.cols);
-	
+
 
 	game.state = "play";
 	game.start();
@@ -59,7 +59,11 @@ function createGrid(rows, cols){
 	for(var row = 0; row < rows; row++){
 		grid[row] = [];
     	for(var col = 0; col < cols; col++){
-    		grid[row][col] = new GridNode(col, row, {img: "01"})
+            if(row === 0) new GridNode(col, row, {img: "13"})
+            else {
+                grid[row][col] = new GridNode(col, row, {img: "01"});
+            }
+
     	}
     }
 
@@ -88,7 +92,7 @@ game.init();
   //     if(row === 0){
   //       imgRoute = "/js/images/background-tilesets/15.png";
   //     }else if(row === rows - 1){
-  //       imgR     texture: 
+  //       imgR     texture:
   //       tag: 'land',
   //       x: col*(cellWidth-30),
   //       y: row*cellHeightoute = "/js/images/background-tilesets/14.png";
