@@ -1,5 +1,5 @@
 'use strict'
-let game = require('../game');
+let game = require('../game/index');
 let PIXI = require('pixi.js');
 
 class Tower {

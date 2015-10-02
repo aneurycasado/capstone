@@ -1,4 +1,3 @@
-var app = require("../../app.js");
 app.directive('startScreen', function(){
 	return {
 		restrict: "E",
@@ -9,6 +8,6 @@ app.directive('startScreen', function(){
 
 app.controller('StartScreenController', function($scope,$state){
 	$scope.goToLoadState = function(){
-		$state.go("choseMap");
+		$state.go("play");
 	}
 });

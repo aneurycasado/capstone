@@ -1,6 +1,6 @@
 'use strict'
-let grid = require("../grid");
-let maps = require("../maps");
+let grid = require("../grid/index");
+let maps = require("../maps/index");
 let PIXI = require('pixi.js');
 
 let game = require('./config');
