@@ -1,43 +1,58 @@
 'use strict'
-app.factory('TowerFactory', function(GameFactory) {
+app.factory('TowerFactory', function (GameFactory) {
     class Tower {
-        constructor(x,y,options) {
+        constructor(x, y, options) {
             //this.grid = grid;
             this.position = {x: x, y: y};
             this.rank = 1;
             this.kills = 0;
             //this.options = options ? options : {};
+            this.powerUps = [];
             this.codeSnippets = [];
-            if(GameFactory.grid[y][x].canPlaceTower){
-                if(options){
-                    if(options.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + this.rank + ".png"));
-                    this.img.position.x = this.position.x * GameFactory.cellSize + .5*GameFactory.cellSize;
-                    this.img.anchor.x = .5;
-                    this.img.anchor.y = .5;
-                    this.img.position.y = this.position.y * GameFactory.cellSize + .5*GameFactory.cellSize;
-                    if(options.power) this.power = options.power;
-                    if(options.cost) this.cost = options.cost;
-                    GameFactory.stages["play"].addChild(this.img);
-                }
-            } else {
-                console.log("Can't play");
+            if (options) {
+                if (options.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + this.rank + ".png"));
+                this.img.position.x = this.position.x * GameFactory.cellSize + .5 * GameFactory.cellSize;
+                this.img.anchor.x = .5;
+                this.img.anchor.y = .5;
+                this.img.position.y = this.position.y * GameFactory.cellSize + .5 * GameFactory.cellSize;
+                if (options.power) this.power = options.power;
+                if (options.cost) this.cost = options.cost;
+                GameFactory.stages["play"].addChild(this.img);
             }
         }
+
         addKill() {
             this.kills++;
-            if(this.kills === 20) this.rank = 2;
-            else if(this.kills === 60) this.rank = 3;
+            if (this.kills === 20) this.rank = 2;
+            else if (this.kills === 60) this.rank = 3;
         }
 
         setImage() {
 
         }
 
+        addCodeSnippet() {
+
+        }
+
+        countPowerUps() {
+            return this.powerUps.length + this.codeSnippets.length;
+        }
+
     }
 
     function createTower(x, y, type) {
-        var towerConstructor = towers[type];
-        return new towerConstructor(x,y);
+        let towerConstructor = towers[type];
+        let newTower;
+        let currentGridNode = GameFactory.grid[y][x];
+        if (currentGridNode.canPlaceTower) {
+            newTower = new towerConstructor(x, y);
+            currentGridNode.contains.tower = newTower;
+            currentGridNode.canPlaceTower = false;
+            return newTower;
+        } else {
+            console.log("Can't play");
+        }
     }
 
     class IceTower extends Tower {
@@ -58,7 +73,7 @@ app.factory('TowerFactory', function(GameFactory) {
 //    }
 //}
 
-    var towers = {IceTower, LaserTower};
+    let towers = {IceTower, LaserTower};
 
-    return createTower;
+    return {createTower};
 });
