@@ -20,10 +20,9 @@ app.controller('PlayController', function($scope, GameFactory, TowerFactory) {
         console.log('x:', towerPositionX);
         console.log('y:', towerPositionY);
         if(!GameFactory.grid[towerPositionY][towerPositionX].canPlaceTower){
-            $('#myModal').modal('show');
-            //TowerFactory.createTower(towerPositionX, towerPositionY, 'IceTower');
+            $('#myModal').modal('show');  
+        }else{
+          TowerFactory.createTower(towerPositionX, towerPositionY, 'IceTower');
         }
-
-        // }
     })
 });

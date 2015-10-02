@@ -35,17 +35,17 @@ function createTowers (){
     };
     var Fire = {
         type: "Fire",
-        img: "./images/tower-defense-turrets/turret-4-1.png",
+        img: "./images/tower-defense-turrets/turret-5-1.png",
         effect: "effect",
     };
     var Thunder = {
         type: "Thunder",
-        img: "./images/tower-defense-turrets/turret-4-1.png",
+        img: "./images/tower-defense-turrets/turret-6-1.png",
         effect: "effect",
     };
     var Poison = {
         type: "Poison",
-        img: "./images/tower-defense-turrets/turret-4-1.png",
+        img: "./images/tower-defense-turrets/turret-7-1.png",
         effect: "effect",
     };
     array.push(Ice);
