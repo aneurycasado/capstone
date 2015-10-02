@@ -29,6 +29,7 @@ class GridNode {
             this.img.position.x = this.coords.x;
             this.img.position.y = this.coords.y;
             if (opts.canPlaceTower) this.canPlaceTower = true;
+            else this.canPlaceTower = false;
         }
     }
 }
