@@ -1,6 +1,6 @@
 'use strict'
 
-let app = require('./ng/app.js');
+let app = require('./../js/ng/app.js');
 // require('./ng/states/choseMap/choseMap.state.js');
 require('./ng/directives/storeBar/storeBar.js');
 // require('./ng/directives/startScreen/startScreen.js');

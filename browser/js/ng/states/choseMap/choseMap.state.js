@@ -1,4 +1,4 @@
-var app = require("../../app.js");
+'use strict'
 app.config(function($stateProvider){
 	$stateProvider
 	.state('choseMap', {

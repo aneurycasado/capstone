@@ -1,5 +1,4 @@
-var app = require('../app.js');
-
+'use strict'
 app.config(function($stateProvider){
    $stateProvider
    .state('play', {
@@ -10,5 +9,6 @@ app.config(function($stateProvider){
 });
 
 app.controller('PlayController', function($scope, GameFactory) {
+    console.log('play');
     GameFactory.init();
 });

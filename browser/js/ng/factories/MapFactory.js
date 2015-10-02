@@ -1,3 +1,4 @@
+'use strict'
 app.factory('MapFactory', function(GridFactory) {
     let insertNodes = (grid, textures) => {
         console.log(textures);

@@ -1,4 +1,3 @@
-var app = require("../../app.js");
 app.directive('startScreen', function(){
 	return {
 		restrict: "E",

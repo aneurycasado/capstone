@@ -1,3 +1,4 @@
+'use strict'
 app.factory('TowerFactory', function(GameFactory) {
     class Tower {
         constructor(x,y,options) {

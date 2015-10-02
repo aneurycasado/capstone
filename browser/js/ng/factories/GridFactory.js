@@ -1,7 +1,4 @@
 'use strict'
-let PIXI = require('pixi.js');
-let config = require('../game/config.js');
-
 app.factory('GridFactory', function(ConfigFactory) {
     let createGrid = (rows, cols, cellSize) => {
         let grid = [];

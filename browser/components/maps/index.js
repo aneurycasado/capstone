@@ -1,4 +1,4 @@
-let GridNode = require('../grid').GridNode;
+let GridNode = require('../grid/index').GridNode;
 
 let insertNodes = (grid, textures) => {
   console.log(textures);
@@ -6,13 +6,13 @@ let insertNodes = (grid, textures) => {
         for(let col = 0; col < grid[row].length; col++){
             if(grid[row][col] === 0){
               grid[row][col] = new GridNode(col, row, {img: textures.tile, canPlaceTower: true});
-            }else 
+            }else
             if(grid[row][col] === 1){
               grid[row][col] = new GridNode(col, row, {img: textures.path});
-            }else 
+            }else
             if(grid[row][col] === 2){
               grid[row][col] = new GridNode(col, row, {img: textures.tree});
-            }else 
+            }else
             if(grid[row][col] === 3){
               grid[row][col] = new GridNode(col, row, {img: textures.destination});
             }

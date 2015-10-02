@@ -1,3 +1,4 @@
+'use strict'
 app.factory('GameFactory', function(ConfigFactory, MapFactory) {
     let game = ConfigFactory;
     game.cellSize = game.width / game.cols;
