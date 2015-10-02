@@ -2,6 +2,7 @@ let game = require("./components/game");
 let tower = require('./components/tower');
 let editor = require('./components/editor');
 let _ = require('lodash');
+let app = require('./ng/app.js');
 game.init();
 document.onclick = function(e) {
     console.log(e.clientX);

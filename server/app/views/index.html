@@ -17,6 +17,14 @@
             right: 0%;
             bottom: 0;
             width: 21%;
+            display: none;
+        }
+        #sideBar {
+            position: fixed;
+            top: 0;
+            right: 0%;
+            bottom: 0;
+            width: 21%;
         }
     </style>
 
@@ -24,10 +32,12 @@
     <link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="/style.css"/>
     <script src="/lib/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <!--<script src="/angular/angular.js"></script>-->
+    <!--<script src="/angular-ui-router/release/angular-ui-router.js"></script>-->
     <!--<script src="/socket.io-client/socket.io.js"></script>-->
-
 </head>
-<body>
+<body ng-app = "TowerDefense">
+<side-bar id = "sideBar"></side-bar>
 <div id="editor"></div>
 <script src="main.js"></script>
 
