@@ -3,46 +3,30 @@
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingOne">
                 <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
-                       aria-expanded="true" aria-controls="collapseOne">
-                        Cash Money
-                    </a>
+                    Cash
                 </h4>
             </div>
             <div class="panel-body">
-                Dollars
+                {{player.money}}
             </div>
         </div>
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingTwo">
                 <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
-                       aria-expanded="true" aria-controls="collapseOne">
                         Store
-                    </a>
                 </h4>
             </div>
             <div class="panel-body">
                 <nav>
                     <ul class="nav nav-tabs">
-                        <li><a>Towers</a></li>
-                        <li><a>Powerups</a></li>
+                        <li><a ng-click = "changeStore('tower')">Towers</a></li>
+                        <li><a ng-click = "changeStore('powerUp')">Powerups</a></li>
+                        <li><a ng-click = "changeStore('all')">All</a></li>
                     </ul>
                 </nav>
-                <div id="store-container" class="row">
-                    <div class="col-xs-4">
-                        <p>tower1</p>
-                    </div>
-                    <div class="col-xs-4">
-                        <p>tower2</p>
-                    </div>
-                    <div class="col-xs-4">
-                        <p>tower3</p>
-                    </div>
-                    <div class="col-xs-4">
-                        <p>tower4</p>
-                    </div>
-                </div>
+                <tower-store ng-show = "showTowers"></tower-store>
+                <hr ng-show = "showerTowers === showPowerUps">
+                <power-up-store ng-show = "showPowerUps"></power-up-store>
             </div>
         </div>
     </div>
