@@ -22,6 +22,7 @@ app.factory('GridFactory', function(ConfigFactory) {
             this.enterable = true;
             this.contains = {};
             this.canPlaceTower = false;
+            this.terrain = opts.terrain;
             if (opts) {
                 if (opts.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/background-tilesets/" + opts.img + ".png"));
                 this.img.position.x = this.coords.x;
