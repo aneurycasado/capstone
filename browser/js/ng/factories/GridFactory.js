@@ -20,7 +20,7 @@ app.factory('GridFactory', function(ConfigFactory) {
             this.y = y;
             this.coords = {x: x * ConfigFactory.cellSize, y: y * ConfigFactory.cellSize};
             this.enterable = true;
-            this.contains = false;
+            this.contains = {};
             this.canPlaceTower = false;
             if (opts) {
                 if (opts.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/background-tilesets/" + opts.img + ".png"));
