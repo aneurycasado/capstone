@@ -9,6 +9,11 @@ body {
   width: 100%
 }
 
+img {
+  width: 100%;
+  height: 100%;
+}
+
 @import 'directives/main';
 @import 'edit/main';
 @import 'startScreen/main';

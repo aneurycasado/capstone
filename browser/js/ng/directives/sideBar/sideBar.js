@@ -10,6 +10,7 @@ app.controller('SideBarController', function($scope, PlayerFactory) {
     $scope.player = PlayerFactory
     $scope.showTowers = true;
     $scope.showPowerUps = false;
+    $scope.towers = createTowers();
     $scope.changeStore = function(tab){
         if(tab === "tower"){
             $scope.showTowers = true;
@@ -23,4 +24,36 @@ app.controller('SideBarController', function($scope, PlayerFactory) {
         }
     }
 
-})
+});
+
+function createTowers (){
+    var array = [];
+    var Ice = {
+        type: "Ice",
+        img: "./images/tower-defense-turrets/turret-4-1.png",
+        effect: "effect",
+    };
+    var Fire = {
+        type: "Fire",
+        img: "./images/tower-defense-turrets/turret-4-1.png",
+        effect: "effect",
+    };
+    var Thunder = {
+        type: "Thunder",
+        img: "./images/tower-defense-turrets/turret-4-1.png",
+        effect: "effect",
+    };
+    var Poison = {
+        type: "Poison",
+        img: "./images/tower-defense-turrets/turret-4-1.png",
+        effect: "effect",
+    };
+    array.push(Ice);
+    array.push(Fire);
+    array.push(Thunder);
+    array.push(Poison);
+    console.log(array);
+    return array;
+}
+
+

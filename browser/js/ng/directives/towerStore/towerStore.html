@@ -1,45 +1,13 @@
-    <div class="row">
+    <div class="row" ng-repeat = "tower in towers">
          <div class = "col-lg-4">
-             Ice
+             {{tower.type}}
          </div>
          <div class = "col-lg-4">
-             <img src = "./images/tower-defense-turrets/turret-4-1.png"/>
+             <img src = "{{tower.img}}"/>
          </div>
          <div class = "col-lg-4">
-                Effect
+                {{tower.effect}}
          </div>
     </div>
-    <div class="row">
-            <div class = "col-md-4">
-                Fire
-            </div>
-            <div class = "col-lg-4">
-                <img src = "./images/tower-defense-turrets/turret-5-1.png"/>
-            </div>
-            <div class = "col-lg-4">
-                Effect
-            </div>
-    </div>
-    <div class="row">
-            <div class = "col-md-4">
-                Thunder
-            </div>
-            <div class = "col-md-4">
-                <img src = "./images/tower-defense-turrets/turret-6-1.png"/>
-            </div>
-            <div class = "col-lg-4">
-                Effect
-            </div>
-    </div>
-    <div class="row">
-            <div class = "col-lg-4">
-                Poison
-            </div>
-            <div class = "col-lg-4">
-                <img src = "./images/tower-defense-turrets/turret-7-1.png"/>
-            </div>
-            <div class = "col-lg-4">
-                Effect
-            </div>
-    </div>
+
 
