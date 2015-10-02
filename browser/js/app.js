@@ -3,6 +3,7 @@ let tower = require('./components/tower');
 let editor = require('./components/editor');
 let _ = require('lodash');
 let app = require('./ng/app.js');
+require('./ng/directives/storeBar/storeBar.js');
 game.init();
 document.onclick = function(e) {
     console.log(e.clientX);
