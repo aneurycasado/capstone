@@ -3,25 +3,15 @@
 }
 
 body {
-  background: #fdfdfd;
-}
-
-@mixin clearfix {
-  &:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-}
-
-#main {
-  padding-top: 60px;
-  width: 1200px;
-  margin: 0 auto;
+  margin: 0;
+  padding: 0;
+  background-color: #000000;
+  width: 100%
 }
 
 @import 'directives/main';
-@import 'home/main';
-@import 'about/main';
-@import 'tutorial/main';
-@import 'login/main';
+@import 'edit/main';
+@import 'startScreen/main';
+
+
+
