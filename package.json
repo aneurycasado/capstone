@@ -1,9 +1,6 @@
 {
   "name": "FullstackGeneratedApp",
   "version": "1.0.0",
-  "browser":{
-    "ui.router": "./node_modules/angular-ui-router/release/angular-ui-router.js"
-  },
   "description": "A generated project at Fullstack Academy",
   "main": "server/start.js",
   "scripts": {
