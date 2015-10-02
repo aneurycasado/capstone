@@ -23,7 +23,7 @@ class GridNode {
         this.coords = {x: x * config.cellSize, y: y * config.cellSize};
         this.enterable = true;
         this.contains = false;
-
+        this.canPlaceTower = false;
         if (opts) {
             if (opts.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/background-tilesets/" + opts.img + ".png"));
             this.img.position.x = this.coords.x;
