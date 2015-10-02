@@ -2,40 +2,17 @@
 <html lang="en">
     <head>
         <base href="/"/>
-        <title>Fullstack Academy Generated Application</title>
-        <style>
-            body {
-                margin: 0;
-                padding: 0;
-                background-color: #000000;
-                width: 100%
-            }
-
-            #editor {
-                position: fixed;
-                top: 0;
-                right: 0%;
-                bottom: 0;
-                width: 21%;
-                display: none;
-            }
-            #sideBar {
-                position: fixed;
-                top: 0;
-                right: 0%;
-                bottom: 0;
-                width: 21%;
-            }
-        </style>
-
-        <!-- front-end -->
+        <title>Tower Defense</title>
         <link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap.css"/>
-        <link rel="stylesheet" type="text/css" href="/style.css"/>
+        <link rel="stylesheet" type="text/css" href="/style.css"/> 
         <script src="/lib/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
     </head>
     <body ng-app = "TowerDefense">
-        <side-bar id = "sideBar"></side-bar>
         <div id="editor"></div>
         <script src="main.js"></script>
+        <side-bar id = "sideBar"></side-bar>
+<!--         <div ui-view>
+            <start-screen></start-screen>
+        </div> -->
     </body>
 </html>
