@@ -10,11 +10,6 @@ game.init = () => {
 
     game.stages = {};
     game.map = {};
-    game.endRow = game.rows - 2;
-    game.endCol = game.cols - 1;
-    //base cell size on width
-    //adjust height to fit grid
-    game.height = (game.rows / game.cols) * game.width;
     game.stages.menu = new PIXI.Stage(0x66FF99);
     game.renderer = PIXI.autoDetectRenderer(game.width, game.height);
     document.body.appendChild(game.renderer.view);

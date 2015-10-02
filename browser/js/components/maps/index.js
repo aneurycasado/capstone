@@ -10,7 +10,7 @@ function insertNodes(grid, textures){
     for(var row = 0; row < grid.length; row++){
         for(var col = 0; col < grid[row].length; col++){
             if(grid[row][col] === 0){
-              grid[row][col] = new GridNode(col, row, {img: textures.tile});
+              grid[row][col] = new GridNode(col, row, {img: textures.tile, canPlaceTower: true});
             }else 
             if(grid[row][col] === 1){
               grid[row][col] = new GridNode(col, row, {img: textures.path});
