@@ -28,6 +28,7 @@ class GridNode {
             if (opts.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/background-tilesets/" + opts.img + ".png"));
             this.img.position.x = this.coords.x;
             this.img.position.y = this.coords.y;
+            if (opts.canPlaceTower) this.canPlaceTower = true;
         }
     }
 }
