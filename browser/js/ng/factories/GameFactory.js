@@ -57,7 +57,19 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, Pla
             setTimeout(function() {
                 newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
                 game.stages["play"].addChild(newEn.img);
-            }, 100);
+            }, 1000);
+        setTimeout(function() {
+            newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
+            game.stages["play"].addChild(newEn.img);
+        }, 1500);
+        setTimeout(function() {
+            newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
+            game.stages["play"].addChild(newEn.img);
+        }, 2000);
+        setTimeout(function() {
+            newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
+            game.stages["play"].addChild(newEn.img);
+        }, 2500);
     };
 
     game.update = (delta)=> {
@@ -71,7 +83,6 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, Pla
                 PlayerFactory.health--;
             }
         }
-        console.log(EnemyFactory.enemies);
         //game logic
     };
 

@@ -1,8 +1,13 @@
-#editor {
-    position: fixed;
+#editor-container {
+    position: absolute;
     top: 0;
     right: 0%;
     bottom: 0;
-    width: 21%;
-    display:none;
+    width: 23%;
+}
+
+#editor {
+  position: relative;
+  width: 100%;
+  height: 500px;
 }
