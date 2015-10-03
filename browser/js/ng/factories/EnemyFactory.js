@@ -1,5 +1,5 @@
 'use strict'
-
+//FIXME
 app.factory('EnemyFactory', function() {
     class Enemy {
         constructor(opts) {
@@ -17,31 +17,28 @@ app.factory('EnemyFactory', function() {
 
             this.path = opts.path;
             this.pathIndex = 0;
-
-
-
         }
         moveTowards(delta) {
-
             var xdone = false;
             var ydone = false;
-
-            if(this.position.x > this.path[this.pathIndex].x + 5){
+            if(!this.path[this.pathIndex]) {
+                return terminateEnemy(this);
+            }
+            if(this.position.x > this.path[this.pathIndex].x + 5) {
                 this.position.x -= this.speed * delta;
-            }else if(this.position.x < this.path[this.pathIndex].x - 5){
+            } else if(this.position.x < this.path[this.pathIndex].x - 5) {
                 this.position.x += this.speed * delta;
-            }else{
+            } else{
                 xdone = true;
             }
 
-            if(this.position.y > this.path[this.pathIndex].y + 5){
+            if(this.position.y > this.path[this.pathIndex].y + 5) {
                 this.position.y -= this.speed * delta;
-            }else if(this.position.y < this.path[this.pathIndex].y - 5){
+            }else if(this.position.y < this.path[this.pathIndex].y - 5) {
                 this.position.y += this.speed * delta;
             }else{
                 ydone = true;
             }
-
             if(xdone && ydone){
                 this.pathIndex++;
             }
@@ -54,6 +51,7 @@ app.factory('EnemyFactory', function() {
         }
     }
 
+    var enemies = [];
     var createEnemy = (type, path) => {
 
         let newEnemy;
@@ -63,15 +61,20 @@ app.factory('EnemyFactory', function() {
         enemies.push(newEnemy);
 
         return newEnemy;
-
-
     };
 
+    var terminateEnemy = (enemyObj) => {
+        enemies = enemies.filter(function(element) {
+            return enemyObj !== element;
+        });
+        console.log(enemies);
+        return enemyObj;
+
+     }
 
     var enemiesConstructors = {trojanHorse};
 
     //adWare, worm
-    var enemies = [];
     return {
         createEnemy,
         enemies

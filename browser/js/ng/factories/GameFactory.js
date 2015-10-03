@@ -1,5 +1,5 @@
 'use strict'
-app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory) {
+app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, PlayerFactory) {
     let game = ConfigFactory;
     game.cellSize = game.width / game.cols;
     game.height = (game.rows / game.cols) * game.width;
@@ -14,7 +14,6 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory) {
 
         game.map = MapFactory.maps[0];
 
-        console.log(game.map);
 
         game.grid = game.map.grid;
         game.stages.play = new PIXI.Stage(0x66FF99);
@@ -50,21 +49,26 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory) {
     };
 
     game.createCritter = ()=> {
-
-        var newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
-
-        console.log("NEWEN", newEn);
-        game.stages["play"].addChild(newEn.img);
+            setTimeout(function() {
+                var newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
+                game.stages["play"].addChild(newEn.img);
+            }, 500);
+            setTimeout(function() {
+                var newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
+                game.stages["play"].addChild(newEn.img);
+            }, 100);
     };
 
     game.update = (delta)=> {
-
+        //var enemies = EnemyFactory.enemies.map(function(element) {
+        //    return element;
+        //});
         EnemyFactory.enemies.forEach(function(en){
-            en.moveTowards(delta);
+            if(en.moveTowards(delta)){
+                game.stages["play"].removeChild(en.img);
+                PlayerFactory.health--;
+            }
         });
-
-
-
         //game logic
     };
 
