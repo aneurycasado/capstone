@@ -46,6 +46,25 @@ app.factory('EnemyFactory', function(GameFactory) {
             }
         }
     }
+    createEnemy = (x,y, type) => {
+        let towerConstructor = towers[type];
+        let newTower;
+        let currentGridNode = GameFactory.grid[y][x];
+        if (currentGridNode.canPlaceTower) {
+            newTower = new towerConstructor(x, y);
+            currentGridNode.contains.tower = newTower;
+            currentGridNode.canPlaceTower = false;
+            return newTower;
+        } else {
+            console.log("Can't play");
+        }
+        enemies.push(this);
+    };
 
-    return Enemy;
+    var enemiesConstructors = {trojanHorse, adWare, worms};
+    var enemies = [];
+    return {
+        createEnemy,
+        enemies
+    };
 });
