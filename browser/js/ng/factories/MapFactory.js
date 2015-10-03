@@ -51,21 +51,18 @@ app.factory('MapFactory', function(GridFactory, ConfigFactory) {
                 next.x = x-1;
                 next.direction = "up";
                 path.push({x: grid[x][y].coords.x + (ConfigFactory.cellSize/2), y: grid[x][y].coords.y + (ConfigFactory.cellSize/2)})
-                console.log('in up');
                 return true;
             }
             else if(grid[x+1] && grid[x+1][y].terrain == num && lastDirection !== "up"){
                 next.x = x+1;
                 next.direction = "down";
                 path.push({x: grid[x][y].coords.x + (ConfigFactory.cellSize/2), y: grid[x][y].coords.y + (ConfigFactory.cellSize/2)})
-                console.log('in down')
                 return true;
             }
             else if(grid[x][y-1] && grid[x][y-1].terrain == num && lastDirection !== "right"){
                 next.y = y-1;
                 next.direction = "left";
                 path.push({x: grid[x][y].coords.x + (ConfigFactory.cellSize/2), y: grid[x][y].coords.y + (ConfigFactory.cellSize/2)})
-                console.log('in left');
                 return true;
             }
             else if(grid[x][y+1] && grid[x][y+1].terrain == num && lastDirection !== "left"){
@@ -73,7 +70,6 @@ app.factory('MapFactory', function(GridFactory, ConfigFactory) {
                 next.y = y+1;
                 next.direction = "right";
                 path.push({x: grid[x][y].coords.x + (ConfigFactory.cellSize/2), y: grid[x][y].coords.y + (ConfigFactory.cellSize/2)})
-                console.log('in right');
                 return true;
             }
 
@@ -84,7 +80,6 @@ app.factory('MapFactory', function(GridFactory, ConfigFactory) {
             count++;
             console.log('grid[x][y].terrain', grid[x][y].terrain);
             if(grid[x][y].terrain == 3){
-                console.log('we are done!');
                 return path;
             }
             var next = {x: x, y: y};
