@@ -1,13 +1,13 @@
-    <div class="row" ng-repeat = "tower in towers" ng-click = "towerClicked(tower)">
-         <div class = "col-lg-4">
-             {{tower.type}}
-         </div>
-         <div class = "col-lg-4">
-             <img src = "{{tower.img}}"/>
-         </div>
-         <div class = "col-lg-4">
-                {{tower.effect}}
-         </div>
-    </div>
+<div class="row towerSelect" ng-repeat = "tower in towers" ng-click = "towerClicked(tower)">
+     <div class = "col-lg-4">
+         {{tower.type}}
+     </div>
+     <div class = "col-lg-4">
+         <img src = "{{tower.img}}"/>
+     </div>
+     <div class = "col-lg-4">
+            {{tower.effect}}
+     </div>
+</div>
 
 
