@@ -66,8 +66,10 @@ app.factory('EnemyFactory', function() {
     var terminateEnemy = (enemyObj) => {
         enemies = enemies.filter(function(element) {
             return enemyObj !== element;
-        })
+        });
+        console.log(enemies);
         return enemyObj;
+
      }
 
     var enemiesConstructors = {trojanHorse};
