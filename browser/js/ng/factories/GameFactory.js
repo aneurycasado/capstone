@@ -61,9 +61,6 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, Pla
     };
 
     game.update = (delta)=> {
-        //var enemies = EnemyFactory.enemies.map(function(element) {
-        //    return element;
-        //});
         var enemies = EnemyFactory.enemies.map(function(element) {
             return element;
         });
@@ -75,12 +72,6 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, Pla
             }
         }
         console.log(EnemyFactory.enemies);
-        //EnemyFactory.enemies.forEach(function(en){
-        //    if(en.moveTowards(delta)){
-        //        game.stages["play"].removeChild(en.img);
-        //        PlayerFactory.health--;
-        //    }
-        //});
         //game logic
     };
 
