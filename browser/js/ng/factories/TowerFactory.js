@@ -1,5 +1,5 @@
 'use strict'
-app.factory('TowerFactory', function (GameFactory) {
+app.factory('TowerFactory', function (GameFactory, EnemyFactory, ProjectileFactory, ViewFactory) {
     class Tower {
         constructor(x, y, options) {
             //this.grid = grid;
@@ -17,7 +17,7 @@ app.factory('TowerFactory', function (GameFactory) {
                 this.img.position.y = this.position.y * GameFactory.cellSize + .5 * GameFactory.cellSize;
                 if (options.power) this.power = options.power;
                 if (options.cost) this.cost = options.cost;
-                GameFactory.stages["play"].addChild(this.img);
+                ViewFactory.stages.play.addChild(this.img);
             }
         }
 
@@ -64,6 +64,11 @@ app.factory('TowerFactory', function (GameFactory) {
     class FireTower extends Tower {
         constructor(x, y) {
             super(x, y, {img: '5', power: 8});
+            if(EnemyFactory.enemies[0])this.shoot(EnemyFactory.enemies[0]);
+        }
+
+        shoot(enemy){
+            new ProjectileFactory.HomingProjectile({x: this.img.position.x, y: this.img.position.y, speed: 3, radius: 8, enemy: enemy});
         }
     }
 
