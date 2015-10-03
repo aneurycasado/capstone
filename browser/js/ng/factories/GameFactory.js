@@ -23,7 +23,7 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, Pla
             })
         });
 
-        // game.createCritter();
+         game.createCritter();
 
         game.start();
 
