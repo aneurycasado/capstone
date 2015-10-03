@@ -64,19 +64,19 @@ app.factory('EnemyFactory', function() {
     };
 
     var terminateEnemy = (enemyObj) => {
-        enemies = enemies.filter(function(element) {
-            return enemyObj !== element;
-        });
-        console.log(enemies);
-        return enemyObj;
-
-     }
+        if(enemies.indexOf(enemyObj) !== -1) {
+            var x = enemies.splice(enemies.indexOf(enemyObj),1);
+            console.log(enemies);
+            return x[0];
+        }
+     };
 
     var enemiesConstructors = {trojanHorse};
 
     //adWare, worm
     return {
         createEnemy,
-        enemies
+        enemies,
+        terminateEnemy
     };
 });

@@ -23,7 +23,7 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, Pla
             })
         });
 
-        // game.createCritter();
+         game.createCritter();
 
         game.start();
 
@@ -61,15 +61,17 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, Pla
     };
 
     game.update = (delta)=> {
-        //var enemies = EnemyFactory.enemies.map(function(element) {
-        //    return element;
-        //});
-        EnemyFactory.enemies.forEach(function(en){
-            if(en.moveTowards(delta)){
-                game.stages["play"].removeChild(en.img);
+        var enemies = EnemyFactory.enemies.map(function(element) {
+            return element;
+        });
+
+        for(var i = 0; i < enemies.length; i++) {
+            if(enemies[i].moveTowards(delta)) {
+                game.stages["play"].removeChild(enemies[i].img);
                 PlayerFactory.health--;
             }
-        });
+        }
+        console.log(EnemyFactory.enemies);
         //game logic
     };
 
