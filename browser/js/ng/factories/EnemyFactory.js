@@ -63,7 +63,7 @@ app.factory('EnemyFactory', function() {
         return newEnemy;
     };
 
-    var terminateEnemy = (enemyObj) => {
+    var terminateEnemy = (enemies, enemyObj) => {
         enemies = enemies.filter(function(element) {
             return enemyObj !== element;
         });
@@ -77,6 +77,7 @@ app.factory('EnemyFactory', function() {
     //adWare, worm
     return {
         createEnemy,
-        enemies
+        enemies,
+        terminateEnemy
     };
 });
