@@ -1,8 +1,22 @@
-#editor {
-    position: fixed;
+#editor-container {
+    position: absolute;
     top: 0;
     right: 0%;
     bottom: 0;
-    width: 21%;
+    width: 23%;
     display:none;
 }
+
+#editor {
+  position: relative;
+  width: 100%;
+  height: 500px;
+}
+//#editor-container {
+//  position: fixed;
+//  top: 0;
+//  right: 0%;
+//  bottom: 0;
+//  width: 21%;
+//  display:none;
+//}

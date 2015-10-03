@@ -66,7 +66,6 @@ app.factory('EnemyFactory', function() {
     var terminateEnemy = (enemyObj) => {
         if(enemies.indexOf(enemyObj) !== -1) {
             var x = enemies.splice(enemies.indexOf(enemyObj),1);
-            console.log(enemies);
             return x[0];
         }
      };

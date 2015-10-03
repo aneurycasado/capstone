@@ -24,7 +24,7 @@ app.controller('PlayController', function($scope, $rootScope, GameFactory, Tower
           if(GameFactory.grid[towerPositionY][towerPositionX].contains.tower) {
             console.log("editing = true");
             $scope.editing = true;
-            $("#editor").show()
+            $("#editor-container").show()
             $scope.$digest();
           }else if(!GameFactory.grid[towerPositionY][towerPositionX].canPlaceTower) {
             console.log("false");

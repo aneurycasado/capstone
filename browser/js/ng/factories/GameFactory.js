@@ -71,7 +71,6 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, Pla
                 PlayerFactory.health--;
             }
         }
-        console.log(EnemyFactory.enemies);
         //game logic
     };
 
