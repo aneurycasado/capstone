@@ -12,6 +12,7 @@ app.controller('PlayController', function($scope, $rootScope, GameFactory, Tower
     console.log('play');
     GameFactory.init();
     $scope.tower = null;
+    $scope.editing = false;
     $rootScope.$on("currentTower", function(event,data){
       $scope.tower = data;
     })
@@ -21,7 +22,10 @@ app.controller('PlayController', function($scope, $rootScope, GameFactory, Tower
           let towerPositionY = Math.floor(e.offsetY / GameFactory.cellSize);
           console.log(GameFactory.grid[towerPositionY][towerPositionX].canPlaceTower);
           if(GameFactory.grid[towerPositionY][towerPositionX].contains.tower){
-            console.log("tower is there");
+            console.log("editing = true");
+            $scope.editing = true;
+            $("#editor").show()
+            $scope.$digest();
           }else if(!GameFactory.grid[towerPositionY][towerPositionX].canPlaceTower) {
             console.log("false");
             // console.log("X ", towerPositionX, "Y ", towerPositionY);

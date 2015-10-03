@@ -24,7 +24,7 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory) {
             })
         });
 
-        game.createCritter();
+        // game.createCritter();
 
         game.start();
 
