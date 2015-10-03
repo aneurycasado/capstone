@@ -19,7 +19,16 @@ app.controller('PlayController', function($scope, $rootScope, GameFactory, Tower
         if($scope.tower !== null){
           let towerPositionX = Math.floor(e.offsetX / GameFactory.cellSize);
           let towerPositionY = Math.floor(e.offsetY / GameFactory.cellSize);
-          TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.type + "Tower");
+          console.log(GameFactory.grid[towerPositionY][towerPositionX].canPlaceTower);
+          if(GameFactory.grid[towerPositionY][towerPositionX].contains.tower){
+            console.log("tower is there");
+          }else if(!GameFactory.grid[towerPositionY][towerPositionX].canPlaceTower) {
+            console.log("false");
+            // console.log("X ", towerPositionX, "Y ", towerPositionY);
+          }else{
+            TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.type + "Tower");
+            console.log("false");
+          }
         }
     })
 });
