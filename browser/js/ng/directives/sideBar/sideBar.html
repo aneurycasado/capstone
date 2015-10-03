@@ -12,12 +12,15 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingTwo">
-                <h4 class="panel-title">
+                <h4 class="panel-title" ng-show = "playing">
                         Store
+                </h4>
+                 <h4 class="panel-title" ng-show = "setUp">
+                        Pick Your Towers
                 </h4>
             </div>
             <div class="panel-body">
-                <nav>
+                <nav ng-show = "playing">
                     <ul class="nav nav-tabs">
                         <li><a ng-click = "changeStore('tower')">Towers</a></li>
                         <li><a ng-click = "changeStore('powerUp')">Powerups</a></li>
@@ -27,6 +30,9 @@
                 <tower-store ng-show = "showTowers"></tower-store>
                 <hr ng-show = "showerTowers === showPowerUps">
                 <power-up-store ng-show = "showPowerUps"></power-up-store>
+                <div class ="row" ng-show = "setUp">
+                    <button class = "btn btn-primary" ng-click = "initiateWave()">Done</button>
+                </div>
             </div>
         </div>
     </div>

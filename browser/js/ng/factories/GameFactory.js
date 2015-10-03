@@ -23,12 +23,8 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, Pla
             })
         });
 
-         game.createCritter();
-
         game.start();
-
         game.main();
-
 
     };
 
@@ -87,9 +83,14 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, Pla
     };
 
     game.start = map => {
-        console.log(EnemyFactory.enemies);
+        // console.log(EnemyFactory.enemies);
 
         game.state = "play";
     };
+
+    game.initiateWave = function(){
+        game.createCritter();
+        game.main();
+    } 
     return game;
 });
