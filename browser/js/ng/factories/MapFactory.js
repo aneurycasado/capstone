@@ -9,7 +9,6 @@ app.factory('MapFactory', function(GridFactory, ConfigFactory) {
     }
 
     let insertNodes = (grid, textures) => {
-        console.log(textures);
         for(let row = 0; row < grid.length; row++){
             for(let col = 0; col < grid[row].length; col++){
 
@@ -66,7 +65,6 @@ app.factory('MapFactory', function(GridFactory, ConfigFactory) {
                 return true;
             }
             else if(grid[x][y+1] && grid[x][y+1].terrain == num && lastDirection !== "left"){
-                //console.log('were here', grid[x][y+1])
                 next.y = y+1;
                 next.direction = "right";
                 path.push({x: grid[x][y].coords.x + (ConfigFactory.cellSize/2), y: grid[x][y].coords.y + (ConfigFactory.cellSize/2)})
@@ -78,7 +76,6 @@ app.factory('MapFactory', function(GridFactory, ConfigFactory) {
         var count = 0;
         function explore(x, y, lastDirection){
             count++;
-            console.log('grid[x][y].terrain', grid[x][y].terrain);
             if(grid[x][y].terrain == 3){
                 return path;
             }
@@ -97,7 +94,8 @@ app.factory('MapFactory', function(GridFactory, ConfigFactory) {
         }
 
         explore(start.x, start.y, '');
-        console.log(path);
+
+        return path;
     }
 
 
