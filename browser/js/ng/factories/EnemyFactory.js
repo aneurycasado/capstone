@@ -1,42 +1,43 @@
 'use strict'
 
-app.factory('EnemyFactory', function(GameFactory) {
+app.factory('EnemyFactory', function() {
     class Enemy {
-        constructor(x, y, opts) {
-            this.position = {x: x, y: y};
-            this.img.position = this.position;
+        constructor(opts) {
+            console.log("OPTS", opts.path);
+
             if (opts) {
-                if (opts.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-blue.png"));
-                this.img.position.x = this.position.x * GameFactory.cellSize + .5 * GameFactory.cellSize;
-                this.img.anchor.x = .5;
-                this.img.anchor.y = .5;
-                this.img.position.y = this.position.y * GameFactory.cellSize + .5 * GameFactory.cellSize;
+                if (opts.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-blue/1.png"));
+                this.position = {x: opts.path[0].x, y: opts.path[0].y};
+                this.img.position = this.position;
                 if (opts.power) this.power = opts.power;
-                if (opts.cost) this.cost = opts.cost;
-                GameFactory.stages["play"].addChild(this.img);
             }
+
+            this.speed = 128;
+
 
             this.path = opts.path;
             this.pathIndex = 0;
 
 
+
         }
-        moveTowards(modifier) {
+        moveTowards(delta) {
+
             var xdone = false;
             var ydone = false;
 
-            if(this.x > this.path[this.pathIndex].x + 5){
-                this.x -= this.speed * modifier;
-            }else if(this.x < this.path[this.pathIndex].x - 5){
-                this.x += this.speed * modifier;
+            if(this.position.x > this.path[this.pathIndex].x + 5){
+                this.position.x -= this.speed * delta;
+            }else if(this.position.x < this.path[this.pathIndex].x - 5){
+                this.position.x += this.speed * delta;
             }else{
                 xdone = true;
             }
 
-            if(this.y > this.path[this.pathIndex].y + 5){
-                this.y -= this.speed * modifier;
-            }else if(this.y < this.path[this.pathIndex].y - 5){
-                this.y += this.speed * modifier;
+            if(this.position.y > this.path[this.pathIndex].y + 5){
+                this.position.y -= this.speed * delta;
+            }else if(this.position.y < this.path[this.pathIndex].y - 5){
+                this.position.y += this.speed * delta;
             }else{
                 ydone = true;
             }
@@ -46,22 +47,30 @@ app.factory('EnemyFactory', function(GameFactory) {
             }
         }
     }
-    createEnemy = (x,y, type) => {
-        let towerConstructor = towers[type];
-        let newTower;
-        let currentGridNode = GameFactory.grid[y][x];
-        if (currentGridNode.canPlaceTower) {
-            newTower = new towerConstructor(x, y);
-            currentGridNode.contains.tower = newTower;
-            currentGridNode.canPlaceTower = false;
-            return newTower;
-        } else {
-            console.log("Can't play");
+
+    class trojanHorse extends Enemy {
+        constructor(opts) {
+            super({img: '1', power: 2, path: opts.path});
         }
-        enemies.push(this);
+    }
+
+    var createEnemy = (type, path) => {
+
+        let newEnemy;
+
+        let enemyConstructor = enemiesConstructors[type];
+        newEnemy = new enemyConstructor({path: path});
+        enemies.push(newEnemy);
+
+        return newEnemy;
+
+
     };
 
-    var enemiesConstructors = {trojanHorse, adWare, worms};
+
+    var enemiesConstructors = {trojanHorse};
+
+    //adWare, worm
     var enemies = [];
     return {
         createEnemy,
