@@ -50,17 +50,13 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory) {
     };
 
     game.createCritter = ()=> {
-
         var newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
-
-        console.log("NEWEN", newEn);
         game.stages["play"].addChild(newEn.img);
     };
 
     game.update = (delta)=> {
-
         EnemyFactory.enemies.forEach(function(en){
-            en.moveTowards(delta);
+            if(en.moveTowards(delta)) game.stages["play"].removeChild(en.img);
         });
 
 
