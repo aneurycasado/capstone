@@ -12,7 +12,7 @@ app.factory('EnemyFactory', function() {
                 if (opts.power) this.power = opts.power;
             }
 
-            this.speed = .1;
+            this.speed = 128;
 
 
             this.path = opts.path;
@@ -21,23 +21,23 @@ app.factory('EnemyFactory', function() {
 
 
         }
-        moveTowards(modifier = 2) {
+        moveTowards(delta) {
 
             var xdone = false;
             var ydone = false;
 
             if(this.position.x > this.path[this.pathIndex].x + 5){
-                this.position.x -= this.speed * modifier;
+                this.position.x -= this.speed * delta;
             }else if(this.position.x < this.path[this.pathIndex].x - 5){
-                this.position.x += this.speed * modifier;
+                this.position.x += this.speed * delta;
             }else{
                 xdone = true;
             }
 
             if(this.position.y > this.path[this.pathIndex].y + 5){
-                this.position.y -= this.speed * modifier;
+                this.position.y -= this.speed * delta;
             }else if(this.position.y < this.path[this.pathIndex].y - 5){
-                this.position.y += this.speed * modifier;
+                this.position.y += this.speed * delta;
             }else{
                 ydone = true;
             }
@@ -49,8 +49,8 @@ app.factory('EnemyFactory', function() {
     }
 
     class trojanHorse extends Enemy {
-        constructor(path) {
-            super({img: '1', power: 2, path: path});
+        constructor(opts) {
+            super({img: '1', power: 2, path: opts.path});
         }
     }
 
@@ -59,7 +59,7 @@ app.factory('EnemyFactory', function() {
         let newEnemy;
 
         let enemyConstructor = enemiesConstructors[type];
-        newEnemy = new enemyConstructor(path);
+        newEnemy = new enemyConstructor({path: path});
         enemies.push(newEnemy);
 
         return newEnemy;

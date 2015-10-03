@@ -1,1 +1,13 @@
 <side-bar id = "sideBar"></side-bar>
+<div class='outer' style='width:300;'>
+    <div id='handle' style='width:100%; height:20; background-color:grey'></div>
+    <div id='with_handle' style='position:relative; height:100'>
+        with_handle
+    </div>
+</div>
+<div id='regular' style='width:300; height:100; border: solid 1'>regular</div>
+<script>
+	ace.edit('with_handle')
+	$('.outer').draggable({handle: '#handle'})
+	$('#regular').draggable()
+</script>

@@ -9,20 +9,27 @@ app.factory('MapFactory', function(GridFactory, ConfigFactory) {
     }
 
     let insertNodes = (grid, textures) => {
+
+        console.log(textures);
+        var tile;
+        var canPlaceTower;
         for(let row = 0; row < grid.length; row++){
             for(let col = 0; col < grid[row].length; col++){
-
-                if(grid[row][col] === 4) console.log('4', grid[row][col]);
-                var tile = textures.tile;
-
+                canPlaceTower = false;
+                if(grid[row][col] === 4){
+                    tile = textures.tile;
+                }
                 if(grid[row][col] === 1){
                     tile = textures.path;
                 }else if(grid[row][col] === 2){
                     tile = textures.tree;
                 }else if(grid[row][col] === 3){
                     tile = textures.destination;
+                }else if(grid[row][col] === 0){
+                    canPlaceTower = true;
+                    tile = textures.tile;
                 }
-                grid[row][col] = new GridFactory.GridNode(col, row, {img: tile, canPlaceTower: true, terrain: grid[row][col]});
+                grid[row][col] = new GridFactory.GridNode(col, row, {img: tile, canPlaceTower: canPlaceTower, terrain: grid[row][col]});
             }
         }
         return grid;

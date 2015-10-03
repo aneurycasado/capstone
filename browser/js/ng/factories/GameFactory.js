@@ -33,16 +33,20 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory) {
 
     };
 
-    game.main = ()=> {
+    game.main = (then)=> {
+
+        var now = Date.now();
+        var delta = (now - then)/1000;
         if (game.state === "menu"){
             //do menu stuff
         }
 
         if (game.state === "play") {
-            game.update();
+            game.update(delta);
         }
         game.renderer.render(game.stages[game.state]);
-        requestAnimationFrame(game.main);
+        requestAnimationFrame(game.main.bind(null, now));
+
     };
 
     game.createCritter = ()=> {
@@ -53,10 +57,10 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory) {
         game.stages["play"].addChild(newEn.img);
     };
 
-    game.update = ()=> {
+    game.update = (delta)=> {
 
         EnemyFactory.enemies.forEach(function(en){
-            en.moveTowards();
+            en.moveTowards(delta);
         });
 
 
