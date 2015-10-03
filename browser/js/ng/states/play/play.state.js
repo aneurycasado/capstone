@@ -8,21 +8,18 @@ app.config(function($stateProvider){
        })
 });
 
-app.controller('PlayController', function($scope, GameFactory, TowerFactory) {
+app.controller('PlayController', function($scope, $rootScope, GameFactory, TowerFactory) {
     console.log('play');
     GameFactory.init();
+    $scope.tower = null;
+    $rootScope.$on("currentTower", function(event,data){
+      $scope.tower = data;
+    })
     $('canvas').on('click', function(e) {
-        // if(game.state === "playing"){
-        //console.log(e.offsetX, e.clientX);
-        //console.log(e.offsetY);
-        let towerPositionX = Math.floor(e.offsetX / GameFactory.cellSize);
-        let towerPositionY = Math.floor(e.offsetY / GameFactory.cellSize);
-        console.log('x:', towerPositionX);
-        console.log('y:', towerPositionY);
-        if(!GameFactory.grid[towerPositionY][towerPositionX].canPlaceTower){
-            $('#myModal').modal('show');  
-        }else{
-          TowerFactory.createTower(towerPositionX, towerPositionY, 'IceTower');
+        if($scope.tower !== null){
+          let towerPositionX = Math.floor(e.offsetX / GameFactory.cellSize);
+          let towerPositionY = Math.floor(e.offsetY / GameFactory.cellSize);
+          TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.type + "Tower");
         }
     })
 });

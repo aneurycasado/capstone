@@ -61,19 +61,25 @@ app.factory('TowerFactory', function (GameFactory) {
         }
     }
 
-    class LaserTower extends Tower {
+    class FireTower extends Tower {
+        constructor(x, y) {
+            super(x, y, {img: '5', power: 8});
+        }
+    }
+
+    class ThunderTower extends Tower {
         constructor(x, y) {
             super(x, y, {img: '6', power: 8});
         }
     }
 
-//class LightningTower extends Tower {
-//    constructor(x, y) {
-//        super(x, y, {img:})
-//    }
-//}
+    class PoisonTower extends Tower {
+        constructor(x, y) {
+            super(x, y, {img: '7', power: 8});
+        }
+    }
 
-    let towers = {IceTower, LaserTower};
+    let towers = {IceTower, ThunderTower, FireTower, PoisonTower};
 
     return {createTower};
 });

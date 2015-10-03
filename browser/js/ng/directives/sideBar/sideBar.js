@@ -6,7 +6,7 @@ app.directive("sideBar", function(){
     }
 });
 
-app.controller('SideBarController', function($scope, PlayerFactory) {
+app.controller('SideBarController', function($scope, $rootScope, PlayerFactory) {
     $scope.player = PlayerFactory
     $scope.showTowers = true;
     $scope.showPowerUps = false;
@@ -23,7 +23,10 @@ app.controller('SideBarController', function($scope, PlayerFactory) {
             $scope.showPowerUps = true;
         }
     }
-
+    $scope.towerClicked = function(tower){
+        console.log("tower clicked ", tower);
+        $rootScope.$emit("currentTower", tower);
+    }    
 });
 
 function createTowers (){
