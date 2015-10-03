@@ -26,6 +26,10 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory) 
     $scope.towerClicked = function(tower){
         console.log("tower clicked ", tower);
         $rootScope.$emit("currentTower", tower);
+    }
+    $scope.initiateWave = function(){
+        console.log("initiateWave");
+        $rootScope.$emit("initiateWave");
     }    
 });
 

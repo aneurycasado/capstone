@@ -13,8 +13,16 @@ app.controller('PlayController', function ($scope, $rootScope, GameFactory, Towe
     GameFactory.init();
     $scope.tower = null;
     $scope.editing = false;
+    $scope.setUp = true;
+    $scope.playing = false;
     $rootScope.$on("currentTower", function (event, data) {
         $scope.tower = data;
+    });
+    $rootScope.$on("initiateWave", function (event, data) {
+        $scope.setUp = false;
+        $scope.playing = true;
+        GameFactory.initiateWave();
+        $scope.$digest();
     });
     $('canvas').on('click', function (e) {
         if ($scope.tower !== null) {
@@ -28,7 +36,6 @@ app.controller('PlayController', function ($scope, $rootScope, GameFactory, Towe
                 $scope.$digest();
             } else if (!GameFactory.grid[towerPositionY][towerPositionX].canPlaceTower) {
                 console.log("false");
-                // console.log("X ", towerPositionX, "Y ", towerPositionY);
             } else {
                 TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.type + "Tower");
                 console.log("false");
@@ -36,3 +43,4 @@ app.controller('PlayController', function ($scope, $rootScope, GameFactory, Towe
         }
     })
 });
+
