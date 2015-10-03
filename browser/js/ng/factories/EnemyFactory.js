@@ -63,14 +63,13 @@ app.factory('EnemyFactory', function() {
         return newEnemy;
     };
 
-    var terminateEnemy = (enemies, enemyObj) => {
-        enemies = enemies.filter(function(element) {
-            return enemyObj !== element;
-        });
-        console.log(enemies);
-        return enemyObj;
-
-     }
+    var terminateEnemy = (enemyObj) => {
+        if(enemies.indexOf(enemyObj) !== -1) {
+            var x = enemies.splice(enemies.indexOf(enemyObj),1);
+            console.log(enemies);
+            return x[0];
+        }
+     };
 
     var enemiesConstructors = {trojanHorse};
 

@@ -63,12 +63,23 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, Pla
         //var enemies = EnemyFactory.enemies.map(function(element) {
         //    return element;
         //});
-        EnemyFactory.enemies.forEach(function(en){
-            if(en.moveTowards(delta)){
-                game.stages["play"].removeChild(en.img);
+        var enemies = EnemyFactory.enemies.map(function(element) {
+            return element;
+        });
+
+        for(var i = 0; i < enemies.length; i++) {
+            if(enemies[i].moveTowards(delta)) {
+                game.stages["play"].removeChild(enemies[i].img);
                 PlayerFactory.health--;
             }
-        });
+        }
+        console.log(EnemyFactory.enemies);
+        //EnemyFactory.enemies.forEach(function(en){
+        //    if(en.moveTowards(delta)){
+        //        game.stages["play"].removeChild(en.img);
+        //        PlayerFactory.health--;
+        //    }
+        //});
         //game logic
     };
 
