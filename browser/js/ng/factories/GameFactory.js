@@ -85,7 +85,7 @@ app.factory('GameFactory', function(ViewFactory, ConfigFactory, MapFactory, Enem
             });
         });
 
-        game.createCritter();
+        // game.createCritter();
 
         game.state = "play";
     };
