@@ -49,12 +49,13 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, Pla
     };
 
     game.createCritter = ()=> {
+        var newEn;
             setTimeout(function() {
-                var newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
+                newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
                 game.stages["play"].addChild(newEn.img);
             }, 500);
             setTimeout(function() {
-                var newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
+                newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
                 game.stages["play"].addChild(newEn.img);
             }, 100);
     };
