@@ -12,8 +12,13 @@ app.directive('editor', function() {
             var editor = ace.edit("editor");
             editor.setTheme("ace/theme/monokai");
             editor.getSession().setMode("ace/mode/javascript");
+            if(scope.tower) {
+                if(scope.tower.session) editor.setSession(scope.tower.session)
+                else scope.tower.session = editor.
+            }
+
+            //scope.tower.editSession = editor;
             editor.focus();
-            editor.goToLine(0);
             scope.saveCodeSnippet = function() {
                 scope.tower.codeSnippets.push(editor.getValue());
                 console.log(scope.tower);

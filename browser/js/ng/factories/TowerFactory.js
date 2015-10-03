@@ -6,6 +6,7 @@ app.factory('TowerFactory', function (GameFactory) {
             this.position = {x: x, y: y};
             this.rank = 1;
             this.kills = 0;
+            this.session = null;
             //this.options = options ? options : {};
             this.powerUps = [];
             this.codeSnippets = [];
