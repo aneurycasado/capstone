@@ -13,6 +13,7 @@ app.factory('EnemyFactory', function() {
             }
 
             this.speed = 128;
+            this.radius = 10;
 
 
             this.path = opts.path;
