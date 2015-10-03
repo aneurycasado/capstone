@@ -64,7 +64,7 @@ app.factory('TowerFactory', function (GameFactory, EnemyFactory, ProjectileFacto
     class FireTower extends Tower {
         constructor(x, y) {
             super(x, y, {img: '5', power: 8});
-            this.shoot(EnemyFactory.enemies[0]);
+            if(EnemyFactory.enemies[0])this.shoot(EnemyFactory.enemies[0]);
         }
 
         shoot(enemy){

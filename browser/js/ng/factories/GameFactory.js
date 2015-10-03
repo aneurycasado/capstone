@@ -13,9 +13,7 @@ app.factory('GameFactory', function(ViewFactory, ConfigFactory, MapFactory, Enem
         document.body.appendChild(game.renderer.view);
 
         game.start();
-
         game.main();
-
 
     };
 
@@ -91,5 +89,10 @@ app.factory('GameFactory', function(ViewFactory, ConfigFactory, MapFactory, Enem
 
         game.state = "play";
     };
+
+    game.initiateWave = function(){
+        game.createCritter();
+        game.main();
+    } 
     return game;
 });
