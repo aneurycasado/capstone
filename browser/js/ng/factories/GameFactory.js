@@ -60,16 +60,14 @@ app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, Part
 
     game.loadEnemy = () => {
         if(game.checkNodeClear(3)) {
-            if(!WaveFactory.currWaveQLength()) {
-                //$rootScope.$emit('launchNext', {}); //FIXME
-                return;
-            }
+            if(!WaveFactory.currWaveQLength()) return;
             var newEn = EnemyFactory.createEnemy(WaveFactory.popOffWaveQueue(), game.map.path);
             ViewFactory.stages.play.addChild(newEn.img);
         }
     };
 
     game.update = delta => {
+        //if(!EnemyFactory.enemies.length) $rootScope.$emit('launchNext', {}); //FIXME
         if(game.launchCritters) game.loadEnemy();
         ProjectileFactory.updateAll();
         TowerFactory.updateAll();

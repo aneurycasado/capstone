@@ -24,8 +24,7 @@ app.controller('PlayController', function ($scope, $timeout, $rootScope, GameFac
         console.log($scope.waves);
         $scope.setUp = false;
         $scope.playing = true;
-        GameFactory.createWave($scope.waves[0]);
-        $scope.waves.splice(0, 1);
+        GameFactory.createWave($scope.waves.splice(0,1)[0]);
         GameFactory.initiateWave();
         //$scope.$digest();
     });
@@ -35,10 +34,10 @@ app.controller('PlayController', function ($scope, $timeout, $rootScope, GameFac
     //    if($scope.waves.length === 0 ) return;
     //    $timeout(function(){
     //            console.log($scope.waves);
-    //            GameFactory.createWave($scope.waves[0]);
-    //            $scope.waves.splice(0, 1);
+    //            GameFactory.createWave($scope.waves.splice(0, 1)[0]);
+    //
     //        },
-    //        20000);
+    //        5000);
     //}) //FIXME
 
     $('canvas').on('click', function (e) {
