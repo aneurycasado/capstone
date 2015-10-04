@@ -1,5 +1,5 @@
 'use strict'
-app.factory('TowerFactory', function (GameFactory) {
+app.factory('TowerFactory', function (GameFactory, EnemyFactory, ProjectileFactory, ViewFactory) {
     class Tower {
         constructor(x, y, options) {
             //this.grid = grid;
@@ -18,7 +18,8 @@ app.factory('TowerFactory', function (GameFactory) {
                 this.img.position.y = this.position.y * GameFactory.cellSize + .5 * GameFactory.cellSize;
                 if (options.power) this.power = options.power;
                 if (options.cost) this.cost = options.cost;
-                GameFactory.stages["play"].addChild(this.img);
+                this.price = options.price;
+                ViewFactory.stages.play.addChild(this.img);
             }
         }
 
@@ -58,29 +59,35 @@ app.factory('TowerFactory', function (GameFactory) {
 
     class IceTower extends Tower {
         constructor(x, y) {
-            super(x, y, {img: '4', power: 2});
+            super(x, y, {img: '4', power: 2, price: 50});
         }
     }
 
     class FireTower extends Tower {
         constructor(x, y) {
-            super(x, y, {img: '5', power: 8});
+            super(x, y, {img: '7', power: 8, price:50});
+            if(EnemyFactory.enemies[0])this.shoot(EnemyFactory.enemies[0]);
+        }
+
+        shoot(enemy){
+            new ProjectileFactory.HomingProjectile({x: this.img.position.x, y: this.img.position.y, speed: 3, radius: 8, enemy: enemy});
         }
     }
 
     class ThunderTower extends Tower {
         constructor(x, y) {
-            super(x, y, {img: '6', power: 8});
+            super(x, y, {img: '5', power: 8, price: 50});
         }
     }
 
     class PoisonTower extends Tower {
         constructor(x, y) {
-            super(x, y, {img: '7', power: 8});
+            super(x, y, {img: '6', power: 8, price: 50});
         }
     }
 
     let towers = {IceTower, ThunderTower, FireTower, PoisonTower};
+    let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
 
-    return {createTower};
+    return {createTower, prices};
 });

@@ -8,10 +8,15 @@ app.factory('EnemyFactory', function() {
                 if (opts.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-blue/1.png"));
                 this.position = {x: opts.path[0].x, y: opts.path[0].y};
                 this.img.position = this.position;
+                this.img.pivot.x = .5;
+                this.img.pivot.y = .5;
+                this.img.anchor.x  = .5;
+                this.img.anchor.y = .5;
                 if (opts.power) this.power = opts.power;
             }
 
             this.speed = 128;
+            this.radius = 10;
 
 
             this.path = opts.path;
@@ -24,17 +29,22 @@ app.factory('EnemyFactory', function() {
                 return terminateEnemy(this);
             }
             if(this.position.x > this.path[this.pathIndex].x + 5) {
+                this.img.rotation = 3.14;
+                console.log("Here");
                 this.position.x -= this.speed * delta;
+                
             } else if(this.position.x < this.path[this.pathIndex].x - 5) {
+                this.img.rotation = 3.14*2;
                 this.position.x += this.speed * delta;
             } else{
                 xdone = true;
             }
-
             if(this.position.y > this.path[this.pathIndex].y + 5) {
+                this.img.rotation = (3*3.14) / 2; ;
                 this.position.y -= this.speed * delta;
             }else if(this.position.y < this.path[this.pathIndex].y - 5) {
                 this.position.y += this.speed * delta;
+                this.img.rotation = 3.14 / 2;
             }else{
                 ydone = true;
             }
