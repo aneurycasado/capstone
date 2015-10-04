@@ -8,7 +8,7 @@ app.config(function ($stateProvider) {
         })
 });
 
-app.controller('PlayController', function ($scope, $rootScope, GameFactory, TowerFactory, GridFactory, PlayerFactory) {
+app.controller('PlayController', function ($scope, $timeout, $rootScope, GameFactory, TowerFactory, GridFactory, PlayerFactory) {
 
     console.log('play');
     GameFactory.init();
@@ -16,15 +16,30 @@ app.controller('PlayController', function ($scope, $rootScope, GameFactory, Towe
     $scope.editing = false;
     $scope.setUp = true;
     $scope.playing = false;
+    $scope.waves = [[{name: 'trojanHorse', num: 12}], [{name: 'trojanHorse', num: 15}]];
     $rootScope.$on("currentTower", function (event, data) {
         $scope.tower = data;
     });
     $rootScope.$on("initiateWave", function (event, data) {
+        console.log($scope.waves);
         $scope.setUp = false;
         $scope.playing = true;
+        GameFactory.createWave($scope.waves.splice(0,1)[0]);
         GameFactory.initiateWave();
         //$scope.$digest();
     });
+
+    //$rootScope.$on('launchNext', function(event, data) {
+    //    console.log($scope.waves.length);
+    //    if($scope.waves.length === 0 ) return;
+    //    $timeout(function(){
+    //            console.log($scope.waves);
+    //            GameFactory.createWave($scope.waves.splice(0, 1)[0]);
+    //
+    //        },
+    //        5000);
+    //}) //FIXME
+
     $('canvas').on('click', function (e) {
         if ($scope.tower !== null) {
             let towerPositionX = Math.floor(e.offsetX / GameFactory.cellSize);

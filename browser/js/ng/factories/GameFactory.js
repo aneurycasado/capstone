@@ -1,5 +1,6 @@
 'use strict'
-app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, ParticleFactory, ConfigFactory, MapFactory, EnemyFactory, PlayerFactory, ProjectileFactory, WaveFactory) {
+
+app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, ParticleFactory, ConfigFactory, MapFactory, EnemyFactory, PlayerFactory, ProjectileFactory, WaveFactory, $rootScope) {
     let game = ConfigFactory;
     game.cellSize = game.width / game.cols;
     game.height = (game.rows / game.cols) * game.width;
@@ -24,7 +25,7 @@ app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, Part
         return EnemyFactory.enemies[EnemyFactory.enemies.length - 1].pathIndex === nodeNum;
     };
 
-    var counter= 0;
+    var counter = 0;
 
     game.main = then => {
 
@@ -36,37 +37,45 @@ app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, Part
 
         if (game.state === "play") {
             game.update(delta);
-            
-            game.fire.update(delta/10);
-            game.fire.emit = true;
-            game.fire.updateOwnerPos(100, 100);
-            game.fire.rotate(counter++);
+            //
+            //game.fire.update(delta/10);
+            //game.fire.emit = true;
+            //game.fire.updateOwnerPos(100, 100);
+            //game.fire.rotate(counter++);
 
         }
         game.renderer.render(ViewFactory.stages[game.state]);
         requestAnimationFrame(game.main.bind(null, now));
 
     };
+
     game.createWave = WaveFactory.createWave;
-    game.createWave([{name: 'trojanHorse', num: 12}]);
+
+
+
+    game.checkNodeClear = nodeNum => {
+        if(!EnemyFactory.enemies.length) return true;
+        return EnemyFactory.enemies[EnemyFactory.enemies.length - 1].pathIndex === nodeNum;
+    };
+
     game.loadEnemy = () => {
         if(game.checkNodeClear(3)) {
-            if(!WaveFactory.currentWaveQueue.length) return;
+            if(!WaveFactory.currWaveQLength()) return;
             var newEn = EnemyFactory.createEnemy(WaveFactory.popOffWaveQueue(), game.map.path);
-            //console.log('game.stages', game.stages["play"]);
             ViewFactory.stages.play.addChild(newEn.img);
         }
     };
 
     game.update = delta => {
+        //if(!EnemyFactory.enemies.length) $rootScope.$emit('launchNext', {}); //FIXME
         if(game.launchCritters) game.loadEnemy();
         ProjectileFactory.updateAll();
         TowerFactory.updateAll();
-        var enemies = EnemyFactory.enemies.map(function(element) {
+        let enemies = EnemyFactory.enemies.map(function(element) {
             return element;
         });
 
-        for(var i = 0; i < enemies.length; i++) {
+        for(let i = 0; i < enemies.length; i++) {
             if(enemies[i].moveTowards(delta)) {
                 ViewFactory.stages.play.removeChild(enemies[i].img);
                 PlayerFactory.health--;
