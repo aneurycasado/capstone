@@ -8,26 +8,50 @@ app.config(function ($stateProvider) {
         })
 });
 
-app.controller('PlayController', function ($scope, $timeout, $rootScope, GameFactory, TowerFactory, GridFactory, PlayerFactory) {
-
-    console.log('play');
+app.controller('PlayController', function ($scope, $timeout, $rootScope, GameFactory, TowerFactory, GridFactory, PlayerFactory, ViewFactory) {
     GameFactory.init();
     $scope.tower = null;
     $scope.editing = false;
     $scope.setUp = true;
     $scope.playing = false;
     $scope.waves = [[{name: 'trojanHorse', num: 12}], [{name: 'trojanHorse', num: 15}]];
+    $scope.count = 0;
     $rootScope.$on("currentTower", function (event, data) {
         $scope.tower = data;
     });
     $rootScope.$on("initiateWave", function (event, data) {
-        console.log($scope.waves);
         $scope.setUp = false;
         $scope.playing = true;
-        GameFactory.createWave($scope.waves.splice(0,1)[0]);
         GameFactory.initiateWave();
         //$scope.$digest();
     });
+    $rootScope.$on("readyForNextWave", function (event, data) {
+        console.log("We hit next wave");
+        GameFactory.initiateWave();
+        //$scope.$digest();
+    });
+    $scope.update = then => {
+        var now = Date.now();
+        var delta = (now - then)/1000;
+        if (GameFactory.state === "menu"){
+        }
+        else if (GameFactory.state === "play") {
+            if(GameFactory.nextWave){
+                GameFactory.nextWave = false;
+                console.log('we hit in play state.js')
+                $rootScope.$emit("nextWave")
+                $scope.count++;
+            }
+            GameFactory.update(delta);
+            //
+            //game.fire.update(delta/10);
+            //game.fire.emit = true;
+            //game.fire.updateOwnerPos(100, 100);
+            //game.fire.rotate(counter++);
+        }
+        GameFactory.renderer.render(ViewFactory.stages[GameFactory.state]);
+        requestAnimationFrame($scope.update.bind(null, now));
+    };
 
     //$rootScope.$on('launchNext', function(event, data) {
     //    console.log($scope.waves.length);
@@ -61,5 +85,6 @@ app.controller('PlayController', function ($scope, $timeout, $rootScope, GameFac
             }
         }
     })
+    $scope.update(Date.now());
 });
 

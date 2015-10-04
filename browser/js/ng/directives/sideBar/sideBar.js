@@ -11,6 +11,13 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory) 
     $scope.showTowers = true;
     $scope.showPowerUps = false;
     $scope.towers = createTowers();
+    $scope.nextWave = false;
+    $scope.count = 0;
+    $rootScope.$on("nextWave", function(){
+        console.log("Time to trigger nextWave");
+        $scope.nextWave = true;
+        $scope.$digest();
+    });
     $scope.changeStore = function(tab) {
         if(tab === "tower"){
             $scope.showTowers = true;
@@ -30,6 +37,11 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory) 
     $scope.initiateWave = function(){
         console.log("initiateWave");
         $rootScope.$emit("initiateWave");
+    }
+    $scope.initiateNextWave = function(){
+        console.log("triggerNextWave");
+        $scope.nextWave = false; 
+        $rootScope.$emit("readyForNextWave");
     }
 });
 
