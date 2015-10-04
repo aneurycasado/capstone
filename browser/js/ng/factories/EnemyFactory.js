@@ -1,6 +1,8 @@
 'use strict'
 //FIXME
-app.factory('EnemyFactory', function() {
+app.factory('EnemyFactory', function(GameFactory, WaveFactory, PlayerFactory) {
+    var enemies = [];
+
     class Enemy {
         constructor(opts) {
             if (opts) {
@@ -14,25 +16,24 @@ app.factory('EnemyFactory', function() {
                 }
                 this.position = {x: opts.path[0].x, y: opts.path[0].y};
                 this.img.position = this.position;
-                this.img.pivot.x = .5;
-                this.img.pivot.y = .5;
-                this.img.anchor.x  = .5;
-                this.img.anchor.y = .5;
+                this.img.pivot.x = 0.5;
+                this.img.pivot.y = 0.5;
+                this.img.anchor.x  = 0.5;
+                this.img.anchor.y = 0.5;
                 this.img.animationSpeed = 0.5;
                 this.img.play();
                 if (opts.power) this.power = opts.power;
             }
+            this.health = 10;
             this.speed = 128;
             this.radius = 10;
             this.path = opts.path;
             this.pathIndex = 0;
         }
+
         moveTowards(delta) {
             var xdone = false;
             var ydone = false;
-            if(!this.path[this.pathIndex]) {
-                return terminateEnemy(this);
-            }
             if(this.position.x > this.path[this.pathIndex].x + 5) {
                 this.img.rotation = 3.14;
                 this.position.x -= this.speed * delta;
@@ -44,7 +45,7 @@ app.factory('EnemyFactory', function() {
                 xdone = true;
             }
             if(this.position.y > this.path[this.pathIndex].y + 5) {
-                this.img.rotation = (3*3.14) / 2; ;
+                this.img.rotation = (3*3.14) / 2;
                 this.position.y -= this.speed * delta;
             }else if(this.position.y < this.path[this.pathIndex].y - 5) {
                 this.position.y += this.speed * delta;
@@ -56,6 +57,27 @@ app.factory('EnemyFactory', function() {
                 this.pathIndex++;
             }
         }
+
+        terminate(){
+            console.log('terminating');
+            if(enemies.indexOf(this) !== -1) {
+                var x = enemies.splice(enemies.indexOf(this),1);
+            }
+            GameFactory.stages.play.removeChild(this.img);
+            if(enemies.length === 0 && GameFactory.launchCritters){
+                WaveFactory.removeCurrentWave();
+                GameFactory.nextWave = true;
+                GameFactory.launchCritters = false;
+            }
+            PlayerFactory.health--;
+        }
+
+        update(delta){
+            this.moveTowards(delta);
+            if(!this.path[this.pathIndex]) {
+                this.terminate();
+            }
+        }
     }
 
     class trojanHorse extends Enemy {
@@ -64,7 +86,6 @@ app.factory('EnemyFactory', function() {
         }
     }
 
-    var enemies = [];
     var createEnemy = (type, path) => {
 
         let newEnemy;
@@ -77,12 +98,18 @@ app.factory('EnemyFactory', function() {
         return newEnemy;
     };
 
-    var terminateEnemy = (enemyObj) => {
-        if(enemies.indexOf(enemyObj) !== -1) {
-            var x = enemies.splice(enemies.indexOf(enemyObj),1);
-            return x[0];
-        }
-     };
+    var updateAll = function(delta){
+        enemies.forEach(function(enemy){
+            enemy.update(delta);
+        });
+    };
+
+    // var terminateEnemy = (enemyObj) => {
+    //     if(enemies.indexOf(enemyObj) !== -1) {
+    //         var x = enemies.splice(enemies.indexOf(enemyObj),1);
+    //         return x[0];
+    //     }
+    //  };
 
     var enemiesConstructors = {trojanHorse};
 
@@ -90,6 +117,6 @@ app.factory('EnemyFactory', function() {
     return {
         createEnemy,
         enemies,
-        terminateEnemy
+        updateAll
     };
 });
