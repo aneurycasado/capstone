@@ -3,11 +3,26 @@
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingOne">
                 <h4 class="panel-title">
-                    Cash
+                    Player Stats
                 </h4>
             </div>
             <div class="panel-body">
-                {{player.money}}
+                <div class = "row">
+                    <div class = "col-md-6">
+                        Money
+                    </div>
+                    <div class = "col-md-6">
+                        Health
+                    </div>
+                </div>
+                  <div class = "row">
+                    <div class = "col-md-6">
+                        {{player.money}}
+                    </div>
+                    <div class = "col-md-6">
+                        {{player.health}}
+                    </div>
+                </div>
             </div>
         </div>
         <div class="panel panel-default">

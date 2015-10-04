@@ -39,27 +39,30 @@ function createTowers (){
         type: "Ice",
         img: "./images/tower-defense-turrets/turret-4-1.png",
         effect: "effect",
+        price: 50,
     };
     var Fire = {
         type: "Fire",
-        img: "./images/tower-defense-turrets/turret-5-1.png",
+        img: "./images/tower-defense-turrets/turret-7-1.png",
         effect: "effect",
+        price: 50,
     };
     var Thunder = {
         type: "Thunder",
-        img: "./images/tower-defense-turrets/turret-6-1.png",
+        img: "./images/tower-defense-turrets/turret-5-1.png",
         effect: "effect",
+        price: 50,
     };
     var Poison = {
         type: "Poison",
-        img: "./images/tower-defense-turrets/turret-7-1.png",
+        img: "./images/tower-defense-turrets/turret-6-1.png",
         effect: "effect",
+        price: 50,
     };
     array.push(Ice);
     array.push(Fire);
     array.push(Thunder);
     array.push(Poison);
-    console.log(array);
     return array;
 }
 

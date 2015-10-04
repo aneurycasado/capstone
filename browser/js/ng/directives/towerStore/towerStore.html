@@ -1,11 +1,29 @@
+<div class = "row">
+     <div class = "col-lg-3">
+        Price
+     </div>
+     <div class = "col-lg-3">
+        Type
+     </div>
+     <div class = "col-lg-3">
+        Icon
+     </div>
+     <div class = "col-lg-3">
+        Effect
+     </div>
+</div>
+
 <div class="row towerSelect" ng-repeat = "tower in towers" ng-click = "towerClicked(tower)">
-     <div class = "col-lg-4">
+     <div class = "col-lg-3">
+         {{tower.price}}
+     </div>
+     <div class = "col-lg-3">
          {{tower.type}}
      </div>
-     <div class = "col-lg-4">
+     <div class = "col-lg-3">
          <img src = "{{tower.img}}"/>
      </div>
-     <div class = "col-lg-4">
+     <div class = "col-lg-3">
             {{tower.effect}}
      </div>
 </div>

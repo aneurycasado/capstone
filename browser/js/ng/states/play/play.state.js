@@ -8,7 +8,7 @@ app.config(function ($stateProvider) {
         })
 });
 
-app.controller('PlayController', function ($scope, $rootScope, GameFactory, TowerFactory) {
+app.controller('PlayController', function ($scope, $rootScope, GameFactory, TowerFactory, PlayerFactory) {
     console.log('play');
     GameFactory.init();
     $scope.tower = null;
@@ -29,16 +29,17 @@ app.controller('PlayController', function ($scope, $rootScope, GameFactory, Towe
             let towerPositionX = Math.floor(e.offsetX / GameFactory.cellSize);
             let towerPositionY = Math.floor(e.offsetY / GameFactory.cellSize);
             $scope.selectedTower = GameFactory.grid[towerPositionY][towerPositionX].contains.tower;
-            console.log(GameFactory.grid[towerPositionY][towerPositionX].canPlaceTower);
             if (GameFactory.grid[towerPositionY][towerPositionX].contains.tower) {
-                console.log("editing = true");
                 $scope.editing = true;
                 $scope.$digest();
             } else if (!GameFactory.grid[towerPositionY][towerPositionX].canPlaceTower) {
                 console.log("false");
             } else {
-                TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.type + "Tower");
-                console.log("false");
+                if(PlayerFactory.money - TowerFactory.prices[$scope.tower.type] >= 0){
+                    TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.type + "Tower");
+                    PlayerFactory.money -= TowerFactory.prices[$scope.tower.type];
+                    $scope.$digest();
+                }
             }
         }
     })
