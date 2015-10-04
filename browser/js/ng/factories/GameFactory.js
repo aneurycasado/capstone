@@ -1,5 +1,5 @@
 'use strict'
-app.factory('GameFactory', function(ViewFactory, ConfigFactory, MapFactory, EnemyFactory, PlayerFactory, ProjectileFactory) {
+app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, ConfigFactory, MapFactory, EnemyFactory, PlayerFactory, ProjectileFactory) {
     let game = ConfigFactory;
     game.cellSize = game.width / game.cols;
     game.height = (game.rows / game.cols) * game.width;
@@ -59,6 +59,7 @@ app.factory('GameFactory', function(ViewFactory, ConfigFactory, MapFactory, Enem
 
     game.update = (delta)=> {
         ProjectileFactory.updateAll();
+        TowerFactory.updateAll();
         var enemies = EnemyFactory.enemies.map(function(element) {
             return element;
         });
@@ -76,10 +77,10 @@ app.factory('GameFactory', function(ViewFactory, ConfigFactory, MapFactory, Enem
         game.map = MapFactory.maps[0];
 
 
-        game.grid = game.map.grid;
+        GridFactory.grid = game.map.grid;
         ViewFactory.newStage('play');
         console.log('pixip', PIXI.Stage);
-        game.grid.forEach(row => {
+        GridFactory.grid.forEach(row => {
             row.forEach(gridNode => {
                 ViewFactory.stages.play.addChild(gridNode.img);
             });
