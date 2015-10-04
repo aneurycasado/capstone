@@ -36,14 +36,12 @@ app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, Part
 
         if (game.state === "play") {
             game.update(delta);
-            if(game.fire && counter < 1000) {
-                game.fire.update(delta/10);
-                game.fire.emit = true;
-                game.fire.updateOwnerPos(100, 100);
-                game.fire.rotate(counter++);
-             //console.log(game.fire);
+            
+            game.fire.update(delta/10);
+            game.fire.emit = true;
+            game.fire.updateOwnerPos(100, 100);
+            game.fire.rotate(counter++);
 
-            }
         }
         game.renderer.render(ViewFactory.stages[game.state]);
         requestAnimationFrame(game.main.bind(null, now));
