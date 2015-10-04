@@ -37,11 +37,11 @@ app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, Part
 
         if (game.state === "play") {
             game.update(delta);
-
-            game.fire.update(delta/10);
-            game.fire.emit = true;
-            game.fire.updateOwnerPos(100, 100);
-            game.fire.rotate(counter++);
+            //
+            //game.fire.update(delta/10);
+            //game.fire.emit = true;
+            //game.fire.updateOwnerPos(100, 100);
+            //game.fire.rotate(counter++);
 
         }
         game.renderer.render(ViewFactory.stages[game.state]);
@@ -65,7 +65,6 @@ app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, Part
                 return;
             }
             var newEn = EnemyFactory.createEnemy(WaveFactory.popOffWaveQueue(), game.map.path);
-            //console.log('game.stages', game.stages["play"]);
             ViewFactory.stages.play.addChild(newEn.img);
         }
     };
