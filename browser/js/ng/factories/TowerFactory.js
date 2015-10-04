@@ -21,6 +21,7 @@ app.factory('TowerFactory', function (ConfigFactory, EnemyFactory, ProjectileFac
                 if (options.power) this.power = options.power;
                 if (options.cost) this.cost = options.cost;
                 if (options.range) this.range = options.range;
+                this.price = options.price;
                 ViewFactory.stages.play.addChild(this.img);
             }
             allTowers.push(this);
@@ -80,13 +81,13 @@ app.factory('TowerFactory', function (ConfigFactory, EnemyFactory, ProjectileFac
 
     class IceTower extends Tower {
         constructor(x, y) {
-            super(x, y, {img: '4', power: 2});
+            super(x, y, {img: '4', power: 2, price: 50});
         }
     }
 
     class FireTower extends Tower {
         constructor(x, y) {
-            super(x, y, {img: '5', power: 8});
+            super(x, y, {img: '7', power: 8, price:50});
             this.range = 200;
             this.reloadTime = 400;
             this.reloading = false;
@@ -119,17 +120,18 @@ app.factory('TowerFactory', function (ConfigFactory, EnemyFactory, ProjectileFac
 
     class ThunderTower extends Tower {
         constructor(x, y) {
-            super(x, y, {img: '6', power: 8});
+            super(x, y, {img: '5', power: 8, price: 50});
         }
     }
 
     class PoisonTower extends Tower {
         constructor(x, y) {
-            super(x, y, {img: '7', power: 8});
+            super(x, y, {img: '6', power: 8, price: 50});
         }
     }
 
     let towers = {IceTower, ThunderTower, FireTower, PoisonTower};
+    let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
 
     var updateAll = function(){
         allTowers.forEach(function(tower){
@@ -139,6 +141,7 @@ app.factory('TowerFactory', function (ConfigFactory, EnemyFactory, ProjectileFac
 
     return {
         createTower,
-        updateAll
+        updateAll,
+        prices
     };
 });

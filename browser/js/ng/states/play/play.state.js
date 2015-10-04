@@ -8,7 +8,8 @@ app.config(function ($stateProvider) {
         })
 });
 
-app.controller('PlayController', function ($scope, $rootScope, GameFactory, TowerFactory, GridFactory) {
+app.controller('PlayController', function ($scope, $rootScope, GameFactory, TowerFactory, GridFactory, PlayerFactory) {
+
     console.log('play');
     GameFactory.init();
     $scope.tower = null;
@@ -37,8 +38,11 @@ app.controller('PlayController', function ($scope, $rootScope, GameFactory, Towe
             } else if (!GridFactory.grid[towerPositionY][towerPositionX].canPlaceTower) {
                 console.log("false");
             } else {
-                TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.type + "Tower");
-                console.log("false");
+                if(PlayerFactory.money - TowerFactory.prices[$scope.tower.type] >= 0){
+                    TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.type + "Tower");
+                    PlayerFactory.money -= TowerFactory.prices[$scope.tower.type];
+                    $scope.$digest();
+                }
             }
         }
     })
