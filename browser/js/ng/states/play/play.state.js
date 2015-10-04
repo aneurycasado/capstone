@@ -22,7 +22,7 @@ app.controller('PlayController', function ($scope, $rootScope, GameFactory, Towe
         $scope.setUp = false;
         $scope.playing = true;
         GameFactory.initiateWave();
-        $scope.$digest();
+        //$scope.$digest();
     });
     $('canvas').on('click', function (e) {
         if ($scope.tower !== null) {

@@ -1,12 +1,12 @@
 'use strict'
-app.factory('GameFactory', function(ViewFactory, ConfigFactory, MapFactory, EnemyFactory, PlayerFactory, ProjectileFactory, WaveFactory) {
+app.factory('GameFactory', function(ViewFactory, ConfigFactory, MapFactory, EnemyFactory, PlayerFactory, ProjectileFactory, WaveFactory, $rootScope) {
     let game = ConfigFactory;
     game.cellSize = game.width / game.cols;
     game.height = (game.rows / game.cols) * game.width;
-
+    game.launchCritters = false;
     game.init = () => {
 
-        game.stages = {};
+        //game.stages = {};
         game.map = {};
         ViewFactory.newStage('menu');
         game.renderer = PIXI.autoDetectRenderer(game.width, game.height);
@@ -17,7 +17,14 @@ app.factory('GameFactory', function(ViewFactory, ConfigFactory, MapFactory, Enem
 
     };
 
-    game.main = (then)=> {
+    game.checkNodeClear = nodeNum => {
+        if(!EnemyFactory.enemies.length) return true;
+        console.log('EnemyFactory', EnemyFactory.enemies[EnemyFactory.enemies.length - 1].pathIndex);
+        console.log('nodeNum', nodeNum);
+        return EnemyFactory.enemies[EnemyFactory.enemies.length - 1].pathIndex === nodeNum;
+    };
+
+    game.main = then => {
 
         var now = Date.now();
         var delta = (now - then)/1000;
@@ -32,37 +39,19 @@ app.factory('GameFactory', function(ViewFactory, ConfigFactory, MapFactory, Enem
         requestAnimationFrame(game.main.bind(null, now));
 
     };
-
     game.createWave = WaveFactory.createWave;
+    game.createWave([{name: 'trojanHorse', num: 12}]);
     game.loadEnemy = () => {
-        EnemyFactory.createEnemy(WaveFactory.popOffWaveQueue(), game.map.path);
-    }
-
-    game.createCritter = ()=> {
-        var newEn;
-        setTimeout(function() {
-            newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
-            game.stages["play"].addChild(newEn.img);
-        }, 500);
-        setTimeout(function() {
-            newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
-            game.stages["play"].addChild(newEn.img);
-        }, 1000);
-        setTimeout(function() {
-            newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
+        if(game.checkNodeClear(3)) {
+            if(!WaveFactory.currentWaveQueue.length) return;
+            var newEn = EnemyFactory.createEnemy(WaveFactory.popOffWaveQueue(), game.map.path);
+            //console.log('game.stages', game.stages["play"]);
             ViewFactory.stages.play.addChild(newEn.img);
-        }, 1500);
-        setTimeout(function() {
-            newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
-            ViewFactory.stages.play.addChild(newEn.img);
-        }, 2000);
-        setTimeout(function() {
-            newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
-            ViewFactory.stages.play.addChild(newEn.img);
-        }, 2500);
+        }
     };
 
-    game.update = (delta)=> {
+    game.update = delta => {
+        if(game.launchCritters) game.loadEnemy();
         ProjectileFactory.updateAll();
         var enemies = EnemyFactory.enemies.map(function(element) {
             return element;
@@ -96,7 +85,7 @@ app.factory('GameFactory', function(ViewFactory, ConfigFactory, MapFactory, Enem
     };
 
     game.initiateWave = () => {
-        game.createCritter();
+        game.launchCritters = true;
         game.main();
     };
 

@@ -3,7 +3,7 @@ app.factory('WaveFactory', function() {
     let createWave = critterObjArr => {
         critterObjArr.forEach(element => {
             //EnemyFactory.createEnemy(critterObj[key], path);
-            for(var i = 0; i < element.key; i++) {
+            for(var i = 0; i < element.num; i++) {
                 currentWaveQueue.push(element.name);
             }
         });
