@@ -3,7 +3,6 @@
 app.factory('EnemyFactory', function() {
     class Enemy {
         constructor(opts) {
-            console.log("OPTS", opts.path);
             if (opts) {
                 if (opts.img) {
                     var array = [];
@@ -38,7 +37,7 @@ app.factory('EnemyFactory', function() {
                 this.img.rotation = 3.14;
                 console.log("Here");
                 this.position.x -= this.speed * delta;
-                
+
             } else if(this.position.x < this.path[this.pathIndex].x - 5) {
                 this.img.rotation = 3.14*2;
                 this.position.x += this.speed * delta;

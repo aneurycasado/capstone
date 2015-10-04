@@ -7,18 +7,18 @@ app.directive("sideBar", function(){
 });
 
 app.controller('SideBarController', function($scope, $rootScope, PlayerFactory) {
-    $scope.player = PlayerFactory
+    $scope.player = PlayerFactory;
     $scope.showTowers = true;
     $scope.showPowerUps = false;
     $scope.towers = createTowers();
-    $scope.changeStore = function(tab){
+    $scope.changeStore = function(tab) {
         if(tab === "tower"){
             $scope.showTowers = true;
             $scope.showPowerUps = false;
-        }else if(tab === "powerUp"){
+        }else if(tab === "powerUp") {
             $scope.showTowers = false;
             $scope.showPowerUps = true;
-        }else if(tab === "all"){
+        }else if(tab === "all") {
             $scope.showTowers = true;
             $scope.showPowerUps = true;
         }
@@ -30,7 +30,7 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory) 
     $scope.initiateWave = function(){
         console.log("initiateWave");
         $rootScope.$emit("initiateWave");
-    }    
+    }
 });
 
 function createTowers (){
