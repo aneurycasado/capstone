@@ -1,9 +1,7 @@
 'use strict'
-//FIXME
-app.factory('EnemyFactory', function() {
+app.factory('EnemyFactory', function(ParticleFactory) {
     class Enemy {
         constructor(opts) {
-            console.log("OPTS", opts.path);
 
             if (opts) {
                 if (opts.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-blue/1.png"));
@@ -13,7 +11,6 @@ app.factory('EnemyFactory', function() {
             }
 
             this.speed = 128;
-
 
             this.path = opts.path;
             this.pathIndex = 0;

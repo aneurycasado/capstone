@@ -1,5 +1,5 @@
 'use strict'
-app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, PlayerFactory) {
+app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, PlayerFactory, ParticleFactory) {
     let game = ConfigFactory;
     game.cellSize = game.width / game.cols;
     game.height = (game.rows / game.cols) * game.width;
@@ -14,7 +14,6 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, Pla
 
         game.map = MapFactory.maps[0];
 
-
         game.grid = game.map.grid;
         game.stages.play = new PIXI.Stage(0x66FF99);
         game.grid.forEach(row => {
@@ -23,7 +22,15 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, Pla
             })
         });
 
-         game.createCritter();
+        game.createCritter();
+
+        game.PEContainer = new PIXI.Container();
+
+        game.stages.play.addChild(game.PEContainer);
+
+        ParticleFactory.createFire(game.PEContainer, function(emitter){
+            game.fire = emitter;
+        });
 
         game.start();
 
@@ -32,6 +39,8 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, Pla
 
     };
 
+    game.counter = 0;
+
     game.main = (then)=> {
 
         var now = Date.now();
@@ -39,10 +48,16 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, Pla
         if (game.state === "menu"){
             //do menu stuff
         }
+        if (game.state === "setup") {
+            game.update(delta);
+        }
+
 
         if (game.state === "play") {
             game.update(delta);
+            if(game.fire) game.fire.update(delta/10)
         }
+
         game.renderer.render(game.stages[game.state]);
         requestAnimationFrame(game.main.bind(null, now));
 
@@ -61,6 +76,7 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, Pla
     };
 
     game.update = (delta)=> {
+
         var enemies = EnemyFactory.enemies.map(function(element) {
             return element;
         });
@@ -71,12 +87,10 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, Pla
                 PlayerFactory.health--;
             }
         }
-        console.log(EnemyFactory.enemies);
         //game logic
     };
 
     game.start = map => {
-        console.log(EnemyFactory.enemies);
 
         game.state = "play";
     };
