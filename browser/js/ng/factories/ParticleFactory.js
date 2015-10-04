@@ -73,17 +73,7 @@ app.factory('ParticleFactory', function() {
                 else if(type == "anim")
                     emitter.particleConstructor = cloudkid.AnimatedParticle;
 
-                // Center on the stage
-                this.emitter.updateOwnerPos(window.innerWidth / 2, window.innerHeight / 2);
-
-                // Click on the canvas to trigger
-                canvas.addEventListener('mouseup', function(e){
-                    if(!this.emitter) return;
-                    this.emitter.emit = true;
-                    this.emitter.resetPositionTracking();
-                    this.emitter.updateOwnerPos(e.offsetX || e.layerX, e.offsetY || e.layerY);
-                });
-                
+                // Center on the stage                
                 window.destroyEmitter = function()
                 {
                     this.emitter.destroy();
@@ -105,47 +95,50 @@ app.factory('ParticleFactory', function() {
         new Particle(cb,
             container,
             ['images/particles/1.png'],
-          {
-                "alpha": {
-                    "start": 0.8,
-                    "end": 0.7
-                },
-                "scale": {
-                    "start": 1,
-                    "end": 0.3
-                },
-                "color": {
-                    "start": "e3f9ff",
-                    "end": "0ec8f8"
-                },
-                "speed": {
-                    "start": 200,
-                    "end": 200
-                },
-                "startRotation": {
-                    "min": 0,
-                    "max": 0
-                },
-                "rotationSpeed": {
-                    "min": 0,
-                    "max": 0
-                },
-                "lifetime": {
-                    "min": 0.8,
-                    "max": 0.8
-                },
-                "frequency": 0.2,
-                "emitterLifetime": 0.41,
-                "maxParticles": 1000,
-                "pos": {
-                    "x": 0,
-                    "y": 0
-                },
-                "addAtBack": false,
-                "spawnType": "burst",
-                "particlesPerWave": 8,
-                "particleSpacing": 45,
-                "angleStart": 0
+            {
+                    "alpha": {
+                        "start": 0.62,
+                        "end": 0
+                    },
+                    "scale": {
+                        "start": 0.25,
+                        "end": 0.75
+                    },
+                    "color": {
+                        "start": "fff191",
+                        "end": "ff622c"
+                    },
+                    "speed": {
+                        "start": 500,
+                        "end": 500
+                    },
+                    "startRotation": {
+                        "min": 265,
+                        "max": 275
+                    },
+                    "rotationSpeed": {
+                        "min": 50,
+                        "max": 50
+                    },
+                    "lifetime": {
+                        "min": 0.1,
+                        "max": 0.75
+                    },
+                    "blendMode": "normal",
+                    "frequency": 0.001,
+                    "emitterLifetime": 0,
+                    "maxParticles": 1000,
+                    "pos": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "addAtBack": false,
+                    "spawnType": "circle",
+                    "spawnCircle": {
+                        "x": 0,
+                        "y": 0,
+                        "r": 10
+                    }
             }
         );
     }

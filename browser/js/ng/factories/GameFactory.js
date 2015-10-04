@@ -24,6 +24,8 @@ app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, Part
         return EnemyFactory.enemies[EnemyFactory.enemies.length - 1].pathIndex === nodeNum;
     };
 
+    var counter= 0;
+
     game.main = then => {
 
         var now = Date.now();
@@ -34,9 +36,12 @@ app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, Part
 
         if (game.state === "play") {
             game.update(delta);
-            if(game.fire) {
-                game.fire.update(delta/10);
-            }
+            
+            game.fire.update(delta/10);
+            game.fire.emit = true;
+            game.fire.updateOwnerPos(100, 100);
+            game.fire.rotate(counter++);
+
         }
         game.renderer.render(ViewFactory.stages[game.state]);
         requestAnimationFrame(game.main.bind(null, now));
@@ -84,6 +89,8 @@ app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, Part
         game.PEContainer = new PIXI.Stage();
         ViewFactory.stages.play.addChild(game.PEContainer);
         ParticleFactory.createFire(game.PEContainer, function(emitter){
+
+            console.log("EMITTER", emitter);
             game.fire = emitter;
         });
 
