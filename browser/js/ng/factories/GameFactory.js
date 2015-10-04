@@ -1,5 +1,5 @@
 'use strict'
-app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, ConfigFactory, MapFactory, EnemyFactory, PlayerFactory, ProjectileFactory, WaveFactory) {
+app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, ParticleFactory, ConfigFactory, MapFactory, EnemyFactory, PlayerFactory, ProjectileFactory, WaveFactory) {
     let game = ConfigFactory;
     game.cellSize = game.width / game.cols;
     game.height = (game.rows / game.cols) * game.width;
@@ -9,6 +9,8 @@ app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, Conf
         //game.stages = {};
         game.map = {};
         ViewFactory.newStage('menu');
+        ViewFactory.newStage('play');
+
         game.renderer = PIXI.autoDetectRenderer(game.width, game.height);
         document.body.appendChild(game.renderer.view);
 
@@ -19,8 +21,6 @@ app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, Conf
 
     game.checkNodeClear = nodeNum => {
         if(!EnemyFactory.enemies.length) return true;
-        console.log('EnemyFactory', EnemyFactory.enemies[EnemyFactory.enemies.length - 1].pathIndex);
-        console.log('nodeNum', nodeNum);
         return EnemyFactory.enemies[EnemyFactory.enemies.length - 1].pathIndex === nodeNum;
     };
 
@@ -34,6 +34,9 @@ app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, Conf
 
         if (game.state === "play") {
             game.update(delta);
+            if(game.fire) {
+                game.fire.update(delta/10);
+            }
         }
         game.renderer.render(ViewFactory.stages[game.state]);
         requestAnimationFrame(game.main.bind(null, now));
@@ -72,12 +75,16 @@ app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, Conf
 
 
         GridFactory.grid = game.map.grid;
-        ViewFactory.newStage('play');
-        console.log('pixip', PIXI.Stage);
         GridFactory.grid.forEach(row => {
             row.forEach(gridNode => {
                 ViewFactory.stages.play.addChild(gridNode.img);
             });
+        });
+
+        game.PEContainer = new PIXI.Stage();
+        ViewFactory.stages.play.addChild(game.PEContainer);
+        ParticleFactory.createFire(game.PEContainer, function(emitter){
+            game.fire = emitter;
         });
 
         // game.createCritter();
@@ -87,7 +94,7 @@ app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, Conf
 
     game.initiateWave = () => {
         game.launchCritters = true;
-        game.main();
+        //game.main();
     };
 
 

@@ -54,6 +54,7 @@
     "passport-google-oauth": "^0.1.5",
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.2",
+    "pixi-particles": "^1.5.1",
     "pixi.js": "^3.0.7",
     "run-sequence": "^1.0.2",
     "serve-favicon": "^2.2.0",
