@@ -1,18 +1,6 @@
 'use strict'
 app.factory('GridFactory', function(ConfigFactory) {
-    let createGrid = (rows, cols, cellSize) => {
-        let grid = [];
-        for (let row = 0; row < rows; row++) {
-            grid[row] = [];
-            for (let col = 0; col < cols; col++) {
-                if (row === 0) new GridNode(col, row, cellSize, {img: "13"});
-                else {
-                    grid[row][col] = new GridNode(col, row, cellSize, {img: "01"});
-                }
-            }
-        }
-        return grid;
-    }
+    var grid = [];
 
     class GridNode {
         constructor(x, y, opts) {
@@ -33,8 +21,8 @@ app.factory('GridFactory', function(ConfigFactory) {
     }
 
     return {
-        createGrid,
-        GridNode
+        GridNode,
+        grid
     }
 })
 
