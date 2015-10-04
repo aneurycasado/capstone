@@ -1,7 +1,7 @@
 'use strict'
 app.factory('ParticleFactory', function() {
 
-    class Particle{
+    class ParticleEmitter{
         constructor(cb, stage, imagePaths, config, type, useParticleContainer){
 
             var canvas = document.getElementsByTagName("canvas")[0];
@@ -17,6 +17,9 @@ app.factory('ParticleFactory', function() {
 
             var renderer = PIXI.autoDetectRenderer(canvas.width, canvas.height, rendererOptions);
 
+            console.log("RENDERER", renderer);
+            console.log("CANVAS", canvas);
+
             // Preload the particle images and create PIXI textures from it
             var urls, makeTextures = false;
             if(imagePaths.spritesheet)
@@ -28,73 +31,69 @@ app.factory('ParticleFactory', function() {
                 urls = imagePaths.slice();
                 makeTextures = true;
             }
-            var loader = PIXI.loader;
 
-            for(var i = 0; i < urls.length; ++i){
-                loader.add("img" + i, urls[i]);
-            }
-
-            loader.load(function()
+            //collect the textures, now that they are all loaded
+            var art;
+            if(makeTextures){
+                art = [];
+                for(var i = 0; i < urls.length; ++i){
+                    art.push(PIXI.Texture.fromImage(imagePaths[i]));
+                }
+            }else
+                art = imagePaths.art;
+              
+            // Create the new emitter and attach it to the stage
+            var emitterContainer;
+            if(useParticleContainer)
             {
-               
-                //collect the textures, now that they are all loaded
-                var art;
-                if(makeTextures)
-                {
-                    art = [];
-                    for(var i = 0; i < imagePaths.length; ++i)
-                        art.push(PIXI.Texture.fromImage(imagePaths[i]));
-                }
-                else
-                    art = imagePaths.art;
-                // Create the new emitter and attach it to the stage
-                var emitterContainer;
-                if(useParticleContainer)
-                {
-                    emitterContainer = new PIXI.ParticleContainer();
-                    emitterContainer.setProperties({
-                        scale: true,
-                        position: true,
-                        rotation: true,
-                        uvs: true,
-                        alpha: true
-                    });
-                }
-                else
-                    emitterContainer = new PIXI.Container();
-                stage.addChild(emitterContainer);
-                this.emitter = new cloudkid.Emitter(
-                    emitterContainer,
-                    art,
-                    config
-                );
-                if(type == "path")
-                    emitter.particleConstructor = cloudkid.PathParticle;
-                else if(type == "anim")
-                    emitter.particleConstructor = cloudkid.AnimatedParticle;
+                emitterContainer = new PIXI.ParticleContainer();
+                emitterContainer.setProperties({
+                    scale: true,
+                    position: true,
+                    rotation: true,
+                    uvs: true,
+                    alpha: true
+                });
+            }
+            else
+                emitterContainer = new PIXI.Container();
+            
+            stage.addChild(emitterContainer);
 
-                // Center on the stage                
-                window.destroyEmitter = function()
-                {
-                    this.emitter.destroy();
-                    this.emitter = null;
-                    window.destroyEmitter = null;
-                    cancelAnimationFrame(updateId);
-                    
-                    renderer.render(stage);
-                };
+            this.emitter = new cloudkid.Emitter(
+                emitterContainer,
+                art,
+                config
+            );
 
-                cb(this.emitter);
+            if(type == "path")
+                this.emitter.particleConstructor = cloudkid.PathParticle;
+            else if(type == "anim")
+                this.emitter.particleConstructor = cloudkid.AnimatedParticle;
 
-            });
+            // Center on the stage                
+            window.destroyEmitter = function()
+            {
+                this.emitter.destroy();
+                this.emitter = null;
+                window.destroyEmitter = null;
+                cancelAnimationFrame(updateId);
+                
+                renderer.render(stage);
+            };
+
+
+
+            cb(this.emitter);
+
         };
     }
 
 
-    var createFire = function(container, cb){
-        new Particle(cb,
+    var createIce = function(container, cb){
+        new ParticleEmitter(cb,
             container,
-            ['images/particles/1.png'],
+            ['images/particles/1.png', 'images/particles/2.png'],
             {
                     "alpha": {
                         "start": 0.62,
@@ -145,7 +144,7 @@ app.factory('ParticleFactory', function() {
 
 
     return {
-        createFire,
+        createIce,
     }
 })
 

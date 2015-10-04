@@ -38,16 +38,11 @@ app.controller('PlayController', function ($scope, $timeout, $rootScope, GameFac
         else if (GameFactory.state === "play") {
             if(GameFactory.nextWave){
                 GameFactory.nextWave = false;
-                console.log('we hit in play state.js')
                 $rootScope.$emit("nextWave")
                 $scope.count++;
             }
             GameFactory.update(delta);
-            //
-            //game.fire.update(delta/10);
-            //game.fire.emit = true;
-            //game.fire.updateOwnerPos(100, 100);
-            //game.fire.rotate(counter++);
+            
         }
         GameFactory.renderer.render(ViewFactory.stages[GameFactory.state]);
         requestAnimationFrame($scope.update.bind(null, now));

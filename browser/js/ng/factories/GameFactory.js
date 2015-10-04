@@ -1,5 +1,4 @@
 'use strict'
-
 app.factory('GameFactory', function(ConfigFactory, ViewFactory, WaveFactory, GridFactory, TowerFactory, ParticleFactory, MapFactory, EnemyFactory, PlayerFactory, ProjectileFactory) {
     let game = ConfigFactory;
     game.cellSize = game.width / game.cols;
@@ -9,8 +8,6 @@ app.factory('GameFactory', function(ConfigFactory, ViewFactory, WaveFactory, Gri
     game.nextWave = false;
     game.init = () => {
         game.map = {};
-        ViewFactory.newStage('menu');
-        ViewFactory.newStage('play');
         game.waves.forEach(function(wave,i){
             WaveFactory.createWave(wave);
         });
@@ -18,6 +15,8 @@ app.factory('GameFactory', function(ConfigFactory, ViewFactory, WaveFactory, Gri
         game.renderer = PIXI.autoDetectRenderer(game.width, game.height);
         document.body.appendChild(game.renderer.view);
         game.start();
+
+
     };
     game.start = map => {
         game.map = MapFactory.maps[0];
@@ -27,12 +26,7 @@ app.factory('GameFactory', function(ConfigFactory, ViewFactory, WaveFactory, Gri
                 ViewFactory.stages.play.addChild(gridNode.img);
             });
         });
-        game.PEContainer = new PIXI.Stage();
-        ViewFactory.stages.play.addChild(game.PEContainer);
-        ParticleFactory.createFire(game.PEContainer, function(emitter){
-            console.log("EMITTER", emitter);
-            game.fire = emitter;
-        });
+
         game.state = "play";
     };
     game.checkNodeClear = nodeNum => {
@@ -53,7 +47,7 @@ app.factory('GameFactory', function(ConfigFactory, ViewFactory, WaveFactory, Gri
             game.loadEnemy();
         } 
         ProjectileFactory.updateAll();
-        TowerFactory.updateAll();
+        TowerFactory.updateAll(delta);
         let enemies = EnemyFactory.enemies.map(element => element);
         for(let i = 0; i < enemies.length; i++) {
             if(enemies[i].moveTowards(delta)) {
@@ -67,6 +61,7 @@ app.factory('GameFactory', function(ConfigFactory, ViewFactory, WaveFactory, Gri
                 PlayerFactory.health--;
             }
         }
+
     };
     game.initiateWave = () => {
         game.launchCritters = true;
