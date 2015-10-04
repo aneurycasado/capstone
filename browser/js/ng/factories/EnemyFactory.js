@@ -3,7 +3,6 @@
 app.factory('EnemyFactory', function() {
     class Enemy {
         constructor(opts) {
-            console.log("OPTS", opts.path);
 
             if (opts) {
                 if (opts.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-blue/1.png"));

@@ -1,5 +1,5 @@
 'use strict'
-app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, PlayerFactory) {
+app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, PlayerFactory, WaveFactory) {
     let game = ConfigFactory;
     game.cellSize = game.width / game.cols;
     game.height = (game.rows / game.cols) * game.width;
@@ -44,16 +44,21 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, Pla
 
     };
 
+    game.createWave = WaveFactory.createWave;
+    game.loadEnemy = () => {
+        EnemyFactory.createEnemy(WaveFactory.popOffWaveQueue(), game.map.path);
+    }
+
     game.createCritter = ()=> {
         var newEn;
-            setTimeout(function() {
-                newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
-                game.stages["play"].addChild(newEn.img);
-            }, 500);
-            setTimeout(function() {
-                newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
-                game.stages["play"].addChild(newEn.img);
-            }, 1000);
+        setTimeout(function() {
+            newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
+            game.stages["play"].addChild(newEn.img);
+        }, 500);
+        setTimeout(function() {
+            newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
+            game.stages["play"].addChild(newEn.img);
+        }, 1000);
         setTimeout(function() {
             newEn = EnemyFactory.createEnemy("trojanHorse", game.map.path);
             game.stages["play"].addChild(newEn.img);
@@ -84,13 +89,14 @@ app.factory('GameFactory', function(ConfigFactory, MapFactory, EnemyFactory, Pla
 
     game.start = map => {
         // console.log(EnemyFactory.enemies);
-
         game.state = "play";
     };
 
-    game.initiateWave = function(){
+    game.initiateWave = () => {
         game.createCritter();
         game.main();
-    } 
+    };
+
+
     return game;
 });
