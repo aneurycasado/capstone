@@ -8,8 +8,38 @@ app.config(function ($stateProvider) {
         })
 });
 
-app.controller('PlayController', function ($scope, $timeout, $rootScope, GameFactory, TowerFactory, GridFactory, PlayerFactory, ViewFactory) {
-    GameFactory.init();
+app.controller('PlayController', function ($scope, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, GameFactory, TowerFactory, GridFactory, PlayerFactory, EnemyFactory, ProjectileFactory) {
+    var game = GameFactory;
+
+    var start = map => {
+        console.log('hey',map.stage);
+        game.map = map;
+        GridFactory.grid = game.map.grid;
+        GameFactory.stages.play = map.stage;
+        game.PEContainer = new PIXI.Stage();
+        GameFactory.stages.play.addChild(game.PEContainer);
+        ParticleFactory.createFire(game.PEContainer, function(emitter){
+            console.log("EMITTER", emitter);
+            game.fire = emitter;
+        });
+        game.state = "play";
+    };
+
+    var init = () => {
+        GameFactory.waves = [[{name: 'trojanHorse', num: 12}], [{name: 'trojanHorse', num: 15}]];
+        GameFactory.waves.forEach(function(wave,i){
+            WaveFactory.createWave(wave);
+        });
+        WaveFactory.setCurrentWave();
+        game.renderer = PIXI.autoDetectRenderer(game.width, game.height);
+        document.body.appendChild(game.renderer.view);
+        start(MapFactory.maps[0]);
+    };
+
+    init();
+
+
+
     $scope.tower = null;
     $scope.editing = false;
     $scope.setUp = true;
@@ -30,7 +60,44 @@ app.controller('PlayController', function ($scope, $timeout, $rootScope, GameFac
         GameFactory.initiateWave();
         //$scope.$digest();
     });
-    $scope.update = then => {
+
+    game.launchCritters = false;
+    game.nextWave = false;
+    
+    var checkNodeClear = nodeNum => {
+        if(!EnemyFactory.enemies.length) return true;
+        return EnemyFactory.enemies[EnemyFactory.enemies.length - 1].pathIndex === nodeNum;
+    };
+
+    var loadEnemy = () => {
+        if(checkNodeClear(3)) {
+            if(!WaveFactory.currentWaveLength()) return;
+            var newEn = EnemyFactory.createEnemy(WaveFactory.popOffCurrentWave(), game.map.path);
+            GameFactory.stages.play.addChild(newEn.img);
+        }
+    };
+    game.initiateWave = () => {
+        game.launchCritters = true;
+    };
+
+    if(game.launchCritters){
+            loadEnemy();
+        } 
+        ProjectileFactory.updateAll();
+        TowerFactory.updateAll();
+        let enemies = EnemyFactory.enemies.map(element => element);
+        for(let i = 0; i < enemies.length; i++) {
+            if(enemies[i].moveTowards(delta)) {
+                if(EnemyFactory.enemies.length === 0 && game.launchCritters){
+                    WaveFactory.removeCurrentWave();
+                    game.nextWave = true;
+                    game.launchCritters = false;
+                }
+                PlayerFactory.health--;
+            }
+        }
+
+    var update = then => {
         var now = Date.now();
         var delta = (now - then)/1000;
         if (GameFactory.state === "menu"){
@@ -41,11 +108,15 @@ app.controller('PlayController', function ($scope, $timeout, $rootScope, GameFac
                 $rootScope.$emit("nextWave")
                 $scope.count++;
             }
-            GameFactory.update(delta);
-            
+            if(game.launchCritters){
+                loadEnemy();
+            } 
+            ProjectileFactory.updateAll();
+            TowerFactory.updateAll();
+            EnemyFactory.updateAll(delta);
         }
-        GameFactory.renderer.render(ViewFactory.stages[GameFactory.state]);
-        requestAnimationFrame($scope.update.bind(null, now));
+        GameFactory.renderer.render(GameFactory.stages[GameFactory.state]);
+        requestAnimationFrame(update.bind(null, now));
     };
 
     //$rootScope.$on('launchNext', function(event, data) {
@@ -80,6 +151,6 @@ app.controller('PlayController', function ($scope, $timeout, $rootScope, GameFac
             }
         }
     })
-    $scope.update(Date.now());
+    update(Date.now());
 });
 
