@@ -1,5 +1,5 @@
 'use strict'
-app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, ConfigFactory, MapFactory, EnemyFactory, PlayerFactory, ProjectileFactory, WaveFactory) {
+app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, ConfigFactory, MapFactory, EnemyFactory, PlayerFactory, ProjectileFactory, WaveFactory, $rootScope) {
     let game = ConfigFactory;
     game.cellSize = game.width / game.cols;
     game.height = (game.rows / game.cols) * game.width;
@@ -17,12 +17,9 @@ app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, Conf
 
     };
 
-    game.checkNodeClear = nodeNum => {
-        if(!EnemyFactory.enemies.length) return true;
-        console.log('EnemyFactory', EnemyFactory.enemies[EnemyFactory.enemies.length - 1].pathIndex);
-        console.log('nodeNum', nodeNum);
-        return EnemyFactory.enemies[EnemyFactory.enemies.length - 1].pathIndex === nodeNum;
-    };
+    //game.createSeriesOfWaves = wavesArr => {
+    //    if()
+    //}
 
     game.main = then => {
 
@@ -39,11 +36,22 @@ app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, Conf
         requestAnimationFrame(game.main.bind(null, now));
 
     };
+
     game.createWave = WaveFactory.createWave;
-    game.createWave([{name: 'trojanHorse', num: 12}]);
+
+
+
+    game.checkNodeClear = nodeNum => {
+        if(!EnemyFactory.enemies.length) return true;
+        return EnemyFactory.enemies[EnemyFactory.enemies.length - 1].pathIndex === nodeNum;
+    };
+
     game.loadEnemy = () => {
         if(game.checkNodeClear(3)) {
-            if(!WaveFactory.currentWaveQueue.length) return;
+            if(!WaveFactory.currWaveQLength()) {
+                //$rootScope.$emit('launchNext', {}); //FIXME
+                return;
+            }
             var newEn = EnemyFactory.createEnemy(WaveFactory.popOffWaveQueue(), game.map.path);
             //console.log('game.stages', game.stages["play"]);
             ViewFactory.stages.play.addChild(newEn.img);
@@ -54,11 +62,11 @@ app.factory('GameFactory', function(GridFactory, TowerFactory, ViewFactory, Conf
         if(game.launchCritters) game.loadEnemy();
         ProjectileFactory.updateAll();
         TowerFactory.updateAll();
-        var enemies = EnemyFactory.enemies.map(function(element) {
+        let enemies = EnemyFactory.enemies.map(function(element) {
             return element;
         });
 
-        for(var i = 0; i < enemies.length; i++) {
+        for(let i = 0; i < enemies.length; i++) {
             if(enemies[i].moveTowards(delta)) {
                 ViewFactory.stages.play.removeChild(enemies[i].img);
                 PlayerFactory.health--;

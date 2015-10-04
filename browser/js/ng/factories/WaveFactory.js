@@ -10,9 +10,9 @@ app.factory('WaveFactory', function() {
     };
 
     let popOffWaveQueue = () => currentWaveQueue.pop();
-
+    let currWaveQLength = () => currentWaveQueue.length;
     return {
-        currentWaveQueue,
+        currWaveQLength,
         createWave,
         popOffWaveQueue
     }
