@@ -51,34 +51,9 @@ app.factory('EnemyFactory', function() {
             }
             if(xdone && ydone){
                 this.pathIndex++;
-                // this.direction = this.path[this.pathIndex].direction
-                // this.endRotate = findGoalRotation(this.direction);
             }
         }
-        // rotateTowards(delta){
-        //     if(this.img.rotation > this.endRotate){
-
-        //     }
-        //     else if(this.img.rotation < this.endRotate){
-
-        //     }
-        // }
     }
-
-    // function findGoalRotation(direction){
-    //     if(direction === "left"){
-    //         return Math.pi;
-    //     }
-    //     else if(direction === "right"){
-    //         return 0;
-    //     }
-    //     else if(direction === "up"){
-    //         return (3*Math.pi) / 2;
-    //     }
-    //     else if(direction === "down"){
-    //         return Math.pi / 2;
-    //     }
-    // }
 
     class trojanHorse extends Enemy {
         constructor(opts) {
