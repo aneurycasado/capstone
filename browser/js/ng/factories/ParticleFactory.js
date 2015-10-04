@@ -17,28 +17,6 @@ app.factory('ParticleFactory', function() {
 
             var renderer = PIXI.autoDetectRenderer(canvas.width, canvas.height, rendererOptions);
 
-            // // Calculate the current time
-            // var elapsed = Date.now();
-            
-            // var updateId;
-
-            // var counter = 0;
-
-            // // Update function every frame
-            // var update = function(){
-
-            //     // Update the next frame
-            //     updateId = requestAnimationFrame(update);
-
-            //     var now = Date.now();
-            //     emitter.update((now - elapsed) * 0.001);
-                            
-            //     elapsed = now;
-                
-            //     // render the stage
-            //     renderer.render(stage);
-            // };
-
             // Preload the particle images and create PIXI textures from it
             var urls, makeTextures = false;
             if(imagePaths.spritesheet)
@@ -118,7 +96,6 @@ app.factory('ParticleFactory', function() {
 
                 cb(this.emitter);
 
-                console.log("FACTORY", Date.now(), this.emitter);
             });
         };
     }

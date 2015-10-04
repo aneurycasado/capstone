@@ -1,17 +1,29 @@
 'use strict'
-app.factory('EnemyFactory', function(ParticleFactory) {
+//FIXME
+app.factory('EnemyFactory', function() {
     class Enemy {
         constructor(opts) {
-
             if (opts) {
-                if (opts.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-blue/1.png"));
+                if (opts.img) {
+                    var array = [];
+                    for(var i=1; i < 7; i++){
+                        var img = PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-blue/" + i.toString() + ".png");
+                        array.push(img)
+                    }
+                    this.img = new PIXI.extras.MovieClip(array);
+                }
                 this.position = {x: opts.path[0].x, y: opts.path[0].y};
                 this.img.position = this.position;
+                this.img.pivot.x = .5;
+                this.img.pivot.y = .5;
+                this.img.anchor.x  = .5;
+                this.img.anchor.y = .5;
+                this.img.animationSpeed = 0.5;
+                this.img.play();
                 if (opts.power) this.power = opts.power;
             }
-
             this.speed = 128;
-
+            this.radius = 10;
             this.path = opts.path;
             this.pathIndex = 0;
         }
@@ -22,17 +34,22 @@ app.factory('EnemyFactory', function(ParticleFactory) {
                 return terminateEnemy(this);
             }
             if(this.position.x > this.path[this.pathIndex].x + 5) {
+                this.img.rotation = 3.14;
+                console.log("Here");
                 this.position.x -= this.speed * delta;
+
             } else if(this.position.x < this.path[this.pathIndex].x - 5) {
+                this.img.rotation = 3.14*2;
                 this.position.x += this.speed * delta;
             } else{
                 xdone = true;
             }
-
             if(this.position.y > this.path[this.pathIndex].y + 5) {
+                this.img.rotation = (3*3.14) / 2; ;
                 this.position.y -= this.speed * delta;
             }else if(this.position.y < this.path[this.pathIndex].y - 5) {
                 this.position.y += this.speed * delta;
+                this.img.rotation = 3.14 / 2;
             }else{
                 ydone = true;
             }
@@ -63,7 +80,6 @@ app.factory('EnemyFactory', function(ParticleFactory) {
     var terminateEnemy = (enemyObj) => {
         if(enemies.indexOf(enemyObj) !== -1) {
             var x = enemies.splice(enemies.indexOf(enemyObj),1);
-            console.log(enemies);
             return x[0];
         }
      };

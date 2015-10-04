@@ -7,18 +7,18 @@ app.directive("sideBar", function(){
 });
 
 app.controller('SideBarController', function($scope, $rootScope, PlayerFactory) {
-    $scope.player = PlayerFactory
+    $scope.player = PlayerFactory;
     $scope.showTowers = true;
     $scope.showPowerUps = false;
     $scope.towers = createTowers();
-    $scope.changeStore = function(tab){
+    $scope.changeStore = function(tab) {
         if(tab === "tower"){
             $scope.showTowers = true;
             $scope.showPowerUps = false;
-        }else if(tab === "powerUp"){
+        }else if(tab === "powerUp") {
             $scope.showTowers = false;
             $scope.showPowerUps = true;
-        }else if(tab === "all"){
+        }else if(tab === "all") {
             $scope.showTowers = true;
             $scope.showPowerUps = true;
         }
@@ -26,7 +26,11 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory) 
     $scope.towerClicked = function(tower){
         console.log("tower clicked ", tower);
         $rootScope.$emit("currentTower", tower);
-    }    
+    }
+    $scope.initiateWave = function(){
+        console.log("initiateWave");
+        $rootScope.$emit("initiateWave");
+    }
 });
 
 function createTowers (){
@@ -35,27 +39,30 @@ function createTowers (){
         type: "Ice",
         img: "./images/tower-defense-turrets/turret-4-1.png",
         effect: "effect",
+        price: 50,
     };
     var Fire = {
         type: "Fire",
-        img: "./images/tower-defense-turrets/turret-5-1.png",
+        img: "./images/tower-defense-turrets/turret-7-1.png",
         effect: "effect",
+        price: 50,
     };
     var Thunder = {
         type: "Thunder",
-        img: "./images/tower-defense-turrets/turret-6-1.png",
+        img: "./images/tower-defense-turrets/turret-5-1.png",
         effect: "effect",
+        price: 50,
     };
     var Poison = {
         type: "Poison",
-        img: "./images/tower-defense-turrets/turret-7-1.png",
+        img: "./images/tower-defense-turrets/turret-6-1.png",
         effect: "effect",
+        price: 50,
     };
     array.push(Ice);
     array.push(Fire);
     array.push(Thunder);
     array.push(Poison);
-    console.log(array);
     return array;
 }
 
