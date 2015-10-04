@@ -35,7 +35,6 @@ app.factory('EnemyFactory', function() {
             }
             if(this.position.x > this.path[this.pathIndex].x + 5) {
                 this.img.rotation = 3.14;
-                console.log("Here");
                 this.position.x -= this.speed * delta;
 
             } else if(this.position.x < this.path[this.pathIndex].x - 5) {
@@ -71,6 +70,7 @@ app.factory('EnemyFactory', function() {
         let newEnemy;
 
         let enemyConstructor = enemiesConstructors[type];
+        console.log("Type enemy, ",type);
         newEnemy = new enemyConstructor({path: path});
         enemies.push(newEnemy);
 

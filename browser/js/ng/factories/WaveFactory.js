@@ -1,19 +1,33 @@
 app.factory('WaveFactory', function() {
-    let currentWaveQueue = [];
+    let waves = [];
     let createWave = critterObjArr => {
+        let wave = []
         critterObjArr.forEach(element => {
-            //EnemyFactory.createEnemy(critterObj[key], path);
             for(var i = 0; i < element.num; i++) {
-                currentWaveQueue.push(element.name);
+                wave.push(element.name);
             }
         });
+        waves.push(wave);
+        console.log("Creating waves ", waves);
     };
-
-    let popOffWaveQueue = () => currentWaveQueue.pop();
-    let currWaveQLength = () => currentWaveQueue.length;
+    console.log("Waves so far ", waves);
+    let currentWave;
+    let setCurrentWave = () => {
+        currentWave = waves[waves.length-1];
+    }
+    let popOffCurrentWave = () => currentWave.pop();
+    let currentWaveLength = () => currentWave.length;
+    let removeCurrentWave = () =>{
+        waves.pop();
+        currentWave = waves[waves.length-1];
+    } 
     return {
-        currWaveQLength,
+        waves,
         createWave,
-        popOffWaveQueue
+        currentWave,
+        popOffCurrentWave,
+        currentWaveLength,
+        removeCurrentWave,
+        setCurrentWave,
     }
 });
