@@ -1,4 +1,4 @@
-app.factory("ProjectileFactory", function(ViewFactory){
+app.factory("ProjectileFactory", function(GameFactory){
 
   var projectiles = [];
 
@@ -9,21 +9,21 @@ app.factory("ProjectileFactory", function(ViewFactory){
           this.radius = 0;
           this.speed = 0;
           this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/tower-defense/tower-defense-levels-ship.png"));
-          this.img.anchor.x = 0.5;
-          this.img.anchor.y = 0.5;
           for(var opt in opts){
             this[opt] = opts[opt];
           }
+          this.img.anchor.x = 0.5;
+          this.img.anchor.y = 0.5;
           this.img.height = this.radius*2;
           this.img.width = this.radius*2;
           this.img.position.x = this.x;
           this.img.position.y = this.y;
           projectiles.push(this);
-          ViewFactory.stages.play.addChild(this.img);
+          GameFactory.stages.play.addChild(this.img);
       }
 
       terminate() {
-          ViewFactory.stages.play.removeChild(this.img);
+          GameFactory.stages.play.removeChild(this.img);
           projectiles.splice(projectiles.indexOf(this), 1);
       }
   }
@@ -47,7 +47,7 @@ app.factory("ProjectileFactory", function(ViewFactory){
               this.xVel = this.speed*Math.sin(this.theta);
               this.yVel = this.speed*Math.cos(this.theta);
               // console.log("vels",this.xVel, this.yVel);
-              if(this.y < this.target.y) {
+              if(this.y <= this.target.y) {
                 this.x += this.xVel;
                 this.y += this.yVel;
               }else{

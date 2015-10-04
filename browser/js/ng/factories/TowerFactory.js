@@ -1,5 +1,5 @@
 'use strict'
-app.factory('TowerFactory', function (ConfigFactory, EnemyFactory, ProjectileFactory, ViewFactory, GridFactory) {
+app.factory('TowerFactory', function (EnemyFactory, ProjectileFactory, GameFactory, GridFactory) {
     
     var allTowers = [];
 
@@ -15,15 +15,15 @@ app.factory('TowerFactory', function (ConfigFactory, EnemyFactory, ProjectileFac
             this.codeSnippets = [];
             if (options) {
                 if (options.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + this.rank + ".png"));
-                this.img.position.x = this.position.x * ConfigFactory.cellSize + .5 * ConfigFactory.cellSize;
+                this.img.position.x = this.position.x * GameFactory.cellSize + .5 * GameFactory.cellSize;
                 this.img.anchor.x = .5;
                 this.img.anchor.y = .5;
-                this.img.position.y = this.position.y * ConfigFactory.cellSize + .5 * ConfigFactory.cellSize;
+                this.img.position.y = this.position.y * GameFactory.cellSize + .5 * GameFactory.cellSize;
                 if (options.power) this.power = options.power;
                 if (options.cost) this.cost = options.cost;
                 if (options.range) this.range = options.range;
                 this.price = options.price;
-                ViewFactory.stages.play.addChild(this.img);
+                GameFactory.stages.play.addChild(this.img);
             }
             allTowers.push(this);
         }
@@ -35,7 +35,7 @@ app.factory('TowerFactory', function (ConfigFactory, EnemyFactory, ProjectileFac
         }
 
         terminate() {
-          ViewFactory.stages.play.removeChild(this.img);
+          GameFactory.stages.play.removeChild(this.img);
           allTowers.splice(allTowers.indexOf(this), 1);
         }
 
@@ -92,7 +92,6 @@ app.factory('TowerFactory', function (ConfigFactory, EnemyFactory, ProjectileFac
             this.range = 200;
             this.reloadTime = 400;
             this.reloading = false;
-            if(EnemyFactory.enemies[0])this.shoot(EnemyFactory.enemies[0]);
         }
 
         shoot(enemy){
