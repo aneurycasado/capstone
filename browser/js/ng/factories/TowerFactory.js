@@ -1,5 +1,5 @@
 'use strict'
-app.factory('TowerFactory', function (EnemyFactory, ProjectileFactory, GameFactory, GridFactory) {
+app.factory('TowerFactory', function (EnemyFactory, ProjectileFactory, GameFactory, GridFactory, ParticleFactory) {
     
     var allTowers = [];
 
@@ -83,14 +83,19 @@ app.factory('TowerFactory', function (EnemyFactory, ProjectileFactory, GameFacto
     class IceTower extends Tower {
         constructor(x, y) {
             super(x, y, {img: '4', power: 2, price: 50});
+
+            ParticleFactory.createIce(GameFactory.stages.play, function(emitter){
+                this.ice = emitter;
+                this.ice.updateOwnerPos(this.img.position.x, this.img.position.y);
+            }.bind(this));
+
         }
 
-
-        //  update(delta){
-        //     // if(this.ice) this.ice.update(delta);
-        //     // if(this.ice) this.ice.emit = true;
-        //     //game.fire.rotate(counter++);
-        // }
+        update(delta){
+            if(this.ice) this.ice.update(delta);
+            if(this.ice) this.ice.emit = true;
+            this.ice.rotate(this.ice.rotation + 1);
+        }
     }
 
     class FireTower extends Tower {
@@ -150,15 +155,6 @@ app.factory('TowerFactory', function (EnemyFactory, ProjectileFactory, GameFacto
     };
 
 
-   //  var ice;        
-   //  var PEContainer = new PIXI.Stage();
-   // // console.log(PEContainer);
-   //  ViewFactory.stages.play.addChild(PEContainer);
-   //  ParticleFactory.createIce(PEContainer, function(emitter){
-   //      //console.log(emitter);
-   //      ice = emitter;
-   //      ice.updateOwnerPos(100,100);
-   //  });
 
     return {
         createTower,

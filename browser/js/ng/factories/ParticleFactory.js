@@ -4,21 +4,7 @@ app.factory('ParticleFactory', function() {
     class ParticleEmitter{
         constructor(cb, stage, imagePaths, config, type, useParticleContainer){
 
-            var canvas = document.getElementsByTagName("canvas")[0];
-            // Basic PIXI Setup
-            var rendererOptions =
-            {
-                view: canvas,
-            };
-            /*var preMultAlpha = !!options.preMultAlpha;
-            if(rendererOptions.transparent && !preMultAlpha)
-                rendererOptions.transparent = "notMultiplied";*/
             this.emitter = null;
-
-            var renderer = PIXI.autoDetectRenderer(canvas.width, canvas.height, rendererOptions);
-
-            console.log("RENDERER", renderer);
-            console.log("CANVAS", canvas);
 
             // Preload the particle images and create PIXI textures from it
             var urls, makeTextures = false;
@@ -71,24 +57,10 @@ app.factory('ParticleFactory', function() {
             else if(type == "anim")
                 this.emitter.particleConstructor = cloudkid.AnimatedParticle;
 
-            // Center on the stage                
-            window.destroyEmitter = function()
-            {
-                this.emitter.destroy();
-                this.emitter = null;
-                window.destroyEmitter = null;
-                cancelAnimationFrame(updateId);
-                
-                renderer.render(stage);
-            };
-
-
-
             cb(this.emitter);
 
         };
     }
-
 
     var createIce = function(container, cb){
         new ParticleEmitter(cb,
