@@ -40,11 +40,7 @@ app.controller('PlayController', function ($scope, player, $timeout, $rootScope,
 
     init();
 
-    let sendToNextLevel = false;
     $scope.tower = null;
-    $scope.editing = false;
-    $scope.setUp = true;
-    $scope.playing = false;
     $scope.waves = [[{name: 'trojanHorse', num: 12}], [{name: 'trojanHorse', num: 15}]];
     $scope.count = 0;
     $rootScope.$on("currentTower", function (event, data) {

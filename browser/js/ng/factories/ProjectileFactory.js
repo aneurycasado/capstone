@@ -9,7 +9,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory){
           this.radius = 0;
           this.speed = 0;
           this.power = 5;
-          ParticleFactory.createIce(GameFactory.stages.play, function(emitter){
+          ParticleFactory.createIce(StateFactory.stages.play, function(emitter){
                   this.ice = emitter;
                   this.ice.updateOwnerPos(opts.x, opts.y);
               }.bind(this));

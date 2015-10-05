@@ -41,7 +41,7 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
         if (data.launchCritters) {
             loadEnemy();
         }
-        StateFactory.renderer.render(StateFactory.stages['play']); //FIXME: should be StateFactory.stages[StateFactory.state]
+        StateFactory.renderer.render(StateFactory.stages.play); //FIXME: should be StateFactory.stages[StateFactory.state]
         requestAnimationFrame(loop.bind(null, now));
     };
     let changeStateTo = (state) => {
