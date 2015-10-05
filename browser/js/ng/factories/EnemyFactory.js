@@ -1,6 +1,6 @@
 'use strict'
 //FIXME
-app.factory('EnemyFactory', function($rootScope, GameFactory, WaveFactory, PlayerFactory) {
+app.factory('EnemyFactory', function($rootScope, ParticleFactory, GameFactory, WaveFactory, PlayerFactory) {
     var enemies = [];
 
     class Enemy {
@@ -77,6 +77,10 @@ app.factory('EnemyFactory', function($rootScope, GameFactory, WaveFactory, Playe
 
         update(delta){
             this.moveTowards(delta);
+            if(this.damageSparks){
+                this.damageSparks.update(1);
+                this.damageSparks.updateOwnerPos(this.img.position.x, this.img.position.y);
+            }
             if(!this.path[this.pathIndex]) {
                 PlayerFactory.health--;
                 $rootScope.$digest();
@@ -86,10 +90,11 @@ app.factory('EnemyFactory', function($rootScope, GameFactory, WaveFactory, Playe
 
         takeDamage(damage){
             this.health -= damage;
+            if(!this.damageSparks) this.damageSparks = ParticleFactory.createDamageSparks(GameFactory.stages.play);
             if(this.health <= 0){
+                if(this.damageSparks)this.damageSparks.destroy();
                 $rootScope.$emit('deadEnemy', this);
                 PlayerFactory.money += this.value;
-                console.log(PlayerFactory.money, this.value);
                 $rootScope.$digest();
                 this.terminate();
             }

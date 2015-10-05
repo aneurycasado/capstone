@@ -9,26 +9,22 @@ app.factory("ProjectileFactory", function(GameFactory, ParticleFactory){
           this.radius = 0;
           this.speed = 0;
           this.power = 5;
-          ParticleFactory.createIce(GameFactory.stages.play, function(emitter){
-                  this.ice = emitter;
-                  this.ice.updateOwnerPos(opts.x, opts.y);
-              }.bind(this));
-          for(var opt in opts){
-            this[opt] = opts[opt];
+          if(opts){
+            for(var i in opts){
+              this[i] = opts[i];
+            }
           }
-          console.log('img', this.img);
           // this.img.anchor.x = 0.5;
           // this.img.anchor.y = 0.5;
           // this.img.height = this.radius*2;
           // this.img.width = this.radius*2;
-          this.ice.updateOwnerPos(this.x, this.y);
           projectiles.push(this);
           //GameFactory.stages.play.addChild(this.img);
       }
 
       terminate() {
           //GameFactory.stages.play.removeChild(this.img);
-          this.ice.destroy();
+          this.fire.destroy();
           projectiles.splice(projectiles.indexOf(this), 1);
       }
   }
@@ -37,6 +33,11 @@ app.factory("ProjectileFactory", function(GameFactory, ParticleFactory){
       constructor(opts){
           super(opts);
           this.target = opts.enemy;
+          this.fire = ParticleFactory.createFire(GameFactory.stages.play);
+          this.fire.updateOwnerPos(this.x, this.y);
+          for(var opt in opts){
+            this[opt] = opts[opt];
+          }
       }
 
       update() {
@@ -62,10 +63,8 @@ app.factory("ProjectileFactory", function(GameFactory, ParticleFactory){
                 this.x -= this.xVel;
                 this.y -= this.yVel; 
               }
-              this.ice.update(1);
-              this.ice.emit = true;
-              this.ice.rotate(this.ice.rotation + 1);
-              this.ice.updateOwnerPos(this.x, this.y);
+              this.fire.update(1);
+              this.fire.updateOwnerPos(this.x, this.y);
           }
       }
 
