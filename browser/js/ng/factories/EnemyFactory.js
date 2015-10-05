@@ -1,6 +1,7 @@
 'use strict'
 //FIXME
-app.factory('EnemyFactory', function($rootScope, GameFactory, WaveFactory, PlayerFactory) {
+app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, PlayerFactory) {
+
     var enemies = [];
 
     class Enemy {
@@ -63,20 +64,15 @@ app.factory('EnemyFactory', function($rootScope, GameFactory, WaveFactory, Playe
             if(enemies.indexOf(this) !== -1) {
                 var x = enemies.splice(enemies.indexOf(this),1);
             }
-            GameFactory.stages.play.removeChild(this.img);
-            if(enemies.length === 0 && GameFactory.launchCritters){
-                if(WaveFactory.endOfWaves()) {
-                    WaveFactory.setCurrentWave();
-                    GameFactory.nextWave = true;
-                } else {
-                    GameFactory.wavesDone = true;
-                }
-                GameFactory.launchCritters = false;
-            }
+            StateFactory.stages.play.removeChild(this.img);
         }
 
         update(delta){
             this.moveTowards(delta);
+            if(this.damageSparks){
+                this.damageSparks.update(1);
+                this.damageSparks.updateOwnerPos(this.img.position.x, this.img.position.y);
+            }
             if(!this.path[this.pathIndex]) {
                 PlayerFactory.health--;
                 $rootScope.$digest();
@@ -86,10 +82,11 @@ app.factory('EnemyFactory', function($rootScope, GameFactory, WaveFactory, Playe
 
         takeDamage(damage){
             this.health -= damage;
+            if(!this.damageSparks) this.damageSparks = ParticleFactory.createDamageSparks(StateFactory.stages.play);
             if(this.health <= 0){
+                if(this.damageSparks)this.damageSparks.destroy();
                 $rootScope.$emit('deadEnemy', this);
                 PlayerFactory.money += this.value;
-                console.log(PlayerFactory.money, this.value);
                 $rootScope.$digest();
                 this.terminate();
             }
