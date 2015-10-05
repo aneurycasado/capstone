@@ -1,6 +1,7 @@
 'use strict'
 //FIXME
-app.factory('EnemyFactory', function($rootScope, ParticleFactory, GameFactory, WaveFactory, PlayerFactory) {
+app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, PlayerFactory) {
+
     var enemies = [];
 
     class Enemy {
@@ -63,16 +64,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, GameFactory, W
             if(enemies.indexOf(this) !== -1) {
                 var x = enemies.splice(enemies.indexOf(this),1);
             }
-            GameFactory.stages.play.removeChild(this.img);
-            if(enemies.length === 0 && GameFactory.launchCritters){
-                if(WaveFactory.endOfWaves()) {
-                    WaveFactory.setCurrentWave();
-                    GameFactory.nextWave = true;
-                } else {
-                    GameFactory.wavesDone = true;
-                }
-                GameFactory.launchCritters = false;
-            }
+            StateFactory.stages.play.removeChild(this.img);
         }
 
         update(delta){
@@ -90,7 +82,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, GameFactory, W
 
         takeDamage(damage){
             this.health -= damage;
-            if(!this.damageSparks) this.damageSparks = ParticleFactory.createDamageSparks(GameFactory.stages.play);
+            if(!this.damageSparks) this.damageSparks = ParticleFactory.createDamageSparks(StateFactory.stages.play);
             if(this.health <= 0){
                 if(this.damageSparks)this.damageSparks.destroy();
                 $rootScope.$emit('deadEnemy', this);
