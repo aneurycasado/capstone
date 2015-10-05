@@ -5,10 +5,14 @@ module.exports = router;
 var User = mongoose.model("User");
 
 router.get("/me", function(req,res){
-    User.findOne({_id:req.user._id})
-    .then((foundUser) => {
-        res.json(foundUser);
-    }) 
+    if(req.user){
+        User.findOne({_id:req.user._id})
+        .then((foundUser) => {
+            res.json(foundUser);
+        }) 
+    }else{
+        res.json({});
+    }
 });
 
 router.put("/", function(req,res){
