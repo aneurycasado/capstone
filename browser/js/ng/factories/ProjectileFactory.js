@@ -8,6 +8,7 @@ app.factory("ProjectileFactory", function(GameFactory){
           this.y = 0;
           this.radius = 0;
           this.speed = 0;
+          this.power = 5;
           this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/tower-defense/tower-defense-levels-ship.png"));
           for(var opt in opts){
             this[opt] = opts[opt];
@@ -36,6 +37,9 @@ app.factory("ProjectileFactory", function(GameFactory){
 
       update() {
           if(checkCircleCollision(this, this.target)){
+              this.target.takeDamage(this.power);
+              //if(this.target.health <= 0) this.target = null;
+              //console.log(this.target.health);
               this.terminate();
           }else{
               // console.log('target', this.target);

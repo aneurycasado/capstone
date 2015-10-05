@@ -25,6 +25,15 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory) 
         $scope.nextWave = true;
         $scope.$digest();
     });
+    $scope.saveGame = function(){
+        var player = {
+            health: PlayerFactory.health,
+            money: PlayerFactory.money
+        }
+        PlayerFactory.saveGame(player).then(function(savedInfo){
+            console.log("Saved Info ", savedInfo);
+        });
+    }
     $scope.changeStore = function(tab) {
         if(tab === "tower"){
             $scope.showTowers = true;
