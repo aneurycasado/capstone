@@ -14,10 +14,18 @@ app.factory('TowerFactory', function (EnemyFactory, ProjectileFactory, GameFacto
             this.powerUps = [];
             this.codeSnippets = [];
             if (options) {
-                if (options.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + this.rank + ".png"));
+                var array = [];
+                for(var i=1; i < 4; i++){
+                    var img = PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + i + ".png");
+                    array.push(img)
+                }
+                this.img = new PIXI.extras.MovieClip(array);
+                // if (options.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + this.rank + ".png"));
                 this.img.position.x = this.position.x * GameFactory.cellSize + .5 * GameFactory.cellSize;
                 this.img.anchor.x = .5;
                 this.img.anchor.y = .5;
+                this.img.animationSpeed = .1;
+                
                 this.img.position.y = this.position.y * GameFactory.cellSize + .5 * GameFactory.cellSize;
                 if (options.power) this.power = options.power;
                 if (options.cost) this.cost = options.cost;
@@ -107,12 +115,14 @@ app.factory('TowerFactory', function (EnemyFactory, ProjectileFactory, GameFacto
         }
 
         shoot(enemy){
+            this.img.play();
             new ProjectileFactory.HomingProjectile({x: this.img.position.x, y: this.img.position.y, speed: 4, radius: 8, enemy: enemy});
         }
 
         update(){
             if(!this.target){
                 this.acquireTarget();
+                this.img.stop();
                 //this.target = EnemyFactory.enemies[0];
             }
             if(this.target){
