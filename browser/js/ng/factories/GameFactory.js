@@ -46,16 +46,6 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
     };
     let changeStateTo = (state) => {
         if(state === 'wave') {
-            //if(EnemyFactory.enemies.length === 0 && GameFactory.launchCritters) {
-            //    if(endOfWaves()) {
-            //        setCurrentWave();
-            //        $rootScope.$emit('nextWave');
-            //        GameFactory.state = "nextWave";
-            //    } else {
-            //        GameFactory.state = "completed";
-            //    }
-            //    GameFactory.launchCritters = false;
-            //}
             WaveFactory.setCurrentWave();
             StateFactory.state = "wave";
         }
