@@ -1,5 +1,5 @@
 'use strict'
-app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactory, GameFactory, GridFactory, ParticleFactory) {
+app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactory, StateFactory, GridFactory, ParticleFactory) {
     var allTowers = [];
 
     class Tower {
@@ -20,17 +20,17 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 }
                 this.img = new PIXI.extras.MovieClip(array);
                 // if (options.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + this.rank + ".png"));
-                this.img.position.x = this.position.x * GameFactory.cellSize + .5 * GameFactory.cellSize;
+                this.img.position.x = this.position.x * StateFactory.cellSize + .5 * StateFactory.cellSize;
                 this.img.anchor.x = .5;
                 this.img.anchor.y = .5;
                 this.img.animationSpeed = .1;
-                
-                this.img.position.y = this.position.y * GameFactory.cellSize + .5 * GameFactory.cellSize;
+
+                this.img.position.y = this.position.y * StateFactory.cellSize + .5 * StateFactory.cellSize;
                 if (options.power) this.power = options.power;
                 if (options.cost) this.cost = options.cost;
                 if (options.range) this.range = options.range;
                 this.price = options.price;
-                GameFactory.stages.play.addChild(this.img);
+                StateFactory.stages.play.addChild(this.img);
             }
             allTowers.push(this);
         }
@@ -42,7 +42,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
 
         terminate() {
-          GameFactory.stages.play.removeChild(this.img);
+          StateFactory.stages.play.removeChild(this.img);
           allTowers.splice(allTowers.indexOf(this), 1);
         }
 
@@ -83,7 +83,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         constructor(x, y) {
             super(x, y, {img: '4', power: 2, price: 50});
 
-            ParticleFactory.createIce(GameFactory.stages.play, function(emitter){
+            ParticleFactory.createIce(StateFactory.stages.play, function(emitter){
                 this.ice = emitter;
                 this.ice.updateOwnerPos(this.img.position.x, this.img.position.y);
             }.bind(this));

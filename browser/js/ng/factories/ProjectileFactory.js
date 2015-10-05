@@ -1,4 +1,4 @@
-app.factory("ProjectileFactory", function(GameFactory){
+app.factory("ProjectileFactory", function(StateFactory){
 
   var projectiles = [];
 
@@ -20,11 +20,11 @@ app.factory("ProjectileFactory", function(GameFactory){
           this.img.position.x = this.x;
           this.img.position.y = this.y;
           projectiles.push(this);
-          GameFactory.stages.play.addChild(this.img);
+          StateFactory.stages.play.addChild(this.img);
       }
 
       terminate() {
-          GameFactory.stages.play.removeChild(this.img);
+          StateFactory.stages.play.removeChild(this.img);
           projectiles.splice(projectiles.indexOf(this), 1);
       }
   }
@@ -56,7 +56,7 @@ app.factory("ProjectileFactory", function(GameFactory){
                 this.y += this.yVel;
               }else{
                 this.x -= this.xVel;
-                this.y -= this.yVel; 
+                this.y -= this.yVel;
               }
               this.img.position.x = this.x;
               this.img.position.y = this.y;
@@ -74,7 +74,7 @@ app.factory("ProjectileFactory", function(GameFactory){
 
       return (distance < circle1.radius + circle2.radius);
   };
-    
+
 
   var updateAll = function(){
       projectiles.forEach(function(projectile){

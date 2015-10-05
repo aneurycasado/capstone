@@ -1,4 +1,4 @@
-app.factory('WaveFactory', function() {
+app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
     let waves = [];
     let createWave = critterObjArr => {
         let wave = []
@@ -22,8 +22,28 @@ app.factory('WaveFactory', function() {
     //}
     let endOfWaves = () => !!waves.length;
 
+    let checkNodeClear = nodeNum => {
+        if(!EnemyFactory.enemies.length) return true;
+        return EnemyFactory.enemies[EnemyFactory.enemies.length - 1].pathIndex === nodeNum;
+    };
+
+    let loadEnemy = () => {
+        if(checkNodeClear(3)) {
+            if(!currentWaveLength()) return;
+            var newEn = EnemyFactory.createEnemy(popOffCurrentWave(), StateFactory.map.path);
+            StateFactory.stages.play.addChild(newEn.img);
+        }
+    };
+
+    let update = () => {
+        console.log(waves);
+        loadEnemy();
+    };
+
+
     return {
         waves,
+        update,
         createWave,
         currentWave,
         popOffCurrentWave,

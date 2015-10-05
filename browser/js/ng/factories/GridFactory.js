@@ -1,12 +1,12 @@
 'use strict'
-app.factory('GridFactory', function(GameFactory) {
+app.factory('GridFactory', function(StateFactory) {
     var grid = [];
 
     class GridNode {
         constructor(x, y, opts) {
             this.x = x;
             this.y = y;
-            this.coords = {x: x * GameFactory.cellSize, y: y * GameFactory.cellSize};
+            this.coords = {x: x * StateFactory.cellSize, y: y * StateFactory.cellSize};
             this.enterable = true;
             this.contains = {};
             this.canPlaceTower = false;

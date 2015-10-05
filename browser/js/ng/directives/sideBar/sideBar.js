@@ -6,23 +6,25 @@ app.directive("sideBar", function(){
     }
 });
 
-app.controller('SideBarController', function($scope, $rootScope, PlayerFactory) {
+app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, GameFactory, StateFactory) {
     $scope.player = PlayerFactory;
     $scope.showTowers = true;
+    $scope.firstWave = true;
     $scope.showPowerUps = false;
     $scope.towers = createTowers();
     $scope.nextWave = false;
     $scope.nextLevel = false;
     $scope.count = 0;
+    $scope.state = StateFactory.state;
 
     $rootScope.$on('wavesDone', function() {
         console.log('in the wavesDone');
-        $scope.nextLevel = true;
+        $scope.state = 'complete';
         $scope.$digest();
     })
     $rootScope.$on("nextWave", function(){
         console.log("Time to trigger nextWave");
-        $scope.nextWave = true;
+        $scope.state = 'standby';
         $scope.$digest();
     });
     $scope.saveGame = function(){
@@ -51,16 +53,18 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory) 
         $rootScope.$emit("currentTower", tower);
     }
     $scope.initiateWave = function(){
-        console.log("initiateWave");
-        $rootScope.$emit("initiateWave");
+        //console.log("initiateWave");
+        GameFactory.changeStateTo("wave");
+        console.log($scope.state);
+        $scope.state = StateFactory.state;
     }
-    $scope.initiateNextWave = function(){
-        console.log("triggerNextWave");
-        $scope.nextWave = false;
-        $rootScope.$emit("readyForNextWave");
-    }
+    //$scope.initiateNextWave = function(){
+    //    console.log("triggerNextWave");
+    //    $scope.nextWave = false;
+    //    GameFactory.changeStateTo("wave");
+    //}
     $scope.initiateLevel = function() {
-        $rootScope.$emit('sentToNextLevel');
+        GameFactory.changeStateTo("selection");
     }
 });
 

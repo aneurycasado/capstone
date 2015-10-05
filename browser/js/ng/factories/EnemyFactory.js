@@ -1,6 +1,6 @@
 'use strict'
 //FIXME
-app.factory('EnemyFactory', function($rootScope, GameFactory, WaveFactory, PlayerFactory) {
+app.factory('EnemyFactory', function($rootScope, StateFactory, PlayerFactory) {
     var enemies = [];
 
     class Enemy {
@@ -62,16 +62,7 @@ app.factory('EnemyFactory', function($rootScope, GameFactory, WaveFactory, Playe
             if(enemies.indexOf(this) !== -1) {
                 var x = enemies.splice(enemies.indexOf(this),1);
             }
-            GameFactory.stages.play.removeChild(this.img);
-            if(enemies.length === 0 && GameFactory.launchCritters){
-                if(WaveFactory.endOfWaves()) {
-                    WaveFactory.setCurrentWave();
-                    GameFactory.nextWave = true;
-                } else {
-                    GameFactory.wavesDone = true;
-                }
-                GameFactory.launchCritters = false;
-            }
+            StateFactory.stages.play.removeChild(this.img);
         }
 
         update(delta){
