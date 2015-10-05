@@ -16,7 +16,6 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, 
     $scope.nextLevel = false;
     $scope.count = 0;
     $scope.state = StateFactory.state;
-
     $rootScope.$on('wavesDone', function() {
         console.log('in the wavesDone');
         $scope.state = 'complete';

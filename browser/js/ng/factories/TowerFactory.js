@@ -11,7 +11,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             this.session = null;
             //this.options = options ? options : {};
             this.powerUps = [];
-            this.codeSnippets = [];
+            this.codeSnippet = null;
             if (options) {
                 var array = [];
                 for(var i=1; i < 4; i++){
