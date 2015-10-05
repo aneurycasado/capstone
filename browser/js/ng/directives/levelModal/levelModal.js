@@ -3,9 +3,14 @@ app.directive("levelModal", function(){
         restrict: "E",
         templateUrl: "js/ng/directives/startModal/startModal.html",
         link: function(scope){
-            scope.initiateNextLevel = () => {
-            }
-            //$("#myModal").modal("show");
+            $rootScope.$on('wavesDone', function() {
+                $("#levelModal").modal("show");
+                scope.$digest();
+                scope.initiateLevel = function() {
+                    $("#levelModal").modal("toggle");
+                    $rootScope.$emit('sentToNextLevel');
+                }
+            })
         }
     }
 })
