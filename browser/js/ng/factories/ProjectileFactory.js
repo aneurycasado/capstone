@@ -1,4 +1,4 @@
-app.factory("ProjectileFactory", function(GameFactory){
+app.factory("ProjectileFactory", function(GameFactory, ParticleFactory){
 
   var projectiles = [];
 
@@ -9,22 +9,26 @@ app.factory("ProjectileFactory", function(GameFactory){
           this.radius = 0;
           this.speed = 0;
           this.power = 5;
-          this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/tower-defense/tower-defense-levels-ship.png"));
+          ParticleFactory.createIce(GameFactory.stages.play, function(emitter){
+                  this.ice = emitter;
+                  this.ice.updateOwnerPos(opts.x, opts.y);
+              }.bind(this));
           for(var opt in opts){
             this[opt] = opts[opt];
           }
-          this.img.anchor.x = 0.5;
-          this.img.anchor.y = 0.5;
-          this.img.height = this.radius*2;
-          this.img.width = this.radius*2;
-          this.img.position.x = this.x;
-          this.img.position.y = this.y;
+          console.log('img', this.img);
+          // this.img.anchor.x = 0.5;
+          // this.img.anchor.y = 0.5;
+          // this.img.height = this.radius*2;
+          // this.img.width = this.radius*2;
+          this.ice.updateOwnerPos(this.x, this.y);
           projectiles.push(this);
-          GameFactory.stages.play.addChild(this.img);
+          //GameFactory.stages.play.addChild(this.img);
       }
 
       terminate() {
-          GameFactory.stages.play.removeChild(this.img);
+          //GameFactory.stages.play.removeChild(this.img);
+          this.ice.destroy();
           projectiles.splice(projectiles.indexOf(this), 1);
       }
   }
@@ -58,8 +62,10 @@ app.factory("ProjectileFactory", function(GameFactory){
                 this.x -= this.xVel;
                 this.y -= this.yVel; 
               }
-              this.img.position.x = this.x;
-              this.img.position.y = this.y;
+              this.ice.update(1);
+              this.ice.emit = true;
+              this.ice.rotate(this.ice.rotation + 1);
+              this.ice.updateOwnerPos(this.x, this.y);
           }
       }
 

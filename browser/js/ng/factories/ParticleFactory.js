@@ -63,54 +63,60 @@ app.factory('ParticleFactory', function() {
     }
 
     var createIce = function(container, cb){
-        new ParticleEmitter(cb,
+        return new ParticleEmitter(cb,
             container,
-            ['images/particles/1.png', 'images/particles/2.png'],
+            ['images/particles/1.png'],
             {
-                    "alpha": {
-                        "start": 0.62,
-                        "end": 0
-                    },
-                    "scale": {
-                        "start": 0.25,
-                        "end": 0.75
-                    },
-                    "color": {
-                        "start": "fff191",
-                        "end": "ff622c"
-                    },
-                    "speed": {
-                        "start": 500,
-                        "end": 500
-                    },
-                    "startRotation": {
-                        "min": 265,
-                        "max": 275
-                    },
-                    "rotationSpeed": {
-                        "min": 50,
-                        "max": 50
-                    },
-                    "lifetime": {
-                        "min": 0.1,
-                        "max": 0.75
-                    },
-                    "blendMode": "normal",
-                    "frequency": 0.001,
-                    "emitterLifetime": 0,
-                    "maxParticles": 1000,
-                    "pos": {
-                        "x": 0,
-                        "y": 0
-                    },
-                    "addAtBack": false,
-                    "spawnType": "circle",
-                    "spawnCircle": {
-                        "x": 0,
-                        "y": 0,
-                        "r": 10
-                    }
-            }
+    "alpha": {
+        "start": 1,
+        "end": 1
+    },
+    "scale": {
+        "start": 1,
+        "end": 1,
+        "minimumScaleMultiplier": 1.08
+    },
+    "color": {
+        "start": "#fff191 ",
+        "end": "#ff622c "
+    },
+    "speed": {
+        "start": 494,
+        "end": 500
+    },
+    "acceleration": {
+        "x": 0,
+        "y": 0
+    },
+    "startRotation": {
+        "min": 265,
+        "max": 275
+    },
+    "rotationSpeed": {
+        "min": 55,
+        "max": 50
+    },
+    "lifetime": {
+        "min": 0.001,
+        "max": 0.001
+    },
+    "blendMode": "normal",
+    "frequency": 0.001,
+    "emitterLifetime": -1,
+    "maxParticles": 1000,
+    "pos": {
+        "x": 0,
+        "y": 0
+    },
+    "addAtBack": false,
+    "spawnType": "ring",
+    "spawnCircle": {
+        "x": 0,
+        "y": 0,
+        "r": 9,
+        "minR": 0
+    }
+}
         );
     }
 

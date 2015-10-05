@@ -89,26 +89,27 @@ app.controller('PlayController', function ($scope, player, $timeout, $rootScope,
     if(game.launchCritters){
             loadEnemy();
         }
-        ProjectileFactory.updateAll();
-        TowerFactory.updateAll();
-        let enemies = EnemyFactory.enemies.map(element => element);
-        for(let i = 0; i < enemies.length; i++) {
-            console.log('hi there');
-            if(enemies[i].moveTowards(delta)) {
-                if(EnemyFactory.enemies.length === 0 && game.launchCritters){
-                    if(WaveFactory.waves.length > 1) {
-                        WaveFactory.setCurrentWave();
-                        game.nextWave = true;
-                    } else {
-                        game.nextWave = false;
-                    }
-                    game.launchCritters = false;
-                }
+        // ProjectileFactory.updateAll();
+        // TowerFactory.updateAll();
+        // EnemyFactory.updateAll();
+        // // let enemies = EnemyFactory.enemies.map(element => element);
+        // // for(let i = 0; i < enemies.length; i++) {
+        // //     console.log('hi there');
+        // //     if(enemies[i].moveTowards(delta)) {
+        // //         if(EnemyFactory.enemies.length === 0 && game.launchCritters){
+        // //             if(WaveFactory.waves.length > 1) {
+        // //                 WaveFactory.setCurrentWave();
+        // //                 game.nextWave = true;
+        // //             } else {
+        // //                 game.nextWave = false;
+        // //             }
+        // //             game.launchCritters = false;
+        // //         }
 
-                PlayerFactory.health--;
-                $scope.digest();
-            }
-        }
+        // //         PlayerFactory.health--;
+        // //         $scope.digest();
+        // //     }
+        // // }
 
     var update = then => {
         var now = Date.now();
