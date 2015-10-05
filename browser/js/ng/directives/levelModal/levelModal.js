@@ -1,4 +1,4 @@
-app.directive("levelModal", function(){
+app.directive("levelModal", function($rootScope){
     return {
         restrict: "E",
         templateUrl: "js/ng/directives/startModal/startModal.html",

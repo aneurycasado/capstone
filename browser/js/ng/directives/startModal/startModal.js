@@ -3,7 +3,7 @@ app.directive("startModal", function(){
 		restrict: "E",
 		templateUrl: "js/ng/directives/startModal/startModal.html",
 		link: function(scope){
-			//$("#myModal").modal("show");
+			$("#myModal").modal("show");
 		}
 	}
 })
