@@ -13,21 +13,22 @@ app.factory('WaveFactory', function() {
     console.log("Waves so far ", waves);
     let currentWave;
     let setCurrentWave = () => {
-        currentWave = waves[waves.length-1];
+        currentWave = waves.pop();
     }
     let popOffCurrentWave = () => currentWave.pop();
     let currentWaveLength = () => currentWave.length;
-    let removeCurrentWave = () =>{
-        waves.pop();
-        currentWave = waves[waves.length-1];
-    } 
+    //let removeCurrentWave = () =>{
+    //    currentWave = waves.pop();
+    //}
+    let endOfWaves = () => !!waves.length;
+
     return {
         waves,
         createWave,
         currentWave,
         popOffCurrentWave,
+        endOfWaves,
         currentWaveLength,
-        removeCurrentWave,
         setCurrentWave,
     }
 });
