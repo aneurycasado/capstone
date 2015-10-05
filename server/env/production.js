@@ -9,10 +9,10 @@
 module.exports = {
     "DATABASE_URI": process.env.MONGOLAB_URI,
     "SESSION_SECRET": process.env.SESSION_SECRET,
-    "TWITTER": {
-        "consumerKey": process.env.TWITTER_CONSUMER_KEY,
-        "consumerSecret": process.env.TWITTER_CONSUMER_SECRET,
-        "callbackUrl": process.env.TWITTER_CALLBACK
+    "GITHUB": {
+        "clientID": process.env.GITHUB_CLIENT_ID,
+        "clientSecret": process.env.GITHUB_CLIENT_SECRET,
+        "callbackURL": process.env.GITHUB_CALLBACK_URL
     },
     "FACEBOOK": {
         "clientID": process.env.FACEBOOK_APP_ID,

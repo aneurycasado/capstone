@@ -64,8 +64,12 @@ app.factory('EnemyFactory', function($rootScope, GameFactory, WaveFactory, Playe
             }
             GameFactory.stages.play.removeChild(this.img);
             if(enemies.length === 0 && GameFactory.launchCritters){
-                WaveFactory.removeCurrentWave();
-                GameFactory.nextWave = true;
+                if(WaveFactory.endOfWaves()) {
+                    WaveFactory.setCurrentWave();
+                    GameFactory.nextWave = true;
+                } else {
+                    GameFactory.wavesDone = true;
+                }
                 GameFactory.launchCritters = false;
             }
         }
@@ -110,6 +114,7 @@ app.factory('EnemyFactory', function($rootScope, GameFactory, WaveFactory, Playe
             enemy.update(delta);
         });
     };
+
 
     // var terminateEnemy = (enemyObj) => {
     //     if(enemies.indexOf(enemyObj) !== -1) {

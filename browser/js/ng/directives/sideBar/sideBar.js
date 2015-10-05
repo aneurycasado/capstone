@@ -12,12 +12,28 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory) 
     $scope.showPowerUps = false;
     $scope.towers = createTowers();
     $scope.nextWave = false;
+    $scope.nextLevel = false;
     $scope.count = 0;
+
+    $rootScope.$on('wavesDone', function() {
+        console.log('in the wavesDone');
+        $scope.nextLevel = true;
+        $scope.$digest();
+    })
     $rootScope.$on("nextWave", function(){
         console.log("Time to trigger nextWave");
         $scope.nextWave = true;
         $scope.$digest();
     });
+    $scope.saveGame = function(){
+        var player = {
+            health: PlayerFactory.health,
+            money: PlayerFactory.money
+        }
+        PlayerFactory.saveGame(player).then(function(savedInfo){
+            console.log("Saved Info ", savedInfo);
+        });
+    }
     $scope.changeStore = function(tab) {
         if(tab === "tower"){
             $scope.showTowers = true;
@@ -40,8 +56,11 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory) 
     }
     $scope.initiateNextWave = function(){
         console.log("triggerNextWave");
-        $scope.nextWave = false; 
+        $scope.nextWave = false;
         $rootScope.$emit("readyForNextWave");
+    }
+    $scope.initiateLevel = function() {
+        $rootScope.$emit('sentToNextLevel');
     }
 });
 

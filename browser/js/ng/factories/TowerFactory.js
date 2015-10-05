@@ -1,6 +1,5 @@
 'use strict'
-app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactory, GameFactory, GridFactory) {
-    
+app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactory, GameFactory, GridFactory, ParticleFactory) {
     var allTowers = [];
 
     class Tower {
@@ -14,10 +13,18 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             this.powerUps = [];
             this.codeSnippets = [];
             if (options) {
-                if (options.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + this.rank + ".png"));
+                var array = [];
+                for(var i=1; i < 4; i++){
+                    var img = PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + i + ".png");
+                    array.push(img)
+                }
+                this.img = new PIXI.extras.MovieClip(array);
+                // if (options.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + this.rank + ".png"));
                 this.img.position.x = this.position.x * GameFactory.cellSize + .5 * GameFactory.cellSize;
                 this.img.anchor.x = .5;
                 this.img.anchor.y = .5;
+                this.img.animationSpeed = .1;
+                
                 this.img.position.y = this.position.y * GameFactory.cellSize + .5 * GameFactory.cellSize;
                 if (options.power) this.power = options.power;
                 if (options.cost) this.cost = options.cost;
@@ -37,14 +44,6 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         terminate() {
           GameFactory.stages.play.removeChild(this.img);
           allTowers.splice(allTowers.indexOf(this), 1);
-        }
-
-        setImage() {
-
-        }
-
-        addCodeSnippet() {
-
         }
 
         countPowerUps() {
@@ -83,6 +82,18 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
     class IceTower extends Tower {
         constructor(x, y) {
             super(x, y, {img: '4', power: 2, price: 50});
+
+            ParticleFactory.createIce(GameFactory.stages.play, function(emitter){
+                this.ice = emitter;
+                this.ice.updateOwnerPos(this.img.position.x, this.img.position.y);
+            }.bind(this));
+
+        }
+
+        update(delta){
+            if(this.ice) this.ice.update(delta);
+            if(this.ice) this.ice.emit = true;
+            this.ice.rotate(this.ice.rotation + 1);
         }
     }
 
@@ -99,12 +110,14 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
 
         shoot(enemy){
+            this.img.play();
             new ProjectileFactory.HomingProjectile({x: this.img.position.x, y: this.img.position.y, speed: 4, radius: 8, enemy: enemy});
         }
 
         update(){
             if(!this.target){
                 this.acquireTarget();
+                this.img.stop();
                 //this.target = EnemyFactory.enemies[0];
             }
             if(this.target){
@@ -135,11 +148,16 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
     let towers = {IceTower, ThunderTower, FireTower, PoisonTower};
     let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
 
-    var updateAll = function(){
+    var updateAll = function(delta){
         allTowers.forEach(function(tower){
-            if(tower.update) tower.update();
+            if(tower.update) tower.update(delta);
         });
+
+        // if(ice) ice.update(delta);
+        // if(ice) ice.emit = true;
     };
+
+
 
     return {
         createTower,
