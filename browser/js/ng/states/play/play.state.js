@@ -39,7 +39,7 @@ app.controller('PlayController', function ($scope, $timeout, $rootScope, Particl
     init();
 
 
-
+    let sendToNextLevel = false;
     $scope.tower = null;
     $scope.editing = false;
     $scope.setUp = true;
@@ -60,10 +60,13 @@ app.controller('PlayController', function ($scope, $timeout, $rootScope, Particl
         GameFactory.initiateWave();
         //$scope.$digest();
     });
+    $rootScope.$on("sentToNextLevel", function() {
+        sendToNextLevel = false;
+    });
 
     game.launchCritters = false;
     game.nextWave = false;
-    
+
     var checkNodeClear = nodeNum => {
         if(!EnemyFactory.enemies.length) return true;
         return EnemyFactory.enemies[EnemyFactory.enemies.length - 1].pathIndex === nodeNum;
@@ -82,18 +85,25 @@ app.controller('PlayController', function ($scope, $timeout, $rootScope, Particl
 
     if(game.launchCritters){
             loadEnemy();
-        } 
+        }
         ProjectileFactory.updateAll();
         TowerFactory.updateAll();
         let enemies = EnemyFactory.enemies.map(element => element);
         for(let i = 0; i < enemies.length; i++) {
+            console.log('hi there');
             if(enemies[i].moveTowards(delta)) {
                 if(EnemyFactory.enemies.length === 0 && game.launchCritters){
-                    WaveFactory.removeCurrentWave();
-                    game.nextWave = true;
+                    if(WaveFactory.waves.length > 1) {
+                        WaveFactory.setCurrentWave();
+                        game.nextWave = true;
+                    } else {
+                        game.nextWave = false;
+                    }
                     game.launchCritters = false;
                 }
+
                 PlayerFactory.health--;
+                $scope.digest();
             }
         }
 
@@ -111,7 +121,7 @@ app.controller('PlayController', function ($scope, $timeout, $rootScope, Particl
             }
             if(game.launchCritters){
                 loadEnemy();
-            } 
+            }
             ProjectileFactory.updateAll();
             TowerFactory.updateAll();
             EnemyFactory.updateAll(delta);
@@ -119,6 +129,10 @@ app.controller('PlayController', function ($scope, $timeout, $rootScope, Particl
             //game.fire.emit = true;
             //game.fire.updateOwnerPos(100, 100);
             //game.fire.rotate(counter++);
+            if(game.wavesDone && !sendToNextLevel) {
+                sendToNextLevel = true;
+                $rootScope.$emit('wavesDone');
+            }
         }
         GameFactory.renderer.render(GameFactory.stages[GameFactory.state]);
         requestAnimationFrame(update.bind(null, now));
@@ -142,7 +156,6 @@ app.controller('PlayController', function ($scope, $timeout, $rootScope, Particl
             $scope.selectedTower = GridFactory.grid[towerPositionY][towerPositionX].contains.tower;
             console.log(GridFactory.grid[towerPositionY][towerPositionX].canPlaceTower);
             if (GridFactory.grid[towerPositionY][towerPositionX].contains.tower) {
-                console.log("editing = true");
                 $scope.editing = true;
                 $scope.$digest();
             } else if (!GridFactory.grid[towerPositionY][towerPositionX].canPlaceTower) {
