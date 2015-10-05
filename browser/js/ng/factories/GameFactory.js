@@ -1,5 +1,4 @@
 'use strict'
-
 app.factory('GameFactory', function() {
     var game = {
         width: 1000,

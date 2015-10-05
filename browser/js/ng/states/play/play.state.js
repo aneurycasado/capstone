@@ -8,20 +8,13 @@ app.config(function ($stateProvider) {
         })
 });
 
-app.controller('PlayController', function ($scope, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, GameFactory, TowerFactory, GridFactory, PlayerFactory, EnemyFactory, ProjectileFactory) {
+app.controller('PlayController', function ($scope, $timeout, $rootScope, WaveFactory, MapFactory, GameFactory, TowerFactory, GridFactory, PlayerFactory, EnemyFactory, ProjectileFactory, ParticleFactory) {
     var game = GameFactory;
 
     var start = map => {
-        console.log('hey',map.stage);
         game.map = map;
         GridFactory.grid = game.map.grid;
         GameFactory.stages.play = map.stage;
-        game.PEContainer = new PIXI.Stage();
-        GameFactory.stages.play.addChild(game.PEContainer);
-        ParticleFactory.createFire(game.PEContainer, function(emitter){
-            console.log("EMITTER", emitter);
-            game.fire = emitter;
-        });
         game.state = "play";
     };
 
@@ -31,9 +24,14 @@ app.controller('PlayController', function ($scope, $timeout, $rootScope, Particl
             WaveFactory.createWave(wave);
         });
         WaveFactory.setCurrentWave();
-        game.renderer = PIXI.autoDetectRenderer(game.width, game.height);
+
+        GameFactory.canvas = document.getElementById("stage");
+        console.log(GameFactory.canvas);
+        GameFactory.renderer = PIXI.autoDetectRenderer(game.width, game.height, game.canvas);
         document.body.appendChild(game.renderer.view);
+
         start(MapFactory.maps[0]);
+
     };
 
     init();
@@ -115,24 +113,17 @@ app.controller('PlayController', function ($scope, $timeout, $rootScope, Particl
         else if (GameFactory.state === "play") {
             if(GameFactory.nextWave){
                 GameFactory.nextWave = false;
-                console.log('we hit in play state.js')
                 $rootScope.$emit("nextWave")
                 $scope.count++;
             }
             if(game.launchCritters){
                 loadEnemy();
-            }
-            ProjectileFactory.updateAll();
-            TowerFactory.updateAll();
+            } 
+
+            ProjectileFactory.updateAll(delta);
+            TowerFactory.updateAll(delta);
             EnemyFactory.updateAll(delta);
-            //game.fire.update(delta/10);
-            //game.fire.emit = true;
-            //game.fire.updateOwnerPos(100, 100);
-            //game.fire.rotate(counter++);
-            if(game.wavesDone && !sendToNextLevel) {
-                sendToNextLevel = true;
-                $rootScope.$emit('wavesDone');
-            }
+
         }
         GameFactory.renderer.render(GameFactory.stages[GameFactory.state]);
         requestAnimationFrame(update.bind(null, now));
@@ -149,7 +140,7 @@ app.controller('PlayController', function ($scope, $timeout, $rootScope, Particl
     //        5000);
     //}) //FIXME
 
-    $('canvas').on('click', function (e) {
+    window.addEventListener('mousedown', function (e) {
         if ($scope.tower !== null) {
             let towerPositionX = Math.floor(e.offsetX / GameFactory.cellSize);
             let towerPositionY = Math.floor(e.offsetY / GameFactory.cellSize);
