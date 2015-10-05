@@ -4,13 +4,18 @@ app.config(function ($stateProvider) {
         .state('play', {
             url: '/play',
             templateUrl: '/js/ng/states/play/play.state.html',
+            resolve: {
+                player : function(PlayerFactory){
+                    return PlayerFactory.getGame()
+                }
+            },
             controller: 'PlayController'
         })
 });
 
-app.controller('PlayController', function ($scope, $timeout, $rootScope, WaveFactory, MapFactory, GameFactory, TowerFactory, GridFactory, PlayerFactory, EnemyFactory, ProjectileFactory, ParticleFactory) {
+app.controller('PlayController', function ($scope, player, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, GameFactory, TowerFactory, GridFactory, PlayerFactory, EnemyFactory, ProjectileFactory) {
     var game = GameFactory;
-
+    console.log("Player from resolve ", player);
     var start = map => {
         game.map = map;
         GridFactory.grid = game.map.grid;
@@ -132,17 +137,6 @@ app.controller('PlayController', function ($scope, $timeout, $rootScope, WaveFac
         GameFactory.renderer.render(GameFactory.stages[GameFactory.state]);
         requestAnimationFrame(update.bind(null, now));
     };
-
-    //$rootScope.$on('launchNext', function(event, data) {
-    //    console.log($scope.waves.length);
-    //    if($scope.waves.length === 0 ) return;
-    //    $timeout(function(){
-    //            console.log($scope.waves);
-    //            GameFactory.createWave($scope.waves.splice(0, 1)[0]);
-    //
-    //        },
-    //        5000);
-    //}) //FIXME
 
     window.addEventListener('mousedown', function (e) {
         if ($scope.tower !== null) {

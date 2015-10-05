@@ -23,6 +23,12 @@ var schema = new mongoose.Schema({
     },
     google: {
         id: String
+    },
+    game: {
+        player: {
+            health: Number,
+            money: Number
+        }
     }
 });
 
