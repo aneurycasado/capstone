@@ -36,7 +36,6 @@ app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
     };
 
     let update = () => {
-        console.log(waves);
         loadEnemy();
     };
 

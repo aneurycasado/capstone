@@ -2,7 +2,7 @@
 app.factory('ParticleFactory', function() {
 
     class ParticleEmitter{
-        constructor(cb, stage, imagePaths, config, type, useParticleContainer){
+        constructor(stage, imagePaths, config, type, useParticleContainer){
 
             this.emitter = null;
 
@@ -62,70 +62,8 @@ app.factory('ParticleFactory', function() {
         };
     }
 
-    var createFire = function(container, cb){
-        return new ParticleEmitter(cb,
-            container,
-            ['images/particles/1.png'],
-            {
-                "alpha": {
-                    "start": 1,
-                    "end": 1
-                },
-                "scale": {
-                    "start": 1,
-                    "end": 1,
-                    "minimumScaleMultiplier": 1.08
-                },
-                "color": {
-                    "start": "#fff191 ",
-                    "end": "#ff622c "
-                },
-                "speed": {
-                    "start": 494,
-                    "end": 500
-                },
-                "acceleration": {
-                    "x": 0,
-                    "y": 0
-                },
-                "startRotation": {
-                    "min": 265,
-                    "max": 275
-                },
-                "rotationSpeed": {
-                    "min": 55,
-                    "max": 50
-                },
-                "lifetime": {
-                    "min": 0.001,
-                    "max": 0.001
-                },
-                "blendMode": "normal",
-                "frequency": 0.001,
-                "emitterLifetime": -1,
-                "maxParticles": 1000,
-                "pos": {
-                    "x": 0,
-                    "y": 0
-                },
-                "addAtBack": false,
-                "spawnType": "ring",
-                "spawnCircle": {
-                    "x": 0,
-                    "y": 0,
-                    "r": 9,
-                    "minR": 0
-                }
-            }
-        );
-    };
-
-
-    var createDamageSparks = function(container, cb){
-        return new ParticleEmitter(cb,
-            container,
-            ['images/particles/3.png'],
-            {
+    var particles = {
+        damageSparks:{
                 "alpha": {
                     "start": 1,
                     "end": 1
@@ -175,14 +113,181 @@ app.factory('ParticleFactory', function() {
                     "w": 5,
                     "h": 0
                 }
+            },
+
+            fire: {
+                "alpha": {
+                    "start": 1,
+                    "end": 1
+                },
+                "scale": {
+                    "start": 1,
+                    "end": 1,
+                    "minimumScaleMultiplier": 1.08
+                },
+                "color": {
+                    "start": "#fff191 ",
+                    "end": "#ff622c "
+                },
+                "speed": {
+                    "start": 494,
+                    "end": 500
+                },
+                "acceleration": {
+                    "x": 0,
+                    "y": 0
+                },
+                "startRotation": {
+                    "min": 265,
+                    "max": 275
+                },
+                "rotationSpeed": {
+                    "min": 55,
+                    "max": 50
+                },
+                "lifetime": {
+                    "min": 0.001,
+                    "max": 0.001
+                },
+                "blendMode": "normal",
+                "frequency": 0.001,
+                "emitterLifetime": -1,
+                "maxParticles": 1000,
+                "pos": {
+                    "x": 0,
+                    "y": 0
+                },
+                "addAtBack": false,
+                "spawnType": "ring",
+                "spawnCircle": {
+                    "x": 0,
+                    "y": 0,
+                    "r": 9,
+                    "minR": 0
+                }
+            },
+
+            poison: {
+                "alpha": {
+                    "start": 0.4,
+                    "end": 0
+                },
+                "scale": {
+                    "start": 0.21,
+                    "end": 0.025,
+                    "minimumScaleMultiplier": 1
+                },
+                "color": {
+                    "start": "#6bff61 ",
+                    "end": "#d8ff4a "
+                },
+                "speed": {
+                    "start": 10,
+                    "end": 10
+                },
+                "acceleration": {
+                    "x": 0,
+                    "y": 0
+                },
+                "startRotation": {
+                    "min": 0,
+                    "max": 360
+                },
+                "rotationSpeed": {
+                    "min": 0,
+                    "max": 0
+                },
+                "lifetime": {
+                    "min": 2,
+                    "max": 1.8
+                },
+                "blendMode": "screen",
+                "frequency": 0.02,
+                "emitterLifetime": -1,
+                "maxParticles": 150,
+                "pos": {
+                    "x": 0.5,
+                    "y": 0.5
+                },
+                "addAtBack": true,
+                "spawnType": "circle",
+                "spawnCircle": {
+                    "x": 0,
+                    "y": 0,
+                    "r": 10
+                }
+            },
+
+            ice: {
+                "alpha": {
+                    "start": 1,
+                    "end": 0
+                },
+                "scale": {
+                    "start": 0.2,
+                    "end": 0.7,
+                    "minimumScaleMultiplier": 1
+                },
+                "color": {
+                    "start": "#8fffee ",
+                    "end": "#2930ff "
+                },
+                "speed": {
+                    "start": 500,
+                    "end": 500
+                },
+                "acceleration": {
+                    "x": 0,
+                    "y": 0
+                },
+                "startRotation": {
+                    "min": 265,
+                    "max": 275
+                },
+                "rotationSpeed": {
+                    "min": 20,
+                    "max": 500
+                },
+                "lifetime": {
+                    "min": 0.005,
+                    "max": 0.005
+                },
+                "blendMode": "normal",
+                "frequency": 0.001,
+                "emitterLifetime": -1,
+                "maxParticles": 1000,
+                "pos": {
+                    "x": 0,
+                    "y": 0
+                },
+                "addAtBack": false,
+                "spawnType": "ring",
+                "spawnCircle": {
+                    "x": 1,
+                    "y": 0,
+                    "r": 0,
+                    "minR": 0
+                }
             }
-        
-        )};
+    };
+
+    var createEmitter = function(emitterType, container, arr){
+        if(!arr) arr = [emitterType];
+        else if(typeof arr === 'string') arr = [arr];
+
+        return new ParticleEmitter(
+            container,
+            arr.map(function(item){
+                return 'images/particles/' + item + '.png';
+            }),
+            particles[emitterType]
+        );
+
+    };
 
 
     return {
-        createFire,
-        createDamageSparks
+        createEmitter
     }
 })
 

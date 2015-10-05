@@ -25,6 +25,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 this.img.play();
                 if (opts.power) this.power = opts.power;
             }
+            this.slowFactor = 1;
             this.value = 0;
             this.health = 10;
             this.speed = 128;
@@ -38,19 +39,19 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             var ydone = false;
             if(this.position.x > this.path[this.pathIndex].x + 5) {
                 this.img.rotation = 3.14;
-                this.position.x -= this.speed * delta;
+                this.position.x -= this.slowFactor * this.speed * delta;
 
             } else if(this.position.x < this.path[this.pathIndex].x - 5) {
                 this.img.rotation = 3.14*2;
-                this.position.x += this.speed * delta;
+                this.position.x += this.slowFactor * this.speed * delta;
             } else{
                 xdone = true;
             }
             if(this.position.y > this.path[this.pathIndex].y + 5) {
                 this.img.rotation = (3*3.14) / 2;
-                this.position.y -= this.speed * delta;
+                this.position.y -= this.slowFactor * this.speed * delta;
             }else if(this.position.y < this.path[this.pathIndex].y - 5) {
-                this.position.y += this.speed * delta;
+                this.position.y += this.slowFactor * this.speed * delta;
                 this.img.rotation = 3.14 / 2;
             }else{
                 ydone = true;
@@ -82,7 +83,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
         takeDamage(damage){
             this.health -= damage;
-            if(!this.damageSparks) this.damageSparks = ParticleFactory.createDamageSparks(StateFactory.stages.play);
+            if(!this.damageSparks) this.damageSparks = ParticleFactory.createEmitter('damageSparks', StateFactory.stages.play);
             if(this.health <= 0){
                 if(this.damageSparks)this.damageSparks.destroy();
                 $rootScope.$emit('deadEnemy', this);
