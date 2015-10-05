@@ -1,4 +1,4 @@
-app.factory("ProjectileFactory", function(StateFactory, ParticleFactory){
+app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFactory){
 
   var projectiles = [];
 
@@ -9,7 +9,6 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory){
           this.radius = 0;
           this.speed = 0;
           this.power = 5;
-          console.log(opts)
           for(var opt in opts){
             this[opt] = opts[opt];
           }
@@ -39,19 +38,11 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory){
           if(checkCircleCollision(this, this.target)){
             console.log(this.power);
               this.target.takeDamage(this.power);
-              //if(this.target.health <= 0) this.target = null;
-              //console.log(this.target.health);
               this.terminate();
           }else{
-              // console.log('target', this.target);
-              // console.log('ship', this.x, this.y);
-              // console.log('diff',this.target.x - this.x,  this.target.y - this.y);
               this.theta = (Math.atan((this.target.position.x - this.x) / (this.target.position.y - this.y)));
-
-              // console.log('theta', this.theta);
               this.xVel = this.speed*Math.sin(this.theta);
               this.yVel = this.speed*Math.cos(this.theta);
-              // console.log("vels",this.xVel, this.yVel);
               if(this.y <= this.target.y) {
                 this.x += this.xVel;
                 this.y += this.yVel;
@@ -115,6 +106,36 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory){
       }
   }
 
+  class StraightProjectile extends Projectile{
+    constructor(opts){
+      super(opts);
+      this.target = opts.enemy;
+      this.theta = (Math.atan((this.target.position.x - this.x) / (this.target.position.y - this.y)));
+      this.xVel = this.speed*Math.sin(this.theta);
+      this.yVel = this.speed*Math.cos(this.theta);
+      if(this.y > this.target.y) {
+        this.xVel *= -1;
+        this.yVel *= -1;
+      }
+      this.particleEmitter = ParticleFactory.createEmitter('poison', StateFactory.stages.play);
+      this.update();
+    }
+
+    update(){
+        this.x += this.xVel;
+        this.y += this.yVel;
+        this.particleEmitter.update(1);
+        this.particleEmitter.updateOwnerPos(this.x, this.y);
+        for(var i = 0; i < EnemyFactory.enemies.length; i++)
+            if(checkCircleCollision(this, EnemyFactory.enemies[i])){
+              EnemyFactory.enemies[i].takeDamage(this.power);
+              this.terminate();
+              break;
+            }
+    }
+
+  }
+
   var checkCircleCollision = function(circle1, circle2){
       circle2.x = circle2.position.x;
       circle2.y = circle2.position.y;
@@ -138,6 +159,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory){
     FireProjectile,
     PoisonProjectile,
     IceProjectile,
+    StraightProjectile,
     updateAll
   };
 });

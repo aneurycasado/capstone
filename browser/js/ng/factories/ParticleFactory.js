@@ -99,7 +99,7 @@ app.factory('ParticleFactory', function() {
                 },
                 "blendMode": "normal",
                 "frequency": 0.063,
-                "emitterLifetime": -1,
+                "emitterLifetime": 500,
                 "maxParticles": 50,
                 "pos": {
                     "x": 0,
