@@ -1,5 +1,5 @@
 'use strict'
-app.factory('TowerFactory', function (EnemyFactory, ProjectileFactory, GameFactory, GridFactory) {
+app.factory('TowerFactory', function (EnemyFactory, ProjectileFactory, GameFactory, GridFactory, ParticleFactory) {
     
     var allTowers = [];
 
@@ -83,6 +83,18 @@ app.factory('TowerFactory', function (EnemyFactory, ProjectileFactory, GameFacto
     class IceTower extends Tower {
         constructor(x, y) {
             super(x, y, {img: '4', power: 2, price: 50});
+
+            ParticleFactory.createIce(GameFactory.stages.play, function(emitter){
+                this.ice = emitter;
+                this.ice.updateOwnerPos(this.img.position.x, this.img.position.y);
+            }.bind(this));
+
+        }
+
+        update(delta){
+            if(this.ice) this.ice.update(delta);
+            if(this.ice) this.ice.emit = true;
+            this.ice.rotate(this.ice.rotation + 1);
         }
     }
 
@@ -133,11 +145,16 @@ app.factory('TowerFactory', function (EnemyFactory, ProjectileFactory, GameFacto
     let towers = {IceTower, ThunderTower, FireTower, PoisonTower};
     let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
 
-    var updateAll = function(){
+    var updateAll = function(delta){
         allTowers.forEach(function(tower){
-            if(tower.update) tower.update();
+            if(tower.update) tower.update(delta);
         });
+
+        // if(ice) ice.update(delta);
+        // if(ice) ice.emit = true;
     };
+
+
 
     return {
         createTower,
