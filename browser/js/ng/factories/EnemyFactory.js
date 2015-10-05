@@ -1,6 +1,6 @@
 'use strict'
 //FIXME
-app.factory('EnemyFactory', function(GameFactory, WaveFactory, PlayerFactory) {
+app.factory('EnemyFactory', function($rootScope, GameFactory, WaveFactory, PlayerFactory) {
     var enemies = [];
 
     class Enemy {
@@ -59,7 +59,6 @@ app.factory('EnemyFactory', function(GameFactory, WaveFactory, PlayerFactory) {
         }
 
         terminate(){
-            console.log('terminating');
             if(enemies.indexOf(this) !== -1) {
                 var x = enemies.splice(enemies.indexOf(this),1);
             }
@@ -69,12 +68,21 @@ app.factory('EnemyFactory', function(GameFactory, WaveFactory, PlayerFactory) {
                 GameFactory.nextWave = true;
                 GameFactory.launchCritters = false;
             }
-            PlayerFactory.health--;
         }
 
         update(delta){
             this.moveTowards(delta);
             if(!this.path[this.pathIndex]) {
+                PlayerFactory.health--;
+                $rootScope.$digest();
+                this.terminate();
+            }
+        }
+
+        takeDamage(damage){
+            this.health -= damage;
+            if(this.health <= 0){
+                $rootScope.$emit('deadEnemy', this);
                 this.terminate();
             }
         }
@@ -91,7 +99,6 @@ app.factory('EnemyFactory', function(GameFactory, WaveFactory, PlayerFactory) {
         let newEnemy;
 
         let enemyConstructor = enemiesConstructors[type];
-        console.log("Type enemy, ",type);
         newEnemy = new enemyConstructor({path: path});
         enemies.push(newEnemy);
 
