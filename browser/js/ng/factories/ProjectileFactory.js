@@ -1,4 +1,4 @@
-app.factory("ProjectileFactory", function(GameFactory, ParticleFactory){
+app.factory("ProjectileFactory", function(StateFactory, ParticleFactory){
 
   var projectiles = [];
 
@@ -9,26 +9,21 @@ app.factory("ProjectileFactory", function(GameFactory, ParticleFactory){
           this.radius = 0;
           this.speed = 0;
           this.power = 5;
-          ParticleFactory.createIce(GameFactory.stages.play, function(emitter){
-                  this.ice = emitter;
-                  this.ice.updateOwnerPos(opts.x, opts.y);
-              }.bind(this));
           for(var opt in opts){
             this[opt] = opts[opt];
           }
-          console.log('img', this.img);
           // this.img.anchor.x = 0.5;
           // this.img.anchor.y = 0.5;
           // this.img.height = this.radius*2;
           // this.img.width = this.radius*2;
-          this.ice.updateOwnerPos(this.x, this.y);
           projectiles.push(this);
-          //GameFactory.stages.play.addChild(this.img);
+          //StateFactory.stages.play.addChild(this.img);
       }
 
       terminate() {
-          //GameFactory.stages.play.removeChild(this.img);
-          this.ice.destroy();
+
+          //StateFactory.stages.play.removeChild(this.img);
+          this.fire.destroy();
           projectiles.splice(projectiles.indexOf(this), 1);
       }
   }
@@ -37,6 +32,11 @@ app.factory("ProjectileFactory", function(GameFactory, ParticleFactory){
       constructor(opts){
           super(opts);
           this.target = opts.enemy;
+          this.fire = ParticleFactory.createFire(StateFactory.stages.play);
+          this.fire.updateOwnerPos(this.x, this.y);
+          for(var opt in opts){
+            this[opt] = opts[opt];
+          }
       }
 
       update() {
@@ -60,12 +60,10 @@ app.factory("ProjectileFactory", function(GameFactory, ParticleFactory){
                 this.y += this.yVel;
               }else{
                 this.x -= this.xVel;
-                this.y -= this.yVel; 
+                this.y -= this.yVel;
               }
-              this.ice.update(1);
-              this.ice.emit = true;
-              this.ice.rotate(this.ice.rotation + 1);
-              this.ice.updateOwnerPos(this.x, this.y);
+              this.fire.update(1);
+              this.fire.updateOwnerPos(this.x, this.y);
           }
       }
 
@@ -80,7 +78,7 @@ app.factory("ProjectileFactory", function(GameFactory, ParticleFactory){
 
       return (distance < circle1.radius + circle2.radius);
   };
-    
+
 
   var updateAll = function(){
       projectiles.forEach(function(projectile){

@@ -57,72 +57,132 @@ app.factory('ParticleFactory', function() {
             else if(type == "anim")
                 this.emitter.particleConstructor = cloudkid.AnimatedParticle;
 
-            cb(this.emitter);
+            return this.emitter;
 
         };
     }
 
-    var createIce = function(container, cb){
+    var createFire = function(container, cb){
         return new ParticleEmitter(cb,
             container,
             ['images/particles/1.png'],
             {
-    "alpha": {
-        "start": 1,
-        "end": 1
-    },
-    "scale": {
-        "start": 1,
-        "end": 1,
-        "minimumScaleMultiplier": 1.08
-    },
-    "color": {
-        "start": "#fff191 ",
-        "end": "#ff622c "
-    },
-    "speed": {
-        "start": 494,
-        "end": 500
-    },
-    "acceleration": {
-        "x": 0,
-        "y": 0
-    },
-    "startRotation": {
-        "min": 265,
-        "max": 275
-    },
-    "rotationSpeed": {
-        "min": 55,
-        "max": 50
-    },
-    "lifetime": {
-        "min": 0.001,
-        "max": 0.001
-    },
-    "blendMode": "normal",
-    "frequency": 0.001,
-    "emitterLifetime": -1,
-    "maxParticles": 1000,
-    "pos": {
-        "x": 0,
-        "y": 0
-    },
-    "addAtBack": false,
-    "spawnType": "ring",
-    "spawnCircle": {
-        "x": 0,
-        "y": 0,
-        "r": 9,
-        "minR": 0
-    }
-}
+                "alpha": {
+                    "start": 1,
+                    "end": 1
+                },
+                "scale": {
+                    "start": 1,
+                    "end": 1,
+                    "minimumScaleMultiplier": 1.08
+                },
+                "color": {
+                    "start": "#fff191 ",
+                    "end": "#ff622c "
+                },
+                "speed": {
+                    "start": 494,
+                    "end": 500
+                },
+                "acceleration": {
+                    "x": 0,
+                    "y": 0
+                },
+                "startRotation": {
+                    "min": 265,
+                    "max": 275
+                },
+                "rotationSpeed": {
+                    "min": 55,
+                    "max": 50
+                },
+                "lifetime": {
+                    "min": 0.001,
+                    "max": 0.001
+                },
+                "blendMode": "normal",
+                "frequency": 0.001,
+                "emitterLifetime": -1,
+                "maxParticles": 1000,
+                "pos": {
+                    "x": 0,
+                    "y": 0
+                },
+                "addAtBack": false,
+                "spawnType": "ring",
+                "spawnCircle": {
+                    "x": 0,
+                    "y": 0,
+                    "r": 9,
+                    "minR": 0
+                }
+            }
         );
-    }
+    };
+
+
+    var createDamageSparks = function(container, cb){
+        return new ParticleEmitter(cb,
+            container,
+            ['images/particles/3.png'],
+            {
+                "alpha": {
+                    "start": 1,
+                    "end": 1
+                },
+                "scale": {
+                    "start": 0.5,
+                    "end": 0.7,
+                    "minimumScaleMultiplier": 1
+                },
+                "color": {
+                    "start": "#f8ffad ",
+                    "end": "#fff712 "
+                },
+                "speed": {
+                    "start": 700,
+                    "end": 700
+                },
+                "acceleration": {
+                    "x": 0,
+                    "y": 0
+                },
+                "startRotation": {
+                    "min": 225,
+                    "max": 320
+                },
+                "rotationSpeed": {
+                    "min": 0,
+                    "max": 500
+                },
+                "lifetime": {
+                    "min": 0.031,
+                    "max": 0.07
+                },
+                "blendMode": "normal",
+                "frequency": 0.063,
+                "emitterLifetime": -1,
+                "maxParticles": 50,
+                "pos": {
+                    "x": 0,
+                    "y": 0
+                },
+                "addAtBack": false,
+                "spawnType": "rect",
+                "spawnRect": {
+                    "x": 0,
+                    "y": 0,
+                    "w": 5,
+                    "h": 0
+                }
+            }
+        
+        )};
 
 
     return {
-        createIce,
+        createFire,
+        createDamageSparks
     }
 })
 
