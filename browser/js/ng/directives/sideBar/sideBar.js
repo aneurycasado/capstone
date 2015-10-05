@@ -16,7 +16,7 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory) 
     $scope.count = 0;
 
     $rootScope.$on('wavesDone', function() {
-        console.log('in the wavesDone')
+        console.log('in the wavesDone');
         $scope.nextLevel = true;
         $scope.$digest();
     })
