@@ -118,12 +118,16 @@ app.controller('PlayController', function ($scope, $timeout, $rootScope, WaveFac
             }
             if(game.launchCritters){
                 loadEnemy();
-            } 
+            }
 
             ProjectileFactory.updateAll(delta);
             TowerFactory.updateAll(delta);
             EnemyFactory.updateAll(delta);
-
+            
+            if(game.wavesDone && !sendToNextLevel) {
+                sendToNextLevel = true;
+                $rootScope.$emit('wavesDone')
+            }
         }
         GameFactory.renderer.render(GameFactory.stages[GameFactory.state]);
         requestAnimationFrame(update.bind(null, now));
