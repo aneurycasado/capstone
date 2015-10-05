@@ -4,13 +4,18 @@ app.config(function ($stateProvider) {
         .state('play', {
             url: '/play',
             templateUrl: '/js/ng/states/play/play.state.html',
+            resolve: {
+                player : function(PlayerFactory){
+                    return PlayerFactory.getGame()
+                }
+            },
             controller: 'PlayController'
         })
 });
 
-app.controller('PlayController', function ($scope, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, GameFactory, TowerFactory, GridFactory, PlayerFactory, EnemyFactory, ProjectileFactory) {
+app.controller('PlayController', function ($scope, player, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, GameFactory, TowerFactory, GridFactory, PlayerFactory, EnemyFactory, ProjectileFactory) {
     var game = GameFactory;
-
+    console.log("Player from resolve ", player);
     var start = map => {
         console.log('hey',map.stage);
         game.map = map;
