@@ -45,6 +45,9 @@
                 <tower-store ng-show = "showTowers"></tower-store>
                 <hr ng-show = "showerTowers === showPowerUps">
                 <power-up-store ng-show = "showPowerUps"></power-up-store>
+                <div class ="row" ng-show = "nextLevel">
+                    <button class = "btn btn-primary" ng-click = "initiateLevel()">Next Level</button>
+                </div>
                 <div class ="row" ng-show = "setUp">
                     <button class = "btn btn-primary" ng-click = "initiateWave()">Done</button>
                 </div>
