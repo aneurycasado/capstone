@@ -8,6 +8,10 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             this.position = {x: x, y: y};
             this.rank = 1;
             this.kills = 0;
+            this.reloading = false;
+            $rootScope.$on('deadEnemy', function(event, deadEnemy){
+                if(deadEnemy == this.target) this.target = null;
+            }.bind(this));
             this.session = null;
             //this.options = options ? options : {};
             this.powerUps = [];
@@ -29,6 +33,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 if (options.power) this.power = options.power;
                 if (options.cost) this.cost = options.cost;
                 if (options.range) this.range = options.range;
+                if (options.reloadTime) this.reloadTime = options.reloadTime;
                 this.price = options.price;
                 StateFactory.stages.play.addChild(this.img);
             }
@@ -63,6 +68,25 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         isEnemyInRange(enemy){
             return((Math.pow(enemy.position.x - this.img.position.x, 2) + Math.pow(enemy.position.y - this.img.position.y, 2) <= Math.pow(this.range, 2)));
         }
+
+        update(){
+            if(!this.target){
+                this.acquireTarget();
+                this.img.stop();
+                //this.target = EnemyFactory.enemies[0];
+            }
+            if(this.target){
+                console.log(this.reloadTime);
+                if(!this.reloading){
+                    this.shoot(this.target);
+                    this.reloading = true;
+                    window.setTimeout(function(){
+                        this.reloading = false;
+                    }.bind(this), this.reloadTime);
+                }
+                if(!this.isEnemyInRange(this.target)) this.target = null;
+            }
+        }
     }
 
     function createTower(x, y, type) {
@@ -79,69 +103,64 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
     }
 
-    class IceTower extends Tower {
-        constructor(x, y) {
-            super(x, y, {img: '4', power: 2, price: 50});
-
-            ParticleFactory.createIce(StateFactory.stages.play, function(emitter){
-                this.ice = emitter;
-                this.ice.updateOwnerPos(this.img.position.x, this.img.position.y);
-            }.bind(this));
-
-        }
-
-        update(delta){
-            if(this.ice) this.ice.update(delta);
-            if(this.ice) this.ice.emit = true;
-            this.ice.rotate(this.ice.rotation + 1);
-        }
-    }
-
-    class FireTower extends Tower {
-        constructor(x, y) {
-            super(x, y, {img: '7', power: 5, price:50});
+    class HomingTower extends Tower {
+        constructor(x, y, opts) {
+            super(x, y, opts);
             this.range = 200;
             this.reloadTime = 400;
-            this.reloading = false;
-            $rootScope.$on('deadEnemy', function(event, deadEnemy){
-                if(deadEnemy == this.target) this.target = null;
-                console.log('got event', this.target, deadEnemy);
-            }.bind(this));
+        }
+
+    }
+
+
+    class IceTower extends HomingTower {
+        constructor(x, y) {
+            super(x, y, {img: '4', power: 2, price: 50});
         }
 
         shoot(enemy){
             this.img.play();
-            new ProjectileFactory.HomingProjectile({x: this.img.position.x, y: this.img.position.y, speed: 4, radius: 8, enemy: enemy});
-        }
-
-        update(){
-            if(!this.target){
-                this.acquireTarget();
-                this.img.stop();
-                //this.target = EnemyFactory.enemies[0];
-            }
-            if(this.target){
-                if(!this.reloading){
-                    this.shoot(this.target);
-                    this.reloading = true;
-                    window.setTimeout(function(){
-                        this.reloading = false;
-                    }.bind(this), this.reloadTime);
-                }
-                if(!this.isEnemyInRange(this.target)) this.target = null;
-            }
+            new ProjectileFactory.IceProjectile({power: this.power, x: this.img.position.x, y: this.img.position.y, speed: 4, radius: 8, enemy: enemy});
         }
     }
 
-    class ThunderTower extends Tower {
+    class FireTower extends HomingTower {
+        constructor(x, y){
+            super(x, y, {img: '7', power: 5, price:50});
+        }
+        
+        shoot(enemy){
+            this.img.play();
+            console.log(this.img);
+            new ProjectileFactory.FireProjectile({x: this.img.position.x, y: this.img.position.y, speed: 4, radius: 8, enemy: enemy});
+        }
+    }
+
+    class StraightTower extends Tower {
         constructor(x, y) {
-            super(x, y, {img: '5', power: 8, price: 50});
+            super(x, y, {img: '5', power: 8, price: 50, range: 1000, reloadTime: 2000});
         }
     }
 
-    class PoisonTower extends Tower {
+    class ThunderTower extends StraightTower {
+        constructor(x, y){
+            super(x, y, {img: '7', power: 5, price:50, reloadTime: 2000, range: 1000});
+        }
+
+        shoot(enemy){
+            this.img.play();
+            new ProjectileFactory.StraightProjectile({x: this.img.position.x, y: this.img.position.y, speed: 10, radius: 14, enemy: enemy});
+        }
+    }
+
+    class PoisonTower extends HomingTower {
         constructor(x, y) {
             super(x, y, {img: '6', power: 8, price: 50});
+        }
+        
+        shoot(enemy){
+            this.img.play();
+            new ProjectileFactory.PoisonProjectile({x: this.img.position.x, y: this.img.position.y, speed: 4, radius: 8, enemy: enemy});
         }
     }
 

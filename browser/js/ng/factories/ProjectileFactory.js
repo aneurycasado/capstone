@@ -1,4 +1,4 @@
-app.factory("ProjectileFactory", function(StateFactory, ParticleFactory){
+app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFactory){
 
   var projectiles = [];
 
@@ -23,7 +23,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory){
       terminate() {
 
           //StateFactory.stages.play.removeChild(this.img);
-          this.fire.destroy();
+          this.particleEmitter.destroy();
           projectiles.splice(projectiles.indexOf(this), 1);
       }
   }
@@ -32,29 +32,17 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory){
       constructor(opts){
           super(opts);
           this.target = opts.enemy;
-          this.fire = ParticleFactory.createFire(StateFactory.stages.play);
-          this.fire.updateOwnerPos(this.x, this.y);
-          for(var opt in opts){
-            this[opt] = opts[opt];
-          }
       }
 
       update() {
           if(checkCircleCollision(this, this.target)){
+            console.log(this.power);
               this.target.takeDamage(this.power);
-              //if(this.target.health <= 0) this.target = null;
-              //console.log(this.target.health);
               this.terminate();
           }else{
-              // console.log('target', this.target);
-              // console.log('ship', this.x, this.y);
-              // console.log('diff',this.target.x - this.x,  this.target.y - this.y);
               this.theta = (Math.atan((this.target.position.x - this.x) / (this.target.position.y - this.y)));
-
-              // console.log('theta', this.theta);
               this.xVel = this.speed*Math.sin(this.theta);
               this.yVel = this.speed*Math.cos(this.theta);
-              // console.log("vels",this.xVel, this.yVel);
               if(this.y <= this.target.y) {
                 this.x += this.xVel;
                 this.y += this.yVel;
@@ -62,10 +50,89 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory){
                 this.x -= this.xVel;
                 this.y -= this.yVel;
               }
-              this.fire.update(1);
-              this.fire.updateOwnerPos(this.x, this.y);
+              this.particleEmitter.update(1);
+              this.particleEmitter.updateOwnerPos(this.x, this.y);
           }
       }
+
+  }
+
+  class IceProjectile extends HomingProjectile{
+      constructor(opts){
+        super(opts);
+        this.slowSpeed = 0.5;
+        this.slowDuration = 1000;
+        this.particleEmitter = ParticleFactory.createEmitter('ice', StateFactory.stages.play);
+        this.update();
+      }
+
+      terminate() {
+          //StateFactory.stages.play.removeChild(this.img);
+          this.slowEnemy();          
+          this.particleEmitter.destroy();
+          projectiles.splice(projectiles.indexOf(this), 1);
+      }
+
+      slowEnemy() {
+        this.target.lastSlowed = Date.now();
+        if(this.target.slowFactor > this.slowSpeed ) {
+            this.target.slowFactor = this.slowSpeed;
+            this.target.img.tint = 12168959;
+        }
+        window.setTimeout(function(){
+            console.log(Date.now() - this.target.lastSlowed);
+            if(Date.now() - this.target.lastSlowed >  this.slowDuration) {
+              this.target.slowFactor = 1;
+              this.target.img.tint = 16777215;
+            }
+        }.bind(this), this.slowDuration);
+        
+      }
+  }
+
+  class FireProjectile extends HomingProjectile{
+      constructor(opts){
+        super(opts);
+        this.particleEmitter = ParticleFactory.createEmitter('fire', StateFactory.stages.play);
+        this.update();
+      }
+  }
+
+  class PoisonProjectile extends HomingProjectile{
+      constructor(opts){
+        super(opts);
+        this.particleEmitter = ParticleFactory.createEmitter('poison', StateFactory.stages.play);
+        this.update();
+      }
+  }
+
+  class StraightProjectile extends Projectile{
+    constructor(opts){
+      super(opts);
+      this.target = opts.enemy;
+      this.theta = (Math.atan((this.target.position.x - this.x) / (this.target.position.y - this.y)));
+      this.xVel = this.speed*Math.sin(this.theta);
+      this.yVel = this.speed*Math.cos(this.theta);
+      if(this.y > this.target.y) {
+        this.xVel *= -1;
+        this.yVel *= -1;
+      }
+      this.particleEmitter = ParticleFactory.createEmitter('poison', StateFactory.stages.play);
+      this.update();
+    }
+
+    update(){
+        this.x += this.xVel;
+        this.y += this.yVel;
+        this.particleEmitter.update(1);
+        this.particleEmitter.updateOwnerPos(this.x, this.y);
+        for(var i = 0; i < EnemyFactory.enemies.length; i++)
+            if(checkCircleCollision(this, EnemyFactory.enemies[i])){
+              EnemyFactory.enemies[i].takeDamage(this.power);
+              this.terminate();
+              break;
+            }
+    }
 
   }
 
@@ -89,6 +156,10 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory){
   return {
     Projectile,
     HomingProjectile,
+    FireProjectile,
+    PoisonProjectile,
+    IceProjectile,
+    StraightProjectile,
     updateAll
   };
 });
