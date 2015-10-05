@@ -100,6 +100,20 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
     }
 
+    // class trojanHorse extends Enemy {
+    //     constructor(opts) {
+    //         super({img: '1', power: 2, path: opts.path});
+    //         this.value = 5;
+    //     }
+    // }
+
+    // class trojanHorse extends Enemy {
+    //     constructor(opts) {
+    //         super({img: '1', power: 2, path: opts.path});
+    //         this.value = 5;
+    //     }
+    // }
+
     var createEnemy = (type, path) => {
 
         let newEnemy;

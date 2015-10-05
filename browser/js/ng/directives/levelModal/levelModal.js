@@ -10,8 +10,14 @@ app.directive("levelModal", function($rootScope){
                     $("#levelModal").modal("toggle");
                     $rootScope.$emit('sentToNextLevel');
                 }
+                scope.restartLevel = function(){
+                    $rootScope.$emit('restartLevel');
+                }
+                scope.choseDifferentMap = function(){
+                    $rootScope.$emit('choseDifferentMap');
+                }
             })
         }
     }
-})
+});
 

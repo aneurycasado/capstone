@@ -148,7 +148,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
     let towers = {IceTower, ThunderTower, FireTower, PoisonTower};
     let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
 
-    var updateAll = function(delta){
+    let updateAll = function(delta){
         allTowers.forEach(function(tower){
             if(tower.update) tower.update(delta);
         });
@@ -156,12 +156,18 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         // if(ice) ice.update(delta);
         // if(ice) ice.emit = true;
     };
+    let resetTowers = function(){
+        allTowers = [];
+        return allTowers;
+    }
 
 
 
     return {
         createTower,
         updateAll,
-        prices
+        prices,
+        resetTowers,
     };
+
 });

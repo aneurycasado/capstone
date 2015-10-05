@@ -13,8 +13,11 @@ app.config(function ($stateProvider) {
         })
 });
 
-app.controller('PlayController', function ($scope, player, $timeout, $rootScope, WaveFactory, MapFactory, StateFactory, TowerFactory, GridFactory, PlayerFactory, EnemyFactory, ProjectileFactory, GameFactory) {
+app.controller('PlayController', function ($scope, player, $state,$timeout, $rootScope, WaveFactory, MapFactory, StateFactory, TowerFactory, GridFactory, PlayerFactory, EnemyFactory, ProjectileFactory, GameFactory) {
     var data = StateFactory;
+    StateFactory.canvas = document.getElementById("stage");
+    StateFactory.renderer = PIXI.autoDetectRenderer(data.width, data.height, data.canvas);
+    document.body.appendChild(data.renderer.view);
     console.log("Player from resolve ", player);
     var start = map => {
         data.map = map;
@@ -24,24 +27,19 @@ app.controller('PlayController', function ($scope, player, $timeout, $rootScope,
     };
 
     var init = () => {
-        StateFactory.waves = [[{name: 'trojanHorse', num: 12}], [{name: 'trojanHorse', num: 15}]];
+        console.log("true");
+        StateFactory.waves = [[{name: 'trojanHorse', num: 1}], [{name: 'trojanHorse', num: 1}]];
         StateFactory.waves.forEach(function(wave,i){
             WaveFactory.createWave(wave);
         });
         //WaveFactory.setCurrentWave();
-
-        StateFactory.canvas = document.getElementById("stage");
-        console.log(StateFactory.canvas);
-        StateFactory.renderer = PIXI.autoDetectRenderer(data.width, data.height, data.canvas);
-        document.body.appendChild(data.renderer.view);
         start(MapFactory.maps[0]);
-
     };
 
     init();
 
     $scope.tower = null;
-    $scope.waves = [[{name: 'trojanHorse', num: 12}], [{name: 'trojanHorse', num: 15}]];
+    $scope.waves = [[{name: 'trojanHorse', num: 1}], [{name: 'trojanHorse', num: 1}]];
     $scope.count = 0;
     $rootScope.$on("currentTower", function (event, data) {
         $scope.tower = data;
@@ -54,7 +52,16 @@ app.controller('PlayController', function ($scope, player, $timeout, $rootScope,
     $rootScope.$on("readyForNextWave", function (event, data) {
         console.log("We hit next wave");
         StateFactory.initiateWave();
+
         //$scope.$digest();
+    });
+    $rootScope.$on('restartLevel', function(event,data){
+        StateFactory.stages.play = new PIXI.Stage()
+        TowerFactory.resetTowers();
+        init();
+        console.log("Stages,", StateFactory.stages.play)
+        console.log("All towers", TowerFactory.resetTowers())
+        //$state.go("play",{}, {reload: true})
     });
     // window.addEventListener('mousedown', function (e) {
     $('canvas').on('click', function(e){

@@ -53,19 +53,13 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, 
         $rootScope.$emit("currentTower", tower);
     }
     $scope.initiateWave = function(){
-        //console.log("initiateWave");
         GameFactory.changeStateTo("wave");
         console.log($scope.state);
         $scope.state = StateFactory.state;
     }
-    //$scope.initiateNextWave = function(){
-    //    console.log("triggerNextWave");
-    //    $scope.nextWave = false;
-    //    GameFactory.changeStateTo("wave");
-    //}
-    $scope.initiateLevel = function() {
-        GameFactory.changeStateTo("selection");
-    }
+    // $scope.initiateLevel = function() {
+    //     GameFactory.changeStateTo("selection");
+    // }
 });
 
 function createTowers (){

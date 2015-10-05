@@ -31,13 +31,6 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
         if (data.state === 'editing') {
 
         }
-
-
-        //if(GameFactory.nextWave){
-        //    GameFactory.nextWave = false;
-        //    $rootScope.$emit("nextWave")
-        //    $scope.count++;
-        //}
         if (data.launchCritters) {
             loadEnemy();
         }
@@ -46,26 +39,12 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
     };
     let changeStateTo = (state) => {
         if(state === 'wave') {
-            //if(EnemyFactory.enemies.length === 0 && GameFactory.launchCritters) {
-            //    if(endOfWaves()) {
-            //        setCurrentWave();
-            //        $rootScope.$emit('nextWave');
-            //        GameFactory.state = "nextWave";
-            //    } else {
-            //        GameFactory.state = "completed";
-            //    }
-            //    GameFactory.launchCritters = false;
-            //}
             WaveFactory.setCurrentWave();
             StateFactory.state = "wave";
         }
         if(state === 'complete') {
             $rootScope.$emit('wavesDone');
             StateFactory.state = 'complete';
-            //if(data.wavesDone && !sendToNextLevel) {
-            //    sendToNextLevel = true;
-            //    $rootScope.$emit('wavesDone')
-            //}
         }
         if(state === 'standby') {
             //more logic here
