@@ -1,6 +1,5 @@
 'use strict'
-app.factory('TowerFactory', function (EnemyFactory, ProjectileFactory, GameFactory, GridFactory, ParticleFactory) {
-    
+app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactory, GameFactory, GridFactory, ParticleFactory) {
     var allTowers = [];
 
     class Tower {
@@ -45,14 +44,6 @@ app.factory('TowerFactory', function (EnemyFactory, ProjectileFactory, GameFacto
         terminate() {
           GameFactory.stages.play.removeChild(this.img);
           allTowers.splice(allTowers.indexOf(this), 1);
-        }
-
-        setImage() {
-
-        }
-
-        addCodeSnippet() {
-
         }
 
         countPowerUps() {
@@ -108,10 +99,14 @@ app.factory('TowerFactory', function (EnemyFactory, ProjectileFactory, GameFacto
 
     class FireTower extends Tower {
         constructor(x, y) {
-            super(x, y, {img: '7', power: 8, price:50});
+            super(x, y, {img: '7', power: 5, price:50});
             this.range = 200;
             this.reloadTime = 400;
             this.reloading = false;
+            $rootScope.$on('deadEnemy', function(event, deadEnemy){
+                if(deadEnemy == this.target) this.target = null;
+                console.log('got event', this.target, deadEnemy);
+            }.bind(this));
         }
 
         shoot(enemy){
@@ -129,11 +124,9 @@ app.factory('TowerFactory', function (EnemyFactory, ProjectileFactory, GameFacto
                 if(!this.reloading){
                     this.shoot(this.target);
                     this.reloading = true;
-                    var thisClosure = this;
                     window.setTimeout(function(){
-                        console.log('reloading');
-                        thisClosure.reloading = false;
-                    }, this.reloadTime);
+                        this.reloading = false;
+                    }.bind(this), this.reloadTime);
                 }
                 if(!this.isEnemyInRange(this.target)) this.target = null;
             }
