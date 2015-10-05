@@ -13,7 +13,7 @@ app.config(function ($stateProvider) {
         })
 });
 
-app.controller('PlayController', function ($scope, player, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, GameFactory, TowerFactory, GridFactory, PlayerFactory, EnemyFactory, ProjectileFactory) {
+app.controller('PlayController', function ($scope, player, $timeout, $rootScope, WaveFactory, MapFactory, GameFactory, TowerFactory, GridFactory, PlayerFactory, EnemyFactory, ProjectileFactory) {
     var game = GameFactory;
     console.log("Player from resolve ", player);
     var start = map => {
@@ -138,7 +138,8 @@ app.controller('PlayController', function ($scope, player, $timeout, $rootScope,
         requestAnimationFrame(update.bind(null, now));
     };
 
-    window.addEventListener('mousedown', function (e) {
+    // window.addEventListener('mousedown', function (e) {
+    $('canvas').on('click', function(e){
         if ($scope.tower !== null) {
             let towerPositionX = Math.floor(e.offsetX / GameFactory.cellSize);
             let towerPositionY = Math.floor(e.offsetY / GameFactory.cellSize);
