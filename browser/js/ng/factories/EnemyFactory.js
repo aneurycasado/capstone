@@ -24,6 +24,7 @@ app.factory('EnemyFactory', function($rootScope, StateFactory, PlayerFactory) {
                 this.img.play();
                 if (opts.power) this.power = opts.power;
             }
+            this.value = 0;
             this.health = 10;
             this.speed = 128;
             this.radius = 10;
@@ -78,6 +79,9 @@ app.factory('EnemyFactory', function($rootScope, StateFactory, PlayerFactory) {
             this.health -= damage;
             if(this.health <= 0){
                 $rootScope.$emit('deadEnemy', this);
+                PlayerFactory.money += this.value;
+                console.log(PlayerFactory.money, this.value);
+                $rootScope.$digest();
                 this.terminate();
             }
         }
@@ -86,6 +90,7 @@ app.factory('EnemyFactory', function($rootScope, StateFactory, PlayerFactory) {
     class trojanHorse extends Enemy {
         constructor(opts) {
             super({img: '1', power: 2, path: opts.path});
+            this.value = 5;
         }
     }
 

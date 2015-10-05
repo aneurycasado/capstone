@@ -40,7 +40,6 @@ app.controller('PlayController', function ($scope, player, $timeout, $rootScope,
 
     init();
 
-
     let sendToNextLevel = false;
     $scope.tower = null;
     $scope.editing = false;
@@ -61,7 +60,6 @@ app.controller('PlayController', function ($scope, player, $timeout, $rootScope,
         StateFactory.initiateWave();
         //$scope.$digest();
     });
-
     // window.addEventListener('mousedown', function (e) {
     $('canvas').on('click', function(e){
         if ($scope.tower !== null) {
