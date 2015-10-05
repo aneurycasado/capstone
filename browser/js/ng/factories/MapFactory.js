@@ -1,5 +1,5 @@
 'use strict'
-app.factory('MapFactory', function(GridFactory, GameFactory) {
+app.factory('MapFactory', function(GridFactory, StateFactory) {
 
     class Map {
         constructor(grid, textures){
@@ -46,7 +46,7 @@ app.factory('MapFactory', function(GridFactory, GameFactory) {
         for(var x = 0; x < grid.length; x++) {
             for(var y = 0; y < grid[x].length; y++) {
                 if(grid[x][y].terrain === 4) {
-                    path.push({x: grid[x][y].coords.x + (GameFactory.cellSize/2), y: grid[x][y].coords.y + (GameFactory.cellSize/2)})
+                    path.push({x: grid[x][y].coords.x + (StateFactory.cellSize/2), y: grid[x][y].coords.y + (StateFactory.cellSize/2)})
                     start.x = x;
                     start.y = y;
                     break;
@@ -58,25 +58,25 @@ app.factory('MapFactory', function(GridFactory, GameFactory) {
             if(grid[x-1] && grid[x-1][y].terrain == num && lastDirection !== "down") {
                 next.x = x-1;
                 next.direction = "up";
-                path.push({x: grid[x][y].coords.x + (GameFactory.cellSize/2), y: grid[x][y].coords.y + (GameFactory.cellSize/2), direction: lastDirection})
+                path.push({x: grid[x][y].coords.x + (StateFactory.cellSize/2), y: grid[x][y].coords.y + (StateFactory.cellSize/2), direction: lastDirection})
                 return true;
             }
             else if(grid[x+1] && grid[x+1][y].terrain == num && lastDirection !== "up"){
                 next.x = x+1;
                 next.direction = "down";
-                path.push({x: grid[x][y].coords.x + (GameFactory.cellSize/2), y: grid[x][y].coords.y + (GameFactory.cellSize/2), direction: lastDirection})
+                path.push({x: grid[x][y].coords.x + (StateFactory.cellSize/2), y: grid[x][y].coords.y + (StateFactory.cellSize/2), direction: lastDirection})
                 return true;
             }
             else if(grid[x][y-1] && grid[x][y-1].terrain == num && lastDirection !== "right"){
                 next.y = y-1;
                 next.direction = "left";
-                path.push({x: grid[x][y].coords.x + (GameFactory.cellSize/2), y: grid[x][y].coords.y + (GameFactory.cellSize/2), direction: lastDirection})
+                path.push({x: grid[x][y].coords.x + (StateFactory.cellSize/2), y: grid[x][y].coords.y + (StateFactory.cellSize/2), direction: lastDirection})
                 return true;
             }
             else if(grid[x][y+1] && grid[x][y+1].terrain == num && lastDirection !== "left"){
                 next.y = y+1;
                 next.direction = "right";
-                path.push({x: grid[x][y].coords.x + (GameFactory.cellSize/2), y: grid[x][y].coords.y + (GameFactory.cellSize/2), direction: lastDirection})
+                path.push({x: grid[x][y].coords.x + (StateFactory.cellSize/2), y: grid[x][y].coords.y + (StateFactory.cellSize/2), direction: lastDirection})
                 return true;
             }
 
@@ -91,7 +91,7 @@ app.factory('MapFactory', function(GridFactory, GameFactory) {
             var next = {x: x, y: y};
             if(lookAround(x, y, 3, next, lastDirection)){
 
-                path.push({x: grid[next.x][next.y].coords.x + (GameFactory.cellSize/2), y: grid[next.x][next.y].coords.y + (GameFactory.cellSize/2)})
+                path.push({x: grid[next.x][next.y].coords.x + (StateFactory.cellSize/2), y: grid[next.x][next.y].coords.y + (StateFactory.cellSize/2)})
 
                 return path;
             }
