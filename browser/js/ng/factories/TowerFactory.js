@@ -22,9 +22,9 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             this.codeSnippet = null;
             this.targetingFunction = null;
             if (options) {
-                var array = [];
-                for(var i=1; i < 4; i++){
-                    var img = PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + i + ".png");
+                let array = [];
+                for(let i=1; i < 4; i++){
+                    let img = PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + i + ".png");
                     array.push(img)
                 }
                 this.img = new PIXI.extras.MovieClip(array);
@@ -225,15 +225,15 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
     let towers = {IceTower, ThunderTower, FireTower, PoisonTower};
     let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
 
-    let updateAll = function(delta){
-        allTowers.forEach(function(tower){
+    let updateAll = (delta) => {
+        allTowers.forEach((tower) => {
             if(tower.update) tower.update(delta);
         });
 
         // if(ice) ice.update(delta);
         // if(ice) ice.emit = true;
     };
-    let resetTowers = function(){
+    let resetTowers = () => {
 
 
         allTowers = [];
