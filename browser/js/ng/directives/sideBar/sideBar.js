@@ -6,8 +6,10 @@ app.directive("sideBar", function(){
     }
 });
 
-app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, GameFactory, StateFactory) {
+app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, GameFactory, StateFactory, WaveFactory, EnemyFactory) {
     $scope.player = PlayerFactory;
+    $scope.waves = WaveFactory.waves;
+    $scope.enemies = EnemyFactory.enemies;
     $scope.showTowers = true;
     $scope.firstWave = true;
     $scope.showPowerUps = false;
@@ -16,28 +18,32 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, 
     $scope.nextLevel = false;
     $scope.count = 0;
     $scope.state = StateFactory.state;
-    $rootScope.$on('wavesDone', function() {
+    $rootScope.$on('wavesDone', () => {
         $scope.state = 'complete';
         $scope.$digest();
     })
-    $rootScope.$on("nextWave", function(){
+    $rootScope.$on("nextWave", () => {
         $scope.state = 'standby';
         $scope.$digest();
     });
-    $rootScope.$on('removeNextLevel', function(){
+    $rootScope.$on('removeNextLevel', () => {
         $scope.state = 'standby';
     });
+    $rootScope.$on('mapChosen', () => {
+        $scope.state = 'standby';
+        console.log("Map chosen");
+    });
 
-    $scope.saveGame = function(){
-        var player = {
+    $scope.saveGame = () => {
+        let player = {
             health: PlayerFactory.health,
             money: PlayerFactory.money
         }
-        PlayerFactory.saveGame(player).then(function(savedInfo){
+        PlayerFactory.saveGame(player).then((savedInfo) => {
             console.log("Saved Info ", savedInfo);
         });
     }
-    $scope.changeStore = function(tab) {
+    $scope.changeStore = (tab) => {
         if(tab === "tower"){
             $scope.showTowers = true;
             $scope.showPowerUps = false;
@@ -49,10 +55,10 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, 
             $scope.showPowerUps = true;
         }
     }
-    $scope.towerClicked = function(tower){
+    $scope.towerClicked = (tower) => {
         $rootScope.$emit("currentTower", tower);
     }
-    $scope.initiateWave = function(){
+    $scope.initiateWave = () => {
         GameFactory.changeStateTo("wave");
         $scope.state = StateFactory.state;
     }

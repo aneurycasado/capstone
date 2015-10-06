@@ -2,13 +2,15 @@ app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
     let createWave = critterObjArr => {
         let wave = []
         critterObjArr.forEach(element => {
-            for(var i = 0; i < element.num; i++) {
+            for(let i = 0; i < element.num; i++) {
                 wave.push(element.name);
             }
         });
-        console.log("Wave in createWave", wave);
         waves.push(wave);
     };
+    // let randomInt = (min, max) => {
+    //     return Math.floor(Math.random()*(max-min+1)+min);
+    // } 
     let currentWave;
     let setCurrentWave = () => {
         currentWave = waves.pop();
@@ -29,8 +31,13 @@ app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
     let loadEnemy = () => {
         if(checkNodeClear(3)) {
             if(!currentWaveLength()) return;
-
-            var newEn = EnemyFactory.createEnemy(popOffNextMonster(), StateFactory.map.path);
+            let newEn;
+            if(Array.isArray(StateFactory.map.path[0])){
+                let index = Math.floor(Math.random()*StateFactory.map.path.length);
+                newEn = EnemyFactory.createEnemy(popOffNextMonster(), StateFactory.map.path[index]);
+            }else{
+                newEn = EnemyFactory.createEnemy(popOffNextMonster(), StateFactory.map.path);
+            }
             EnemyFactory.stage.addChild(newEn.img);
         }
     };
@@ -41,15 +48,15 @@ app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
 
     let waves = [];
     let wavesDefinition = [];
-    let randomInt = function(min,max){
+    let randomInt = (min,max) => {
         return Math.floor(Math.random()*(max-min+1)+min);
     }
-    let createWaves = function(){
+    let createWaves = () => {
         let waves = [];
         let min = 1; 
         let max = 30;
         let numOfWaves = randomInt(min,max);
-        for(let i = 0; i < numOfWaves; i++){
+        for(let i = 0; i < 2; i++){
             let wave = [];
             let numOfTrojanHorse = randomInt(min,max);
             let numOfBigBug = randomInt(min,max);
@@ -76,28 +83,23 @@ app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
                     }
                 }
             }
-            console.log("New wave ", wave);
             waves.push(wave);
         }
-        console.log("Waves in createWaves", waves);
         return waves
     }
 
 
     let init = () => {
-        wavesDefinition = createWaves(); //[[{name: 'trojanHorse', num: 1}], [{name: 'trojanHorse', num: 1}]];
-        console.log("Waves from createWaves in init", wavesDefinition);
-        wavesDefinition.forEach(function(wave,i){
+        wavesDefinition = createWaves();
+        wavesDefinition.forEach((wave) => {
             createWave(wave);
         });
-        console.log("Waves in Waves factory init", waves);
     }
        
-    wavesDefinition = createWaves(); //[[{name: 'trojanHorse', num: 1}], [{name: 'trojanHorse', num: 1}]];
-    wavesDefinition.forEach(function(wave,i){
+    wavesDefinition = createWaves();
+    wavesDefinition.forEach((wave) => {
         createWave(wave);
     });
-    console.log("Waves in Waves factory", waves);
     return {
         init,
         waves,
