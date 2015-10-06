@@ -41,6 +41,8 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
                 } else {
                     changeStateTo("complete");
                 }
+            }else if(PlayerFactory.health <= 0){
+                changeStateTo('gameOver');
             }
         }
         if (data.state === 'complete') {
@@ -51,6 +53,9 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
         }
         if (data.launchCritters) {
             loadEnemy();
+        } 
+        if(data.state === 'gameOver'){
+            
         }
         StateFactory.renderer.render(StateFactory.stages.play); //FIXME: should be StateFactory.stages[StateFactory.state]
         requestAnimationFrame(loop.bind(null, now));
@@ -58,22 +63,20 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
     let changeStateTo = (state) => {
         if(state === 'wave') {
             WaveFactory.setCurrentWave();
-            StateFactory.state = "wave";
         }
         if(state === 'complete') {
             $rootScope.$emit('wavesDone');
-            StateFactory.state = 'complete';
         }
         if(state === 'standby') {
-            //more logic here
             $rootScope.$emit('nextWave');
-            StateFactory.state = 'standby';
         }
         if(state === 'editing') {
-            //more logic here
-            StateFactory.state = 'editing';
-
         }
+
+        if(state === 'gameOver'){
+            $rootScope.$emit('gameOver');
+        }
+        StateFactory.state = state;
     }
     return {
         changeStateTo,
