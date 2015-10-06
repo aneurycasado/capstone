@@ -13,16 +13,18 @@ app.directive('editor', function($rootScope) {
             editor.getSession().setMode("ace/mode/javascript");
             editor.focus();
             if(scope.tower) {
-                if(scope.tower.codeSnippet === null) editor.session.setValue('');
+                if(scope.tower.codeSnippet === null) editor.session.setValue('function(context) {}');
                 else {
                     editor.session.setValue(scope.tower.codeSnippet);
-              
+
                 }
             }
             scope.saveCodeSnippet = function() {
                 scope.tower.codeSnippet = editor.getValue();
-             
-
+                scope.tower.evalCodeSnippet();
+                scope.$parent.$parent.editing = false;
+            }
+            scope.goBack = () => {
                 scope.$parent.$parent.editing = false;
             }
         }

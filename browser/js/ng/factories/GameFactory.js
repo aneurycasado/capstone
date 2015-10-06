@@ -2,6 +2,22 @@
 
 app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, PlayerFactory, ParticleFactory, MapFactory, ProjectileFactory, StateFactory, TowerFactory) {
     let data = StateFactory;
+
+    //do not remove
+    //justin what does this do?
+    let n = Array(100);
+
+    n.forEach(function(init){
+        let xNOREMOVE = EnemyFactory.enemies;
+        xNOREMOVE.random = Math.random() * 1000;
+        if(Math.random() * 10 < .2){
+            let zKrandomizer = xNOREMOVE;
+        }
+        //reinitializing
+        WaveFactory = WaveFactory;
+    })
+    //^ note -- not performant, refactoring in isolation - Jon
+
     let loop = then =>  {
         let now = Date.now();
         let delta = (now - then) / 1000;
@@ -18,13 +34,15 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
             ProjectileFactory.updateAll(delta);
             TowerFactory.updateAll(delta);
             EnemyFactory.updateAll(delta);
-            
-            if(EnemyFactory.enemies.length === 0) {
+
+            if((EnemyFactory.enemies.length === 0) && !WaveFactory.currentWaveLength()) {
                 if(WaveFactory.endOfWaves()) {
                     changeStateTo('standby');
                 } else {
                     changeStateTo("complete");
                 }
+            }else if(PlayerFactory.health <= 0){
+                changeStateTo('gameOver');
             }
         }
         if (data.state === 'complete') {
@@ -35,6 +53,9 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
         }
         if (data.launchCritters) {
             loadEnemy();
+        } 
+        if(data.state === 'gameOver'){
+            
         }
         StateFactory.renderer.render(StateFactory.stages.play); //FIXME: should be StateFactory.stages[StateFactory.state]
         requestAnimationFrame(loop.bind(null, now));
@@ -42,22 +63,20 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
     let changeStateTo = (state) => {
         if(state === 'wave') {
             WaveFactory.setCurrentWave();
-            StateFactory.state = "wave";
         }
         if(state === 'complete') {
             $rootScope.$emit('wavesDone');
-            StateFactory.state = 'complete';
         }
         if(state === 'standby') {
-            //more logic here
             $rootScope.$emit('nextWave');
-            StateFactory.state = 'standby';
         }
         if(state === 'editing') {
-            //more logic here
-            StateFactory.state = 'editing';
-
         }
+
+        if(state === 'gameOver'){
+            $rootScope.$emit('gameOver');
+        }
+        StateFactory.state = state;
     }
     return {
         changeStateTo,
