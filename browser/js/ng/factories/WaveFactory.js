@@ -7,9 +7,7 @@ app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
             }
         });
         waves.push(wave);
-        console.log("Creating waves ", waves);
     };
-    console.log("Waves so far ", waves);
     let currentWave;
     let setCurrentWave = () => {
         currentWave = waves.pop();

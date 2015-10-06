@@ -157,9 +157,6 @@ app.factory('MapFactory', function(StateFactory) {
              
             })
         })
-
-        console.log("MAPS PLZ", maps[0].grid)
-
     }
 
     return {
