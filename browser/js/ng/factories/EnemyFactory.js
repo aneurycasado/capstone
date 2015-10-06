@@ -10,9 +10,9 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             if (opts) {
                 if (opts.img) {
                     let array = [];
-                    let end; 
+                    let end;
                     if(opts.img === 1) end = 7;
-                    else end = 5; 
+                    else end = 5;
                     for(let i=1; i < end; i++){
                         let img = PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-blue/" + i.toString() + ".png");
                         array.push(img)
@@ -31,7 +31,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             }
             this.slowFactor = 1;
             this.value = 0;
-            
+
             this.radius = 10;
             this.path = opts.path;
             this.pathIndex = 0;
@@ -67,7 +67,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         terminate(){
             for(var i in this.particleEmitters){
                 if(this.particleEmitters[i])this.particleEmitters[i].destroy();
-            }           
+            }
             $rootScope.$emit('deadEnemy', this);
             if(enemies.indexOf(this) !== -1) {
                 let x = enemies.splice(enemies.indexOf(this),1);
@@ -82,7 +82,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                     this.particleEmitters[i].update(delta);
                     this.particleEmitters[i].updateOwnerPos(this.img.position.x, this.img.position.y);
                 }
-            }    
+            }
             if(!this.path[this.pathIndex]) {
                 PlayerFactory.health--;
                 // if(PlayerFactory.health <= 0){
@@ -153,10 +153,14 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         });
     };
 
+    let reset = () => {
+        stage.removeChildren();
+        //enemies = [];
+    }
     let enemiesConstructors = {trojanHorse,bigBug,bossBug};
-
     //adWare, worm
     return {
+        reset,
         stage,
         createEnemy,
         enemies,

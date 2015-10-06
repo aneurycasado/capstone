@@ -31,10 +31,10 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
     let restart = (mapNum) => {
         ProjectileFactory.stage.removeChildren();
         TowerFactory.stage.removeChildren();
-        EnemyFactory.stage.removeChildren();
-        StateFactory.stages.play.removeChildren(); 
+        StateFactory.stages.play.removeChildren();
         $rootScope.$emit('removeNextLevel');
         TowerFactory.resetTowers();
+        EnemyFactory.reset();
         PlayerFactory.restart();
         MapFactory.reset();
         WaveFactory.init();

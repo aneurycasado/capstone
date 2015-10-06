@@ -49,7 +49,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 setTarget: function(enemy) {
                     this.target = enemy;
                 }.bind(this),
-                getEnemies: () => {
+                getEnemies: function() {
                     let arr = [];
                     for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
                         if (this.isEnemyInRange(EnemyFactory.enemies[i])) {
@@ -57,7 +57,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                         }
                     }
                     return arr;
-                }
+                }.bind(this)
             }
             allTowers.push(this);
         }
