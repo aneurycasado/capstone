@@ -110,9 +110,9 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
       }
   }
 
-  class Fire extends Projectile{
-    constructor(projectile){
-      super(projectile);
+  class FirePuddle extends Projectile{
+    constructor(opts){
+      super(opts);
       this.power = 0.5;
       this.radius = 20;
       this.particleEmitter = ParticleFactory.createEmitter('fire', StateFactory.stages.play);
@@ -131,6 +131,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
       });
       this.particleEmitter.update(delta);
     }
+
   }
 
   class FireProjectile extends HomingProjectile{
@@ -141,7 +142,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
       }
 
       specialEffect(){
-        new Fire(this);
+        new FirePuddle(this);
       }
   }
 
