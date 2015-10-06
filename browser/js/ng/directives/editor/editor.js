@@ -22,10 +22,6 @@ app.directive('editor', function($rootScope) {
             scope.saveCodeSnippet = function() {
                 scope.tower.codeSnippet = editor.getValue();
                 scope.tower.evalCodeSnippet();
-                console.log(scope.tower);
-                scope.tower.targetingFunction();
-                //console.log(editor);
-                //console.log(scope.tower.session);
                 scope.$parent.$parent.editing = false;
             }
         }

@@ -42,18 +42,13 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 this.price = options.price;
                 stage.addChild(this.img);
             }
-            allTowers.push(this);
-        }
-        
-        getContext() {
-            let self = this;
-            let obj = {
-                getCurrentTarget: () => {
-                    return self.target;
-                },
-                setTarget: (enemy) => {
-                    self.target = enemy;
-                },
+            this.context = {
+                getCurrentTarget: function() {
+                    return this.target;
+                }.bind(this),
+                setTarget: function(enemy) {
+                    this.target = enemy;
+                }.bind(this),
                 getEnemies: function () {
                     let arr = [];
                     for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
@@ -63,23 +58,46 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                     }
                     return arr;
                 }
-            };
-            if(this.rank === 2) {
-                //add additional properties
             }
-            if(this.rank === 3) {
-                //add additional properties
-            }
-
-            return obj;
+            allTowers.push(this);
         }
+
+        //getContext() {
+        //    let self = this;
+        //    let obj = {
+        //        getCurrentTarget: () => {
+        //            return self.target;
+        //        },
+        //        setTarget: (enemy) => {
+        //            self.target = enemy;
+        //        },
+        //        getEnemies: function () {
+        //            let arr = [];
+        //            for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
+        //                if (this.isEnemyInRange(EnemyFactory.enemies[i])) {
+        //                    arr.push(EnemyFactory.enemies[i])
+        //                }
+        //            }
+        //            return arr;
+        //        }
+        //    };
+        //    if(this.rank === 2) {
+        //        //add additional properties
+        //    }
+        //    if(this.rank === 3) {
+        //        //add additional properties
+        //    }
+        //
+        //    return obj;
+        //}
 
         evalCodeSnippet() {
             if(!this.codeSnippet) return;
             let newArg = this.codeSnippet.match(/\((context)\)/)[0].replace('(', '').replace(')', '');
             let newFunc = this.codeSnippet.replace(/^function\s*\(context\)\s*\{/, '').replace(/}$/, '');
+            let targetFunc = new Function(newArg, newFunc);
             this.targetingFunction = () => {
-                return new Function(newArg, newFunc).call(null, this.getContext())
+                return targetFunc.call(null, this.context)
             };
         }
         addKill() {
