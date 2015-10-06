@@ -4,9 +4,6 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
     let enemies = [];
     let stage = new PIXI.Stage();
-    let randomInt = (min, max) => {
-        return Math.floor(Math.random()*(max-min+1)+min);
-    } 
     class Enemy {
         constructor(opts) {
             if (opts) {

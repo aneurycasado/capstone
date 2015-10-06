@@ -6,8 +6,10 @@ app.directive("sideBar", function(){
     }
 });
 
-app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, GameFactory, StateFactory) {
+app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, GameFactory, StateFactory, WaveFactory, EnemyFactory) {
     $scope.player = PlayerFactory;
+    $scope.waves = WaveFactory.waves;
+    $scope.enemies = EnemyFactory.enemies;
     $scope.showTowers = true;
     $scope.firstWave = true;
     $scope.showPowerUps = false;
