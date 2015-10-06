@@ -16,6 +16,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             //this.options = options ? options : {};
             this.powerUps = [];
             this.codeSnippet = null;
+            this.targetingFunction = null;
             if (options) {
                 var array = [];
                 for(var i=1; i < 4; i++){
@@ -39,7 +40,12 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             }
             allTowers.push(this);
         }
-
+        evalCodeSnippet() {
+            if(!this.codeSnippet) return;
+            let newFunc = this.codeSnippet.replace(/^function\s*\(\)\s*\{/, '').replace(/}$/, '')
+            this.targettingFunction = new Function(newFunc).bind(this);
+            console.log(this.targettingFunction.toString());
+        }
         addKill() {
             this.kills++;
             if (this.kills === 20) this.rank = 2;
@@ -56,7 +62,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
 
         acquireTarget(){
-            for(var i = EnemyFactory.enemies.length - 1; i >= 0; i--){
+            for(let i = EnemyFactory.enemies.length - 1; i >= 0; i--){
                 if(this.isEnemyInRange(EnemyFactory.enemies[i])){
                     this.target = EnemyFactory.enemies[i];
                     return true;
@@ -128,7 +134,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         constructor(x, y){
             super(x, y, {img: '7', power: 5, price:50});
         }
-        
+
         shoot(enemy){
             this.img.play();
             console.log(this.img);
@@ -157,7 +163,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         constructor(x, y) {
             super(x, y, {img: '6', power: 8, price: 50});
         }
-        
+
         shoot(enemy){
             this.img.play();
             new ProjectileFactory.PoisonProjectile({x: this.img.position.x, y: this.img.position.y, speed: 4, radius: 8, enemy: enemy});

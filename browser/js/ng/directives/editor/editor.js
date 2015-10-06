@@ -26,6 +26,7 @@ app.directive('editor', function($rootScope) {
             }
             scope.saveCodeSnippet = function() {
                 scope.tower.codeSnippet = editor.getValue();
+                scope.tower.evalCodeSnippet();
                 //console.log(editor);
                 //console.log(scope.tower.session);
                 console.log("hi i'm saving");

@@ -68,7 +68,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
 
       terminate() {
           //StateFactory.stages.play.removeChild(this.img);
-          this.slowEnemy();          
+          this.slowEnemy();
           this.particleEmitter.destroy();
           projectiles.splice(projectiles.indexOf(this), 1);
       }
@@ -81,12 +81,12 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
         }
         window.setTimeout(function(){
             console.log(Date.now() - this.target.lastSlowed);
-            if(Date.now() - this.target.lastSlowed >  this.slowDuration) {
+            if(Date.now() - this.target.lastSlowed >=  this.slowDuration) {
               this.target.slowFactor = 1;
               this.target.img.tint = 16777215;
             }
         }.bind(this), this.slowDuration);
-        
+
       }
   }
 
