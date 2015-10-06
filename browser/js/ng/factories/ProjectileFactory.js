@@ -14,17 +14,13 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
           for(let opt in opts){
             this[opt] = opts[opt];
           }
-          // this.img.anchor.x = 0.5;
-          // this.img.anchor.y = 0.5;
-          // this.img.height = this.radius*2;
-          // this.img.width = this.radius*2;
           projectiles.push(this);
-          //StateFactory.stages.play.addChild(this.img);
+          window.setTimeout(function(){
+            if(projectiles.indexOf(this) !== -1) this.terminate();
+          }.bind(this), 10000);
       }
 
       terminate() {
-
-          //StateFactory.stages.play.removeChild(this.img);
           this.particleEmitter.destroy();
           projectiles.splice(projectiles.indexOf(this), 1);
       }
@@ -38,8 +34,8 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
 
      update() {
          if(checkCircleCollision(this, this.target)){
-           console.log(this.power);
              this.target.takeDamage(this.power);
+             if(this.specialEffect) this.specialEffect();
              this.terminate();
          }else{
              this.theta = (Math.atan((this.target.position.x - this.x) / (this.target.position.y - this.y)));
@@ -68,21 +64,13 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
         this.update();
       }
 
-      terminate() {
-          //StateFactory.stages.play.removeChild(this.img);
-          this.slowEnemy();
-          this.particleEmitter.destroy();
-          projectiles.splice(projectiles.indexOf(this), 1);
-      }
-
-      slowEnemy() {
+      specialEffect() {
         this.target.lastSlowed = Date.now();
         if(this.target.slowFactor > this.slowSpeed ) {
             this.target.slowFactor = this.slowSpeed;
             this.target.img.tint = 12168959;
         }
         window.setTimeout(function(){
-            console.log(Date.now() - this.target.lastSlowed);
             if(Date.now() - this.target.lastSlowed >=  this.slowDuration) {
               this.target.slowFactor = 1;
               this.target.img.tint = 16777215;
@@ -95,8 +83,29 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
   class FireProjectile extends HomingProjectile{
       constructor(opts){
         super(opts);
+        this.fireDamage = 0.01;
+        this.burnDuration = 2000;
         this.particleEmitter = ParticleFactory.createEmitter('fire', StateFactory.stages.play);
         this.update();
+      }
+
+      specialEffect() {
+        this.target.lastBurned = Date.now();
+        this.target.onFire = true;
+        this.target.fireDamage = .005;
+        if(!this.target.particleEmitters.fire){
+          this.target.particleEmitters.fire = ParticleFactory.createEmitter('fire', StateFactory.stages.play);
+        }
+        window.setTimeout(function(){
+            if(Date.now() - this.target.lastBurned >=  this.burnDuration) {
+              this.target.onFire = false;
+              if(this.target.particleEmitters.fire){
+                this.target.particleEmitters.fire.destroy();
+                this.target.particleEmitters.fire = null;
+              }
+            }
+        }.bind(this), this.burnDuration);
+
       }
   }
 

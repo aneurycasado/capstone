@@ -185,7 +185,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
     class FireTower extends HomingTower {
         constructor(x, y){
-            super(x, y, {img: '7', power: 5, price:50});
+            super(x, y, {img: '7', power: 3, price:50});
         }
 
         shoot(enemy){
