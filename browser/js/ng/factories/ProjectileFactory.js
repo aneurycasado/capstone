@@ -2,6 +2,8 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
 
   var projectiles = [];
 
+  var stage = new PIXI.Stage();
+
   class Projectile {
     constructor(opts){
           this.x = 0;
@@ -28,34 +30,34 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
       }
   }
 
-  class HomingProjectile extends Projectile {
-      constructor(opts){
-          super(opts);
-          this.target = opts.enemy;
-      }
+   class HomingProjectile extends Projectile {
+     constructor(opts){
+         super(opts);
+         this.target = opts.enemy;
+     }
 
-      update() {
-          if(checkCircleCollision(this, this.target)){
-            console.log(this.power);
-              this.target.takeDamage(this.power);
-              this.terminate();
-          }else{
-              this.theta = (Math.atan((this.target.position.x - this.x) / (this.target.position.y - this.y)));
-              this.xVel = this.speed*Math.sin(this.theta);
-              this.yVel = this.speed*Math.cos(this.theta);
-              if(this.y <= this.target.y) {
-                this.x += this.xVel;
-                this.y += this.yVel;
-              }else{
-                this.x -= this.xVel;
-                this.y -= this.yVel;
-              }
-              this.particleEmitter.update(1);
-              this.particleEmitter.updateOwnerPos(this.x, this.y);
-          }
-      }
+     update() {
+         if(checkCircleCollision(this, this.target)){
+           console.log(this.power);
+             this.target.takeDamage(this.power);
+             this.terminate();
+         }else{
+             this.theta = (Math.atan((this.target.position.x - this.x) / (this.target.position.y - this.y)));
+             this.xVel = this.speed*Math.sin(this.theta);
+             this.yVel = this.speed*Math.cos(this.theta);
+             if(this.y <= this.target.y) {
+               this.x += this.xVel;
+               this.y += this.yVel;
+             }else{
+               this.x -= this.xVel;
+               this.y -= this.yVel;
+             }
+             this.particleEmitter.update(1);
+             this.particleEmitter.updateOwnerPos(this.x, this.y);
+         }
+     }
 
-  }
+    }
 
   class IceProjectile extends HomingProjectile{
       constructor(opts){
@@ -154,6 +156,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
   };
 
   return {
+    stage,
     Projectile,
     HomingProjectile,
     FireProjectile,

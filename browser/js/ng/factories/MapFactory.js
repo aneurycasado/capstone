@@ -1,5 +1,23 @@
 'use strict'
-app.factory('MapFactory', function(GridFactory, StateFactory) {
+app.factory('MapFactory', function(StateFactory) {
+   
+    class GridNode {
+        constructor(x, y, opts) {
+            this.x = x;
+            this.y = y;
+            this.coords = {x: x * StateFactory.cellSize, y: y * StateFactory.cellSize};
+            this.enterable = true;
+            this.contains = {};
+            this.canPlaceTower = false;
+            this.terrain = opts.terrain;
+            if (opts) {
+                if (opts.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/background-tilesets/" + opts.img + ".png"));
+                this.img.position.x = this.coords.x;
+                this.img.position.y = this.coords.y;
+                if (opts.canPlaceTower) this.canPlaceTower = true;
+            }
+        }
+    }
 
     class Map {
         constructor(grid, textures){
@@ -11,7 +29,6 @@ app.factory('MapFactory', function(GridFactory, StateFactory) {
 
     let insertNodes = (grid, textures, map) => {
 
-        console.log(textures);
         var tile;
         var canPlaceTower;
         for(let row = 0; row < grid.length; row++){
@@ -30,7 +47,7 @@ app.factory('MapFactory', function(GridFactory, StateFactory) {
                     canPlaceTower = true;
                     tile = textures.tile;
                 }
-                grid[row][col] = new GridFactory.GridNode(col, row, {img: tile, canPlaceTower: canPlaceTower, terrain: grid[row][col]});
+                grid[row][col] = new GridNode(col, row, {img: tile, canPlaceTower: canPlaceTower, terrain: grid[row][col]});
                 map.stage.addChild(grid[row][col].img);
             }
         }
@@ -128,7 +145,22 @@ app.factory('MapFactory', function(GridFactory, StateFactory) {
     let maps = [];
     maps.push(new Map(mapGrid1, textures));
 
+    let reset = () => {
+
+        maps.forEach(function(map){
+            map.grid.forEach(function(row){
+
+                row.forEach(function(node){
+                    node.contains = {};
+                    if(node.terrain == 0) node.canPlaceTower = true;
+                });
+             
+            })
+        })
+    }
+
     return {
+        reset,
         Map,
         maps
     };

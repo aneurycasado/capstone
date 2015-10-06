@@ -17,15 +17,17 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, 
     $scope.count = 0;
     $scope.state = StateFactory.state;
     $rootScope.$on('wavesDone', function() {
-        console.log('in the wavesDone');
         $scope.state = 'complete';
         $scope.$digest();
     })
     $rootScope.$on("nextWave", function(){
-        console.log("Time to trigger nextWave");
         $scope.state = 'standby';
         $scope.$digest();
     });
+    $rootScope.$on('removeNextLevel', function(){
+        $scope.state = 'standby';
+    });
+
     $scope.saveGame = function(){
         var player = {
             health: PlayerFactory.health,
@@ -48,23 +50,13 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, 
         }
     }
     $scope.towerClicked = function(tower){
-        console.log("tower clicked ", tower);
         $rootScope.$emit("currentTower", tower);
     }
     $scope.initiateWave = function(){
-        //console.log("initiateWave");
         GameFactory.changeStateTo("wave");
-        console.log($scope.state);
         $scope.state = StateFactory.state;
     }
-    //$scope.initiateNextWave = function(){
-    //    console.log("triggerNextWave");
-    //    $scope.nextWave = false;
-    //    GameFactory.changeStateTo("wave");
-    //}
-    $scope.initiateLevel = function() {
-        GameFactory.changeStateTo("selection");
-    }
+
 });
 
 function createTowers (){

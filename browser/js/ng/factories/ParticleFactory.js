@@ -285,7 +285,6 @@ app.factory('ParticleFactory', function() {
 
     };
 
-
     return {
         createEmitter
     }
