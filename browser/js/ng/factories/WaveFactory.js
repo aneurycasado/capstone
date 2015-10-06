@@ -10,7 +10,7 @@ app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
     };
     // let randomInt = (min, max) => {
     //     return Math.floor(Math.random()*(max-min+1)+min);
-    // } 
+    // }
     let currentWave;
     let setCurrentWave = () => {
         currentWave = waves.pop();
@@ -53,7 +53,7 @@ app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
     }
     let createWaves = () => {
         let waves = [];
-        let min = 1; 
+        let min = 1;
         let max = 30;
         let numOfWaves = randomInt(min,max);
         for(let i = 0; i < 2; i++){
@@ -67,8 +67,8 @@ app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
                     if(numOfTrojanHorse === 0) continue;
                     else{
                        wave.push({name: 'trojanHorse', num: 1});
-                       numOfTrojanHorse--; 
-                    } 
+                       numOfTrojanHorse--;
+                    }
                 }else if(currentAnimal === 2){
                     if(numOfBigBug === 0) continue;
                     else{
@@ -95,7 +95,7 @@ app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
             createWave(wave);
         });
     }
-       
+
     wavesDefinition = createWaves();
     wavesDefinition.forEach((wave) => {
         createWave(wave);

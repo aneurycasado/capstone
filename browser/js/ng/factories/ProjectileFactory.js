@@ -76,7 +76,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
               this.target.img.tint = 16777215;
             }
         }.bind(this), this.slowDuration);
-        
+
       }
   }
 
@@ -105,7 +105,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
               }
             }
         }.bind(this), this.burnDuration);
-        
+
       }
   }
 

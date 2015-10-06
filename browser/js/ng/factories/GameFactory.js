@@ -12,7 +12,7 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
         xNOREMOVE.random = Math.random() * 1000;
         if(Math.random() * 10 < .2){
             let zKrandomizer = xNOREMOVE;
-        } 
+        }
         //reinitializing
         WaveFactory = WaveFactory;
     })
@@ -34,8 +34,8 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
             ProjectileFactory.updateAll(delta);
             TowerFactory.updateAll(delta);
             EnemyFactory.updateAll(delta);
-            
-            if(EnemyFactory.enemies.length === 0) {
+
+            if((EnemyFactory.enemies.length === 0) && !WaveFactory.currentWaveLength()) {
                 if(WaveFactory.endOfWaves()) {
                     changeStateTo('standby');
                 } else {
