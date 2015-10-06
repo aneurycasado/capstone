@@ -44,11 +44,41 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             }
             allTowers.push(this);
         }
+        getContext() {
+            let self = this;
+            let obj = {
+                getCurrentTarget: () => {
+                    return self.target;
+                },
+                setTarget: (enemy) => {
+                    self.target = enemy;
+                },
+                getEnemies: function () {
+                    let arr = [];
+                    for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
+                        if (this.isEnemyInRange(EnemyFactory.enemies[i])) {
+                            arr.push(EnemyFactory.enemies[i])
+                        }
+                    }
+                    return arr;
+                }
+            };
+            if(this.rank === 2) {
+                //add additional properties
+            }
+            if(this.rank === 3) {
+                //add additional properties
+            }
+
+            return obj;
+        }
         evalCodeSnippet() {
             if(!this.codeSnippet) return;
-            let newFunc = this.codeSnippet.replace(/^function\s*\(\)\s*\{/, '').replace(/}$/, '')
-            this.targettingFunction = new Function(newFunc).bind(this);
-            console.log(this.targettingFunction.toString());
+            let newArg = this.codeSnippet.match(/\((context)\)/)[0].replace('(', '').replace(')', '');
+            let newFunc = this.codeSnippet.replace(/^function\s*\(context\)\s*\{/, '').replace(/}$/, '');
+            this.targetingFunction = () => {
+                return new Function(newArg, newFunc).call(null, this.getContext())
+            };
         }
         addKill() {
             this.kills++;

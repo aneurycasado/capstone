@@ -13,7 +13,7 @@ app.directive('editor', function($rootScope) {
             editor.getSession().setMode("ace/mode/javascript");
             editor.focus();
             if(scope.tower) {
-                if(scope.tower.codeSnippet === null) editor.session.setValue('');
+                if(scope.tower.codeSnippet === null) editor.session.setValue('function(context) {}');
                 else {
                     editor.session.setValue(scope.tower.codeSnippet);
 
@@ -22,6 +22,8 @@ app.directive('editor', function($rootScope) {
             scope.saveCodeSnippet = function() {
                 scope.tower.codeSnippet = editor.getValue();
                 scope.tower.evalCodeSnippet();
+                console.log(scope.tower);
+                scope.tower.targetingFunction();
                 //console.log(editor);
                 //console.log(scope.tower.session);
                 scope.$parent.$parent.editing = false;
