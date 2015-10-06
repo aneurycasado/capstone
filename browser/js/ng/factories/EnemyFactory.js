@@ -113,6 +113,13 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         getSpeed() {
             return this.speed;
         }
+        getPosition() {
+            return this.position;
+        }
+        getName() {
+            return this.constructor.name;
+        }
+
     }
 
     class TrojanHorse extends Enemy {
