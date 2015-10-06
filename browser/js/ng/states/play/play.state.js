@@ -29,12 +29,16 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
         data.state = "standby";
     };
 
-    var init = () => {
+    var init = (num) => {
 
-        start(MapFactory.maps[0]);
+        start(MapFactory.maps[num]);
     };
 
-    init();
+    $rootScope.$on('mapChosen', function(event,data){
+        console.log("Map chosen ", data);
+        init(data-1);
+    });
+    
 
     $scope.tower = null;
     //$scope.waves = [[{name: 'trojanHorse', num: 1}], [{name: 'trojanHorse', num: 1}]];

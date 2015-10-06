@@ -27,6 +27,10 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, 
     $rootScope.$on('removeNextLevel', function(){
         $scope.state = 'standby';
     });
+    $rootScope.$on('mapChosen', function(){
+        $scope.state = 'standby';
+        console.log("Map chosen");
+    });
 
     $scope.saveGame = function(){
         var player = {

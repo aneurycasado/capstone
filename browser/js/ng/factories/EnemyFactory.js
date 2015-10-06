@@ -2,9 +2,11 @@
 //FIXME
 app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, PlayerFactory) {
 
-    var enemies = [];
-    var stage = new PIXI.Stage();
-
+    let enemies = [];
+    let stage = new PIXI.Stage();
+    let randomInt = (min, max) => {
+        return Math.floor(Math.random()*(max-min+1)+min);
+    } 
     class Enemy {
         constructor(opts) {
             if (opts) {
@@ -13,8 +15,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                     let end; 
                     if(opts.img === 1) end = 7;
                     else end = 5; 
-                    for(var i=1; i < end; i++){
-                        var img = PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-blue/" + i.toString() + ".png");
+                    for(let i=1; i < end; i++){
+                        let img = PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-blue/" + i.toString() + ".png");
                         array.push(img)
                     }
                     this.img = new PIXI.extras.MovieClip(array);
@@ -38,8 +40,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
 
         moveTowards(delta) {
-            var xdone = false;
-            var ydone = false;
+            let xdone = false;
+            let ydone = false;
             if(this.position.x > this.path[this.pathIndex].x + 5) {
                 this.img.rotation = 3.14;
                 this.position.x -= this.slowFactor * this.speed * delta;
@@ -66,7 +68,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
         terminate(){
             if(enemies.indexOf(this) !== -1) {
-                var x = enemies.splice(enemies.indexOf(this),1);
+                let x = enemies.splice(enemies.indexOf(this),1);
             }
             stage.removeChild(this.img);
         }
@@ -124,7 +126,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
     }
 
-    var createEnemy = (type, path) => {
+    let createEnemy = (type, path) => {
 
         let newEnemy;
 
@@ -135,13 +137,13 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         return newEnemy;
     };
 
-    var updateAll = function(delta){
+    let updateAll = (delta) => {
         enemies.forEach(function(enemy){
             enemy.update(delta);
         });
     };
 
-    var enemiesConstructors = {trojanHorse,bigBug,bossBug};
+    let enemiesConstructors = {trojanHorse,bigBug,bossBug};
 
     //adWare, worm
     return {
