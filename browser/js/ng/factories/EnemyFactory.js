@@ -9,8 +9,11 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         constructor(opts) {
             if (opts) {
                 if (opts.img) {
-                    var array = [];
-                    for(var i=1; i < 7; i++){
+                    let array = [];
+                    let end; 
+                    if(opts.img === 1) end = 7;
+                    else end = 5; 
+                    for(var i=1; i < end; i++){
                         var img = PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-blue/" + i.toString() + ".png");
                         array.push(img)
                     }
@@ -28,8 +31,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             }
             this.slowFactor = 1;
             this.value = 0;
-            this.health = 10;
-            this.speed = 128;
+            
             this.radius = 10;
             this.path = opts.path;
             this.pathIndex = 0;
@@ -99,22 +101,28 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         constructor(opts) {
             super({img: '1', power: 2, path: opts.path});
             this.value = 5;
+            this.speed = 128;
+            this.health = 10;
         }
     }
 
-    // class trojanHorse extends Enemy {
-    //     constructor(opts) {
-    //         super({img: '1', power: 2, path: opts.path});
-    //         this.value = 5;
-    //     }
-    // }
+    class bigBug extends Enemy {
+        constructor(opts) {
+            super({img: '2', power: 2, path: opts.path});
+            this.value = 5;
+            this.speed = 90;
+            this.health = 30;
+        }
+    }
 
-    // class trojanHorse extends Enemy {
-    //     constructor(opts) {
-    //         super({img: '1', power: 2, path: opts.path});
-    //         this.value = 5;
-    //     }
-    // }
+    class bossBug extends Enemy {
+        constructor(opts) {
+            super({img: '3', power: 2, path: opts.path});
+            this.value = 5;
+            this.speed = 100;
+            this.health = 100;
+        }
+    }
 
     var createEnemy = (type, path) => {
 
@@ -133,15 +141,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         });
     };
 
-
-    // var terminateEnemy = (enemyObj) => {
-    //     if(enemies.indexOf(enemyObj) !== -1) {
-    //         var x = enemies.splice(enemies.indexOf(enemyObj),1);
-    //         return x[0];
-    //     }
-    //  };
-
-    var enemiesConstructors = {trojanHorse};
+    var enemiesConstructors = {trojanHorse,bigBug,bossBug};
 
     //adWare, worm
     return {

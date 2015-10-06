@@ -6,6 +6,7 @@ app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
                 wave.push(element.name);
             }
         });
+        console.log("Wave in createWave", wave);
         waves.push(wave);
     };
     let currentWave;
@@ -40,19 +41,63 @@ app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
 
     let waves = [];
     let wavesDefinition = [];
+    let randomInt = function(min,max){
+        return Math.floor(Math.random()*(max-min+1)+min);
+    }
+    let createWaves = function(){
+        let waves = [];
+        let min = 1; 
+        let max = 30;
+        let numOfWaves = randomInt(min,max);
+        for(let i = 0; i < numOfWaves; i++){
+            let wave = [];
+            let numOfTrojanHorse = randomInt(min,max);
+            let numOfBigBug = randomInt(min,max);
+            let numOfBossBug = randomInt(min,max);
+            while(numOfTrojanHorse > 0 && numOfBigBug > 0 && numOfBossBug > 0){
+                let currentAnimal = randomInt(1,3);
+                if(currentAnimal === 1){
+                    if(numOfTrojanHorse === 0) continue;
+                    else{
+                       wave.push({name: 'trojanHorse', num: 1});
+                       numOfTrojanHorse--; 
+                    } 
+                }else if(currentAnimal === 2){
+                    if(numOfBigBug === 0) continue;
+                    else{
+                        wave.push({name: 'bigBug', num: 1});
+                        numOfBigBug--;
+                    }
+                }else if(currentAnimal === 3){
+                    if(numOfBossBug === 0) continue;
+                    else{
+                        wave.push({name: 'bossBug', num: 1})
+                        numOfBossBug--;
+                    }
+                }
+            }
+            console.log("New wave ", wave);
+            waves.push(wave);
+        }
+        console.log("Waves in createWaves", waves);
+        return waves
+    }
+
 
     let init = () => {
-        wavesDefinition = [[{name: 'trojanHorse', num: 1}], [{name: 'trojanHorse', num: 1}]];
+        wavesDefinition = createWaves(); //[[{name: 'trojanHorse', num: 1}], [{name: 'trojanHorse', num: 1}]];
+        console.log("Waves from createWaves in init", wavesDefinition);
         wavesDefinition.forEach(function(wave,i){
             createWave(wave);
         });
+        console.log("Waves in Waves factory init", waves);
     }
        
-    wavesDefinition = [[{name: 'trojanHorse', num: 1}], [{name: 'trojanHorse', num: 1}]];
+    wavesDefinition = createWaves(); //[[{name: 'trojanHorse', num: 1}], [{name: 'trojanHorse', num: 1}]];
     wavesDefinition.forEach(function(wave,i){
         createWave(wave);
     });
-
+    console.log("Waves in Waves factory", waves);
     return {
         init,
         waves,
