@@ -49,7 +49,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 setTarget: function(enemy) {
                     this.target = enemy;
                 }.bind(this),
-                getEnemies: function () {
+                getEnemies: () => {
                     let arr = [];
                     for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
                         if (this.isEnemyInRange(EnemyFactory.enemies[i])) {
@@ -57,7 +57,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                         }
                     }
                     return arr;
-                }
+                },
             }
             allTowers.push(this);
         }
@@ -93,7 +93,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
         evalCodeSnippet() {
             if(!this.codeSnippet) return;
-            let newArg = this.codeSnippet.match(/\((context)\)/)[0].replace('(', '').replace(')', '');
+            let newArg = this.codeSnippet.match(/\(context\)/)[0].replace('(', '').replace(')', '');
             let newFunc = this.codeSnippet.replace(/^function\s*\(context\)\s*\{/, '').replace(/}$/, '');
             let targetFunc = new Function(newArg, newFunc);
             this.targetingFunction = () => {

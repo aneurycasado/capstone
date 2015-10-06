@@ -24,6 +24,9 @@ app.directive('editor', function($rootScope) {
                 scope.tower.evalCodeSnippet();
                 scope.$parent.$parent.editing = false;
             }
+            scope.goBack = () => {
+                scope.$parent.$parent.editing = false;
+            }
         }
     }
 });
