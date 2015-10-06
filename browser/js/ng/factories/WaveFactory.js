@@ -56,7 +56,7 @@ app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
         let min = 1; 
         let max = 30;
         let numOfWaves = randomInt(min,max);
-        for(let i = 0; i < 2; i++){
+        for(let i = 0; i < numOfWaves; i++){
             let wave = [];
             let numOfTrojanHorse = randomInt(min,max);
             let numOfBigBug = randomInt(min,max);

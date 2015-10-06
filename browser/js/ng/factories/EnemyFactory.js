@@ -80,6 +80,11 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             }
             if(!this.path[this.pathIndex]) {
                 PlayerFactory.health--;
+                // if(PlayerFactory.health <= 0){
+                //     // GameFactory.changeStateTo('gameOver');
+                //     $rootScope.$emit('gameOver');
+                //     console.log("Game over ", PlayerFactory.health);
+                // }
                 $rootScope.$digest();
                 this.terminate();
             }
