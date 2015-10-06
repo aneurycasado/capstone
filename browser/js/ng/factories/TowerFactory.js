@@ -1,6 +1,10 @@
 'use strict'
-app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactory, StateFactory, GridFactory, ParticleFactory) {
-    var allTowers = [];
+app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactory, StateFactory, ParticleFactory) {
+    let data = StateFactory;
+
+    let allTowers = [];
+
+    let stage = new PIXI.Stage();
 
     class Tower {
         constructor(x, y, options) {
@@ -15,11 +19,11 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             this.session = null;
             //this.options = options ? options : {};
             this.powerUps = [];
-            this.codeSnippets = [];
+            this.codeSnippet = null;
             if (options) {
-                var array = [];
-                for(var i=1; i < 4; i++){
-                    var img = PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + i + ".png");
+                let array = [];
+                for(let i=1; i < 4; i++){
+                    let img = PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + i + ".png");
                     array.push(img)
                 }
                 this.img = new PIXI.extras.MovieClip(array);
@@ -35,7 +39,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 if (options.range) this.range = options.range;
                 if (options.reloadTime) this.reloadTime = options.reloadTime;
                 this.price = options.price;
-                StateFactory.stages.play.addChild(this.img);
+                stage.addChild(this.img);
             }
             allTowers.push(this);
         }
@@ -47,8 +51,8 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
 
         terminate() {
-          StateFactory.stages.play.removeChild(this.img);
-          allTowers.splice(allTowers.indexOf(this), 1);
+            stage.removeChild(this.img);
+            allTowers.splice(allTowers.indexOf(this), 1);
         }
 
         countPowerUps() {
@@ -56,7 +60,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
 
         acquireTarget(){
-            for(var i = EnemyFactory.enemies.length - 1; i >= 0; i--){
+            for(let i = EnemyFactory.enemies.length - 1; i >= 0; i--){
                 if(this.isEnemyInRange(EnemyFactory.enemies[i])){
                     this.target = EnemyFactory.enemies[i];
                     return true;
@@ -76,7 +80,6 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 //this.target = EnemyFactory.enemies[0];
             }
             if(this.target){
-                console.log(this.reloadTime);
                 if(!this.reloading){
                     this.shoot(this.target);
                     this.reloading = true;
@@ -92,7 +95,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
     function createTower(x, y, type) {
         let towerConstructor = towers[type];
         let newTower;
-        let currentGridNode = GridFactory.grid[y][x];
+        let currentGridNode = data.map.grid[y][x];
         if (currentGridNode.canPlaceTower) {
             newTower = new towerConstructor(x, y);
             currentGridNode.contains.tower = newTower;
@@ -131,7 +134,6 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         
         shoot(enemy){
             this.img.play();
-            console.log(this.img);
             new ProjectileFactory.FireProjectile({x: this.img.position.x, y: this.img.position.y, speed: 4, radius: 8, enemy: enemy});
         }
     }
@@ -167,20 +169,30 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
     let towers = {IceTower, ThunderTower, FireTower, PoisonTower};
     let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
 
-    var updateAll = function(delta){
-        allTowers.forEach(function(tower){
+    let updateAll = (delta) => {
+        allTowers.forEach((tower) => {
             if(tower.update) tower.update(delta);
         });
 
         // if(ice) ice.update(delta);
         // if(ice) ice.emit = true;
     };
+    let resetTowers = () => {
+
+
+        allTowers = [];
+
+        return allTowers;
+    }
 
 
 
     return {
         createTower,
         updateAll,
-        prices
+        prices,
+        stage,
+        resetTowers,
     };
+
 });

@@ -1,7 +1,7 @@
 <canvas id = "stage"></canvas>
 <side-bar id = "sideBar" ng-show = "!editing"></side-bar>
-<start-modal></start-modal>
+<choose-map-modal></choose-map-modal>
 <level-modal></level-modal>
-<div id="editor-container" ng-show="editing">
-    <editor tower="selectedTower" editing="editing"></editor>
+<div id="editor-container" ng-if="editing">
+    <editor tower="selectedTower"></editor>
 </div>

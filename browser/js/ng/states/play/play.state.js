@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 app.config(function ($stateProvider) {
     $stateProvider
         .state('play', {
@@ -13,61 +13,73 @@ app.config(function ($stateProvider) {
         })
 });
 
-app.controller('PlayController', function ($scope, player, $timeout, $rootScope, WaveFactory, MapFactory, StateFactory, TowerFactory, GridFactory, PlayerFactory, EnemyFactory, ProjectileFactory, GameFactory) {
-    var data = StateFactory;
-    console.log("Player from resolve ", player);
-    var start = map => {
+app.controller('PlayController', function ($scope, player, $state,$timeout, $rootScope, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, ProjectileFactory, GameFactory) {
+    let data = StateFactory;
+    StateFactory.canvas = document.getElementById("stage");
+    StateFactory.renderer = PIXI.autoDetectRenderer(data.width, data.height, data.canvas);
+    document.body.appendChild(data.renderer.view);
+    let start = map => {
         data.map = map;
-        GridFactory.grid = data.map.grid;
-        StateFactory.stages.play = map.stage;
+        StateFactory.stages.play = new PIXI.Stage();
+        StateFactory.stages.play.addChild(map.stage);//yaaaaa
+        StateFactory.stages.play.addChild(EnemyFactory.stage);//yaaaaa
+        StateFactory.stages.play.addChild(TowerFactory.stage);//yaaaaa
+        StateFactory.stages.play.addChild(ProjectileFactory.stage);//yaaaaa
         data.state = "standby";
     };
+    //Placed here for now
+    let restart = (mapNum) => {
+        ProjectileFactory.stage.removeChildren();
+        TowerFactory.stage.removeChildren();
+        EnemyFactory.stage.removeChildren();
+        StateFactory.stages.play.removeChildren(); 
+        $rootScope.$emit('removeNextLevel');
+        TowerFactory.resetTowers();
+        PlayerFactory.restart();
+        MapFactory.reset();
+        WaveFactory.init();
+        init(mapNum);
+    }
 
-    var init = () => {
-        StateFactory.waves = [[{name: 'trojanHorse', num: 12}], [{name: 'trojanHorse', num: 15}]];
-        StateFactory.waves.forEach(function(wave,i){
-            WaveFactory.createWave(wave);
-        });
-        //WaveFactory.setCurrentWave();
-
-        StateFactory.canvas = document.getElementById("stage");
-        console.log(StateFactory.canvas);
-        StateFactory.renderer = PIXI.autoDetectRenderer(data.width, data.height, data.canvas);
-        document.body.appendChild(data.renderer.view);
-        start(MapFactory.maps[0]);
-
+    let init = (num) => {
+        if(num !== undefined) $scope.mapNum = num;
+        start(MapFactory.maps[$scope.mapNum]);
     };
 
-    init();
+    $rootScope.$on('mapChosen', (event,data) => {
+        console.log("Map chosen ", data);
+        init(data-1);
+    });
 
-    $scope.tower = null;
-    $scope.waves = [[{name: 'trojanHorse', num: 12}], [{name: 'trojanHorse', num: 15}]];
-    $scope.count = 0;
-    $rootScope.$on("currentTower", function (event, data) {
+    $rootScope.$on('choseADifferentMap', (event,data) => {
+        restart(data-1);
+    });
+    $rootScope.$on("currentTower", (event, data) => {
         $scope.tower = data;
     });
-    $rootScope.$on("initiateWave", function (event, data) {
+    $rootScope.$on("initiateWave", (event, data) => {
         $scope.setUp = false;
         $scope.playing = true;
         data.initiateWave();
     });
-    $rootScope.$on("readyForNextWave", function (event, data) {
-        console.log("We hit next wave");
+    $rootScope.$on("readyForNextWave", (event, data) => {
         StateFactory.initiateWave();
-        //$scope.$digest();
     });
-    // window.addEventListener('mousedown', function (e) {
-    $('canvas').on('click', function(e){
+    $rootScope.$on('restartLevel', (event, data) => {
+        restart();
+    });
+    $scope.tower = null;
+    $('canvas').on('click', (e) => {
         if ($scope.tower !== null) {
             let towerPositionX = Math.floor(e.offsetX / StateFactory.cellSize);
             let towerPositionY = Math.floor(e.offsetY / StateFactory.cellSize);
-            $scope.selectedTower = GridFactory.grid[towerPositionY][towerPositionX].contains.tower;
-            console.log(GridFactory.grid[towerPositionY][towerPositionX].canPlaceTower);
-            if (GridFactory.grid[towerPositionY][towerPositionX].contains.tower) {
+            $scope.selectedTower = data.map.grid[towerPositionY][towerPositionX].contains.tower;
+
+            if (data.map.grid[towerPositionY][towerPositionX].contains.tower) {
                 $scope.editing = true;
                 $scope.$digest();
-            } else if (!GridFactory.grid[towerPositionY][towerPositionX].canPlaceTower) {
-                console.log("false");
+            } else if (!data.map.grid[towerPositionY][towerPositionX].canPlaceTower) {
+
             } else {
                 if(PlayerFactory.money - TowerFactory.prices[$scope.tower.type] >= 0){
                     TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.type + "Tower");

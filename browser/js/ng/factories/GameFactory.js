@@ -1,10 +1,10 @@
 'use strict'
 
-app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, PlayerFactory, ParticleFactory, MapFactory, GridFactory, ProjectileFactory, StateFactory, TowerFactory) {
+app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, PlayerFactory, ParticleFactory, MapFactory, ProjectileFactory, StateFactory, TowerFactory) {
     let data = StateFactory;
     let loop = then =>  {
-        var now = Date.now();
-        var delta = (now - then) / 1000;
+        let now = Date.now();
+        let delta = (now - then) / 1000;
 
         if (data.state == "selection") {
             //more logic
@@ -17,6 +17,7 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
             ProjectileFactory.updateAll(delta);
             TowerFactory.updateAll(delta);
             EnemyFactory.updateAll(delta);
+            
             if(EnemyFactory.enemies.length === 0) {
                 if(WaveFactory.endOfWaves()) {
                     changeStateTo('standby');
@@ -31,13 +32,6 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
         if (data.state === 'editing') {
 
         }
-
-
-        //if(GameFactory.nextWave){
-        //    GameFactory.nextWave = false;
-        //    $rootScope.$emit("nextWave")
-        //    $scope.count++;
-        //}
         if (data.launchCritters) {
             loadEnemy();
         }
@@ -46,26 +40,12 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
     };
     let changeStateTo = (state) => {
         if(state === 'wave') {
-            //if(EnemyFactory.enemies.length === 0 && GameFactory.launchCritters) {
-            //    if(endOfWaves()) {
-            //        setCurrentWave();
-            //        $rootScope.$emit('nextWave');
-            //        GameFactory.state = "nextWave";
-            //    } else {
-            //        GameFactory.state = "completed";
-            //    }
-            //    GameFactory.launchCritters = false;
-            //}
             WaveFactory.setCurrentWave();
             StateFactory.state = "wave";
         }
         if(state === 'complete') {
             $rootScope.$emit('wavesDone');
             StateFactory.state = 'complete';
-            //if(data.wavesDone && !sendToNextLevel) {
-            //    sendToNextLevel = true;
-            //    $rootScope.$emit('wavesDone')
-            //}
         }
         if(state === 'standby') {
             //more logic here

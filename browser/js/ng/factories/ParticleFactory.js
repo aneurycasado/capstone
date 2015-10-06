@@ -7,7 +7,7 @@ app.factory('ParticleFactory', function() {
             this.emitter = null;
 
             // Preload the particle images and create PIXI textures from it
-            var urls, makeTextures = false;
+            let urls, makeTextures = false;
             if(imagePaths.spritesheet)
                 urls = [imagePaths.spritesheet];
             else if(imagePaths.textures)
@@ -19,17 +19,17 @@ app.factory('ParticleFactory', function() {
             }
 
             //collect the textures, now that they are all loaded
-            var art;
+            let art;
             if(makeTextures){
                 art = [];
-                for(var i = 0; i < urls.length; ++i){
+                for(let i = 0; i < urls.length; ++i){
                     art.push(PIXI.Texture.fromImage(imagePaths[i]));
                 }
             }else
                 art = imagePaths.art;
               
             // Create the new emitter and attach it to the stage
-            var emitterContainer;
+            let emitterContainer;
             if(useParticleContainer)
             {
                 emitterContainer = new PIXI.ParticleContainer();
@@ -62,7 +62,7 @@ app.factory('ParticleFactory', function() {
         };
     }
 
-    var particles = {
+    let particles = {
         damageSparks:{
                 "alpha": {
                     "start": 1,
@@ -271,20 +271,19 @@ app.factory('ParticleFactory', function() {
             }
     };
 
-    var createEmitter = function(emitterType, container, arr){
+    let createEmitter = (emitterType, container, arr) => {
         if(!arr) arr = [emitterType];
         else if(typeof arr === 'string') arr = [arr];
 
         return new ParticleEmitter(
             container,
-            arr.map(function(item){
+            arr.map((item) => {
                 return 'images/particles/' + item + '.png';
             }),
             particles[emitterType]
         );
 
     };
-
 
     return {
         createEmitter
