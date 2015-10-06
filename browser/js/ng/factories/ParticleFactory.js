@@ -117,20 +117,20 @@ app.factory('ParticleFactory', function() {
 
             fire: {
                 "alpha": {
-                    "start": 1,
-                    "end": 1
+                    "start": 0.62,
+                    "end": 0
                 },
                 "scale": {
-                    "start": 1,
-                    "end": 1,
-                    "minimumScaleMultiplier": 1.08
+                    "start": 0.02,
+                    "end": 0.5,
+                    "minimumScaleMultiplier": 1
                 },
                 "color": {
                     "start": "#fff191 ",
                     "end": "#ff622c "
                 },
                 "speed": {
-                    "start": 494,
+                    "start": 500,
                     "end": 500
                 },
                 "acceleration": {
@@ -142,28 +142,27 @@ app.factory('ParticleFactory', function() {
                     "max": 275
                 },
                 "rotationSpeed": {
-                    "min": 55,
+                    "min": 50,
                     "max": 50
                 },
                 "lifetime": {
-                    "min": 0.001,
-                    "max": 0.001
+                    "min": 0.02,
+                    "max": 0.02
                 },
                 "blendMode": "normal",
                 "frequency": 0.001,
-                "emitterLifetime": -1,
+                "emitterLifetime": 2000,
                 "maxParticles": 1000,
                 "pos": {
                     "x": 0,
                     "y": 0
                 },
                 "addAtBack": false,
-                "spawnType": "ring",
+                "spawnType": "circle",
                 "spawnCircle": {
                     "x": 0,
                     "y": 0,
-                    "r": 9,
-                    "minR": 0
+                    "r": 4
                 }
             },
 
@@ -271,14 +270,20 @@ app.factory('ParticleFactory', function() {
             }
     };
 
-    let createEmitter = (emitterType, container, arr) => {
-        if(!arr) arr = [emitterType];
-        else if(typeof arr === 'string') arr = [arr];
+    var particleImageTable = {
+        fire: [1, 2],
+        ice: [3],
+        poison: [4],
+        damageSparks: [5]
+    };
+
+    let createEmitter = (emitterType, container) => {
+         let imageArr = particleImageTable[emitterType];
 
         return new ParticleEmitter(
             container,
-            arr.map((item) => {
-                return 'images/particles/' + item + '.png';
+            imageArr.map((particleNumber) => {
+                return 'images/particles/' + particleNumber + '.png';
             }),
             particles[emitterType]
         );
