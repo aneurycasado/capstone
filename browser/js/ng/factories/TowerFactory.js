@@ -53,11 +53,11 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                     let arr = [];
                     for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
                         if (this.isEnemyInRange(EnemyFactory.enemies[i])) {
-                            arr.push(EnemyFactory.enemies[i])
+                            arr.push(EnemyFactory.enemies[i]) //FIXME
                         }
                     }
                     return arr;
-                },
+                }
             }
             allTowers.push(this);
         }
