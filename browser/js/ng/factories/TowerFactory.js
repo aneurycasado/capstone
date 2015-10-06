@@ -17,31 +17,22 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 if(deadEnemy == this.target) this.target = null;
             }.bind(this));
             this.session = null;
-            //this.options = options ? options : {};
             this.powerUps = [];
             this.codeSnippet = null;
-            this.targetingFunction = null;
-            if (options) {
-                let array = [];
-                for(let i=1; i < 4; i++){
-                    let img = PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + i + ".png");
-                    array.push(img)
-                }
-                this.img = new PIXI.extras.MovieClip(array);
-                // if (options.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + this.rank + ".png"));
-                this.img.position.x = this.position.x * StateFactory.cellSize + .5 * StateFactory.cellSize;
-                this.img.anchor.x = .5;
-                this.img.anchor.y = .5;
-                this.img.animationSpeed = .1;
-
-                this.img.position.y = this.position.y * StateFactory.cellSize + .5 * StateFactory.cellSize;
-                if (options.power) this.power = options.power;
-                if (options.cost) this.cost = options.cost;
-                if (options.range) this.range = options.range;
-                if (options.reloadTime) this.reloadTime = options.reloadTime;
-                this.price = options.price;
-                stage.addChild(this.img);
+            for(let opt in options){
+                this[opt] = options[opt];
             }
+            let array = [];
+            for(let i=1; i < 4; i++){
+                let img = PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + i + ".png");
+                array.push(img)
+            }
+            this.img = new PIXI.extras.MovieClip(array);
+            this.img.position.x = this.position.x * StateFactory.cellSize + .5 * StateFactory.cellSize;
+            this.img.anchor.x = .5;
+            this.img.anchor.y = .5;
+            this.img.animationSpeed = .1;
+            this.img.position.y = this.position.y * StateFactory.cellSize + .5 * StateFactory.cellSize;
             this.context = {
                 getCurrentTarget: function() {
                     return this.target;
@@ -59,6 +50,8 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                     return arr;
                 }.bind(this)
             }
+            stage.addChild(this.img);
+            this.targetingFunction = null;
             allTowers.push(this);
         }
 
@@ -97,7 +90,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             let newFunc = this.codeSnippet.replace(/^function\s*\(context\)\s*\{/, '').replace(/}$/, '');
             let targetFunc = new Function(newArg, newFunc);
             this.targetingFunction = () => {
-                return targetFunc.call(null, this.context)
+                return targetFunc.call(null, this.context);
             };
         }
         addKill() {
@@ -162,30 +155,39 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
     }
 
-    class HomingTower extends Tower {
-        constructor(x, y, opts) {
-            super(x, y, opts);
-            this.range = 200;
-            this.reloadTime = 400;
-        }
-
-    }
-
-
-    class IceTower extends HomingTower {
+    class IceTower extends Tower {
         constructor(x, y) {
-            super(x, y, {img: '4', power: 2, price: 50});
+            super(x, y, {
+                img: '4',
+                power: 2,
+                price: 50,
+                reloadTime: 400,
+                range: 200
+            });
         }
 
         shoot(enemy){
             this.img.play();
-            new ProjectileFactory.IceProjectile({power: this.power, x: this.img.position.x, y: this.img.position.y, speed: 4, radius: 8, enemy: enemy});
+            new ProjectileFactory.IceProjectile({
+                power: this.power,
+                x: this.img.position.x, y:
+                this.img.position.y,
+                speed: 4,
+                radius: 8,
+                enemy: enemy
+            });
         }
     }
 
-    class FireTower extends HomingTower {
+    class FireTower extends Tower {
         constructor(x, y){
-            super(x, y, {img: '7', power: 3, price:50});
+            super(x, y, {
+                img: '7',
+                power: 3,
+                price:50,
+                reloadTime: 1000,
+                range: 200
+            });
         }
 
         shoot(enemy){
@@ -194,15 +196,15 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
     }
 
-    class StraightTower extends Tower {
-        constructor(x, y) {
-            super(x, y, {img: '5', power: 8, price: 50, range: 1000, reloadTime: 2000});
-        }
-    }
-
-    class ThunderTower extends StraightTower {
+    class ThunderTower extends Tower {
         constructor(x, y){
-            super(x, y, {img: '7', power: 5, price:50, reloadTime: 2000, range: 1000});
+            super(x, y, {
+                img: '5',
+                power: 8,
+                price: 50,
+                range: 1000,
+                reloadTime: 2000
+            });
         }
 
         shoot(enemy){
@@ -211,9 +213,15 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
     }
 
-    class PoisonTower extends HomingTower {
+    class PoisonTower extends Tower {
         constructor(x, y) {
-            super(x, y, {img: '6', power: 8, price: 50});
+            super(x, y, {
+                img: '6',
+                power: 8,
+                price: 50,
+                reloadTime: 400,
+                range: 200
+            });
         }
 
         shoot(enemy){

@@ -93,7 +93,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 $rootScope.$digest();
                 this.terminate();
             }
-            if(this.onFire) this.takeDamage(this.fireDamage);
+            if(this.poisoned) this.takeDamage(this.poisonDamage);
         }
 
         takeDamage(damage){
