@@ -44,6 +44,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             }
             allTowers.push(this);
         }
+        
         getContext() {
             let self = this;
             let obj = {
@@ -72,6 +73,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
             return obj;
         }
+
         evalCodeSnippet() {
             if(!this.codeSnippet) return;
             let newArg = this.codeSnippet.match(/\((context)\)/)[0].replace('(', '').replace(')', '');
