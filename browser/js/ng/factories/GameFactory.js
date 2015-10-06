@@ -26,6 +26,7 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
             //more logic
         }
         if (data.state === "standby") {
+            ProjectileFactory.updateAll(delta);
             //put in standby logic
         }
         if (data.state === "wave") {

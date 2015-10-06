@@ -64,6 +64,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
 
         terminate(){
+            if(this.damageSparks)this.damageSparks.destroy();
+            $rootScope.$emit('deadEnemy', this);
             if(enemies.indexOf(this) !== -1) {
                 let x = enemies.splice(enemies.indexOf(this),1);
             }
@@ -87,8 +89,6 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             this.health -= damage;
             if(!this.damageSparks) this.damageSparks = ParticleFactory.createEmitter('damageSparks', StateFactory.stages.play);
             if(this.health <= 0){
-                if(this.damageSparks)this.damageSparks.destroy();
-                $rootScope.$emit('deadEnemy', this);
                 PlayerFactory.money += this.value;
                 $rootScope.$digest();
                 this.terminate();
