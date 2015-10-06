@@ -1,15 +1,15 @@
-app.directive("startModal", function(MapFactory, $rootScope){
+app.directive("chooseMapModal", function(MapFactory, $rootScope){
 	return {
 		restrict: "E",
-		templateUrl: "js/ng/directives/startModal/startModal.html",
+		templateUrl: "js/ng/directives/chooseMapModal/chooseMapModal.html",
 		link: function(scope){
 			console.log("startModal maps", MapFactory.maps);
 			scope.maps = MapFactory.maps
-			$("#myModal").modal("show");
+			$("#choseMapModal").modal("toggle");
 			scope.choseMap = function(num){
 				$rootScope.$emit("mapChosen",num);
 				console.log(num);
-				$("#myModal").modal("toggle");
+				$("#choseMapModal").modal("toggle");
 			}
 		}
 	}

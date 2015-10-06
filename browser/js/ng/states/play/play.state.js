@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 app.config(function ($stateProvider) {
     $stateProvider
         .state('play', {
@@ -14,35 +14,46 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('PlayController', function ($scope, player, $state,$timeout, $rootScope, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, ProjectileFactory, GameFactory) {
-    var data = StateFactory;
+    let data = StateFactory;
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(data.width, data.height, data.canvas);
     document.body.appendChild(data.renderer.view);
-    var start = map => {
+    let start = map => {
         data.map = map;
         StateFactory.stages.play = new PIXI.Stage();
         StateFactory.stages.play.addChild(map.stage);//yaaaaa
         StateFactory.stages.play.addChild(EnemyFactory.stage);//yaaaaa
         StateFactory.stages.play.addChild(TowerFactory.stage);//yaaaaa
         StateFactory.stages.play.addChild(ProjectileFactory.stage);//yaaaaa
-
         data.state = "standby";
     };
+    //Placed here for now
+    let restart = function(mapNum){
+        ProjectileFactory.stage.removeChildren();
+        TowerFactory.stage.removeChildren();
+        EnemyFactory.stage.removeChildren();
+        StateFactory.stages.play.removeChildren(); 
+        $rootScope.$emit('removeNextLevel');
+        TowerFactory.resetTowers();
+        PlayerFactory.restart();
+        MapFactory.reset();
+        WaveFactory.init();
+        init(mapNum);
+    }
 
-    var init = (num) => {
-
-        start(MapFactory.maps[num]);
+    let init = (num) => {
+        if(num !== undefined) $scope.mapNum = num;
+        start(MapFactory.maps[$scope.mapNum]);
     };
 
     $rootScope.$on('mapChosen', function(event,data){
         console.log("Map chosen ", data);
         init(data-1);
     });
-    
 
-    $scope.tower = null;
-    //$scope.waves = [[{name: 'trojanHorse', num: 1}], [{name: 'trojanHorse', num: 1}]];
-    $scope.count = 0;
+    $rootScope.$on('choseADifferentMap', function(event,data){
+        restart(data-1);
+    });
     $rootScope.$on("currentTower", function (event, data) {
         $scope.tower = data;
     });
@@ -53,24 +64,11 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
     });
     $rootScope.$on("readyForNextWave", function (event, data) {
         StateFactory.initiateWave();
-
-        //$scope.$digest();
     });
-    $rootScope.$on('restartLevel', function(event,data){
-        ProjectileFactory.stage.removeChildren();
-        TowerFactory.stage.removeChildren();
-        EnemyFactory.stage.removeChildren();
-        StateFactory.stages.play.removeChildren(); 
-
-        $rootScope.$emit('removeNextLevel');
-       
-        TowerFactory.resetTowers();
-        MapFactory.reset();
-        WaveFactory.init();
-        init();
-
+    $rootScope.$on('restartLevel', function (event, data){
+        restart();
     });
-    // window.addEventListener('mousedown', function (e) {
+    $scope.tower = null;
     $('canvas').on('click', function(e){
         if ($scope.tower !== null) {
             let towerPositionX = Math.floor(e.offsetX / StateFactory.cellSize);

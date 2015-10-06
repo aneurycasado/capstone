@@ -7,5 +7,9 @@ app.factory('PlayerFactory', function($http) {
     factory.getGame = function(){
     	return $http.get("/api/players/me").then(response => response.data);
     }
+    factory.restart = function(){
+    	this.health = 20;
+    	this.money = 200;
+    }.bind(factory);
     return factory;
 });
