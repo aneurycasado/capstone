@@ -107,9 +107,15 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 this.terminate();
             }
         }
+        getHealth() {
+            return this.health;
+        }
+        getSpeed() {
+            return this.speed;
+        }
     }
 
-    class trojanHorse extends Enemy {
+    class TrojanHorse extends Enemy {
         constructor(opts) {
             super({img: '1', power: 2, path: opts.path});
             this.value = 5;
@@ -118,7 +124,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
     }
 
-    class bigBug extends Enemy {
+    class BigBug extends Enemy {
         constructor(opts) {
             super({img: '2', power: 2, path: opts.path});
             this.value = 5;
@@ -127,7 +133,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
     }
 
-    class bossBug extends Enemy {
+    class BossBug extends Enemy {
         constructor(opts) {
             super({img: '3', power: 2, path: opts.path});
             this.value = 5;
@@ -157,7 +163,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         stage.removeChildren();
         //enemies = [];
     }
-    let enemiesConstructors = {trojanHorse,bigBug,bossBug};
+    let enemiesConstructors = {TrojanHorse,BigBug,BossBug};
     //adWare, worm
     return {
         reset,

@@ -33,64 +33,33 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             this.img.anchor.y = .5;
             this.img.animationSpeed = .1;
             this.img.position.y = this.position.y * StateFactory.cellSize + .5 * StateFactory.cellSize;
-            this.context = {
-                getCurrentTarget: function() {
-                    return this.target;
-                }.bind(this),
-                setTarget: function(enemy) {
-                    this.target = enemy;
-                }.bind(this),
-                getEnemies: function() {
-                    let arr = [];
-                    for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
-                        if (this.isEnemyInRange(EnemyFactory.enemies[i])) {
-                            arr.push(EnemyFactory.enemies[i]) //FIXME
-                        }
-                    }
-                    return arr;
-                }.bind(this)
-            }
             stage.addChild(this.img);
             this.targetingFunction = null;
             allTowers.push(this);
         }
 
-        //getContext() {
-        //    let self = this;
-        //    let obj = {
-        //        getCurrentTarget: () => {
-        //            return self.target;
-        //        },
-        //        setTarget: (enemy) => {
-        //            self.target = enemy;
-        //        },
-        //        getEnemies: function () {
-        //            let arr = [];
-        //            for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
-        //                if (this.isEnemyInRange(EnemyFactory.enemies[i])) {
-        //                    arr.push(EnemyFactory.enemies[i])
-        //                }
-        //            }
-        //            return arr;
-        //        }
-        //    };
-        //    if(this.rank === 2) {
-        //        //add additional properties
-        //    }
-        //    if(this.rank === 3) {
-        //        //add additional properties
-        //    }
-        //
-        //    return obj;
-        //}
-
+        getCurrentTarget() {
+            return this.target;
+        }
+        setTarget(enemy) {
+            this.target = enemy;
+        }
+        getEnemies() {
+            let arr = [];
+            for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
+                if (this.isEnemyInRange(EnemyFactory.enemies[i])) {
+                    arr.push(EnemyFactory.enemies[i]) //FIXME
+                }
+            }
+            return arr;
+        }
         evalCodeSnippet() {
             if(!this.codeSnippet) return;
             let newArg = this.codeSnippet.match(/\(context\)/)[0].replace('(', '').replace(')', '');
             let newFunc = this.codeSnippet.replace(/^function\s*\(context\)\s*\{/, '').replace(/}$/, '');
             let targetFunc = new Function(newArg, newFunc);
             this.targetingFunction = () => {
-                return targetFunc.call(null, this.context);
+                return targetFunc.call(null, {getCurrentTarget: this.getCurrentTarget.bind(this), getEnemies: this.getEnemies.bind(this), setTarget: this.setTarget.bind(this)});
             };
         }
         addKill() {
