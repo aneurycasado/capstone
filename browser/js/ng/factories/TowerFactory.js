@@ -13,6 +13,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             this.rank = 1;
             this.kills = 0;
             this.reloading = false;
+            this.imgNum = options.img;
             $rootScope.$on('deadEnemy', function(event, deadEnemy){
                 if(deadEnemy == this.target) this.target = null;
             }.bind(this));
@@ -162,7 +163,9 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 power: 2, 
                 price: 50,
                 reloadTime: 400,
-                range: 200
+                range: 200,
+                name: "Ice",
+                effect: 'Fill in'
             });
         }
 
@@ -186,7 +189,9 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 power: 3, 
                 price:50,
                 reloadTime: 1000,
-                range: 200
+                range: 200,
+                name: "Fire",
+                effect: 'Fill in'
             });
         }
 
@@ -203,7 +208,9 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 power: 8, 
                 price: 50, 
                 range: 1000, 
-                reloadTime: 2000
+                reloadTime: 2000, 
+                name: "Thunder",
+                effect: 'Fill in'
             });
         }
 
@@ -220,7 +227,9 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 power: 8, 
                 price: 50,
                 reloadTime: 400,
-                range: 200
+                range: 200,
+                name: 'Poison',
+                effect: 'Fill in'
             });
         }
 
@@ -253,6 +262,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
     return {
         createTower,
+        towers,
         updateAll,
         prices,
         stage,
