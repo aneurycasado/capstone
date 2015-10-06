@@ -82,9 +82,9 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
             } else if (!data.map.grid[towerPositionY][towerPositionX].canPlaceTower) {
 
             } else {
-                if(PlayerFactory.money - TowerFactory.prices[$scope.tower.type] >= 0){
-                    TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.type + "Tower");
-                    PlayerFactory.money -= TowerFactory.prices[$scope.tower.type];
+                if(PlayerFactory.money - $scope.tower.price >= 0){
+                    TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.name + "Tower");
+                    PlayerFactory.money -= $scope.tower.price;
                     $scope.$digest();
                 }
             }

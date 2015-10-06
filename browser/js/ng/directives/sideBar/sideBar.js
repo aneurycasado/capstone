@@ -26,6 +26,7 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, 
         currentTower.imgUrl = "./images/tower-defense-turrets/turret-" + img + "-1.png";
         console.log(currentTower);
         $scope.towers.push(currentTower);
+        currentTower.terminate();
     } 
     console.log($scope.towers);
     $rootScope.$on('wavesDone', () => {

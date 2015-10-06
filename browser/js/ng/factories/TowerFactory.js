@@ -29,11 +29,11 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 array.push(img)
             }
             this.img = new PIXI.extras.MovieClip(array);
-            this.img.position.x = this.position.x * StateFactory.cellSize + .5 * StateFactory.cellSize;
+            this.img.position.x = this.position.x * StateFactory.cellSize + (StateFactory.cellSize / 2);
+            this.img.position.y = this.position.y * StateFactory.cellSize + (StateFactory.cellSize / 2);
             this.img.anchor.x = .5;
             this.img.anchor.y = .5;
             this.img.animationSpeed = .1;
-            this.img.position.y = this.position.y * StateFactory.cellSize + .5 * StateFactory.cellSize;
             this.context = {
                 getCurrentTarget: function() {
                     return this.target;
@@ -238,6 +238,8 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             new ProjectileFactory.PoisonProjectile({x: this.img.position.x, y: this.img.position.y, speed: 4, radius: 8, enemy: enemy});
         }
     }
+
+    console.log(PoisonTower.effect);
 
     let towers = {IceTower, ThunderTower, FireTower, PoisonTower};
     let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
