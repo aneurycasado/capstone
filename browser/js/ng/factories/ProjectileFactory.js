@@ -80,8 +80,8 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
             this.target.img.tint = 12168959;
         }
         window.setTimeout(function(){
-            console.log(Date.now() - this.target.lastSlowed);
-            if(Date.now() - this.target.lastSlowed >  this.slowDuration) {
+            console.log('time diff',Date.now() - this.target.lastSlowed);
+            if(Date.now() - this.target.lastSlowed >=  this.slowDuration) {
               this.target.slowFactor = 1;
               this.target.img.tint = 16777215;
             }
