@@ -18,13 +18,9 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(data.width, data.height, data.canvas);
     document.body.appendChild(data.renderer.view);
-    console.log("Player from resolve ", player);
     var start = map => {
         data.map = map;
-        console.log("PROJ", ProjectileFactory.stage);
-        console.log("STAGE", StateFactory.stages.play);
         StateFactory.stages.play = new PIXI.Stage();
-        console.log("STAGE", StateFactory.stages.play)
         StateFactory.stages.play.addChild(map.stage);//yaaaaa
         StateFactory.stages.play.addChild(EnemyFactory.stage);//yaaaaa
         StateFactory.stages.play.addChild(TowerFactory.stage);//yaaaaa
@@ -52,7 +48,6 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
         data.initiateWave();
     });
     $rootScope.$on("readyForNextWave", function (event, data) {
-        console.log("We hit next wave");
         StateFactory.initiateWave();
 
         //$scope.$digest();

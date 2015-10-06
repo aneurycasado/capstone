@@ -80,7 +80,6 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 //this.target = EnemyFactory.enemies[0];
             }
             if(this.target){
-                console.log(this.reloadTime);
                 if(!this.reloading){
                     this.shoot(this.target);
                     this.reloading = true;
@@ -135,7 +134,6 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         
         shoot(enemy){
             this.img.play();
-            console.log(this.img);
             new ProjectileFactory.FireProjectile({x: this.img.position.x, y: this.img.position.y, speed: 4, radius: 8, enemy: enemy});
         }
     }
