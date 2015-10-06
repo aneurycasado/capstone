@@ -6,6 +6,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     let stage = new PIXI.Stage();
     class Enemy {
         constructor(opts) {
+            this.particleEmitters = {};
             if (opts) {
                 if (opts.img) {
                     let array = [];
@@ -64,7 +65,9 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
 
         terminate(){
-            if(this.damageSparks)this.damageSparks.destroy();
+            for(var i in this.particleEmitters){
+                if(this.particleEmitters[i])this.particleEmitters[i].destroy();
+            }           
             $rootScope.$emit('deadEnemy', this);
             if(enemies.indexOf(this) !== -1) {
                 let x = enemies.splice(enemies.indexOf(this),1);
@@ -74,20 +77,25 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
         update(delta){
             this.moveTowards(delta);
-            if(this.damageSparks){
-                this.damageSparks.update(1);
-                this.damageSparks.updateOwnerPos(this.img.position.x, this.img.position.y);
-            }
+            for(var i in this.particleEmitters){
+                if(this.particleEmitters[i]){
+                    this.particleEmitters[i].update(delta);
+                    this.particleEmitters[i].updateOwnerPos(this.img.position.x, this.img.position.y);
+                }
+            }    
             if(!this.path[this.pathIndex]) {
                 PlayerFactory.health--;
                 $rootScope.$digest();
                 this.terminate();
             }
+            if(this.onFire) this.takeDamage(this.fireDamage);
         }
 
         takeDamage(damage){
             this.health -= damage;
-            if(!this.damageSparks) this.damageSparks = ParticleFactory.createEmitter('damageSparks', StateFactory.stages.play);
+
+            if(!this.particleEmitters.damageSparks) this.particleEmitters.damageSparks = ParticleFactory.createEmitter('damageSparks', StateFactory.stages.play);
+
             if(this.health <= 0){
                 PlayerFactory.money += this.value;
                 $rootScope.$digest();
