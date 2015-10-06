@@ -1,3 +1,4 @@
+//Ace editor directive
 'use strict'
 
 app.directive('editor', function($rootScope) {

@@ -24,7 +24,7 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
         StateFactory.stages.play.addChild(map.stage);//yaaaaa
         StateFactory.stages.play.addChild(EnemyFactory.stage);//yaaaaa
         StateFactory.stages.play.addChild(TowerFactory.stage);//yaaaaa
-        StateFactory.stages.play.addChild(ProjectileFactory.stage);//yaaaaa
+        StateFactory.stages.play.addChild(ProjectileFactory.stage);//yaaaas
         data.state = "standby";
     };
     //Placed here for now
