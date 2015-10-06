@@ -1,6 +1,6 @@
 'use strict'
 
-app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, PlayerFactory, ParticleFactory, MapFactory, GridFactory, ProjectileFactory, StateFactory, TowerFactory) {
+app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, PlayerFactory, ParticleFactory, MapFactory, ProjectileFactory, StateFactory, TowerFactory) {
     let data = StateFactory;
     let loop = then =>  {
         var now = Date.now();
@@ -17,8 +17,11 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
             ProjectileFactory.updateAll(delta);
             TowerFactory.updateAll(delta);
             EnemyFactory.updateAll(delta);
+            
             if(EnemyFactory.enemies.length === 0) {
+                console.log(WaveFactory.waves);
                 if(WaveFactory.endOfWaves()) {
+                    console.log("NEXT WAVE");
                     changeStateTo('standby');
                 } else {
                     changeStateTo("complete");
@@ -31,13 +34,6 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
         if (data.state === 'editing') {
 
         }
-
-
-        //if(GameFactory.nextWave){
-        //    GameFactory.nextWave = false;
-        //    $rootScope.$emit("nextWave")
-        //    $scope.count++;
-        //}
         if (data.launchCritters) {
             loadEnemy();
         }
@@ -47,15 +43,13 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
     let changeStateTo = (state) => {
         if(state === 'wave') {
             WaveFactory.setCurrentWave();
+            console.log(WaveFactory.waves);
             StateFactory.state = "wave";
         }
         if(state === 'complete') {
+            console.log("CHANGING STATE");
             $rootScope.$emit('wavesDone');
             StateFactory.state = 'complete';
-            //if(data.wavesDone && !sendToNextLevel) {
-            //    sendToNextLevel = true;
-            //    $rootScope.$emit('wavesDone')
-            //}
         }
         if(state === 'standby') {
             //more logic here
