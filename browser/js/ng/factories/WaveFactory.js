@@ -2,11 +2,10 @@ app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
     let createWave = critterObjArr => {
         let wave = []
         critterObjArr.forEach(element => {
-            for(var i = 0; i < element.num; i++) {
+            for(let i = 0; i < element.num; i++) {
                 wave.push(element.name);
             }
         });
-        console.log("Wave in createWave", wave);
         waves.push(wave);
     };
     // let randomInt = (min, max) => {
@@ -32,18 +31,13 @@ app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
     let loadEnemy = () => {
         if(checkNodeClear(3)) {
             if(!currentWaveLength()) return;
-            var newEn
+            let newEn;
             if(Array.isArray(StateFactory.map.path[0])){
-                console.log("Load enemy multiple paths");
-                console.log("Length",StateFactory.map.path[0].length)
-                var index = Math.floor(Math.random()*StateFactory.map.path.length);
-                console.log("Index ", index);
-                console.log("Path",StateFactory.map.path[index]);
+                let index = Math.floor(Math.random()*StateFactory.map.path.length);
                 newEn = EnemyFactory.createEnemy(popOffNextMonster(), StateFactory.map.path[index]);
             }else{
                 newEn = EnemyFactory.createEnemy(popOffNextMonster(), StateFactory.map.path);
             }
-            console.log("Load Enemy, ", newEn);
             EnemyFactory.stage.addChild(newEn.img);
         }
     };
@@ -54,10 +48,10 @@ app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
 
     let waves = [];
     let wavesDefinition = [];
-    let randomInt = function(min,max){
+    let randomInt = (min,max) => {
         return Math.floor(Math.random()*(max-min+1)+min);
     }
-    let createWaves = function(){
+    let createWaves = () => {
         let waves = [];
         let min = 1; 
         let max = 30;
@@ -96,14 +90,14 @@ app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
 
 
     let init = () => {
-        wavesDefinition = createWaves(); //[[{name: 'trojanHorse', num: 1}], [{name: 'trojanHorse', num: 1}]];
-        wavesDefinition.forEach(function(wave,i){
+        wavesDefinition = createWaves();
+        wavesDefinition.forEach((wave) => {
             createWave(wave);
         });
     }
        
-    wavesDefinition = createWaves(); //[[{name: 'trojanHorse', num: 1}], [{name: 'trojanHorse', num: 1}]];
-    wavesDefinition.forEach(function(wave,i){
+    wavesDefinition = createWaves();
+    wavesDefinition.forEach((wave) => {
         createWave(wave);
     });
     return {

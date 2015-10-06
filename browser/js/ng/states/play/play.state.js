@@ -28,7 +28,7 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
         data.state = "standby";
     };
     //Placed here for now
-    let restart = function(mapNum){
+    let restart = (mapNum) => {
         ProjectileFactory.stage.removeChildren();
         TowerFactory.stage.removeChildren();
         EnemyFactory.stage.removeChildren();
@@ -46,30 +46,30 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
         start(MapFactory.maps[$scope.mapNum]);
     };
 
-    $rootScope.$on('mapChosen', function(event,data){
+    $rootScope.$on('mapChosen', (event,data) => {
         console.log("Map chosen ", data);
         init(data-1);
     });
 
-    $rootScope.$on('choseADifferentMap', function(event,data){
+    $rootScope.$on('choseADifferentMap', (event,data) => {
         restart(data-1);
     });
-    $rootScope.$on("currentTower", function (event, data) {
+    $rootScope.$on("currentTower", (event, data) => {
         $scope.tower = data;
     });
-    $rootScope.$on("initiateWave", function (event, data) {
+    $rootScope.$on("initiateWave", (event, data) => {
         $scope.setUp = false;
         $scope.playing = true;
         data.initiateWave();
     });
-    $rootScope.$on("readyForNextWave", function (event, data) {
+    $rootScope.$on("readyForNextWave", (event, data) => {
         StateFactory.initiateWave();
     });
-    $rootScope.$on('restartLevel', function (event, data){
+    $rootScope.$on('restartLevel', (event, data) => {
         restart();
     });
     $scope.tower = null;
-    $('canvas').on('click', function(e){
+    $('canvas').on('click', (e) => {
         if ($scope.tower !== null) {
             let towerPositionX = Math.floor(e.offsetX / StateFactory.cellSize);
             let towerPositionY = Math.floor(e.offsetY / StateFactory.cellSize);

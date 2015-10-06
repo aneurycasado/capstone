@@ -3,21 +3,21 @@ app.directive("levelModal", function($rootScope){
         restrict: "E",
         templateUrl: "js/ng/directives/levelModal/levelModal.html",
         link: function(scope){
-            $rootScope.$on('wavesDone', function() {
+            $rootScope.$on('wavesDone', () => {
                 $("#levelModal").modal("show");
                 scope.$digest();
-                scope.initiateLevel = function() {
+                scope.initiateLevel = () => {
                     $("#levelModal").modal("toggle");
                     $rootScope.$emit('sentToNextLevel');
                 }
-                scope.restartLevel = function(){
+                scope.restartLevel = () => {
                     $rootScope.$emit('restartLevel');
                 }
-                scope.choseDifferentMap = function(){
+                scope.choseDifferentMap = () => {
                     $("#levelModal").modal("toggle");
                     $("#choseMapModal").modal("toggle");
                 }
-                scope.choseMap = function(num){
+                scope.choseMap = (num) => {
                     $("#choseMapModal").modal("toggle");
                     $rootScope.$emit("choseADifferentMap",num);
                 }

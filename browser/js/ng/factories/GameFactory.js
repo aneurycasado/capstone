@@ -3,8 +3,8 @@
 app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, PlayerFactory, ParticleFactory, MapFactory, ProjectileFactory, StateFactory, TowerFactory) {
     let data = StateFactory;
     let loop = then =>  {
-        var now = Date.now();
-        var delta = (now - then) / 1000;
+        let now = Date.now();
+        let delta = (now - then) / 1000;
 
         if (data.state == "selection") {
             //more logic

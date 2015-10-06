@@ -1,6 +1,6 @@
 'use strict'
 app.factory('StateFactory', function() {
-    var game = {
+    let game = {
         width: 1000,
         rows: 13,
         cols: 20

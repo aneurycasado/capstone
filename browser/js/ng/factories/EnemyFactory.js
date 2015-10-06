@@ -135,7 +135,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     };
 
     let updateAll = (delta) => {
-        enemies.forEach(function(enemy){
+        enemies.forEach((enemy) => {
             enemy.update(delta);
         });
     };

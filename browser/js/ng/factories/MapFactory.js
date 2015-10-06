@@ -43,8 +43,8 @@ app.factory('MapFactory', function(StateFactory, MapGridsFactory) {
 
     let insertNodes = (grid, textures, map,multiplePaths) => {
 
-        var tile;
-        var canPlaceTower;
+        let tile;
+        let canPlaceTower;
         for(let row = 0; row < grid.length; row++){
             for(let col = 0; col < grid[row].length; col++){
                 canPlaceTower = false;
@@ -68,14 +68,14 @@ app.factory('MapFactory', function(StateFactory, MapGridsFactory) {
         return grid;
     }
 
-    var findPath = function(grid) {
+    let findPath = function(grid) {
 
-        var path = [];
+        let path = [];
 
-        var start = {};
+        let start = {};
 
-        for(var x = 0; x < grid.length; x++) {
-            for(var y = 0; y < grid[x].length; y++) {
+        for(let x = 0; x < grid.length; x++) {
+            for(let y = 0; y < grid[x].length; y++) {
                 if(grid[x][y].terrain === 4) {
                     path.push({x: grid[x][y].coords.x + (StateFactory.cellSize/2), y: grid[x][y].coords.y + (StateFactory.cellSize/2)})
                     start.x = x;
@@ -113,13 +113,13 @@ app.factory('MapFactory', function(StateFactory, MapGridsFactory) {
 
         }
 
-        var count = 0;
+        let count = 0;
         function explore(x, y, lastDirection){
             count++;
             if(grid[x][y].terrain == 3){
                 return path;
             }
-            var next = {x: x, y: y};
+            let next = {x: x, y: y};
             if(lookAround(x, y, 3, next, lastDirection)){
 
                 path.push({x: grid[next.x][next.y].coords.x + (StateFactory.cellSize/2), y: grid[next.x][next.y].coords.y + (StateFactory.cellSize/2)})
@@ -143,9 +143,9 @@ app.factory('MapFactory', function(StateFactory, MapGridsFactory) {
     maps.push(new Map(MapGridsFactory.mapGrid1, textures));
     maps.push(new MultiplePaths(MapGridsFactory.mapGrid2,textures,MapGridsFactory.mapGrid2Array));
     let reset = () => {
-        maps.forEach(function(map){
-            map.grid.forEach(function(row){
-                row.forEach(function(node){
+        maps.forEach((map) => {
+            map.grid.forEach((row) => {
+                row.forEach((node) => {
                     node.contains = {};
                     if(node.terrain == 0) node.canPlaceTower = true;
                 });
