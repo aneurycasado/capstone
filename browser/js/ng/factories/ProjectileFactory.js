@@ -2,6 +2,9 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory){
 
   var projectiles = [];
 
+  var stage = new PIXI.Stage();
+
+
   class Projectile {
     constructor(opts){
           this.x = 0;
@@ -32,7 +35,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory){
       constructor(opts){
           super(opts);
           this.target = opts.enemy;
-          this.fire = ParticleFactory.createFire(StateFactory.stages.play);
+          this.fire = ParticleFactory.createFire(stage);
           this.fire.updateOwnerPos(this.x, this.y);
           for(var opt in opts){
             this[opt] = opts[opt];
@@ -87,6 +90,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory){
   };
 
   return {
+    stage,
     Projectile,
     HomingProjectile,
     updateAll

@@ -3,6 +3,7 @@
 app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, PlayerFactory) {
 
     var enemies = [];
+    var stage = new PIXI.Stage();
 
     class Enemy {
         constructor(opts) {
@@ -64,7 +65,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             if(enemies.indexOf(this) !== -1) {
                 var x = enemies.splice(enemies.indexOf(this),1);
             }
-            StateFactory.stages.play.removeChild(this.img);
+            stage.removeChild(this.img);
         }
 
         update(delta){
@@ -143,6 +144,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
     //adWare, worm
     return {
+        stage,
         createEnemy,
         enemies,
         updateAll

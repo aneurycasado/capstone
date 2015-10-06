@@ -13,7 +13,7 @@ app.config(function ($stateProvider) {
         })
 });
 
-app.controller('PlayController', function ($scope, player, $state,$timeout, $rootScope, WaveFactory, MapFactory, StateFactory, TowerFactory, GridFactory, PlayerFactory, EnemyFactory, ProjectileFactory, GameFactory) {
+app.controller('PlayController', function ($scope, player, $state,$timeout, $rootScope, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, ProjectileFactory, GameFactory) {
     var data = StateFactory;
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(data.width, data.height, data.canvas);
@@ -21,25 +21,27 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
     console.log("Player from resolve ", player);
     var start = map => {
         data.map = map;
-        GridFactory.grid = data.map.grid;
-        StateFactory.stages.play = map.stage;
+        console.log("PROJ", ProjectileFactory.stage);
+        console.log("STAGE", StateFactory.stages.play);
+        StateFactory.stages.play = new PIXI.Stage();
+        console.log("STAGE", StateFactory.stages.play)
+        StateFactory.stages.play.addChild(map.stage);//yaaaaa
+        StateFactory.stages.play.addChild(EnemyFactory.stage);//yaaaaa
+        StateFactory.stages.play.addChild(TowerFactory.stage);//yaaaaa
+        StateFactory.stages.play.addChild(ProjectileFactory.stage);//yaaaaa
+
         data.state = "standby";
     };
 
     var init = () => {
-        console.log("true");
-        StateFactory.waves = [[{name: 'trojanHorse', num: 1}], [{name: 'trojanHorse', num: 1}]];
-        StateFactory.waves.forEach(function(wave,i){
-            WaveFactory.createWave(wave);
-        });
-        //WaveFactory.setCurrentWave();
+
         start(MapFactory.maps[0]);
     };
 
     init();
 
     $scope.tower = null;
-    $scope.waves = [[{name: 'trojanHorse', num: 1}], [{name: 'trojanHorse', num: 1}]];
+    //$scope.waves = [[{name: 'trojanHorse', num: 1}], [{name: 'trojanHorse', num: 1}]];
     $scope.count = 0;
     $rootScope.$on("currentTower", function (event, data) {
         $scope.tower = data;
@@ -56,25 +58,31 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
         //$scope.$digest();
     });
     $rootScope.$on('restartLevel', function(event,data){
-        StateFactory.stages.play = new PIXI.Stage()
+        ProjectileFactory.stage.removeChildren();
+        TowerFactory.stage.removeChildren();
+        EnemyFactory.stage.removeChildren();
+        StateFactory.stages.play.removeChildren(); 
+
+        $rootScope.$emit('removeNextLevel');
+       
         TowerFactory.resetTowers();
+        MapFactory.reset();
+        WaveFactory.init();
         init();
-        console.log("Stages,", StateFactory.stages.play)
-        console.log("All towers", TowerFactory.resetTowers())
-        //$state.go("play",{}, {reload: true})
+
     });
     // window.addEventListener('mousedown', function (e) {
     $('canvas').on('click', function(e){
         if ($scope.tower !== null) {
             let towerPositionX = Math.floor(e.offsetX / StateFactory.cellSize);
             let towerPositionY = Math.floor(e.offsetY / StateFactory.cellSize);
-            $scope.selectedTower = GridFactory.grid[towerPositionY][towerPositionX].contains.tower;
-            console.log(GridFactory.grid[towerPositionY][towerPositionX].canPlaceTower);
-            if (GridFactory.grid[towerPositionY][towerPositionX].contains.tower) {
+            $scope.selectedTower = data.map.grid[towerPositionY][towerPositionX].contains.tower;
+
+            if (data.map.grid[towerPositionY][towerPositionX].contains.tower) {
                 $scope.editing = true;
                 $scope.$digest();
-            } else if (!GridFactory.grid[towerPositionY][towerPositionX].canPlaceTower) {
-                console.log("false");
+            } else if (!data.map.grid[towerPositionY][towerPositionX].canPlaceTower) {
+
             } else {
                 if(PlayerFactory.money - TowerFactory.prices[$scope.tower.type] >= 0){
                     TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.type + "Tower");

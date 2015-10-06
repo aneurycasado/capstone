@@ -27,6 +27,10 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, 
         $scope.state = 'standby';
         $scope.$digest();
     });
+    $rootScope.$on('removeNextLevel', function(){
+        $scope.state = 'standby';
+    });
+
     $scope.saveGame = function(){
         var player = {
             health: PlayerFactory.health,

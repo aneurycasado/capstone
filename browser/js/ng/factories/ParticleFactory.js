@@ -181,6 +181,7 @@ app.factory('ParticleFactory', function() {
 
 
     return {
+
         createFire,
         createDamageSparks
     }

@@ -4,6 +4,7 @@ app.directive("levelModal", function($rootScope){
         templateUrl: "js/ng/directives/levelModal/levelModal.html",
         link: function(scope){
             $rootScope.$on('wavesDone', function() {
+                console.log("WAVES DONE LINK");
                 $("#levelModal").modal("show");
                 scope.$digest();
                 scope.initiateLevel = function() {

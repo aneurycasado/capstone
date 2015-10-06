@@ -1,6 +1,10 @@
 'use strict'
-app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactory, StateFactory, GridFactory, ParticleFactory) {
-    var allTowers = [];
+app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactory, StateFactory, ParticleFactory) {
+    let data = StateFactory;
+
+    let allTowers = [];
+
+    let stage = new PIXI.Stage();
 
     class Tower {
         constructor(x, y, options) {
@@ -30,7 +34,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 if (options.cost) this.cost = options.cost;
                 if (options.range) this.range = options.range;
                 this.price = options.price;
-                StateFactory.stages.play.addChild(this.img);
+                stage.addChild(this.img);
             }
             allTowers.push(this);
         }
@@ -42,8 +46,8 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
 
         terminate() {
-          StateFactory.stages.play.removeChild(this.img);
-          allTowers.splice(allTowers.indexOf(this), 1);
+            stage.removeChild(this.img);
+            allTowers.splice(allTowers.indexOf(this), 1);
         }
 
         countPowerUps() {
@@ -68,7 +72,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
     function createTower(x, y, type) {
         let towerConstructor = towers[type];
         let newTower;
-        let currentGridNode = GridFactory.grid[y][x];
+        let currentGridNode = data.map.grid[y][x];
         if (currentGridNode.canPlaceTower) {
             newTower = new towerConstructor(x, y);
             currentGridNode.contains.tower = newTower;
@@ -157,7 +161,10 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         // if(ice) ice.emit = true;
     };
     let resetTowers = function(){
+
+
         allTowers = [];
+
         return allTowers;
     }
 
@@ -167,6 +174,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         createTower,
         updateAll,
         prices,
+        stage,
         resetTowers,
     };
 
