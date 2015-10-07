@@ -82,7 +82,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 if(tower !== self && self.towerInRange(tower)) {
                     arr.push(tower);
                 }
-            })
+            });
             return arr;
         }
         getNearbyTowersEncap() {
@@ -90,9 +90,13 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             let arr = [];
             allTowers.forEach(tower => {
                 if(tower !== self && self.towerInRange(tower)) {
-                    arr.push(tower);
+                    arr.push({
+                        getCurrentTarget: self.getCurrentTarget.bind(tower),
+                        getEnemies: self.getEnemies.bind(tower),
+                        getNearbyTowers: self.getNearbyTowersEncap.bind(tower),
+                    })
                 }
-            })
+            });
             return arr;
         }
 
@@ -107,7 +111,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                     getCurrentTarget: this.getCurrentTarget.bind(this),
                     getEnemies: this.getEnemies.bind(this),
                     setTarget: this.setTargetBasedOnIndex.bind(this),
-                    getNearbyTowers: this.getNearbyTowersEncap.bind(this)
+                    getNearbyTowers: this.getNearbyTowersEncap.bind(this),
                 });
             };
         }
