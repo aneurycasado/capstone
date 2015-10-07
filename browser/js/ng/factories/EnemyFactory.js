@@ -2,6 +2,7 @@
 //FIXME
 app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, PlayerFactory) {
 
+    let explosionEmitters = [];
     let enemies = [];
     let stage = new PIXI.Stage();
     class Enemy {
@@ -83,9 +84,14 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             if(enemies.indexOf(this) !== -1) {
                 let x = enemies.splice(enemies.indexOf(this),1);
             }
+
+            explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', StateFactory.stages.play));
+            explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
+
             stage.removeChild(this.img);
             stage.removeChild(this.healthBar);
             stage.removeChild(this.imgContainer);
+
         }
 
         update(delta){
@@ -190,6 +196,12 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     let updateAll = (delta) => {
         enemies.forEach((enemy) => {
             enemy.update(delta);
+        });
+
+        console.log(explosionEmitters);
+
+        explosionEmitters.forEach((emitter) => {
+            emitter.update(delta);
         });
     };
 
