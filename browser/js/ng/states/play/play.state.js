@@ -21,10 +21,15 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
     let start = map => {
         data.map = map;
         StateFactory.stages.play = new PIXI.Stage();
+        let bg = new PIXI.Sprite(PIXI.Texture.fromImage("/images/bg.png"));
+        bg.width = data.width;
+        bg.height = data.height;
+        StateFactory.stages.play.addChild(bg);//yaaaas
         StateFactory.stages.play.addChild(map.stage);//yaaaaa
         StateFactory.stages.play.addChild(EnemyFactory.stage);//yaaaaa
         StateFactory.stages.play.addChild(TowerFactory.stage);//yaaaaa
         StateFactory.stages.play.addChild(ProjectileFactory.stage);//yaaaas
+
         data.state = "standby";
     };
     //Placed here for now
@@ -32,7 +37,7 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
         ProjectileFactory.stage.removeChildren();
         TowerFactory.stage.removeChildren();
         EnemyFactory.stage.removeChildren();
-        EnemyFactory.reset();
+        EnemyFactory.enemies = [];
         StateFactory.stages.play.removeChildren(); 
         $rootScope.$emit('removeNextLevel');
         TowerFactory.resetTowers();
@@ -79,14 +84,14 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
             if (data.map.grid[towerPositionY][towerPositionX].contains.tower) {
                 $scope.editing = true;
                 $scope.$digest();
-            } else if (!data.map.grid[towerPositionY][towerPositionX].canPlaceTower) {
-
-            } else {
+            } else if (typeof data.map.grid[towerPositionY][towerPositionX] == "string") {
                 if(PlayerFactory.money - $scope.tower.price >= 0){
                     TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.name + "Tower");
                     PlayerFactory.money -= $scope.tower.price;
                     $scope.$digest();
                 }
+            } else {
+                
             }
         }
     })
