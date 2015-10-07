@@ -51,38 +51,73 @@ app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
     let randomInt = (min,max) => {
         return Math.floor(Math.random()*(max-min+1)+min);
     }
+    let generateWave = (waves,numOfWaves) => {
+        let wave = [];
+        let enemies = ['SmallBugRed', 'SmallBugGreen', 'SmallBugBlue', 'SmallBugYellow', 'BigBugRed' ,'BigBugGreen' ,'BigBugBlue' ,'BigBugYellow' ,'SuperBigBugRed', 'SuperBigBugGreen', 'SuperBigBugBlue', 'SuperBigBugYellow']
+        if(waves.length === 0){
+            let numOfSmallBugRed = 10;
+            wave.push({name:'SmallBugRed', num:numOfSmallBugRed});
+        }else if(waves.length === numOfWaves-1){
+            wave.push({name:'BossBug', num: '1'});
+        }else{
+            let totalEnemies = waves.length * 10;
+            let percentages = makePercentages(waves,enemies,numOfEnemies);
+            
+            enemies.forEach(function(enemy){
+                wave.push({name: enemy,num: numOfEnemies*percentages[enemy]});
+            })
+        }
+        return wave;
+    }
+    let makePercentages = (waves,enemies,numOfEnemies) => {
+        let percentages = {};
+        enemies.forEach((enemy) =>{
+            percentages[enemy] = findPercentage(enemy,waves,numOfEnemies);
+        })
+        return percentages;
+    }
+    let findPercentage = (enemy,waves,numOfEnemies) => {
+        if(waves.length < 5){
+            
+
+
+        }
+
+    }
+
+
+    //     let numOfTrojanHorse = randomInt(min,max);
+    //     let numOfBigBug = randomInt(min,max);
+    //     let numOfBossBug = randomInt(min,max);
+    //     while(numOfTrojanHorse > 0 && numOfBigBug > 0 && numOfBossBug > 0){
+    //         let currentAnimal = randomInt(1,3);
+    //         if(currentAnimal === 1){
+    //             if(numOfTrojanHorse === 0) continue;
+    //             else{
+    //                wave.push({name: 'TrojanHorse', num: 1});
+    //                numOfTrojanHorse--;
+    //             }
+    //         }else if(currentAnimal === 2){
+    //             if(numOfBigBug === 0) continue;
+    //             else{
+    //                 wave.push({name: 'BigBug', num: 1});
+    //                 numOfBigBug--;
+    //             }
+    //         }else if(currentAnimal === 3){
+    //             if(numOfBossBug === 0) continue;
+    //             else{
+    //                 wave.push({name: 'BossBug', num: 1})
+    //                 numOfBossBug--;
+    //             }
+    //         }
+    //     }
+    // }
+
     let createWaves = () => {
         let waves = [];
-        let min = 1;
-        let max = 30;
-        let numOfWaves = randomInt(min,max);
-        for(let i = 0; i < 1; i++){
-            let wave = [];
-            let numOfTrojanHorse = randomInt(min,max);
-            let numOfBigBug = randomInt(min,max);
-            let numOfBossBug = randomInt(min,max);
-            while(numOfTrojanHorse > 0 && numOfBigBug > 0 && numOfBossBug > 0){
-                let currentAnimal = randomInt(1,3);
-                if(currentAnimal === 1){
-                    if(numOfTrojanHorse === 0) continue;
-                    else{
-                       wave.push({name: 'TrojanHorse', num: 1});
-                       numOfTrojanHorse--;
-                    }
-                }else if(currentAnimal === 2){
-                    if(numOfBigBug === 0) continue;
-                    else{
-                        wave.push({name: 'BigBug', num: 1});
-                        numOfBigBug--;
-                    }
-                }else if(currentAnimal === 3){
-                    if(numOfBossBug === 0) continue;
-                    else{
-                        wave.push({name: 'BossBug', num: 1})
-                        numOfBossBug--;
-                    }
-                }
-            }
+        let numOfWaves = 10;
+        for(let i = 0; i < numOfWaves; i++){
+            let wave = generateWave(waves,numOfWaves);
             waves.push(wave);
         }
         return waves

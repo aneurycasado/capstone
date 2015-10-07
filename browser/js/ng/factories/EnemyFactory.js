@@ -5,6 +5,10 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     let explosionEmitters = [];
     let enemies = [];
     let stage = new PIXI.Stage();
+    let findEnd = (img) => {
+        if(img === "1") return 7;
+        else return 5;
+    }
     class Enemy {
         constructor(opts) {
             this.particleEmitters = {};
@@ -15,11 +19,9 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 this.imgContainer = new PIXI.Container();
                 if (opts.img) {
                     let array = [];
-                    let end;
-                    if(opts.img === 1) end = 7;
-                    else end = 5;
+                    let end = findEnd(opts.img);
                     for(let i=1; i < end; i++){
-                        let img = PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-blue/" + i.toString() + ".png");
+                        let img = PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-" + opts.color +"/" + i.toString() + ".png");
                         array.push(img)
                     }
                     this.img = new PIXI.extras.MovieClip(array);
@@ -143,7 +145,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
     }
 
-    class TrojanHorse extends Enemy {
+     class SmallBugRed  extends Enemy {
         constructor(opts) {
             super({
                 img: '1',
@@ -151,12 +153,55 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 path: opts.path,
                 value: 5,
                 speed: 128,
-                health: 10
+                health: 10,
+                color: "red"
             });
         }
     }
 
-    class BigBug extends Enemy {
+    class SmallBugGreen  extends Enemy {
+        constructor(opts) {
+            super({
+                img: '1',
+                power: 2,
+                path: opts.path,
+                value: 5,
+                speed: 128,
+                health: 10,
+                color: "green"
+            });
+        }
+    }
+
+    class SmallBugBlue extends Enemy {
+        constructor(opts) {
+            super({
+                img: '1',
+                power: 2,
+                path: opts.path,
+                value: 5,
+                speed: 128,
+                health: 10,
+                color: "blue"
+            });
+        }
+    }
+
+    class SmallBugYellow  extends Enemy {
+        constructor(opts) {
+            super({
+                img: '1',
+                power: 2,
+                path: opts.path,
+                value: 5,
+                speed: 128,
+                health: 10,
+                color: "yellow"
+            });
+        }
+    }
+
+    class BigBugRed extends Enemy {
         constructor(opts) {
             super({
                 img: '2',
@@ -165,11 +210,54 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 value: 5,
                 speed: 90,
                 health: 30
+                color: "red"
             });
         }
     }
 
-    class BossBug extends Enemy {
+    class BigBugGreen extends Enemy {
+        constructor(opts) {
+            super({
+                img: '2',
+                power: 2,
+                path: opts.path,
+                value: 5,
+                speed: 90,
+                health: 30
+                color: "green"
+            });
+        }
+    }
+
+    class BigBugBlue extends Enemy {
+        constructor(opts) {
+            super({
+                img: '2',
+                power: 2,
+                path: opts.path,
+                value: 5,
+                speed: 90,
+                health: 30
+                color: "blue"
+            });
+        }
+    }
+
+    class BigBugYellow extends Enemy {
+        constructor(opts) {
+            super({
+                img: '2',
+                power: 2,
+                path: opts.path,
+                value: 5,
+                speed: 90,
+                health: 30
+                color: "yellow"
+            });
+        }
+    }
+
+    class SuperBigBugRed extends Enemy {
         constructor(opts) {
             super({
                 img: '3',
@@ -177,10 +265,68 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 path: opts.path,
                 value: 5,
                 speed: 100,
-                health: 100
+                health: 100,
+                color: "red"
             });
         }
     }
+
+    class SuperBigBugGreen extends Enemy {
+        constructor(opts) {
+            super({
+                img: '3',
+                power: 2,
+                path: opts.path,
+                value: 5,
+                speed: 100,
+                health: 100,
+                color: "green"
+            });
+        }
+    }
+
+    class SuperBigBugBlue extends Enemy {
+        constructor(opts) {
+            super({
+                img: '3',
+                power: 2,
+                path: opts.path,
+                value: 5,
+                speed: 100,
+                health: 100,
+                color: "blue"
+            });
+        }
+    }
+
+    class SuperBigBugYellow extends Enemy {
+        constructor(opts) {
+            super({
+                img: '3',
+                power: 2,
+                path: opts.path,
+                value: 5,
+                speed: 100,
+                health: 100,
+                color: "yellow"
+            });
+        }
+    }
+
+    class BossBug extends Enemy {
+        constructor(opts) {
+            super({
+                img: 'boss1',
+                power: 2,
+                path: opts.path,
+                value: 5,
+                speed: 100,
+                health: 100,
+                color: 'none'
+            });
+        }
+    }
+
 
     let createEnemy = (type, path) => {
 
@@ -209,7 +355,10 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         stage.removeChildren();
         //enemies = [];
     }
-    let enemiesConstructors = {TrojanHorse,BigBug,BossBug};
+    let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow, 
+                               BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,
+                               SuperBigBugRed,SuperBigBugGreen,SuperBigBugBlue,SmallBugYellow,
+                               BossBug};
     //adWare, worm
     return {
         reset,
