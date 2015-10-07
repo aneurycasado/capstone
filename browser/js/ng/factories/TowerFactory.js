@@ -35,30 +35,23 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             this.img.anchor.x = .5;
             this.img.anchor.y = .5;
             this.img.animationSpeed = .1;
-            this.context = {
-                getCurrentTarget: function() {
-                    return this.target;
-                }.bind(this),
-                setTarget: function(enemy) {
-                    this.target = enemy;
-                }.bind(this),
-                getEnemies: () => {
-                    let arr = [];
-                    for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
-                        if (this.isEnemyInRange(EnemyFactory.enemies[i])) {
-                            arr.push(EnemyFactory.enemies[i]) //FIXME
-                        }
-                    }
-                    return arr;
-                }
-            };
             stage.addChild(this.img);
             this.targetingFunction = null;
             allTowers.push(this);
         }
 
         getCurrentTarget() {
-            return this.target;
+            if(this.target) {
+                //console.log(this.target.getSpeed());
+                return {
+                    enemyIndex: EnemyFactory.enemies.indexOf(this.target),
+                    health: this.target.getHealth(),
+                    speed: this.target.getSpeed(),
+                    position: this.target.getPosition(),
+                    name: this.target.getName()
+                }
+            }
+            // return this.target;
         }
         setTarget(enemy) {
             this.target = enemy;
@@ -103,7 +96,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             });
             return arr;
         }
-        getNearbyTowersEncap() {
+        getNearbyTowersEncapsulated() {
             let self = this;
             let arr = [];
             allTowers.forEach(tower => {
@@ -118,7 +111,6 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             return arr;
         }
 
-
         evalCodeSnippet() {
             if(!this.codeSnippet) return;
             let newArg = this.codeSnippet.match(/\(context\)/)[0].replace('(', '').replace(')', '');
@@ -129,7 +121,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                     getCurrentTarget: this.getCurrentTarget.bind(this),
                     getEnemies: this.getEnemies.bind(this),
                     setTarget: this.setTargetBasedOnIndex.bind(this),
-                    getNearbyTowers: this.getNearbyTowersEncap.bind(this),
+                    getNearbyTowers: this.getNearbyTowersEncapsulated.bind(this)
                 });
             };
         }
@@ -149,12 +141,20 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
 
         acquireTarget(){
-            for(let i = EnemyFactory.enemies.length - 1; i >= 0; i--){
-                if(this.isEnemyInRange(EnemyFactory.enemies[i])){
-                    this.target = EnemyFactory.enemies[i];
-                    return true;
+            if(this.targetingFunction) {
+                console.log('in acquireTarget');
+                this.targetingFunction();
+                return true;
+            }
+            else {
+                for(let i = EnemyFactory.enemies.length - 1; i >= 0; i--){
+                    if(this.isEnemyInRange(EnemyFactory.enemies[i])){
+                        this.target = EnemyFactory.enemies[i];
+                        return true;
+                    }
                 }
             }
+
             return false;
         }
 
@@ -163,8 +163,9 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
 
         update(){
+            this.acquireTarget(); //FIXME
             if(!this.target){
-                this.acquireTarget();
+                //this.acquireTarget();
                 this.img.stop();
                 //this.target = EnemyFactory.enemies[0];
             }

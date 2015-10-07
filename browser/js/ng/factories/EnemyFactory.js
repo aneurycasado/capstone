@@ -126,7 +126,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             return this.health;
         }
         getSpeed() {
-            return this.speed;
+            return this.speed * this.slowFactor;
         }
         getPosition() {
             return this.position;
