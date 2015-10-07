@@ -8,6 +8,10 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         constructor(opts) {
             this.particleEmitters = {};
             if (opts) {
+                for(let opt in opts){
+                    this[opt] = opts[opt];
+                 }
+                this.imgContainer = new PIXI.Container();
                 if (opts.img) {
                     let array = [];
                     let end; 
@@ -29,8 +33,16 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 this.img.play();
                 if (opts.power) this.power = opts.power;
             }
+            this.healthBar = new PIXI.Graphics();
+            this.healthBar.beginFill(0xFF0000);
+            this.healthBar.drawRect(-20, -25, 40, 2);
+            this.imgContainer.addChild(this.img);
+            this.imgContainer.addChild(this.healthBar);
+            this.imgContainer.position = this.position;
+            stage.addChild(this.imgContainer);
             this.slowFactor = 1;
             this.value = 0;
+            this.maxHealth = this.health;
             
             this.radius = 10;
             this.path = opts.path;
@@ -73,6 +85,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 let x = enemies.splice(enemies.indexOf(this),1);
             }
             stage.removeChild(this.img);
+            stage.removeChild(this.healthBar);
+            stage.removeChild(this.imgContainer);
         }
 
         update(delta){
@@ -98,6 +112,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
         takeDamage(damage){
             this.health -= damage;
+            var healthPercentage = this.health / this.maxHealth;
+            this.healthBar.width = 40 * healthPercentage;
 
             if(!this.particleEmitters.damageSparks) this.particleEmitters.damageSparks = ParticleFactory.createEmitter('damageSparks', StateFactory.stages.play);
 
@@ -111,28 +127,40 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
     class trojanHorse extends Enemy {
         constructor(opts) {
-            super({img: '1', power: 2, path: opts.path});
-            this.value = 5;
-            this.speed = 128;
-            this.health = 10;
+            super({
+                img: '1', 
+                power: 2, 
+                path: opts.path,
+                value: 5,
+                speed: 128,
+                health: 10
+            });
         }
     }
 
     class bigBug extends Enemy {
         constructor(opts) {
-            super({img: '2', power: 2, path: opts.path});
-            this.value = 5;
-            this.speed = 90;
-            this.health = 30;
+            super({
+                img: '2', 
+                power: 2, 
+                path: opts.path,
+                value: 5,
+                speed: 90,
+                health: 30
+            });
         }
     }
 
     class bossBug extends Enemy {
         constructor(opts) {
-            super({img: '3', power: 2, path: opts.path});
-            this.value = 5;
-            this.speed = 100;
-            this.health = 100;
+            super({
+                img: '3', 
+                power: 2, 
+                path: opts.path,
+                value: 5,
+                speed: 100,
+                health: 100
+            });
         }
     }
 
