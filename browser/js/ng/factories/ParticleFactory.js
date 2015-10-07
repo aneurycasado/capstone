@@ -318,7 +318,110 @@ app.factory('ParticleFactory', function() {
                     "y": 0,
                     "r": 10
                 }
-            }
+            },
+
+
+            fire2 : {
+                "alpha": {
+                    "start": 0.6,
+                    "end": 0
+                },
+                "scale": {
+                    "start": 0.66,
+                    "end": 0.2,
+                    "minimumScaleMultiplier": 1
+                },
+                "color": {
+                    "start": "#fff399",
+                    "end": "#a62c00"
+                },
+                "speed": {
+                    "start": 500,
+                    "end": 500
+                },
+                "acceleration": {
+                    "x": 0,
+                    "y": 0
+                },
+                "startRotation": {
+                    "min": 265,
+                    "max": 275
+                },
+                "rotationSpeed": {
+                    "min": 50,
+                    "max": 50
+                },
+                "lifetime": {
+                    "min": 0.091,
+                    "max": 0.091
+                },
+                "blendMode": "normal",
+                "frequency": 0.001,
+                "emitterLifetime": -1,
+                "maxParticles": 1000,
+                "pos": {
+                    "x": 0,
+                    "y": 0
+                },
+                "addAtBack": false,
+                "spawnType": "burst",
+                "particlesPerWave": 2,
+                "particleSpacing": 0,
+                "angleStart": 0
+            },
+
+            critter1pieces : {
+                "alpha": {
+                    "start": 1,
+                    "end": 0.41
+                },
+                "scale": {
+                    "start": 1,
+                    "end": 1,
+                    "minimumScaleMultiplier": 1
+                },
+                "color": {
+                    "start": "#ffffff",
+                    "end": "#ffffff"
+                },
+                "speed": {
+                    "start": 300,
+                    "end": 300
+                },
+                "acceleration": {
+                    "x": 0,
+                    "y": 0
+                },
+                "startRotation": {
+                    "min": 0,
+                    "max": 360
+                },
+                "rotationSpeed": {
+                    "min": 1000,
+                    "max": 1000
+                },
+                "lifetime": {
+                    "min": 5,
+                    "max": 5
+                },
+                "blendMode": "normal",
+                "frequency": 0.003,
+                "emitterLifetime": .02,
+                "maxParticles": 4,
+                "pos": {
+                    "x": 0,
+                    "y": 0
+                },
+                "addAtBack": true,
+                "spawnType": "rect",
+                "spawnRect": {
+                    "x": 0,
+                    "y": 0,
+                    "w": 30,
+                    "h": 30
+                }
+            },
+
     };
 
     var particleImageTable = {
@@ -326,7 +429,9 @@ app.factory('ParticleFactory', function() {
         ice: [3],
         poison: [4],
         damageSparks: [5],
-        flame: [1, 6]
+        flame: [1, 6],
+        fire2: [1, 2],
+        critter1pieces : ["core1", "wing1", "eye1", "ball1"],
     };
 
     let createEmitter = (emitterType, container) => {
