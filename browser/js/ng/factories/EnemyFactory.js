@@ -344,11 +344,6 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             enemy.update(delta);
         });
 
-<<<<<<< HEAD
-        //console.log(explosionEmitters);
-
-=======
->>>>>>> de6452e432736c4b197f7a5c294c7ec4c87f426c
         explosionEmitters.forEach((emitter) => {
             emitter.update(delta);
         });
