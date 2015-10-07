@@ -1,5 +1,5 @@
 'use strict'
-app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactory, StateFactory, ParticleFactory) {
+app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactory, StateFactory, ParticleFactory, ClickHandlerFactory) {
     let data = StateFactory;
 
     let allTowers = [];
@@ -29,14 +29,25 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 let img = PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + i + ".png");
                 array.push(img)
             }
+            this.imgContainer = new PIXI.Container();
             this.img = new PIXI.extras.MovieClip(array);
+            this.img.interactive = true;
             this.img.position.x = this.position.x * StateFactory.cellSize + (StateFactory.cellSize / 2);
             this.img.position.y = this.position.y * StateFactory.cellSize + (StateFactory.cellSize / 2);
             this.img.anchor.x = .5;
             this.img.anchor.y = .5;
             this.img.animationSpeed = .1;
-            stage.addChild(this.img);
+            this.imgContainer.addChild(this.img);
+            stage.addChild(this.imgContainer);
+
+            this.baseRangeCircle = new PIXI.Graphics();
+            this.baseRangeCircle.beginFill(0xFFFF99, .4);
+            this.baseRangeCircle.lineStyle(2, 0xFFFF99);
+            this.baseRangeCircle.drawCircle(this.img.position.x, this.img.position.y, this.range);
             this.targetingFunction = null;
+
+            this.img.click = ClickHandlerFactory.towerClickHandler.bind(this);
+
             allTowers.push(this);
         }
 
@@ -132,7 +143,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
 
         terminate() {
-            stage.removeChild(this.img);
+            stage.removeChild(this.imgContainer);
             allTowers.splice(allTowers.indexOf(this), 1);
         }
 
@@ -147,10 +158,12 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 return true;
             }
             else {
-                for(let i = EnemyFactory.enemies.length - 1; i >= 0; i--){
-                    if(this.isEnemyInRange(EnemyFactory.enemies[i])){
-                        this.target = EnemyFactory.enemies[i];
-                        return true;
+                if(!this.target) {
+                    for(let i = EnemyFactory.enemies.length - 1; i >= 0; i--){
+                        if(this.isEnemyInRange(EnemyFactory.enemies[i])){
+                            this.target = EnemyFactory.enemies[i];
+                            return true;
+                        }
                     }
                 }
             }

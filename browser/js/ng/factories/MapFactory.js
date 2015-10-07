@@ -1,6 +1,6 @@
 'use strict'
-app.factory('MapFactory', function(StateFactory, MapGridsFactory) {
-   
+app.factory('MapFactory', function(StateFactory, MapGridsFactory, ClickHandlerFactory) {
+
     class GridNode {
         constructor(x, y, opts) {
             this.x = x;
@@ -12,6 +12,8 @@ app.factory('MapFactory', function(StateFactory, MapGridsFactory) {
             this.terrain = opts.terrain;
             if (opts) {
                 if (opts.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/background-tilesets/" + opts.img + ".png"));
+                this.img.interactive = true;
+                this.img.click = ClickHandlerFactory.gridClickHandler.bind(this);
                 this.img.position.x = this.coords.x;
                 this.img.position.y = this.coords.y;
                 if (opts.canPlaceTower) this.canPlaceTower = true;
