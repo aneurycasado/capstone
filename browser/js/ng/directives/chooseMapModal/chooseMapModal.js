@@ -1,3 +1,4 @@
+//The modal window for choosing a map. 
 app.directive("chooseMapModal", function(MapFactory, $rootScope){
 	return {
 		restrict: "E",

@@ -267,6 +267,57 @@ app.factory('ParticleFactory', function() {
                     "r": 0,
                     "minR": 0
                 }
+            },
+
+            flame: {
+                "alpha": {
+                    "start": 0.62,
+                    "end": 0
+                },
+                "scale": {
+                    "start": 0.25,
+                    "end": 0.75,
+                    "minimumScaleMultiplier": 1
+                },
+                "color": {
+                    "start": "#fff191 ",
+                    "end": "#ff622c "
+                },
+                "speed": {
+                    "start": 500,
+                    "end": 500
+                },
+                "acceleration": {
+                    "x": 0,
+                    "y": 0
+                },
+                "startRotation": {
+                    "min": 265,
+                    "max": 275
+                },
+                "rotationSpeed": {
+                    "min": 50,
+                    "max": 50
+                },
+                "lifetime": {
+                    "min": 0.1,
+                    "max": 0.25
+                },
+                "blendMode": "normal",
+                "frequency": 0.001,
+                "emitterLifetime": -1,
+                "maxParticles": 1000,
+                "pos": {
+                    "x": 0,
+                    "y": 0
+                },
+                "addAtBack": false,
+                "spawnType": "circle",
+                "spawnCircle": {
+                    "x": 0,
+                    "y": 0,
+                    "r": 10
+                }
             }
     };
 
@@ -274,7 +325,8 @@ app.factory('ParticleFactory', function() {
         fire: [1, 2],
         ice: [3],
         poison: [4],
-        damageSparks: [5]
+        damageSparks: [5],
+        flame: [1, 6]
     };
 
     let createEmitter = (emitterType, container) => {

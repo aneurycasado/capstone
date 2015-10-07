@@ -14,6 +14,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             this.rank = 1;
             this.kills = 0;
             this.reloading = false;
+            this.imgNum = options.img;
             $rootScope.$on('deadEnemy', function(event, deadEnemy){
                 if(deadEnemy == this.target) this.target = null;
             }.bind(this));
@@ -29,11 +30,28 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 array.push(img)
             }
             this.img = new PIXI.extras.MovieClip(array);
-            this.img.position.x = this.position.x * StateFactory.cellSize + .5 * StateFactory.cellSize;
+            this.img.position.x = this.position.x * StateFactory.cellSize + (StateFactory.cellSize / 2);
+            this.img.position.y = this.position.y * StateFactory.cellSize + (StateFactory.cellSize / 2);
             this.img.anchor.x = .5;
             this.img.anchor.y = .5;
             this.img.animationSpeed = .1;
-            this.img.position.y = this.position.y * StateFactory.cellSize + .5 * StateFactory.cellSize;
+            this.context = {
+                getCurrentTarget: function() {
+                    return this.target;
+                }.bind(this),
+                setTarget: function(enemy) {
+                    this.target = enemy;
+                }.bind(this),
+                getEnemies: () => {
+                    let arr = [];
+                    for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
+                        if (this.isEnemyInRange(EnemyFactory.enemies[i])) {
+                            arr.push(EnemyFactory.enemies[i]) //FIXME
+                        }
+                    }
+                    return arr;
+                }
+            };
             stage.addChild(this.img);
             this.targetingFunction = null;
             allTowers.push(this);
@@ -184,7 +202,9 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 power: 2,
                 price: 50,
                 reloadTime: 400,
-                range: 200
+                range: 200,
+                name: "Ice",
+                effect: 'Fill in'
             });
         }
 
@@ -208,13 +228,15 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 power: 3,
                 price:50,
                 reloadTime: 1000,
-                range: 200
+                range: 200,
+                name: "Fire",
+                effect: 'Fill in'
             });
         }
 
         shoot(enemy){
             this.img.play();
-            new ProjectileFactory.FireProjectile({x: this.img.position.x, y: this.img.position.y, speed: 4, radius: 8, enemy: enemy});
+            new ProjectileFactory.FireProjectile({x: this.img.position.x, y: this.img.position.y, speed: 4, radius: 0, enemy: enemy});
         }
     }
 
@@ -225,7 +247,9 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 power: 8,
                 price: 50,
                 range: 1000,
-                reloadTime: 2000
+                reloadTime: 2000,
+                name: "Thunder",
+                effect: 'Fill in'
             });
         }
 
@@ -242,7 +266,9 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 power: 8,
                 price: 50,
                 reloadTime: 400,
-                range: 200
+                range: 200,
+                name: 'Poison',
+                effect: 'Fill in'
             });
         }
 
@@ -275,6 +301,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
     return {
         createTower,
+        towers,
         updateAll,
         prices,
         stage,

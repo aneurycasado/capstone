@@ -6,18 +6,27 @@ app.directive("sideBar", function(){
     }
 });
 
-app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, GameFactory, StateFactory, WaveFactory, EnemyFactory) {
+app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, GameFactory, StateFactory, WaveFactory, EnemyFactory, TowerFactory) {
     $scope.player = PlayerFactory;
     $scope.waves = WaveFactory.waves;
     $scope.enemies = EnemyFactory.enemies;
     $scope.showTowers = true;
     $scope.firstWave = true;
     $scope.showPowerUps = false;
-    $scope.towers = createTowers();
     $scope.nextWave = false;
     $scope.nextLevel = false;
     $scope.count = 0;
     $scope.state = StateFactory.state;
+    $scope.constructors = TowerFactory.towers;
+    $scope.towers = [];
+    for(let key in TowerFactory.towers){
+        let currentTower = new TowerFactory.towers[key](0,0);
+        var img = currentTower.imgNum;
+        currentTower.imgUrl = "./images/tower-defense-turrets/turret-" + img + "-1.png";
+        console.log(currentTower);
+        $scope.towers.push(currentTower);
+        currentTower.terminate();
+    } 
     $rootScope.$on('wavesDone', () => {
         $scope.state = 'complete';
         $scope.$digest();
@@ -33,7 +42,6 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, 
         $scope.state = 'standby';
         console.log("Map chosen");
     });
-
     $scope.saveGame = () => {
         let player = {
             health: PlayerFactory.health,
@@ -62,39 +70,9 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, 
         GameFactory.changeStateTo("wave");
         $scope.state = StateFactory.state;
     }
-
 });
 
 function createTowers (){
-    var array = [];
-    var Ice = {
-        type: "Ice",
-        img: "./images/tower-defense-turrets/turret-4-1.png",
-        effect: "effect",
-        price: 50,
-    };
-    var Fire = {
-        type: "Fire",
-        img: "./images/tower-defense-turrets/turret-7-1.png",
-        effect: "effect",
-        price: 50,
-    };
-    var Thunder = {
-        type: "Thunder",
-        img: "./images/tower-defense-turrets/turret-5-1.png",
-        effect: "effect",
-        price: 50,
-    };
-    var Poison = {
-        type: "Poison",
-        img: "./images/tower-defense-turrets/turret-6-1.png",
-        effect: "effect",
-        price: 50,
-    };
-    array.push(Ice);
-    array.push(Fire);
-    array.push(Thunder);
-    array.push(Poison);
     return array;
 }
 

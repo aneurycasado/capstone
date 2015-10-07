@@ -24,13 +24,15 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
         StateFactory.stages.play.addChild(map.stage);//yaaaaa
         StateFactory.stages.play.addChild(EnemyFactory.stage);//yaaaaa
         StateFactory.stages.play.addChild(TowerFactory.stage);//yaaaaa
-        StateFactory.stages.play.addChild(ProjectileFactory.stage);//yaaaaa
+        StateFactory.stages.play.addChild(ProjectileFactory.stage);//yaaaas
         data.state = "standby";
     };
     //Placed here for now
     let restart = (mapNum) => {
         ProjectileFactory.stage.removeChildren();
         TowerFactory.stage.removeChildren();
+        EnemyFactory.stage.removeChildren();
+        EnemyFactory.reset();
         StateFactory.stages.play.removeChildren();
         $rootScope.$emit('removeNextLevel');
         TowerFactory.resetTowers();
@@ -81,9 +83,9 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
             } else if (!data.map.grid[towerPositionY][towerPositionX].canPlaceTower) {
 
             } else {
-                if(PlayerFactory.money - TowerFactory.prices[$scope.tower.type] >= 0){
-                    TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.type + "Tower");
-                    PlayerFactory.money -= TowerFactory.prices[$scope.tower.type];
+                if(PlayerFactory.money - $scope.tower.price >= 0){
+                    TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.name + "Tower");
+                    PlayerFactory.money -= $scope.tower.price;
                     $scope.$digest();
                 }
             }
