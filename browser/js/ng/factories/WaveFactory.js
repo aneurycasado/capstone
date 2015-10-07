@@ -56,7 +56,7 @@ app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
         let min = 1;
         let max = 30;
         let numOfWaves = randomInt(min,max);
-        for(let i = 0; i < numOfWaves; i++){
+        for(let i = 0; i < 1; i++){
             let wave = [];
             let numOfTrojanHorse = randomInt(min,max);
             let numOfBigBug = randomInt(min,max);
@@ -66,19 +66,19 @@ app.factory('WaveFactory', function(EnemyFactory, StateFactory) {
                 if(currentAnimal === 1){
                     if(numOfTrojanHorse === 0) continue;
                     else{
-                       wave.push({name: 'trojanHorse', num: 1});
+                       wave.push({name: 'TrojanHorse', num: 1});
                        numOfTrojanHorse--;
                     }
                 }else if(currentAnimal === 2){
                     if(numOfBigBug === 0) continue;
                     else{
-                        wave.push({name: 'bigBug', num: 1});
+                        wave.push({name: 'BigBug', num: 1});
                         numOfBigBug--;
                     }
                 }else if(currentAnimal === 3){
                     if(numOfBossBug === 0) continue;
                     else{
-                        wave.push({name: 'bossBug', num: 1})
+                        wave.push({name: 'BossBug', num: 1})
                         numOfBossBug--;
                     }
                 }
