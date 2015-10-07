@@ -14,8 +14,10 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, ClickHandlerFact
                     this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/background-tilesets/" + opts.img + ".png"));
                     this.img.position.x = this.coords.x;
                     this.img.position.y = this.coords.y;
-                    this.img.width = StateFactory.cellSize;
-                    this.img.height = StateFactory.cellSize;
+                    if(opts.width) this.img.width = opts.width;
+                    else this.img.width = StateFactory.cellSize;
+                    if(opts.height) this.img.height = opts.height;
+                    else this.img.height = StateFactory.cellSize;                
                 }
             } 
         }
@@ -44,19 +46,26 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, ClickHandlerFact
 
     let insertNodes = (grid, map,multiplePaths) => {
 
-        let texture;
-        let img;
         for(let row = 0; row < grid.length; row++){
-            for(let col = 0; col < grid[row].length; col++){
+            for(let col = 0; col < grid[row].length; col++){      
+                let texture;
+                let img;
+                let width;
+                let height;
+                let nodeValue = grid[row][col]
+                if(typeof nodeValue == "number" && nodeValue >= 2 && nodeValue <= 8 && nodeValue !== 4){
+                    width = 100;
+                    height = 50;
+                } 
 
-                texture = terrainToTexture[grid[row][col]];
+                texture = terrainToTexture[nodeValue];
 
                 if(texture){
                     if(texture.constructor == Array) texture = texture[Math.floor(Math.random() * (texture.length))];
                     img = textureToImage[texture]; 
                 }
           
-                grid[row][col] = new GridNode(col, row, {img: img, terrain: grid[row][col]});
+                grid[row][col] = new GridNode(col, row, {img: img, width: width, height: height, terrain: grid[row][col]});
                 if(!multiplePaths && grid[row][col].img) map.stage.addChild(grid[row][col].img);
             }
         }
@@ -111,7 +120,6 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, ClickHandlerFact
         let count = 0;
         function explore(x, y, lastDirection){
             count++;
-            console.log(x, y);
             if(grid[x][y].terrain == 3){
                 return path;
             }
