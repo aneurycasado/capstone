@@ -147,10 +147,12 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 return true;
             }
             else {
-                for(let i = EnemyFactory.enemies.length - 1; i >= 0; i--){
-                    if(this.isEnemyInRange(EnemyFactory.enemies[i])){
-                        this.target = EnemyFactory.enemies[i];
-                        return true;
+                if(!this.target) {
+                    for(let i = EnemyFactory.enemies.length - 1; i >= 0; i--){
+                        if(this.isEnemyInRange(EnemyFactory.enemies[i])){
+                            this.target = EnemyFactory.enemies[i];
+                            return true;
+                        }
                     }
                 }
             }
