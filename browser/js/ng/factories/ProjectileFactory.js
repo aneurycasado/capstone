@@ -120,7 +120,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
   class FirePuddle extends Projectile{
     constructor(opts){
       super(opts);
-      this.power = 0.5;
+      this.power = 0.2;
       this.radius = 20;
       this.particleEmitter = ParticleFactory.createEmitter('fire', StateFactory.stages.play);
       this.particleEmitter.updateOwnerPos(this.x, this.y);
@@ -159,7 +159,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
   class PoisonProjectile extends HomingProjectile{
       constructor(opts){
         super(opts);
-        this.poisonDamage = 0.3;
+        this.poisonDamage = 0.1;
         this.particleEmitter = ParticleFactory.createEmitter('poison', StateFactory.stages.play);
         this.particleEmitter.updateOwnerPos(this.x, this.y);
       }
@@ -199,7 +199,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
     FireProjectile,
     PoisonProjectile,
     IceProjectile,
-    Thunder   BallProjectile,
+    ThunderBallProjectile,
     updateAll
   };
 });
