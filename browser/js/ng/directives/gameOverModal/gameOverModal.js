@@ -1,3 +1,4 @@
+//Gameover modal
 app.directive("gameOverModal", function($rootScope){
     return {
         restrict: "E",
