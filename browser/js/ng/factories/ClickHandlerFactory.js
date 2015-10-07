@@ -1,17 +1,27 @@
 app.factory('ClickHandlerFactory', function() {
-    let towerClickHandler = function() {
-        let highlightedTower;
-        return function(mouseData) {
-            console.log(highlightedTower);
-            if(highlightedTower) {
-                console.log(highlightedTower);
-                highlightedTower.imgContainer.removeChild(highlightedTower.rangeCircleContainer);
-            }
-            this.imgContainer.addChildAt(this.rangeCircleContainer, 0);
-            highlightedTower = this;
+    let selectedTower = null;
+    let selectedGrid = null;
+    let selectedTowerRemover = () => {
+        if(selectedTower) {
+            selectedTower.imgContainer.removeChild(selectedTower.baseRangeCircle);
         }
     };
+
+    let towerClickHandler = function(mouseData) {
+        selectedTowerRemover();
+        this.imgContainer.addChildAt(this.baseRangeCircle, 0);
+        selectedTower = this;
+    }
+    let gridClickHandler = function(mouseData) {
+        if(selectedGrid) {
+            selectedGrid = this;
+        }
+        selectedTowerRemover();
+    }
+
+
     return {
-        towerClickHandler
+        towerClickHandler,
+        gridClickHandler
     }
 });

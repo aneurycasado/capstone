@@ -5,7 +5,6 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
     let allTowers = [];
 
     let stage = new PIXI.Stage();
-    let towerClickHandler = ClickHandlerFactory.towerClickHandler();
 
     class Tower {
         constructor(x, y, options) {
@@ -38,24 +37,16 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             this.img.anchor.x = .5;
             this.img.anchor.y = .5;
             this.img.animationSpeed = .1;
-            //this.imgContainer.position = this.img.position;
             this.imgContainer.addChild(this.img);
             stage.addChild(this.imgContainer);
 
-            let circleCoords = [this.img.position.x, this.img.position.y, this.range];
-
-            this.rangeCircleContainer = new PIXI.Container();
             this.baseRangeCircle = new PIXI.Graphics();
-            this.rangeOuterRing = new PIXI.Graphics();
             this.baseRangeCircle.beginFill(0xFFFF99, .4);
-            this.rangeOuterRing.lineStyle(2, 0xFFFF99);
-            this.rangeOuterRing.drawCircle(...circleCoords);
-            this.baseRangeCircle.drawCircle(...circleCoords);
-            this.rangeCircleContainer.addChild(this.baseRangeCircle);
-            this.rangeCircleContainer.addChild(this.rangeOuterRing);
+            this.baseRangeCircle.lineStyle(2, 0xFFFF99);
+            this.baseRangeCircle.drawCircle(this.img.position.x, this.img.position.y, this.range);
             this.targetingFunction = null;
 
-            this.img.click = towerClickHandler.bind(this);
+            this.img.click = ClickHandlerFactory.towerClickHandler.bind(this);
 
             allTowers.push(this);
         }
