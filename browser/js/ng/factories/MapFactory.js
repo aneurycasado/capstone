@@ -1,6 +1,5 @@
 'use strict'
-app.factory('MapFactory', function(StateFactory, MapGridsFactory, ClickHandlerFactory) {
-
+app.factory('MapFactory', function(StateFactory, DesignFactory, ClickHandlerFactory) {
     class GridNode {
         constructor(x, y, opts) {
             this.x = x;
@@ -8,63 +7,57 @@ app.factory('MapFactory', function(StateFactory, MapGridsFactory, ClickHandlerFa
             this.coords = {x: x * StateFactory.cellSize, y: y * StateFactory.cellSize};
             this.enterable = true;
             this.contains = {};
-            this.canPlaceTower = false;
             this.terrain = opts.terrain;
             if (opts) {
-                if (opts.img) this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/background-tilesets/" + opts.img + ".png"));
-                this.img.interactive = true;
-                this.img.click = ClickHandlerFactory.gridClickHandler.bind(this);
-                this.img.position.x = this.coords.x;
-                this.img.position.y = this.coords.y;
-                if (opts.canPlaceTower) this.canPlaceTower = true;
-            }
+
+                if (opts.img){
+                    this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/background-tilesets/" + opts.img + ".png"));
+                    this.img.position.x = this.coords.x;
+                    this.img.position.y = this.coords.y;
+                    this.img.width = StateFactory.cellSize;
+                    this.img.height = StateFactory.cellSize;
+                }
+            } 
         }
     }
 
     class Map {
-        constructor(grid, textures){
+        constructor(grid){
             this.stage = new PIXI.Stage();
-            this.grid = insertNodes(grid, textures, this, false);
+            this.grid = insertNodes(grid, this, false);
             this.path = findPath(this.grid);
         }
     }
 
     class MultiplePaths {
-        constructor(grid, textures, gridArray){
+        constructor(grid, gridArray){
             this.stage = new PIXI.Stage();
-            this.grid = insertNodes(grid, textures, this, false);
+            this.grid = insertNodes(grid, this, false);
             this.path = [];
             gridArray.forEach(function(grid){
-                let newGrid = insertNodes(grid,textures,this,true);
+                let newGrid = insertNodes(grid,this,true);
                 let path = findPath(newGrid);
-                console.log("Path found, ",path);
                 this.path.push(path);
             }.bind(this));
         }
     }
 
-    let insertNodes = (grid, textures, map,multiplePaths) => {
+    let insertNodes = (grid, map,multiplePaths) => {
 
-        let tile;
-        let canPlaceTower;
+        let texture;
+        let img;
         for(let row = 0; row < grid.length; row++){
             for(let col = 0; col < grid[row].length; col++){
-                canPlaceTower = false;
-                if(grid[row][col] === 4){
-                    tile = textures.tile;
+
+                texture = terrainToTexture[grid[row][col]];
+
+                if(texture){
+                    if(texture.constructor == Array) texture = texture[Math.floor(Math.random() * (texture.length))];
+                    img = textureToImage[texture]; 
                 }
-                if(grid[row][col] === 1){
-                    tile = textures.path;
-                }else if(grid[row][col] === 2){
-                    tile = textures.tree;
-                }else if(grid[row][col] === 3){
-                    tile = textures.destination;
-                }else if(grid[row][col] === 0){
-                    canPlaceTower = true;
-                    tile = textures.tile;
-                }
-                grid[row][col] = new GridNode(col, row, {img: tile, canPlaceTower: canPlaceTower, terrain: grid[row][col]});
-                if(!multiplePaths) map.stage.addChild(grid[row][col].img);
+          
+                grid[row][col] = new GridNode(col, row, {img: img, terrain: grid[row][col]});
+                if(!multiplePaths && grid[row][col].img) map.stage.addChild(grid[row][col].img);
             }
         }
         return grid;
@@ -118,6 +111,7 @@ app.factory('MapFactory', function(StateFactory, MapGridsFactory, ClickHandlerFa
         let count = 0;
         function explore(x, y, lastDirection){
             count++;
+            console.log(x, y);
             if(grid[x][y].terrain == 3){
                 return path;
             }
@@ -140,10 +134,44 @@ app.factory('MapFactory', function(StateFactory, MapGridsFactory, ClickHandlerFa
         return path;
     }
 
-    let textures = {tile: "01", path: "13", tree: "03", destination: "07"};
+    let textureToImage = {
+        tile1: "01", tile2: "02", 
+        tile3: "03", detail1: "08",
+        detail2: "09", detail3: "10",
+        detail4: "11", lights1: "04",
+        lights2: "05", lights3: "06",
+        lights4: "07", panelTop: "14",
+        panelBottom: "15", base1: "12",
+        base2: "13-1", base3: "13-2",
+        base4: "13-3", path: "13",
+        platformBL: "17",platformUL: "18",
+        platformBR: "19", platformUR: "20",
+        platformH: "21", platformV: "22",
+        platformX: "16", hangar: "23",
+    };
+
+    let terrainToTexture = {
+        0: "none",
+        1: "none",
+        3: "base1",
+        2: ["detail1", "detail2", "detail3"],
+        5: ["lights1", "lights2", "lights3", "lights4"],
+        6: ["tile1", "tile2", "tile3"],
+        4: "hangar",
+        7: "panelBottom",
+        8: "panelTop",
+        "BL": "platformBL",
+        "BR": "platformBR",
+        "H": "platformH",
+        "V": "platformV",
+        "UL": "platformUL",
+        "UR": "platformUR",
+        "X": "platformX",
+    };
+
     let maps = [];
-    maps.push(new Map(MapGridsFactory.mapGrid1, textures));
-    maps.push(new MultiplePaths(MapGridsFactory.mapGrid2,textures,MapGridsFactory.mapGrid2Array));
+    maps.push(new Map(DesignFactory.mapGrid1));
+    maps.push(new MultiplePaths(DesignFactory.mapGrid2,DesignFactory.mapGrid2Array));
     let reset = () => {
         maps.forEach((map) => {
             map.grid.forEach((row) => {

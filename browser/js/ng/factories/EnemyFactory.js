@@ -20,7 +20,6 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                     else end = 5;
                     for(let i=1; i < end; i++){
                         let img = PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-blue/" + i.toString() + ".png");
-                        array.push(img)
                     }
                     this.img = new PIXI.extras.MovieClip(array);
                 }
@@ -85,7 +84,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 let x = enemies.splice(enemies.indexOf(this),1);
             }
 
-            explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', StateFactory.stages.play));
+            explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', StateFactory.stages.play, ["core1", "wing1", "eye1", "ball1"]));
             explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
 
             stage.removeChild(this.img);
@@ -197,8 +196,6 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         enemies.forEach((enemy) => {
             enemy.update(delta);
         });
-
-        console.log(explosionEmitters);
 
         explosionEmitters.forEach((emitter) => {
             emitter.update(delta);
