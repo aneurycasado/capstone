@@ -85,9 +85,6 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 let x = enemies.splice(enemies.indexOf(this),1);
             }
 
-            explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', StateFactory.stages.play));
-            explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
-
             stage.removeChild(this.img);
             stage.removeChild(this.healthBar);
             stage.removeChild(this.imgContainer);
@@ -123,6 +120,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             if(!this.particleEmitters.damageSparks) this.particleEmitters.damageSparks = ParticleFactory.createEmitter('damageSparks', StateFactory.stages.play);
 
             if(this.health <= 0){
+                explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', StateFactory.stages.play));
+                explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
                 PlayerFactory.money += this.value;
                 $rootScope.$digest();
                 this.terminate();
@@ -197,8 +196,6 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         enemies.forEach((enemy) => {
             enemy.update(delta);
         });
-
-        console.log(explosionEmitters);
 
         explosionEmitters.forEach((emitter) => {
             emitter.update(delta);

@@ -215,7 +215,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 power: this.power,
                 x: this.img.position.x, y:
                 this.img.position.y,
-                speed: 4,
+                speed: 200,
                 radius: 8,
                 enemy: enemy
             });
@@ -237,7 +237,12 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
         shoot(enemy){
             this.img.play();
-            new ProjectileFactory.FireProjectile({x: this.img.position.x, y: this.img.position.y, speed: 4, radius: 0, enemy: enemy});
+            new ProjectileFactory.FireProjectile({
+                x: this.img.position.x, 
+                y: this.img.position.y, 
+                speed: 300, 
+                radius: 0, 
+                enemy: enemy});
         }
     }
 
@@ -245,9 +250,9 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         constructor(x, y){
             super(x, y, {
                 img: '5',
-                power: 8,
+                power: 30,
                 price: 50,
-                range: 1000,
+                range: 800,
                 reloadTime: 2000,
                 name: "Thunder",
                 effect: 'Fill in'
@@ -256,7 +261,12 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
         shoot(enemy){
             this.img.play();
-            new ProjectileFactory.StraightProjectile({x: this.img.position.x, y: this.img.position.y, speed: 10, radius: 14, enemy: enemy});
+            new ProjectileFactory.ThunderBallProjectile({
+                x: this.img.position.x, 
+                y: this.img.position.y, 
+                speed: 4000, 
+                radius: 14, 
+                enemy: enemy});
         }
     }
 
@@ -266,7 +276,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 img: '6',
                 power: 8,
                 price: 50,
-                reloadTime: 400,
+                reloadTime: 1000,
                 range: 200,
                 name: 'Poison',
                 effect: 'Fill in'
@@ -275,7 +285,12 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
         shoot(enemy){
             this.img.play();
-            new ProjectileFactory.PoisonProjectile({x: this.img.position.x, y: this.img.position.y, speed: 4, radius: 8, enemy: enemy});
+            new ProjectileFactory.PoisonProjectile({
+                x: this.img.position.x, 
+                y: this.img.position.y, 
+                speed: 100, 
+                radius: 8, 
+                enemy: enemy});
         }
     }
 

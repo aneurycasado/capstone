@@ -422,6 +422,105 @@ app.factory('ParticleFactory', function() {
                 }
             },
 
+            bigFire: {
+                "alpha": {
+                    "start": 0.6,
+                    "end": 0
+                },
+                "scale": {
+                    "start": 0.66,
+                    "end": 0.2,
+                    "minimumScaleMultiplier": 1
+                },
+                "color": {
+                    "start": "#fff399 ",
+                    "end": "#a62c00 "
+                },
+                "speed": {
+                    "start": 500,
+                    "end": 500
+                },
+                "acceleration": {
+                    "x": 0,
+                    "y": 0
+                },
+                "startRotation": {
+                    "min": 265,
+                    "max": 275
+                },
+                "rotationSpeed": {
+                    "min": 50,
+                    "max": 50
+                },
+                "lifetime": {
+                    "min": 0.091,
+                    "max": 0.091
+                },
+                "blendMode": "normal",
+                "frequency": 0.001,
+                "emitterLifetime": -1,
+                "maxParticles": 1000,
+                "pos": {
+                    "x": 0,
+                    "y": 0
+                },
+                "addAtBack": false,
+                "spawnType": "burst",
+                "particlesPerWave": 2,
+                "particleSpacing": 0,
+                "angleStart": 0
+            },
+
+            lightningBall: {
+                "alpha": {
+                    "start": 0.55,
+                    "end": 0
+                },
+                "scale": {
+                    "start": 0.1,
+                    "end": 0.1,
+                    "minimumScaleMultiplier": 1
+                },
+                "color": {
+                    "start": "#ffffff",
+                    "end": "#ffffff"
+                },
+                "speed": {
+                    "start": 0,
+                    "end": 0
+                },
+                "acceleration": {
+                    "x": 0,
+                    "y": 0
+                },
+                "startRotation": {
+                    "min": 0,
+                    "max": 360
+                },
+                "rotationSpeed": {
+                    "min": 0,
+                    "max": 0
+                },
+                "lifetime": {
+                    "min": 0.01,
+                    "max": 0.01
+                },
+                "blendMode": "screen",
+                "frequency": 0.0001,
+                "emitterLifetime": -1,
+                "maxParticles": 300,
+                "pos": {
+                    "x": 0,
+                    "y": 0
+                },
+                "addAtBack": true,
+                "spawnType": "circle",
+                "spawnCircle": {
+                    "x": 0,
+                    "y": 0,
+                    "r": 6
+                }
+            }
     };
 
     var particleImageTable = {
@@ -431,6 +530,7 @@ app.factory('ParticleFactory', function() {
         damageSparks: [5],
         flame: [1, 6],
         fire2: [1, 2],
+        lightningBall:['lightning1', 'lightning2', 'HardCircle'],
         critter1pieces : ["core1", "wing1", "eye1", "ball1"],
     };
 
