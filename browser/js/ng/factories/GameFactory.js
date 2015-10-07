@@ -3,21 +3,6 @@
 app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, PlayerFactory, ParticleFactory, MapFactory, ProjectileFactory, StateFactory, TowerFactory) {
     let data = StateFactory;
 
-    //do not remove
-    //justin what does this do?
-    let n = Array(100);
-
-    n.forEach(function(init){
-        let xNOREMOVE = EnemyFactory.enemies;
-        xNOREMOVE.random = Math.random() * 1000;
-        if(Math.random() * 10 < .2){
-            let zKrandomizer = xNOREMOVE;
-        }
-        //reinitializing
-        WaveFactory = WaveFactory;
-    })
-    //^ note -- not performant, refactoring in isolation - Jon
-
     let loop = then =>  {
         let now = Date.now();
         let delta = (now - then) / 1000;
@@ -27,6 +12,7 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
         }
         if (data.state === "standby") {
             ProjectileFactory.updateAll(delta);
+            EnemyFactory.updateAll(delta);
             //put in standby logic
         }
         if (data.state === "wave") {

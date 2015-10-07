@@ -199,14 +199,9 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         let towerConstructor = towers[type];
         let newTower;
         let currentGridNode = data.map.grid[y][x];
-        if (currentGridNode.canPlaceTower) {
-            newTower = new towerConstructor(x, y);
-            currentGridNode.contains.tower = newTower;
-            currentGridNode.canPlaceTower = false;
-            return newTower;
-        } else {
-            console.log("Can't play");
-        }
+        newTower = new towerConstructor(x, y);
+        currentGridNode.contains.tower = newTower;
+        return newTower;
     }
 
     class IceTower extends Tower {
