@@ -21,7 +21,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                     let array = [];
                     let end = findEnd(opts.img);
                     for(let i=1; i < end; i++){
-                        let img = PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-" + opts.color +"/" + i.toString() + ".png");
+                        let img = PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-blue/" + i.toString() + ".png");
                         array.push(img)
                     }
                     this.img = new PIXI.extras.MovieClip(array);
@@ -351,7 +351,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
     let reset = () => {
         stage.removeChildren();
-        //enemies = [];
+        enemies = [];
     }
     let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow, 
                                BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,
