@@ -75,12 +75,13 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
         if ($scope.tower !== null) {
             let towerPositionX = Math.floor(e.offsetX / StateFactory.cellSize);
             let towerPositionY = Math.floor(e.offsetY / StateFactory.cellSize);
-            $scope.selectedTower = data.map.grid[towerPositionY][towerPositionX].contains.tower;
+            let selectedGrid = data.map.grid[towerPositionY][towerPositionX];
+            $scope.selectedTower = selectedGrid.contains.tower;
 
-            if (data.map.grid[towerPositionY][towerPositionX].contains.tower) {
+            if (selectedGrid.contains.tower) {
                 $scope.editing = true;
                 $scope.$digest();
-            } else if (!data.map.grid[towerPositionY][towerPositionX].canPlaceTower) {
+            } else if (!selectedGrid.canPlaceTower) {
 
             } else {
                 if(PlayerFactory.money - $scope.tower.price >= 0){
