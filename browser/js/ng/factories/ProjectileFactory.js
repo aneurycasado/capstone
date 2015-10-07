@@ -62,7 +62,6 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
       this.theta = (Math.atan((this.target.position.x - this.x) / (this.target.position.y - this.y)));
       this.xVel = this.speed*Math.sin(this.theta);
       this.yVel = this.speed*Math.cos(this.theta);
-      console.log(this.y, this.target.y, this.target);
       if(this.y > this.target.position.y) {
         this.xVel *= -1;
         this.yVel *= -1;

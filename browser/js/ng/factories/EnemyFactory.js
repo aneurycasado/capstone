@@ -204,7 +204,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
     let reset = () => {
         stage.removeChildren();
-        //enemies = [];
+        enemies = [];
     }
     let enemiesConstructors = {TrojanHorse,BigBug,BossBug};
     //adWare, worm

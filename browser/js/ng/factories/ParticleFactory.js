@@ -3,9 +3,7 @@ app.factory('ParticleFactory', function() {
 
     class ParticleEmitter{
         constructor(stage, imagePaths, config, type, useParticleContainer){
-
             this.emitter = null;
-
             // Preload the particle images and create PIXI textures from it
             let urls, makeTextures = false;
             if(imagePaths.spritesheet)
@@ -405,8 +403,8 @@ app.factory('ParticleFactory', function() {
                     "max": 5
                 },
                 "blendMode": "normal",
-                "frequency": 0.003,
-                "emitterLifetime": .02,
+                "frequency": 0.002,
+                "emitterLifetime": .009,
                 "maxParticles": 4,
                 "pos": {
                     "x": 0,
@@ -534,9 +532,8 @@ app.factory('ParticleFactory', function() {
         critter1pieces : ["core1", "wing1", "eye1", "ball1"],
     };
 
-    let createEmitter = (emitterType, container) => {
-         let imageArr = particleImageTable[emitterType];
-
+    let createEmitter = (emitterType, container, imageArr) => {
+        if(!imageArr) imageArr = particleImageTable[emitterType];
         return new ParticleEmitter(
             container,
             imageArr.map((particleNumber) => {
