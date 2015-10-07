@@ -433,7 +433,6 @@ app.factory('ParticleFactory', function() {
 
     let createEmitter = (emitterType, container, imageArr) => {
         if(!imageArr) imageArr = particleImageTable[emitterType];
-
         return new ParticleEmitter(
             container,
             imageArr.map((particleNumber) => {

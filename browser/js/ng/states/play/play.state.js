@@ -18,6 +18,7 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(data.width, data.height, data.canvas);
     document.body.appendChild(data.renderer.view);
+    
     let start = map => {
         data.map = map;
         StateFactory.stages.play = new PIXI.Stage();
@@ -38,12 +39,10 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
         TowerFactory.stage.removeChildren();
         EnemyFactory.stage.removeChildren();
         EnemyFactory.enemies = [];
-        StateFactory.stages.play.removeChildren(); 
+        fStateFactory.stages.play.removeChildren(); 
         EnemyFactory.reset();
-        StateFactory.stages.play.removeChildren();
         $rootScope.$emit('removeNextLevel');
         TowerFactory.resetTowers();
-        EnemyFactory.reset();
         PlayerFactory.restart();
         MapFactory.reset();
         WaveFactory.init();
@@ -85,15 +84,21 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
             let selectedGrid = data.map.grid[towerPositionY][towerPositionX];
             $scope.selectedTower = selectedGrid.contains.tower;
 
+            console.log(data.map.grid[towerPositionY][towerPositionX].terrain);
+
             if (selectedGrid.contains.tower) {
                 $scope.editing = true;
                 $scope.$digest();
-            } else if (typeof data.map.grid[towerPositionY][towerPositionX] == "string") {
+
+            } else if (typeof data.map.grid[towerPositionY][towerPositionX].terrain == "string") {
                 if(PlayerFactory.money - $scope.tower.price >= 0){
+                    console.log("here");
                     TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.name + "Tower");
                     PlayerFactory.money -= $scope.tower.price;
                     $scope.$digest();
                 }
+            }else {
+                console.log("Can't play");
             }
         }
     })

@@ -20,6 +20,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                     else end = 5;
                     for(let i=1; i < end; i++){
                         let img = PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-blue/" + i.toString() + ".png");
+                        array.push(img)
                     }
                     this.img = new PIXI.extras.MovieClip(array);
                 }
@@ -204,7 +205,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
     let reset = () => {
         stage.removeChildren();
-        //enemies = [];
+        enemies = [];
     }
     let enemiesConstructors = {TrojanHorse,BigBug,BossBug};
     //adWare, worm
