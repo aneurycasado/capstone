@@ -62,8 +62,8 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
       this.theta = (Math.atan((this.target.position.x - this.x) / (this.target.position.y - this.y)));
       this.xVel = this.speed*Math.sin(this.theta);
       this.yVel = this.speed*Math.cos(this.theta);
-      console.log(this.y, this.target.y);
-      if(this.y > this.target.y) {
+      console.log(this.y, this.target.y, this.target);
+      if(this.y > this.target.position.y) {
         this.xVel *= -1;
         this.yVel *= -1;
       }
@@ -143,14 +143,17 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
       }
 
       specialEffect(){
-        new FirePuddle(this);
+        new FirePuddle({
+          x: this.x,
+          y: this.y
+        });
       }
   }
 
   class PoisonProjectile extends HomingProjectile{
       constructor(opts){
         super(opts);
-        this.poisonDamage = 0.01;
+        this.poisonDamage = 0.1;
         this.poisonDuration = 2000;
         this.particleEmitter = ParticleFactory.createEmitter('poison', StateFactory.stages.play);
         this.particleEmitter.updateOwnerPos(this.x, this.y);
@@ -158,7 +161,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
 
       specialEffect() {
         this.target.poisoned = true;
-        this.target.poisonDamage = .005;
+        this.target.poisonDamage = this.poisonDamage;
         if(!this.target.particleEmitters.poison){
           this.target.particleEmitters.poison = ParticleFactory.createEmitter('poison', StateFactory.stages.play);
         }
