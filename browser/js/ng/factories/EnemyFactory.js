@@ -87,7 +87,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 let x = enemies.splice(enemies.indexOf(this),1);
             }
 
-            explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', StateFactory.stages.play));
+            explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', StateFactory.stages.play, ["core1", "wing1", "eye1", "ball1"]));
             explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
             $rootScope.$emit("updateNumberOfEnemies");
             stage.removeChild(this.img);
@@ -344,8 +344,11 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             enemy.update(delta);
         });
 
+<<<<<<< HEAD
         //console.log(explosionEmitters);
 
+=======
+>>>>>>> de6452e432736c4b197f7a5c294c7ec4c87f426c
         explosionEmitters.forEach((emitter) => {
             emitter.update(delta);
         });
