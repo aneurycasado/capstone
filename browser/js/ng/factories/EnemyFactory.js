@@ -125,6 +125,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             if(!this.particleEmitters.damageSparks) this.particleEmitters.damageSparks = ParticleFactory.createEmitter('damageSparks', StateFactory.stages.play);
 
             if(this.health <= 0){
+                explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', StateFactory.stages.play));
+                explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
                 PlayerFactory.money += this.value;
                 $rootScope.$digest();
                 this.terminate();

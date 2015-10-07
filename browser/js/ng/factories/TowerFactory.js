@@ -16,7 +16,12 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             this.reloading = false;
             this.imgNum = options.img;
             $rootScope.$on('deadEnemy', function(event, deadEnemy){
-                if(deadEnemy == this.target) this.target = null;
+                if(deadEnemy == this.target) {
+                    this.target = null;
+                    this.particleEmitter.destroy();
+                    this.particleEmitter = null;
+                }
+
             }.bind(this));
             this.session = null;
             this.powerUps = [];
@@ -223,7 +228,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 power: this.power,
                 x: this.img.position.x, y:
                 this.img.position.y,
-                speed: 4,
+                speed: 200,
                 radius: 8,
                 enemy: enemy
             });
@@ -245,7 +250,90 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
         shoot(enemy){
             this.img.play();
-            new ProjectileFactory.FireProjectile({x: this.img.position.x, y: this.img.position.y, speed: 4, radius: 0, enemy: enemy});
+            new ProjectileFactory.FireProjectile({
+                x: this.img.position.x, 
+                y: this.img.position.y, 
+                speed: 300, 
+                radius: 0, 
+                enemy: enemy});
+        }
+    }
+
+    class FlameTower extends Tower {
+        constructor(x, y){
+                super(x, y, {
+                img: '7',
+                power: 0.2,
+                price: 50,
+                range: 200,
+                name: "Flame",
+                effect: 'Fill in'
+            });
+            this.flameCircleCenters = [];
+            this.numOfFlameCircles = 5;
+            this.flameCircleRadius = 8;
+         }
+
+         update(delta){
+            this.acquireTarget(); //FIXME
+            if(!this.target){
+                //this.acquireTarget();
+                this.img.stop();
+                //this.target = EnemyFactory.enemies[0];
+            }
+            if(this.target){
+
+                if(!this.isEnemyInRange(this.target)) {
+                    this.target = null;
+                    this.particleEmitter.destroy();
+                    this.particleEmitter = null;
+                }
+                else{
+                    if(!this.particleEmitter){
+                        this.particleEmitter = new ParticleFactory.createEmitter('flame', stage);
+                        this.calcRotation();
+                        this.particleEmitter.updateOwnerPos(this.img.position.x, this.img.position.y);
+                    }
+                    this.calcRotation();
+                    this.particleEmitter.update(delta);
+                    this.calcFlameCircles();
+                    this.checkFlameCircleRadii();
+                }
+                //else
+            }
+        }
+        calcRotation(){
+            console.log(this.target.imgContainer.position.x, this.imgContainer.position.x, this.target.imgContainer.position.y, this.img.position.y);
+            this.particleEmitter.rotation = (-57.3 * (Math.atan2((this.target.imgContainer.position.x - this.img.position.x) , (this.target.imgContainer.position.y - this.img.position.y))) + 180);
+        }
+
+        checkFlameCircleRadii(){
+            var self = this;
+            var inFire = false;
+            EnemyFactory.enemies.forEach(function(enemy){
+                self.flameCircleCenters.forEach(function(flameCircleCenter){
+                    if(self.checkRadius(self, enemy)){
+                        inFire = true;
+                    }
+                });
+                if(inFire) enemy.takeDamage(self.power);
+                inFire = false;
+            });
+        }
+
+        checkRadius(center, enemy){
+            return Math.pow(enemy.position.x - this.img.position.x, 2) + Math.pow(enemy.position.y - this.img.position.y, 2) <= Math.pow(this.range, 2);
+        }
+
+        calcFlameCircles(){
+            var xDiff = this.target.img.position.x - this.img.position.x;
+            var yDiff = this.target.img.position.y - this.img.position.y;
+            for(var i = 0; i < this.numOfFlameCircles; i++){
+                this.flameCircleCenters[i] = {
+                    x: xDiff / this.numOfFlameCircles,
+                    y: yDiff / this.numOfFlameCircles
+                };
+            }
         }
     }
 
@@ -253,9 +341,9 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         constructor(x, y){
             super(x, y, {
                 img: '5',
-                power: 8,
+                power: 30,
                 price: 50,
-                range: 1000,
+                range: 800,
                 reloadTime: 2000,
                 name: "Thunder",
                 effect: 'Fill in'
@@ -264,7 +352,13 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
         shoot(enemy){
             this.img.play();
-            new ProjectileFactory.StraightProjectile({x: this.img.position.x, y: this.img.position.y, speed: 10, radius: 14, enemy: enemy});
+            new ProjectileFactory.ThunderBallProjectile({
+                x: this.img.position.x, 
+                y: this.img.position.y, 
+                power: this.power,
+                speed: 4000, 
+                radius: 14, 
+                enemy: enemy});
         }
     }
 
@@ -274,7 +368,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 img: '6',
                 power: 8,
                 price: 50,
-                reloadTime: 400,
+                reloadTime: 1000,
                 range: 200,
                 name: 'Poison',
                 effect: 'Fill in'
@@ -283,11 +377,16 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
         shoot(enemy){
             this.img.play();
-            new ProjectileFactory.PoisonProjectile({x: this.img.position.x, y: this.img.position.y, speed: 4, radius: 8, enemy: enemy});
+            new ProjectileFactory.PoisonProjectile({
+                x: this.img.position.x, 
+                y: this.img.position.y, 
+                speed: 100, 
+                radius: 8, 
+                enemy: enemy});
         }
     }
 
-    let towers = {IceTower, ThunderTower, FireTower, PoisonTower};
+    let towers = {IceTower, ThunderTower, FireTower, PoisonTower, FlameTower};
     let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
 
     let updateAll = (delta) => {
