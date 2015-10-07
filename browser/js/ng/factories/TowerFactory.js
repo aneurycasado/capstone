@@ -1,5 +1,5 @@
 'use strict'
-app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactory, StateFactory, ParticleFactory, ClickHandlerFactory) {
+app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactory, StateFactory, ParticleFactory, ClickHandlerFactory, CodeEvalFactory) {
     let data = StateFactory;
 
     let allTowers = [];
@@ -44,7 +44,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             this.baseRangeCircle.beginFill(0xFFFF99, .4);
             this.baseRangeCircle.lineStyle(2, 0xFFFF99);
             this.baseRangeCircle.drawCircle(this.img.position.x, this.img.position.y, this.range);
-            this.targetingFunction = null;
+            this.towerControlFunction = null;
 
             this.img.click = ClickHandlerFactory.towerClickHandler.bind(this);
 
@@ -96,7 +96,6 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             );
             return distance <= this.range;
         }
-
         getNearbyTowers() {
             let self = this;
             let arr = [];
@@ -123,18 +122,19 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
 
         evalCodeSnippet() {
-            if(!this.codeSnippet) return;
-            let newArg = this.codeSnippet.match(/\(context\)/)[0].replace('(', '').replace(')', '');
-            let newFunc = this.codeSnippet.replace(/^function\s*\(context\)\s*\{/, '').replace(/}$/, '');
-            let targetFunc = new Function(newArg, newFunc);
-            this.targetingFunction = () => {
-                return targetFunc.call(null, {
-                    getCurrentTarget: this.getCurrentTarget.bind(this),
-                    getEnemies: this.getEnemies.bind(this),
-                    setTarget: this.setTargetBasedOnIndex.bind(this),
-                    getNearbyTowers: this.getNearbyTowersEncapsulated.bind(this)
-                });
-            };
+            //if(!this.codeSnippet) return;
+            //let newArg = this.codeSnippet.match(/\(context\)/)[0].replace('(', '').replace(')', '');
+            //let newFunc = this.codeSnippet.replace(/^function\s*\(context\)\s*\{/, '').replace(/}$/, '');
+            //let targetFunc = new Function(newArg, newFunc);
+            //this.targetingFunction = () => {
+            //    return targetFunc.call(null, {
+            //        getCurrentTarget: this.getCurrentTarget.bind(this),
+            //        getEnemies: this.getEnemies.bind(this),
+            //        setTarget: this.setTargetBasedOnIndex.bind(this),
+            //        getNearbyTowers: this.getNearbyTowersEncapsulated.bind(this)
+            //    });
+            //};
+            CodeEvalFactory.evalSnippet.bind(this)();
         }
         addKill() {
             this.kills++;
@@ -151,10 +151,10 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             return this.powerUps.length + this.codeSnippets.length;
         }
 
-        acquireTarget(){
-            if(this.targetingFunction) {
+        acquireTarget(){ //FIXME: should have a better name
+            if(this.towerControlFunction) {
                 console.log('in acquireTarget');
-                this.targetingFunction();
+                this.towerControlFunction();
                 return true;
             }
             else {
