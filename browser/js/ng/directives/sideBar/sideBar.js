@@ -9,7 +9,8 @@ app.directive("sideBar", function(){
 app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, GameFactory, StateFactory, WaveFactory, EnemyFactory, TowerFactory) {
     $scope.player = PlayerFactory;
     $scope.waves = WaveFactory.waves;
-    $scope.enemies = EnemyFactory.enemies;
+    $scope.numOfEnemies = 0;
+    console.log("Enemies lengt")
     $scope.showTowers = true;
     $scope.firstWave = true;
     $scope.showPowerUps = false;
@@ -42,6 +43,11 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, 
         $scope.state = 'standby';
         console.log("Map chosen");
     });
+    $rootScope.$on('updateNumberOfEnemies', () => {
+        console.log("updateNumberOfEnemies");
+        $scope.numOfEnemies = EnemyFactory.enemies.length;
+        $scope.$digest();
+    });
     $scope.saveGame = () => {
         let player = {
             health: PlayerFactory.health,
@@ -69,6 +75,7 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, 
     $scope.initiateWave = () => {
         GameFactory.changeStateTo("wave");
         $scope.state = StateFactory.state;
+        $scope.numOfEnemies = WaveFactory.currentWaveLength();
     }
 });
 

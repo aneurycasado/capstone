@@ -55,21 +55,21 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             let xdone = false;
             let ydone = false;
             if(this.position.x > this.path[this.pathIndex].x + 5) {
-                this.img.rotation = 3.14;
+                if(!this.boss) this.img.rotation = 3.14;
                 this.position.x -= this.slowFactor * this.speed * delta;
 
             } else if(this.position.x < this.path[this.pathIndex].x - 5) {
-                this.img.rotation = 3.14*2;
+                if(!this.boss) this.img.rotation = 3.14*2;
                 this.position.x += this.slowFactor * this.speed * delta;
             } else{
                 xdone = true;
             }
             if(this.position.y > this.path[this.pathIndex].y + 5) {
-                this.img.rotation = (3*3.14) / 2;
+                if(!this.boss) this.img.rotation = (3*3.14) / 2;
                 this.position.y -= this.slowFactor * this.speed * delta;
             }else if(this.position.y < this.path[this.pathIndex].y - 5) {
                 this.position.y += this.slowFactor * this.speed * delta;
-                this.img.rotation = 3.14 / 2;
+                if(!this.boss) this.img.rotation = 3.14 / 2;
             }else{
                 ydone = true;
             }
@@ -89,7 +89,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
             explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', StateFactory.stages.play));
             explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
-
+            $rootScope.$emit("updateNumberOfEnemies");
             stage.removeChild(this.img);
             stage.removeChild(this.healthBar);
             stage.removeChild(this.imgContainer);
@@ -209,7 +209,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 path: opts.path,
                 value: 5,
                 speed: 90,
-                health: 30
+                health: 30,
                 color: "red"
             });
         }
@@ -223,7 +223,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 path: opts.path,
                 value: 5,
                 speed: 90,
-                health: 30
+                health: 30,
                 color: "green"
             });
         }
@@ -237,7 +237,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 path: opts.path,
                 value: 5,
                 speed: 90,
-                health: 30
+                health: 30,
                 color: "blue"
             });
         }
@@ -251,7 +251,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 path: opts.path,
                 value: 5,
                 speed: 90,
-                health: 30
+                health: 30,
                 color: "yellow"
             });
         }
@@ -320,9 +320,10 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 power: 2,
                 path: opts.path,
                 value: 5,
-                speed: 100,
-                health: 100,
-                color: 'none'
+                speed: 10,
+                health: 10000,
+                color: 'none',
+                boss: true,
             });
         }
     }
@@ -331,7 +332,6 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     let createEnemy = (type, path) => {
 
         let newEnemy;
-
         let enemyConstructor = enemiesConstructors[type];
         newEnemy = new enemyConstructor({path: path});
         enemies.push(newEnemy);
@@ -344,7 +344,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             enemy.update(delta);
         });
 
-        console.log(explosionEmitters);
+        //console.log(explosionEmitters);
 
         explosionEmitters.forEach((emitter) => {
             emitter.update(delta);
@@ -357,7 +357,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     }
     let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow, 
                                BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,
-                               SuperBigBugRed,SuperBigBugGreen,SuperBigBugBlue,SmallBugYellow,
+                               SuperBigBugRed,SuperBigBugGreen,SuperBigBugBlue,SuperBigBugYellow,
                                BossBug};
     //adWare, worm
     return {
