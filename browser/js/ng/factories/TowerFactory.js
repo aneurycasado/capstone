@@ -9,6 +9,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
     class Tower {
         constructor(x, y, options) {
             //this.grid = grid;
+            this.range = null;
             this.position = {x: x, y: y};
             this.rank = 1;
             this.kills = 0;
@@ -44,6 +45,11 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         setTarget(enemy) {
             this.target = enemy;
         }
+
+        setTargetBasedOnIndex(index) {
+            this.setTarget(EnemyFactory.enemies[index]);
+        }
+
         getEnemies() {
             let enemies = EnemyFactory.enemies;
             let arr = [];
@@ -60,13 +66,49 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             }
             return arr;
         }
+
+        towerInRange(tower) {
+            let distance = Math.sqrt(
+                Math.pow(tower.img.position.x - this.position.img.x, 2) +
+                Math.pow(tower.img.position.y - this.position.img.y, 2)
+            );
+            return distance <= this.range;
+        }
+
+        getNearbyTowers() {
+            let self = this;
+            let arr = [];
+            allTowers.forEach(tower => {
+                if(tower !== self && self.towerInRange(tower)) {
+                    arr.push(tower);
+                }
+            })
+            return arr;
+        }
+        getNearbyTowersEncap() {
+            let self = this;
+            let arr = [];
+            allTowers.forEach(tower => {
+                if(tower !== self && self.towerInRange(tower)) {
+                    arr.push(tower);
+                }
+            })
+            return arr;
+        }
+
+
         evalCodeSnippet() {
             if(!this.codeSnippet) return;
             let newArg = this.codeSnippet.match(/\(context\)/)[0].replace('(', '').replace(')', '');
             let newFunc = this.codeSnippet.replace(/^function\s*\(context\)\s*\{/, '').replace(/}$/, '');
             let targetFunc = new Function(newArg, newFunc);
             this.targetingFunction = () => {
-                return targetFunc.call(null, {getCurrentTarget: this.getCurrentTarget.bind(this), getEnemies: this.getEnemies.bind(this), setTarget: this.setTarget.bind(this)});
+                return targetFunc.call(null, {
+                    getCurrentTarget: this.getCurrentTarget.bind(this),
+                    getEnemies: this.getEnemies.bind(this),
+                    setTarget: this.setTargetBasedOnIndex.bind(this),
+                    getNearbyTowers: this.getNearbyTowersEncap.bind(this)
+                });
             };
         }
         addKill() {
