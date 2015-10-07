@@ -42,7 +42,7 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
                 } else {
                     changeStateTo("complete");
                 }
-            }else if(PlayerFactory.health <= 0){
+            } else if(PlayerFactory.health <= 0){
                 changeStateTo('gameOver');
             }
         }
@@ -54,9 +54,9 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
         }
         if (data.launchCritters) {
             loadEnemy();
-        } 
+        }
         if(data.state === 'gameOver'){
-            
+
         }
         StateFactory.renderer.render(StateFactory.stages.play); //FIXME: should be StateFactory.stages[StateFactory.state]
         requestAnimationFrame(loop.bind(null, now));

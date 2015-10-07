@@ -1,6 +1,5 @@
 'use strict'
-app.factory('MapFactory', function(StateFactory, DesignFactory) {
-   
+app.factory('MapFactory', function(StateFactory, DesignFactory, ClickHandlerFactory) {
     class GridNode {
         constructor(x, y, opts) {
             this.x = x;
@@ -17,8 +16,8 @@ app.factory('MapFactory', function(StateFactory, DesignFactory) {
                     this.img.position.y = this.coords.y;
                     this.img.width = StateFactory.cellSize;
                     this.img.height = StateFactory.cellSize;
-                } 
-            }
+                }
+            } 
         }
     }
 

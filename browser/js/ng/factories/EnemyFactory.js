@@ -15,12 +15,11 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 this.imgContainer = new PIXI.Container();
                 if (opts.img) {
                     let array = [];
-                    let end; 
+                    let end;
                     if(opts.img === 1) end = 7;
-                    else end = 5; 
+                    else end = 5;
                     for(let i=1; i < end; i++){
                         let img = PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-blue/" + i.toString() + ".png");
-                        array.push(img)
                     }
                     this.img = new PIXI.extras.MovieClip(array);
                 }
@@ -44,7 +43,6 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             this.slowFactor = 1;
             this.value = 0;
             this.maxHealth = this.health;
-            
             this.radius = 10;
             this.path = opts.path;
             this.pathIndex = 0;
@@ -80,7 +78,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         terminate(){
             for(var i in this.particleEmitters){
                 if(this.particleEmitters[i])this.particleEmitters[i].destroy();
-            }           
+            }
             $rootScope.$emit('deadEnemy', this);
             if(enemies.indexOf(this) !== -1) {
                 let x = enemies.splice(enemies.indexOf(this),1);
@@ -102,7 +100,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                     this.particleEmitters[i].update(delta);
                     this.particleEmitters[i].updateOwnerPos(this.img.position.x, this.img.position.y);
                 }
-            }    
+            }
             if(!this.path[this.pathIndex]) {
                 PlayerFactory.health--;
                 // if(PlayerFactory.health <= 0){
@@ -129,13 +127,26 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 this.terminate();
             }
         }
+        getHealth() {
+            return this.health;
+        }
+        getSpeed() {
+            return this.speed * this.slowFactor;
+        }
+        getPosition() {
+            return this.position;
+        }
+        getName() {
+            return this.constructor.name;
+        }
+
     }
 
-    class trojanHorse extends Enemy {
+    class TrojanHorse extends Enemy {
         constructor(opts) {
             super({
-                img: '1', 
-                power: 2, 
+                img: '1',
+                power: 2,
                 path: opts.path,
                 value: 5,
                 speed: 128,
@@ -144,11 +155,11 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
     }
 
-    class bigBug extends Enemy {
+    class BigBug extends Enemy {
         constructor(opts) {
             super({
-                img: '2', 
-                power: 2, 
+                img: '2',
+                power: 2,
                 path: opts.path,
                 value: 5,
                 speed: 90,
@@ -157,11 +168,11 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
     }
 
-    class bossBug extends Enemy {
+    class BossBug extends Enemy {
         constructor(opts) {
             super({
-                img: '3', 
-                power: 2, 
+                img: '3',
+                power: 2,
                 path: opts.path,
                 value: 5,
                 speed: 100,
@@ -191,10 +202,14 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         });
     };
 
-    let enemiesConstructors = {trojanHorse,bigBug,bossBug};
-
+    let reset = () => {
+        stage.removeChildren();
+        //enemies = [];
+    }
+    let enemiesConstructors = {TrojanHorse,BigBug,BossBug};
     //adWare, worm
     return {
+        reset,
         stage,
         createEnemy,
         enemies,

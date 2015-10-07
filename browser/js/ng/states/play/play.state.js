@@ -39,8 +39,11 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
         EnemyFactory.stage.removeChildren();
         EnemyFactory.enemies = [];
         StateFactory.stages.play.removeChildren(); 
+        EnemyFactory.reset();
+        StateFactory.stages.play.removeChildren();
         $rootScope.$emit('removeNextLevel');
         TowerFactory.resetTowers();
+        EnemyFactory.reset();
         PlayerFactory.restart();
         MapFactory.reset();
         WaveFactory.init();
@@ -79,9 +82,10 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
         if ($scope.tower !== null) {
             let towerPositionX = Math.floor(e.offsetX / StateFactory.cellSize);
             let towerPositionY = Math.floor(e.offsetY / StateFactory.cellSize);
-            $scope.selectedTower = data.map.grid[towerPositionY][towerPositionX].contains.tower;
+            let selectedGrid = data.map.grid[towerPositionY][towerPositionX];
+            $scope.selectedTower = selectedGrid.contains.tower;
 
-            if (data.map.grid[towerPositionY][towerPositionX].contains.tower) {
+            if (selectedGrid.contains.tower) {
                 $scope.editing = true;
                 $scope.$digest();
             } else if (typeof data.map.grid[towerPositionY][towerPositionX] == "string") {
@@ -90,8 +94,6 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
                     PlayerFactory.money -= $scope.tower.price;
                     $scope.$digest();
                 }
-            } else {
-                
             }
         }
     })
