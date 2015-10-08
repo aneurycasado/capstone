@@ -54,11 +54,11 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
 
     $rootScope.$on('mapChosen', (event,data) => {
         console.log("Map chosen ", data);
-        init(data-1);
+        init(data);
     });
 
     $rootScope.$on('choseADifferentMap', (event,data) => {
-        restart(data-1);
+        restart(data);
     });
     $rootScope.$on("currentTower", (event, data) => {
         $scope.tower = data;

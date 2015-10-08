@@ -24,16 +24,18 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, ClickHandlerFact
     }
 
     class Map {
-        constructor(grid){
+        constructor(grid,num){
             this.stage = new PIXI.Stage();
             this.grid = insertNodes(grid, this, false);
             this.path = findPath(this.grid);
+            this.imgSrc = "/images/maps/"+num+".png";
         }
     }
 
     class MultiplePaths {
-        constructor(grid, gridArray){
+        constructor(grid, gridArray,num){
             this.stage = new PIXI.Stage();
+            console.log("Grid",num,grid);
             this.grid = insertNodes(grid, this, false);
             this.path = [];
             gridArray.forEach(function(grid){
@@ -41,12 +43,15 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, ClickHandlerFact
                 let path = findPath(newGrid);
                 this.path.push(path);
             }.bind(this));
+            this.img = "/images/maps/"+num+".png";
         }
     }
 
     let insertNodes = (grid, map,multiplePaths) => {
 
         for(let row = 0; row < grid.length; row++){
+            console.log("Row ", row);
+            console.log(grid[row]);
             for(let col = 0; col < grid[row].length; col++){      
                 let texture;
                 let img;
@@ -178,8 +183,9 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, ClickHandlerFact
     };
 
     let maps = [];
-    maps.push(new Map(DesignFactory.mapGrid1));
-    maps.push(new MultiplePaths(DesignFactory.mapGrid2,DesignFactory.mapGrid2Array));
+    maps.push(new Map(DesignFactory.mapGrid1,1));
+    maps.push(new MultiplePaths(DesignFactory.mapGrid2,DesignFactory.mapGrid2Array,2));
+    maps.push(new MultiplePaths(DesignFactory.mapGrid3,DesignFactory.mapGrid3Array,3));
     let reset = () => {
         maps.forEach((map) => {
             map.grid.forEach((row) => {
