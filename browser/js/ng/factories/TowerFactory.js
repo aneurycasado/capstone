@@ -173,7 +173,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                             setTimeout(function(){
 
                                 StateFactory.sloMo = false;
-                            },2000)
+                            },2500)
 
                             this.target = EnemyFactory.enemies[i];
                             return true;
