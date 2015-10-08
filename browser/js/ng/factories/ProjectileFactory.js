@@ -149,6 +149,21 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
       }
   }
 
+  class MeteorProjectile extends StraightProjectile{
+      constructor(opts){
+        super(opts);
+        this.particleEmitter = ParticleFactory.createEmitter('meteor', StateFactory.stages.play);
+        this.particleEmitter.updateOwnerPos(this.x, this.y);
+      }
+
+      specialEffect(){
+        new FirePuddle({
+          x: this.x,
+          y: this.y
+        });
+      }
+  }
+
   class PoisonProjectile extends HomingProjectile{
       constructor(opts){
         super(opts);
@@ -194,6 +209,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
     PoisonProjectile,
     IceProjectile,
     StraightProjectile,
+    MeteorProjectile,
     updateAll
   };
 });
