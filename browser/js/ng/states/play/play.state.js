@@ -30,17 +30,17 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
         StateFactory.stages.play.addChild(EnemyFactory.stage);//yaaaaa
         StateFactory.stages.play.addChild(TowerFactory.stage);//yaaaaa
         StateFactory.stages.play.addChild(ProjectileFactory.stage);//yaaaas
-
         data.state = "standby";
     };
     //Placed here for now
     let restart = (mapNum) => {
+        console.log("Called Restart");
         ProjectileFactory.stage.removeChildren();
         TowerFactory.stage.removeChildren();
-        EnemyFactory.stage.removeChildren();
-        EnemyFactory.enemies = [];
-        fStateFactory.stages.play.removeChildren(); 
-        EnemyFactory.reset();
+        EnemyFactory.restart();
+        // EnemyFactory.stage.removeChildren();
+        // EnemyFactory.enemies = [];
+        StateFactory.stages.play.removeChildren(); 
         $rootScope.$emit('removeNextLevel');
         TowerFactory.resetTowers();
         PlayerFactory.restart();
@@ -83,14 +83,11 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
             let towerPositionY = Math.floor(e.offsetY / StateFactory.cellSize);
             let selectedGrid = data.map.grid[towerPositionY][towerPositionX];
             $scope.selectedTower = selectedGrid.contains.tower;
-
-            console.log(data.map.grid[towerPositionY][towerPositionX].terrain);
-
             if (selectedGrid.contains.tower) {
                 $scope.editing = true;
                 $scope.$digest();
 
-            } else if (typeof data.map.grid[towerPositionY][towerPositionX].terrain == "string") {
+            }else if (typeof data.map.grid[towerPositionY][towerPositionX].terrain == "string") {
                 if(PlayerFactory.money - $scope.tower.price >= 0){
                     console.log("here");
                     TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.name + "Tower");

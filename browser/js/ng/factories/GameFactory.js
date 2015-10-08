@@ -2,7 +2,6 @@
 
 app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, PlayerFactory, ParticleFactory, MapFactory, ProjectileFactory, StateFactory, TowerFactory) {
     let data = StateFactory;
-
     let loop = then =>  {
         let now = Date.now();
         let delta = (now - then) / 1000;
