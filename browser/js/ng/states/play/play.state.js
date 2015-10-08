@@ -61,7 +61,9 @@ app.controller('PlayController', function ($scope, player, mode, $state,$timeout
         console.log("Map chosen ", data);
         init(data);
     });
-
+    $rootScope.$on('setEditing', function(event, data) {
+        $scope.editing = data;
+    })
     $rootScope.$on('choseADifferentMap', (event,data) => {
         restart(data);
     });
