@@ -13,6 +13,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     class Enemy {
         constructor(opts) {
             this.particleEmitters = {};
+            this.value = opts.value;
+            this.radius = 10;
             if (opts) {
                 for(let opt in opts){
                     this[opt] = opts[opt];
@@ -45,9 +47,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             this.imgContainer.position = this.position;
             stage.addChild(this.imgContainer);
             this.slowFactor = 1;
-            this.value = opts.value;
             this.maxHealth = this.health;
-            this.radius = 10;
             this.path = opts.path;
             this.pathIndex = 0;
         }
