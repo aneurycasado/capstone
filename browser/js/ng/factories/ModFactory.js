@@ -34,7 +34,7 @@ app.factory('ModFactory', function() {
             this.purchased = true;
         }
         runMod(...newArgs) {
-            this.functionToRun(newArgs);
+            return this.functionToRun(newArgs);
         }
     }
 
@@ -54,8 +54,10 @@ app.factory('ModFactory', function() {
         }
         runMod(...newArgs) {
             if(this.coolDownTimer.timesSet === 1 || this.coolDownTimer.checkCoolDownPassed()) {
-                this.functionToRun(newArgs);
+                console.log('in the if statement');
                 this.coolDownTimer.setNewTime();
+                return super.runMod(...newArgs);
+
             }
         }
     }

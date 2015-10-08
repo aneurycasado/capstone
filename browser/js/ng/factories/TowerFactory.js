@@ -6,8 +6,12 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
     let stage = new PIXI.Stage();
 
     let burst = function() {
-        let temp = this.reloadTime;
-
+        let self = this;
+        let temp = self.reloadTime;
+        self.reloadTime = self.reloadTime / 3;
+        $timeout(function() {
+            self.reloadTime = temp;
+        }, 3000);
     }
 
     //name, functionToRun, context, coolDownPeriod, time=Date.now(), purchased=false
@@ -31,7 +35,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 surroundings: [
                     new ModFactory.Surrounding('getEnemies', this.getEnemies, this, true),
                     //{name: 'getEnemies', functionToRun: this.getEnemies, purchased: true},
-                    new ModFactory.Surrounding('getNearbyTowers', this.getNearbyTowersEncapsulated, true)
+                    new ModFactory.Surrounding('getNearbyTowers', this.getNearbyTowersEncapsulated, this, true)
                     //{name: 'getNearbyTowers', functionToRun: this.getNearbyTowersEncapsulated, purchased: true}
                 ],
                 abilities: [
@@ -95,11 +99,9 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
 
         getEnemies() {
-            console.log(this);
             let enemies = EnemyFactory.enemies;
             let arr = [];
             for (let i = enemies.length - 1; i >= 0; i--) {
-                console.log(this.isEnemyInRange);
                 if (this.isEnemyInRange(enemies[i])) {
                     arr.push({
                         enemyIndex: i,
