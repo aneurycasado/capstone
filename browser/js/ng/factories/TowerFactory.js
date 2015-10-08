@@ -248,14 +248,13 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             });
         }
 
+        // shoot(enemy){
+        //     this.img.play();
+        //     new ProjectileFactory.FireProjectile({x: this.img.position.x, y: this.img.position.y, speed: 4, radius: 0, enemy: enemy});
+        // }
         shoot(enemy){
             this.img.play();
-            new ProjectileFactory.FireProjectile({
-                x: this.img.position.x, 
-                y: this.img.position.y, 
-                speed: 300, 
-                radius: 0, 
-                enemy: enemy});
+            new ProjectileFactory.MeteorProjectile({x: enemy.position.x, y: -50, speed: 50, radius: 0, enemy: enemy});
         }
     }
 
