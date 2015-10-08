@@ -7,30 +7,16 @@
                 <h4 class="modal-title" id="myModalLabel">Welcome Player. Chose a map</h4>
             </div>
             <div class="modal-body">
-                <div class = "row">
-                    <div class = "col-md-5" ng-click = "choseMap(1)">
+                <div class = "row" >
+                    <div class = "col-md-4" ng-repeat = "map in maps" ng-click = "choseMap($index)">
                         <div class = "row">
                             <div class = "col-md-12">
-                                Map 1
+                                Map {{$index + 1}}
                             </div>
                         </div>
                         <div class = "row">
                             <div class = "col-md-12">
-                                <img src = 'http://kerasai.com/sites/default/files/images/2014/02/Its-Easy.gif' />
-                            </div>
-                        </div>
-                    </div>
-                    <div class = "col-md-2">
-                    </div>
-                    <div class = "col-md-5" ng-click = "choseMap(2)">
-                       <div class = "row">
-                            <div class = "col-md-12">
-                                Map 2
-                            </div>
-                        </div>
-                        <div class = "row">
-                            <div class = "col-md-12">
-                                <img src = 'http://8.media.bustedtees.cvcdn.com/d/-/bustedtees.e6ccfded-7a31-4767-8cf2-3bff2cc3.gif' />
+                                <img ng-src = "{{map.imgSrc}}" />
                             </div>
                         </div>
                     </div>
