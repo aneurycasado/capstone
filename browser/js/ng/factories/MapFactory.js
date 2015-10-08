@@ -35,7 +35,6 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, ClickHandlerFact
     class MultiplePaths {
         constructor(grid, gridArray,num){
             this.stage = new PIXI.Stage();
-            console.log("Grid",num,grid);
             this.grid = insertNodes(grid, this, false);
             this.path = [];
             gridArray.forEach(function(grid){
@@ -50,8 +49,7 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, ClickHandlerFact
     let insertNodes = (grid, map,multiplePaths) => {
 
         for(let row = 0; row < grid.length; row++){
-            console.log("Row ", row);
-            console.log(grid[row]);
+
             for(let col = 0; col < grid[row].length; col++){      
                 let texture;
                 let img;

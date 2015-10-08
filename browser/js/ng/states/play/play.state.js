@@ -17,7 +17,7 @@ app.config(function ($stateProvider) {
         })
 });
 
-app.controller('PlayController', function ($scope, player, mode, $state,$timeout, $rootScope, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, ProjectileFactory, GameFactory) {
+app.controller('PlayController', function ($scope, player, mode, $state,$timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, ProjectileFactory, GameFactory) {
     let data = StateFactory;
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(data.width, data.height, data.canvas);
@@ -31,14 +31,15 @@ app.controller('PlayController', function ($scope, player, mode, $state,$timeout
         bg.height = data.height;
         StateFactory.stages.play.addChild(bg);//yaaaas
         StateFactory.stages.play.addChild(map.stage);//yaaaaa
-        StateFactory.stages.play.addChild(EnemyFactory.stage);//yaaaaa
         StateFactory.stages.play.addChild(TowerFactory.stage);//yaaaaa
+        // StateFactory.stages.play.addChild(EnemyFactory.stage);//yaaaaa
+        StateFactory.stages.play.addChild(EnemyFactory.stage);//yaaaaa
         StateFactory.stages.play.addChild(ProjectileFactory.stage);//yaaaas
+        // StateFactory.stages.play.addChild(ParticleFactory.stage);//yaaaas
         data.state = "standby";
     };
     //Placed here for now
     let restart = (mapNum) => {
-        console.log("Called Restart");
         ProjectileFactory.stage.removeChildren();
         TowerFactory.stage.removeChildren();
         EnemyFactory.restart();

@@ -18,8 +18,10 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             $rootScope.$on('deadEnemy', function(event, deadEnemy){
                 if(deadEnemy == this.target) {
                     this.target = null;
-                    this.particleEmitter.destroy();
-                    this.particleEmitter = null;
+                    if(this.particleEmitter){
+                        this.particleEmitter.destroy();
+                        this.particleEmitter = null;
+                    }
                 }
 
             }.bind(this));
@@ -158,7 +160,6 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
         acquireTarget(){
             if(this.targetingFunction) {
-                console.log('in acquireTarget');
                 this.targetingFunction();
                 return true;
             }
@@ -166,6 +167,14 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 if(!this.target) {
                     for(let i = EnemyFactory.enemies.length - 1; i >= 0; i--){
                         if(this.isEnemyInRange(EnemyFactory.enemies[i])){
+                            
+                            if(this.name == "Meteor") StateFactory.sloMo = true;
+
+                            setTimeout(function(){
+
+                                StateFactory.sloMo = false;
+                            },2000)
+
                             this.target = EnemyFactory.enemies[i];
                             return true;
                         }
@@ -177,6 +186,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
 
         isEnemyInRange(enemy){
+
             return((Math.pow(enemy.position.x - this.img.position.x, 2) + Math.pow(enemy.position.y - this.img.position.y, 2) <= Math.pow(this.range, 2)));
         }
 
@@ -258,7 +268,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         constructor(x, y){
             super(x, y, {
                 img: '7',
-                power: 3,
+                power: 10,
                 price:50,
                 reloadTime: 1000,
                 range: 200,
@@ -269,7 +279,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
         shoot(enemy){
             this.img.play();
-            new ProjectileFactory.MeteorProjectile({x: enemy.position.x, y: -50, speed: 100, radius: 0, enemy: enemy});
+            new ProjectileFactory.MeteorProjectile({x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy});
         }
     }
 
@@ -317,7 +327,6 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             }
         }
         calcRotation(){
-            console.log(this.target.imgContainer.position.x, this.imgContainer.position.x, this.target.imgContainer.position.y, this.img.position.y);
             this.particleEmitter.rotation = (-57.3 * (Math.atan2((this.target.imgContainer.position.x - this.img.position.x) , (this.target.imgContainer.position.y - this.img.position.y))) + 180);
         }
 

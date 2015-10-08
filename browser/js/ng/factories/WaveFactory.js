@@ -11,7 +11,6 @@ app.factory('WaveFactory', function($rootScope,EnemyFactory, StateFactory) {
     let currentWave;
     let setCurrentWave = () => {
         currentWave = waves.shift();
-        console.log("The currentWave",currentWave);
     }
     let popOffNextMonster = () => currentWave.pop();
     let currentWaveLength = () => currentWave.length;
