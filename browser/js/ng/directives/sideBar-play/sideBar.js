@@ -8,6 +8,10 @@ app.directive("sideBarPlay", function(){
 
 app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFactory, GameFactory, StateFactory, WaveFactory, EnemyFactory, TowerFactory) {
     $scope.player = PlayerFactory;
+    if(StateFactory.mode === "survival"){
+        console.log("survival in sideBar-play", StateFactory.mode);
+        $scope.survival = true;
+    }
     $scope.waves = WaveFactory.waves;
     $scope.totalEnemies = 0;
     $scope.enemiesKilled = EnemyFactory.terminatedEnemies.length;
@@ -31,11 +35,11 @@ app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFacto
     $rootScope.$on('wavesDone', () => {
         $scope.state = 'complete';
         $scope.$digest();
-    })
+    });
     $rootScope.$on('updateNumberOfEnemies', () => {
         $scope.enemiesKilled = EnemyFactory.terminatedEnemies.length;
         $scope.$digest();
-    })
+    });
     $rootScope.$on("nextWave", () => {
         $scope.state = 'standby';
         $scope.$digest();

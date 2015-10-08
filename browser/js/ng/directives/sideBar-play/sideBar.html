@@ -36,8 +36,11 @@
                     </div>
                 </div>
                 <div class = "row">
-                    <div class = "col-md-4">
+                    <div class = "col-md-4" ng-hide ="survival">
                         {{waves.length}}
+                    </div>
+                    <div class = "col-md-4" ng-show ="survival">
+                        Unlimited
                     </div>
                     <div class = "col-md-4">
                         {{totalEnemies}}
