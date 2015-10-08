@@ -45,7 +45,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             this.imgContainer.position = this.position;
             stage.addChild(this.imgContainer);
             this.slowFactor = 1;
-            this.value = 0;
+            this.value = opts.value;
             this.maxHealth = this.health;
             this.radius = 10;
             this.path = opts.path;
