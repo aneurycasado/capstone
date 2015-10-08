@@ -7,8 +7,8 @@
                 <h4 class="modal-title" id="myModalLabel">Welcome Player. Chose a map</h4>
             </div>
             <div class="modal-body">
-                <div class = "row" ng-repeat = "map in maps">
-                    <div class = "col-md-5" ng-click = "choseMap($index)">
+                <div class = "row" >
+                    <div class = "col-md-4" ng-repeat = "map in maps" ng-click = "choseMap($index)">
                         <div class = "row">
                             <div class = "col-md-12">
                                 Map {{$index + 1}}

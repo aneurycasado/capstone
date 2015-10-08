@@ -43,7 +43,7 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, ClickHandlerFact
                 let path = findPath(newGrid);
                 this.path.push(path);
             }.bind(this));
-            this.img = "/images/maps/"+num+".png";
+            this.imgSrc = "/images/maps/"+num+".png";
         }
     }
 
