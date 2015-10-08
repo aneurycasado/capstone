@@ -79,6 +79,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
 
         terminate(){
+            if(this.circle) stage.removeChild(this.circle);
             for(var i in this.particleEmitters){
                 if(this.particleEmitters[i])this.particleEmitters[i].destroy();
             }
@@ -115,6 +116,20 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 this.terminate();
             }
             if(this.poisoned) this.takeDamage(this.poisonDamage);
+            if(!this.circle){
+                    this.circle = new PIXI.Graphics();
+                    this.circle.beginFill(0xFFFF99, 0.4);
+                    this.circle.lineStyle(2, 0xFFFF99);
+                    this.circle.drawCircle(this.img.position.x, this.img.position.y, this.radius);
+                    stage.addChild(this.circle);
+                }else{
+                    stage.removeChild(this.circle);
+                    this.circle = new PIXI.Graphics();
+                    this.circle.beginFill(0xFFFF99, 0.4);
+                    this.circle.lineStyle(2, 0xFFFF99);
+                    this.circle.drawCircle(this.img.position.x, this.img.position.y, this.radius);
+                    stage.addChild(this.circle);
+                }
         }
 
         takeDamage(damage){
