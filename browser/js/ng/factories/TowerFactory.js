@@ -18,8 +18,10 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             $rootScope.$on('deadEnemy', function(event, deadEnemy){
                 if(deadEnemy == this.target) {
                     this.target = null;
-                    this.particleEmitter.destroy();
-                    this.particleEmitter = null;
+                    if(this.particleEmitter) {
+                        this.particleEmitter.destroy();
+                        this.particleEmitter = null;
+                    }
                 }
 
             }.bind(this));
@@ -296,18 +298,17 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                     }
                     this.calcRotation();
                     this.particleEmitter.update(delta);
-                    this.calcFlameCircles();
-                    this.checkFlameCircleRadii();
+                    this.calcFlameCircleCenters();
+                    this.dealDamage();
                 }
                 //else
             }
         }
         calcRotation(){
-            console.log(this.target.imgContainer.position.x, this.imgContainer.position.x, this.target.imgContainer.position.y, this.img.position.y);
             this.particleEmitter.rotation = (-57.3 * (Math.atan2((this.target.imgContainer.position.x - this.img.position.x) , (this.target.imgContainer.position.y - this.img.position.y))) + 180);
         }
 
-        checkFlameCircleRadii(){
+        dealDamage(){
             var self = this;
             var inFire = false;
             EnemyFactory.enemies.forEach(function(enemy){
@@ -325,7 +326,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             return Math.pow(enemy.position.x - this.img.position.x, 2) + Math.pow(enemy.position.y - this.img.position.y, 2) <= Math.pow(this.range, 2);
         }
 
-        calcFlameCircles(){
+        calcFlameCircleCenters(){
             var xDiff = this.target.img.position.x - this.img.position.x;
             var yDiff = this.target.img.position.y - this.img.position.y;
             for(var i = 0; i < this.numOfFlameCircles; i++){
