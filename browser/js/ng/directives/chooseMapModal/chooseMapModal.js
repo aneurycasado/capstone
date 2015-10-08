@@ -7,6 +7,7 @@ app.directive("chooseMapModal", function(MapFactory, $rootScope){
 			scope.maps = MapFactory.maps
 			$("#choseMapModal").modal("toggle");
 			scope.choseMap = (num) => {
+				console.log("Chose map modal num ", num);
 				$rootScope.$emit("mapChosen",num);
 				$("#choseMapModal").modal("toggle");
 			}

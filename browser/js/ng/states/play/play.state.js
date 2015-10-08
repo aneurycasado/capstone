@@ -2,23 +2,27 @@
 app.config(function ($stateProvider) {
     $stateProvider
         .state('play', {
-            url: '/play',
+            url: '/play/:mode',
             templateUrl: '/js/ng/states/play/play.state.html',
             resolve: {
                 player : function(PlayerFactory){
-                    return PlayerFactory.getGame()
+                    return PlayerFactory.getGame();
+                },
+                mode: function($stateParams){
+                    console.log("Mode in resolve ", $stateParams.mode);
+                    return $stateParams.state;
                 }
             },
             controller: 'PlayController'
         })
 });
 
-app.controller('PlayController', function ($scope, player, $state,$timeout, $rootScope, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, ProjectileFactory, GameFactory) {
+app.controller('PlayController', function ($scope, player, mode, $state,$timeout, $rootScope, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, ProjectileFactory, GameFactory) {
     let data = StateFactory;
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(data.width, data.height, data.canvas);
     document.body.appendChild(data.renderer.view);
-    
+    StateFactory.mode = mode;
     let start = map => {
         data.map = map;
         StateFactory.stages.play = new PIXI.Stage();
@@ -30,17 +34,15 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
         StateFactory.stages.play.addChild(EnemyFactory.stage);//yaaaaa
         StateFactory.stages.play.addChild(TowerFactory.stage);//yaaaaa
         StateFactory.stages.play.addChild(ProjectileFactory.stage);//yaaaas
-
         data.state = "standby";
     };
     //Placed here for now
     let restart = (mapNum) => {
+        console.log("Called Restart");
         ProjectileFactory.stage.removeChildren();
         TowerFactory.stage.removeChildren();
-        EnemyFactory.stage.removeChildren();
-        EnemyFactory.enemies = [];
-        fStateFactory.stages.play.removeChildren(); 
-        EnemyFactory.reset();
+        EnemyFactory.restart();
+        StateFactory.stages.play.removeChildren(); 
         $rootScope.$emit('removeNextLevel');
         TowerFactory.resetTowers();
         PlayerFactory.restart();
@@ -49,20 +51,20 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
         init(mapNum);
     }
 
-    let init = (num) => {
+    let init = (num,state) => {
         if(num !== undefined) $scope.mapNum = num;
-        start(MapFactory.maps[$scope.mapNum]);
+        start(MapFactory.maps[$scope.mapNum],state);
     };
 
     $rootScope.$on('mapChosen', (event,data) => {
         console.log("Map chosen ", data);
-        init(data-1);
+        init(data);
     });
     $rootScope.$on('setEditing', function(event, data) {
         $scope.editing = data;
     })
     $rootScope.$on('choseADifferentMap', (event,data) => {
-        restart(data-1);
+        restart(data);
     });
     $rootScope.$on("currentTower", (event, data) => {
         $scope.tower = data;
@@ -85,14 +87,11 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
             let towerPositionY = Math.floor(e.offsetY / StateFactory.cellSize);
             let selectedGrid = data.map.grid[towerPositionY][towerPositionX];
             $scope.selectedTower = selectedGrid.contains.tower;
-
-            console.log(data.map.grid[towerPositionY][towerPositionX].terrain);
-
             if (selectedGrid.contains.tower) {
                 $scope.editing = true;
                 $scope.$digest();
 
-            } else if (typeof data.map.grid[towerPositionY][towerPositionX].terrain == "string") {
+            }else if (typeof data.map.grid[towerPositionY][towerPositionX].terrain == "string") {
                 if(PlayerFactory.money - $scope.tower.price >= 0){
                     console.log("here");
                     TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.name + "Tower");
