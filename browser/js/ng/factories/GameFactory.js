@@ -2,10 +2,13 @@
 
 app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, PlayerFactory, ParticleFactory, MapFactory, ProjectileFactory, StateFactory, TowerFactory) {
     let data = StateFactory;
-
     let loop = then =>  {
         let now = Date.now();
         let delta = (now - then) / 1000;
+
+        if(StateFactory.sloMo){
+            delta = delta/StateFactory.sloMoMod;
+        }
 
         if (data.state == "selection") {
             //more logic
@@ -43,6 +46,8 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
         if(data.state === 'gameOver'){
 
         }
+
+        
         StateFactory.renderer.render(StateFactory.stages.play); //FIXME: should be StateFactory.stages[StateFactory.state]
         requestAnimationFrame(loop.bind(null, now));
     };
@@ -57,8 +62,8 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
             $rootScope.$emit('nextWave');
         }
         if(state === 'editing') {
-        }
 
+        }
         if(state === 'gameOver'){
             $rootScope.$emit('gameOver');
         }

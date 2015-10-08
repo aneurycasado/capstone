@@ -38,6 +38,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
              if(this.specialEffect) this.specialEffect();
              this.terminate();
          }else{
+
              this.theta = (Math.atan((this.target.position.x - this.x) / (this.target.position.y - this.y)));
              this.xVel = this.speed*Math.sin(this.theta) * delta;
              this.yVel = this.speed*Math.cos(this.theta) * delta;
@@ -48,6 +49,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
                this.x -= this.xVel;
                this.y -= this.yVel;
              }
+
              this.particleEmitter.update(delta);
              this.particleEmitter.updateOwnerPos(this.x, this.y);
          }
@@ -69,16 +71,25 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
     }
 
     update(delta){
+
+        if(this.particleEmitter.noSloMo){
+          delta = delta*StateFactory.sloMoMod;
+        } 
+
         this.x += this.xVel * delta;
         this.y += this.yVel * delta;
         this.particleEmitter.update(delta);
+
         this.particleEmitter.updateOwnerPos(this.x, this.y);
         for(let i = 0; i < EnemyFactory.enemies.length; i++)
             if(checkCircleCollision(this, EnemyFactory.enemies[i])){
               EnemyFactory.enemies[i].takeDamage(this.power);
-              this.terminate();
+              if(this.specialEffect) this.specialEffect();
+              if(!this.invincible) this.terminate();
               break;
             }
+        if(this.extendUpdate) this.extendUpdate(delta);
+
     }
 
   }
@@ -86,7 +97,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
   class ThunderBallProjectile extends StraightProjectile{
     constructor(opts){
       super(opts);
-      this.particleEmitter = ParticleFactory.createEmitter('lightningBall', StateFactory.stages.play);
+      this.particleEmitter = ParticleFactory.createEmitter('lightningBall', stage);
       this.particleEmitter.updateOwnerPos(this.x, this.y);
     }
   }
@@ -96,7 +107,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
         super(opts);
         this.slowSpeed = 0.5;
         this.slowDuration = 1000;
-        this.particleEmitter = ParticleFactory.createEmitter('ice', StateFactory.stages.play);
+        this.particleEmitter = ParticleFactory.createEmitter('ice', stage);
         this.particleEmitter.updateOwnerPos(this.x, this.y);
       }
 
@@ -121,7 +132,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
       super(opts);
       this.power = 0.2;
       this.radius = 20;
-      this.particleEmitter = ParticleFactory.createEmitter('fire', StateFactory.stages.play);
+      this.particleEmitter = ParticleFactory.createEmitter('fire', stage);
       this.particleEmitter.updateOwnerPos(this.x, this.y);
       window.setTimeout(function(){
         if(projectiles.indexOf(this) !== -1) this.terminate();
@@ -143,8 +154,40 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
   class FireProjectile extends HomingProjectile{
       constructor(opts){
         super(opts);
-        this.particleEmitter = ParticleFactory.createEmitter('fire2', StateFactory.stages.play);
+        this.particleEmitter = ParticleFactory.createEmitter('fire2', stage);
         this.particleEmitter.updateOwnerPos(this.x, this.y);
+      }
+
+      specialEffect(){
+        new FirePuddle({
+          x: this.x,
+          y: this.y
+        });
+      }
+  }
+
+  class MeteorProjectile extends StraightProjectile{
+      constructor(opts){
+        super(opts);
+
+       
+        this.particleEmitter = ParticleFactory.createEmitter('meteor', stage);
+        this.particleEmitter.updateOwnerPos(this.x, this.y);
+        this.particleEmitter.noSloMo = true;
+        
+        this.extraImage = new PIXI.Sprite(PIXI.Texture.fromImage("/images/particles/meteor.png"));
+        this.extraImage.anchor.x = .5;
+        this.extraImage.anchor.y = .5;
+        stage.addChild(this.extraImage);
+        this.invincible = true;
+
+
+      }
+
+      extendUpdate(delta){
+        this.extraImage.position.x = this.x;
+        this.extraImage.position.y = this.y;
+
       }
 
       specialEffect(){
@@ -159,7 +202,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
       constructor(opts){
         super(opts);
         this.poisonDamage = 0.1;
-        this.particleEmitter = ParticleFactory.createEmitter('poison', StateFactory.stages.play);
+        this.particleEmitter = ParticleFactory.createEmitter('poison', stage);
         this.particleEmitter.updateOwnerPos(this.x, this.y);
       }
 
@@ -167,7 +210,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
         this.target.poisoned = true;
         this.target.poisonDamage = this.poisonDamage;
         if(!this.target.particleEmitters.poison){
-          this.target.particleEmitters.poison = ParticleFactory.createEmitter('poison', StateFactory.stages.play);
+          this.target.particleEmitters.poison = ParticleFactory.createEmitter('poison', stage);
         }
       }
   }
@@ -198,6 +241,8 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
     FireProjectile,
     PoisonProjectile,
     IceProjectile,
+    StraightProjectile,
+    MeteorProjectile,
     ThunderBallProjectile,
     updateAll
   };

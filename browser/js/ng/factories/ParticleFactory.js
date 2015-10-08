@@ -2,7 +2,7 @@
 app.factory('ParticleFactory', function() {
 
     class ParticleEmitter{
-        constructor(stage, imagePaths, config, type, useParticleContainer){
+        constructor(stageIn, imagePaths, config, type, useParticleContainer){
             this.emitter = null;
             // Preload the particle images and create PIXI textures from it
             let urls, makeTextures = false;
@@ -42,7 +42,7 @@ app.factory('ParticleFactory', function() {
             else
                 emitterContainer = new PIXI.Container();
             
-            stage.addChild(emitterContainer);
+            stageIn.addChild(emitterContainer);
 
             this.emitter = new cloudkid.Emitter(
                 emitterContainer,
@@ -518,8 +518,61 @@ app.factory('ParticleFactory', function() {
                     "y": 0,
                     "r": 6
                 }
+            },
+
+            meteor: {
+                "alpha": {
+                    "start": 1,
+                    "end": 0.34
+                },
+                "scale": {
+                    "start": 2,
+                    "end": 0.001,
+                    "minimumScaleMultiplier": 1
+                },
+                "color": {
+                    "start": "#8f1d00",
+                    "end": "#ffb545"
+                },
+                "speed": {
+                    "start": 500,
+                    "end": 500
+                },
+                "acceleration": {
+                    "x": 0,
+                    "y": 0
+                },
+                "startRotation": {
+                    "min": 265,
+                    "max": 275
+                },
+                "rotationSpeed": {
+                    "min": 50,
+                    "max": 50
+                },
+                "lifetime": {
+                    "min": 0.1,
+                    "max": 0.75
+                },
+                "blendMode": "normal",
+                "frequency": 0.001,
+                "emitterLifetime": -1,
+                "maxParticles": 1000,
+                "pos": {
+                    "x": 0,
+                    "y": 0
+                },
+                "addAtBack": false,
+                "spawnType": "circle",
+                "spawnCircle": {
+                    "x": 0,
+                    "y": 0,
+                    "r": 0
+                }
             }
     };
+
+
 
     var particleImageTable = {
         fire: [1, 2],
@@ -530,6 +583,7 @@ app.factory('ParticleFactory', function() {
         fire2: [1, 2],
         lightningBall:['lightning1', 'lightning2', 'HardCircle'],
         critter1pieces : ["core1", "wing1", "eye1", "ball1"],
+        meteor: [1,2],
     };
 
     let createEmitter = (emitterType, container, imageArr) => {
@@ -548,4 +602,3 @@ app.factory('ParticleFactory', function() {
         createEmitter
     }
 })
-
