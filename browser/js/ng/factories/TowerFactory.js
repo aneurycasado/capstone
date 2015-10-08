@@ -333,7 +333,6 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                     y: yDiff / this.numOfFlameCircles
                 };
             }
->>>>>>> 4c080c7d84510124a5c68ee73f1490c74c36c387
         }
     }
 
