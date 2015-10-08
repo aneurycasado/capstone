@@ -1,4 +1,6 @@
-<side-bar id = "sideBar" ng-show = "!editing"></side-bar>
+<side-bar-play ng-if = "mode !== levelEditing" id = "sideBar" ng-show = "!editing"></side-bar-play>
+<side-bar-level-editor ng-if = "mode == levelEditing" id = "sideBar" ng-show = "!editing"></side-bar-level-editor>
+
 <choose-map-modal></choose-map-modal>
 <level-modal></level-modal>
 <game-over-modal></game-over-modal>
