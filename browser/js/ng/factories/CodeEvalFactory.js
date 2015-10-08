@@ -17,26 +17,32 @@ app.factory('CodeEvalFactory', function() {
     let bindObjToContext = function(obj, context) {
         let outerKeys = Object.keys(obj);
         let innerKeys;
-        console.log('newKeys', outerKeys);
+        //console.log('newKeys', outerKeys);
         for(let i = 0; i < outerKeys.length; i++) {
-            innerKeys = Object.keys(outerKeys);
-            for(let j = 0; j < innerKeys.lenght; j++) {
-                obj[i][j] = obj[i][j].bind(context);
+            console.log('innerKey', Object.keys(obj[outerKeys[i]]));
+            innerKeys = Object.keys(obj[outerKeys[i]]);
+            for(let j = 0; j < innerKeys.length; j++) {
+                //console.log('obj', obj);
+                if(typeof obj[outerKeys[i]][innerKeys[j]] === 'function') {
+                    obj[outerKeys[i]][innerKeys[j]] =  obj[outerKeys[i]][innerKeys[j]].bind(context);
+                }
             }
         }
     };
 
-    let evalSnippet = function() {
-        if(!this.codeSnippet) return;
-        let newFunc = this.codeSnippet.replace(/^function\s*\((\w+,\s*)*\w*\)\s*\{/, '').replace(/\}$/, '');
-        newFunc = new Function(newFunc);
-        let context = assignObjForContext(this.mods);
-        context.surroundings.getCurrentTarget = this.getCurrentTarget;
-        context.surroundings.setTarget = this.setTargetBasedOnIndex;
-        console.log('context', context);
-        bindObjToContext(context, this);
-        this.towerControlFunction = () => {
-            return newFunc.call(context);
+    let evalSnippet = function(tower) {
+        if(!tower.codeSnippet) return;
+        let funcStr = tower.codeSnippet.replace(/^function\s*\((\w+,\s*)*\w*\)\s*\{/, '').replace(/\}$/, '');
+        let newFunc = new Function(funcStr);
+        //console.log(newFunc);
+        let objProvided = assignObjForContext(tower.mods);
+        objProvided.surroundings.getCurrentTarget = tower.getCurrentTarget;
+        objProvided.surroundings.setTarget = tower.setTargetBasedOnIndex;
+        //console.log('objProvided', objProvided);
+        bindObjToContext(objProvided, tower);
+        tower.towerControlFunction = () => {
+            console.log('in the tower control function');
+            return newFunc.call(objProvided);
         };
     };
 

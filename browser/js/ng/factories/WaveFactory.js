@@ -43,12 +43,12 @@ app.factory('WaveFactory', function($rootScope,EnemyFactory, StateFactory) {
     }
     let createWaves = () => {
         let waves = [];
-        let numOfWaves;
-        if(StateFactory.mode = "survival"){
-             numOfWaves = 100;
-        }else{
-            numOfWaves = 10;
-        }
+        let numOfWaves = 5;
+        //if(StateFactory.mode = "survival"){
+        //     numOfWaves = 100;
+        //}else{
+        //    numOfWaves = 10;
+        //}
         for(let i = 1; i <= numOfWaves; i++){
             let wave = generateWave(waves,numOfWaves);
             waves.push(wave);

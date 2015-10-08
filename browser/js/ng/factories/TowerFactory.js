@@ -1,10 +1,16 @@
 'use strict'
-app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactory, StateFactory, ParticleFactory, ClickHandlerFactory, CodeEvalFactory) {
+app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactory, StateFactory, ParticleFactory, ClickHandlerFactory, CodeEvalFactory, ModFactory, $timeout) {
 
     let allTowers = [];
 
     let stage = new PIXI.Stage();
 
+    let burst = function() {
+        let temp = this.reloadTime;
+
+    }
+
+    //name, functionToRun, context, coolDownPeriod, time=Date.now(), purchased=false
     class Tower {
         constructor(x, y, options) {
             //this.grid = grid;
@@ -23,16 +29,17 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             }.bind(this));
             this.mods = {
                 surroundings: [
-                    {name: 'getEnemies', functionToRun: this.getEnemies, purchased: false},
-                    {name: 'getNearbyTowers', functionToRun: this.getNearbyTowersEncapsulated, purchased: false},
+                    new ModFactory.Surrounding('getEnemies', this.getEnemies, this, true),
+                    //{name: 'getEnemies', functionToRun: this.getEnemies, purchased: true},
+                    new ModFactory.Surrounding('getNearbyTowers', this.getNearbyTowersEncapsulated, true)
+                    //{name: 'getNearbyTowers', functionToRun: this.getNearbyTowersEncapsulated, purchased: true}
                 ],
                 abilities: [
-                    {name: 'burst', functionToRun: this.burst, purchased: false},
+                    new ModFactory.Ability('burst', burst, this, 25000, true)
                 ],
                 effects: [],
-                temp: [],
-
-            }
+                temp: []
+            };
 
             this.codeSnippet = null;
             for (let opt in options) {
@@ -88,9 +95,11 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
 
         getEnemies() {
+            console.log(this);
             let enemies = EnemyFactory.enemies;
             let arr = [];
             for (let i = enemies.length - 1; i >= 0; i--) {
+                console.log(this.isEnemyInRange);
                 if (this.isEnemyInRange(enemies[i])) {
                     arr.push({
                         enemyIndex: i,
@@ -151,7 +160,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             //        getNearbyTowers: this.getNearbyTowersEncapsulated.bind(this)
             //    });
             //};
-            CodeEvalFactory.evalSnippet.bind(this)();
+            CodeEvalFactory.evalSnippet(this);
         }
 
         addKill() {
@@ -166,11 +175,9 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
 
         acquireTarget() { //FIXME: should have a better name
-            if (!this.target) {
-                for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
-                    if (this.isEnemyInRange(EnemyFactory.enemies[i])) {
-                        this.target = EnemyFactory.enemies[i];
-                    }
+            for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
+                if (this.isEnemyInRange(EnemyFactory.enemies[i])) {
+                    this.target = EnemyFactory.enemies[i];
                 }
             }
         }
@@ -181,9 +188,8 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
         update() {
             if (this.towerControlFunction) this.towerControlFunction();
-            this.acquireTarget();
             if (!this.target) {
-                //this.acquireTarget();
+                this.acquireTarget();
                 this.img.stop();
                 //this.target = EnemyFactory.enemies[0];
             }
@@ -199,19 +205,6 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             }
         }
     }
-    Tower.prototype.burst = (function () {
-        let then;
-        return function () {
-            if ((then && then > 0 && Date.now() - then >= 25000) || !then) {
-                let temp = this.reloadTime;
-                this.reloadTime = this.reloadTime / 4;
-                $timeout(function () {
-                    this.reloadTime = temp;
-                    then = Date.now();
-                }, 3000);
-            }
-        }
-    })();
 
     function createTower(x, y, name) {
         let towerConstructor = towers[name];
