@@ -13,6 +13,8 @@ app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFacto
         $scope.survival = true;
     }
     $scope.waves = WaveFactory.waves;
+    $scope.wavesCompleted = 0;
+    $scope.totalEnemiesKilled = 0;
     $scope.totalEnemies = 0;
     $scope.enemiesKilled = EnemyFactory.terminatedEnemies.length;
     $scope.showTowers = true;
@@ -75,6 +77,8 @@ app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFacto
         $rootScope.$emit("currentTower", tower);
     }
     $scope.initiateWave = () => {
+        $scope.wavesCompleted++;
+        $scope.totalEnemiesKilled+= EnemyFactory.terminatedEnemies.length;
         GameFactory.changeStateTo("wave");
         EnemyFactory.resetTerminatedEnemies();
         $scope.state = StateFactory.state;

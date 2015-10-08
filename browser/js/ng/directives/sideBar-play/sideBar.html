@@ -49,6 +49,24 @@
                         {{enemiesKilled}}
                     </div>
                 </div>
+                <hr>
+                <div class = "row" ng-show ="survival">
+                    <div class = "col-md-4">
+                        Current Wave
+                    </div>
+                    <div class = "col-md-4">
+                        Total Enemies Killed
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class = "col-md-4">
+                        {{wavesCompleted}}
+                    </div>
+                    <div class = "col-md-4">
+                        {{totalEnemiesKilled}}
+                    </div>
+                </div>
+                <hr>
                 <div class ="row">
                     <div class = "col-md-4">
                         <button class = "btn btn-primary" ng-click = "saveGame()">Save Game</button>
