@@ -5,6 +5,7 @@ app.factory('StateFactory', function() {
         rows: 13,
         cols: 20
     };
+    game.mode = "unset";
     game.cellSize =  game.width /  game.cols;
     game.height = (game.rows / game.cols) * game.width;
     game.stages = {
@@ -13,6 +14,7 @@ app.factory('StateFactory', function() {
         //standby: new PIXI.Stage(),
         //complete: new PIXI.Stage()
     };
-
+    game.sloMoMod = 4;
+    game.sloMo = false;
     return game;
 });

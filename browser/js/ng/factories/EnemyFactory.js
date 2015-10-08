@@ -87,7 +87,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 let x = enemies.splice(enemies.indexOf(this),1);
             }
 
-            explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', StateFactory.stages.play, ["core1", "wing1", "eye1", "ball1"]));
+            explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', stage, ["core1", "wing1", "eye1", "ball1"]));
             explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
             $rootScope.$emit("updateNumberOfEnemies");
             stage.removeChild(this.img);
@@ -122,11 +122,9 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             var healthPercentage = this.health / this.maxHealth;
             this.healthBar.width = 40 * healthPercentage;
 
-            if(!this.particleEmitters.damageSparks) this.particleEmitters.damageSparks = ParticleFactory.createEmitter('damageSparks', StateFactory.stages.play);
+            if(!this.particleEmitters.damageSparks) this.particleEmitters.damageSparks = ParticleFactory.createEmitter('damageSparks', stage);
 
             if(this.health <= 0){
-                explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', StateFactory.stages.play));
-                explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
                 PlayerFactory.money += this.value;
                 $rootScope.$digest();
                 this.terminate();

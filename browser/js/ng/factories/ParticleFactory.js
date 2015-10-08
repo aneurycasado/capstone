@@ -2,7 +2,7 @@
 app.factory('ParticleFactory', function() {
 
     class ParticleEmitter{
-        constructor(stage, imagePaths, config, type, useParticleContainer){
+        constructor(stageIn, imagePaths, config, type, useParticleContainer){
             this.emitter = null;
             // Preload the particle images and create PIXI textures from it
             let urls, makeTextures = false;
@@ -42,7 +42,7 @@ app.factory('ParticleFactory', function() {
             else
                 emitterContainer = new PIXI.Container();
             
-            stage.addChild(emitterContainer);
+            stageIn.addChild(emitterContainer);
 
             this.emitter = new cloudkid.Emitter(
                 emitterContainer,
@@ -583,7 +583,7 @@ app.factory('ParticleFactory', function() {
         fire2: [1, 2],
         lightningBall:['lightning1', 'lightning2', 'HardCircle'],
         critter1pieces : ["core1", "wing1", "eye1", "ball1"],
-        meteor: [1,2,7],
+        meteor: [1,2],
     };
 
     let createEmitter = (emitterType, container, imageArr) => {

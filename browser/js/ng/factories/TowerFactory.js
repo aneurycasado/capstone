@@ -27,8 +27,10 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             $rootScope.$on('deadEnemy', function(event, deadEnemy){
                 if(deadEnemy == this.target) {
                     this.target = null;
-                    this.particleEmitter.destroy();
-                    this.particleEmitter = null;
+                    if(this.particleEmitter){
+                        this.particleEmitter.destroy();
+                        this.particleEmitter = null;
+                    }
                 }
             }.bind(this));
             this.mods = {
@@ -180,6 +182,15 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
                 if (this.isEnemyInRange(EnemyFactory.enemies[i])) {
                     this.target = EnemyFactory.enemies[i];
+                    if (this.name == "Meteor") StateFactory.sloMo = true;
+
+                    setTimeout(function () {
+
+                        StateFactory.sloMo = false;
+                    }, 2500)
+
+                    this.target = EnemyFactory.enemies[i];
+                    return true;
                 }
             }
         }
@@ -262,7 +273,26 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         // }
         shoot(enemy){
             this.img.play();
-            new ProjectileFactory.MeteorProjectile({x: enemy.position.x, y: -50, speed: 50, radius: 0, enemy: enemy});
+            new ProjectileFactory.FireProjectile({x: this.img.position.x, y: this.img.position.y, speed: 50, radius: 0, enemy: enemy});
+        }
+    }
+
+    class MeteorTower extends Tower {
+        constructor(x, y){
+            super(x, y, {
+                img: '7',
+                power: 10,
+                price:50,
+                reloadTime: 1000,
+                range: 200,
+                name: "Meteor",
+                effect: 'Fill in'
+            });
+        }
+
+        shoot(enemy){
+            this.img.play();
+            new ProjectileFactory.MeteorProjectile({x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy});
         }
     }
 
@@ -310,7 +340,6 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             }
         }
         calcRotation(){
-            console.log(this.target.imgContainer.position.x, this.imgContainer.position.x, this.target.imgContainer.position.y, this.img.position.y);
             this.particleEmitter.rotation = (-57.3 * (Math.atan2((this.target.imgContainer.position.x - this.img.position.x) , (this.target.imgContainer.position.y - this.img.position.y))) + 180);
         }
 
@@ -394,16 +423,14 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
     }
 
-    let towers = {IceTower, ThunderTower, FireTower, PoisonTower, FlameTower};
-    let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
+    let towers = {IceTower, ThunderTower, FireTower, PoisonTower, FlameTower, MeteorTower};
+    // let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
 
     let updateAll = (delta) => {
         allTowers.forEach((tower) => {
             if (tower.update) tower.update(delta);
         });
 
-        // if(ice) ice.update(delta);
-        // if(ice) ice.emit = true;
     };
     let resetTowers = () => {
 
@@ -418,7 +445,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         createTower,
         towers,
         updateAll,
-        prices,
+        // prices,
         stage,
         resetTowers,
     };

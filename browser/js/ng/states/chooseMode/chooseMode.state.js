@@ -22,4 +22,7 @@ app.controller("ChooseModeController", function($scope,$state){
     $scope.goToDefault = () => {
         $state.go("play", {"mode": "default"})
     }
+    $scope.goToDefault = () => {
+        $state.go("play", {"mode": "levelEditor"})
+    }
 })
