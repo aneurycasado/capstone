@@ -8,8 +8,13 @@ app.directive("sideBarPlay", function(){
 
 app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFactory, GameFactory, StateFactory, WaveFactory, EnemyFactory, TowerFactory) {
     $scope.player = PlayerFactory;
+    if(StateFactory.mode === "survival"){
+        console.log("survival in sideBar-play", StateFactory.mode);
+        $scope.survival = true;
+    }
     $scope.waves = WaveFactory.waves;
-    $scope.numOfEnemies = 0;
+    $scope.totalEnemies = 0;
+    $scope.enemiesKilled = EnemyFactory.terminatedEnemies.length;
     $scope.showTowers = true;
     $scope.firstWave = true;
     $scope.showPowerUps = false;
@@ -30,7 +35,11 @@ app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFacto
     $rootScope.$on('wavesDone', () => {
         $scope.state = 'complete';
         $scope.$digest();
-    })
+    });
+    $rootScope.$on('updateNumberOfEnemies', () => {
+        $scope.enemiesKilled = EnemyFactory.terminatedEnemies.length;
+        $scope.$digest();
+    });
     $rootScope.$on("nextWave", () => {
         $scope.state = 'standby';
         $scope.$digest();
@@ -40,10 +49,6 @@ app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFacto
     });
     $rootScope.$on('mapChosen', () => {
         $scope.state = 'standby';
-    });
-    $rootScope.$on('updateNumberOfEnemies', () => {
-        $scope.numOfEnemies = EnemyFactory.enemies.length;
-        $scope.$digest();
     });
     $scope.saveGame = () => {
         let player = {
@@ -71,13 +76,14 @@ app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFacto
     }
     $scope.initiateWave = () => {
         GameFactory.changeStateTo("wave");
+        EnemyFactory.resetTerminatedEnemies();
         $scope.state = StateFactory.state;
-        $scope.numOfEnemies = WaveFactory.currentWaveLength();
+        $scope.totalEnemies = WaveFactory.currentWaveLength();
     }
 
-    $scope.initiateLevel = () => {
-        console.log("Next LEvel");
-    }
+    // $scope.initiateLevel = () => {
+    //     console.log("Next LEvel");
+    // }
 
 });
 
