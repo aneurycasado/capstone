@@ -10,7 +10,6 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, 
     $scope.player = PlayerFactory;
     $scope.waves = WaveFactory.waves;
     $scope.numOfEnemies = 0;
-    console.log("Enemies lengt")
     $scope.showTowers = true;
     $scope.firstWave = true;
     $scope.showPowerUps = false;
@@ -41,10 +40,8 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, 
     });
     $rootScope.$on('mapChosen', () => {
         $scope.state = 'standby';
-        console.log("Map chosen");
     });
     $rootScope.$on('updateNumberOfEnemies', () => {
-        console.log("updateNumberOfEnemies");
         $scope.numOfEnemies = EnemyFactory.enemies.length;
         $scope.$digest();
     });
@@ -77,6 +74,11 @@ app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, 
         $scope.state = StateFactory.state;
         $scope.numOfEnemies = WaveFactory.currentWaveLength();
     }
+
+    $scope.initiateLevel = () => {
+        console.log("Next LEvel");
+    }
+
 });
 
 function createTowers (){

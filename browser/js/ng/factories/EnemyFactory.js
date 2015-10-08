@@ -332,12 +332,10 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
 
     let createEnemy = (type, path) => {
-
         let newEnemy;
         let enemyConstructor = enemiesConstructors[type];
         newEnemy = new enemyConstructor({path: path});
         enemies.push(newEnemy);
-
         return newEnemy;
     };
 
@@ -351,9 +349,18 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         });
     };
 
-    let reset = () => {
-        stage.removeChildren();
-        enemies = [];
+    let restart = () => {
+        console.log("Number of enemies", enemies.length);
+        console.log("Enemies", enemies);
+        for(let i = enemies.length -1; i >=0; i--){
+            let enemy = enemies[i];
+            enemy.terminate();       
+        }
+        // enemies.forEach((enemy) => {
+        //     console.log("Each enemy",enemy);
+        //     enemy.terminate();
+        // });
+        // // enemies = [];
     }
     let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow, 
                                BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,
@@ -361,7 +368,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                                BossBug};
     //adWare, worm
     return {
-        reset,
+        restart,
         stage,
         createEnemy,
         enemies,
