@@ -49,6 +49,7 @@ app.controller('PlayController', function ($scope, player, mode, $state,$timeout
         PlayerFactory.restart();
         MapFactory.reset();
         WaveFactory.init();
+        $rootScope.$emit('resetSideBar');
         init(mapNum);
     }
 
