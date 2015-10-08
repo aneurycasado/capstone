@@ -248,13 +248,28 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             });
         }
 
-        // shoot(enemy){
-        //     this.img.play();
-        //     new ProjectileFactory.FireProjectile({x: this.img.position.x, y: this.img.position.y, speed: 4, radius: 0, enemy: enemy});
-        // }
         shoot(enemy){
             this.img.play();
-            new ProjectileFactory.MeteorProjectile({x: enemy.position.x, y: -50, speed: 50, radius: 0, enemy: enemy});
+            new ProjectileFactory.FireProjectile({x: this.img.position.x, y: this.img.position.y, speed: 50, radius: 0, enemy: enemy});
+        }
+    }
+
+    class MeteorTower extends Tower {
+        constructor(x, y){
+            super(x, y, {
+                img: '7',
+                power: 3,
+                price:50,
+                reloadTime: 1000,
+                range: 200,
+                name: "Meteor",
+                effect: 'Fill in'
+            });
+        }
+
+        shoot(enemy){
+            this.img.play();
+            new ProjectileFactory.MeteorProjectile({x: enemy.position.x, y: -50, speed: 100, radius: 0, enemy: enemy});
         }
     }
 
@@ -385,16 +400,14 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
     }
 
-    let towers = {IceTower, ThunderTower, FireTower, PoisonTower, FlameTower};
-    let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
+    let towers = {IceTower, ThunderTower, FireTower, PoisonTower, FlameTower, MeteorTower};
+    // let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
 
     let updateAll = (delta) => {
         allTowers.forEach((tower) => {
             if(tower.update) tower.update(delta);
         });
 
-        // if(ice) ice.update(delta);
-        // if(ice) ice.emit = true;
     };
     let resetTowers = () => {
 
@@ -410,7 +423,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         createTower,
         towers,
         updateAll,
-        prices,
+        // prices,
         stage,
         resetTowers,
     };

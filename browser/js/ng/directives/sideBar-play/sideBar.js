@@ -1,12 +1,12 @@
-app.directive("sideBar", function(){
+app.directive("sideBarPlay", function(){
     return {
         restrict: "E",
-        templateUrl: "js/ng/directives/sideBar/sideBar.html",
-        controller: 'SideBarController'
+        templateUrl: "js/ng/directives/sideBar-play/sideBar.html",
+        controller: 'SideBarPlayController'
     }
 });
 
-app.controller('SideBarController', function($scope, $rootScope, PlayerFactory, GameFactory, StateFactory, WaveFactory, EnemyFactory, TowerFactory) {
+app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFactory, GameFactory, StateFactory, WaveFactory, EnemyFactory, TowerFactory) {
     $scope.player = PlayerFactory;
     $scope.waves = WaveFactory.waves;
     $scope.numOfEnemies = 0;

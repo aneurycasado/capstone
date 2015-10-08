@@ -72,6 +72,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
         this.x += this.xVel * delta;
         this.y += this.yVel * delta;
         this.particleEmitter.update(delta);
+
         this.particleEmitter.updateOwnerPos(this.x, this.y);
         for(let i = 0; i < EnemyFactory.enemies.length; i++)
             if(checkCircleCollision(this, EnemyFactory.enemies[i])){
@@ -79,6 +80,9 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
               this.terminate();
               break;
             }
+
+        if(this.extendUpdate) this.extendUpdate(delta);
+
     }
 
   }
@@ -158,11 +162,28 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
   class MeteorProjectile extends StraightProjectile{
       constructor(opts){
         super(opts);
+
+       
         this.particleEmitter = ParticleFactory.createEmitter('meteor', StateFactory.stages.play);
         this.particleEmitter.updateOwnerPos(this.x, this.y);
+        
+        this.extraImage = new PIXI.Sprite(PIXI.Texture.fromImage("/images/particles/meteor.png"));
+        this.extraImage.anchor.x = .5;
+        this.extraImage.anchor.y = .5;
+        stage.addChild(this.extraImage);
+
+
+      }
+
+      extendUpdate(delta){
+        this.extraImage.position.x = this.x;
+        this.extraImage.position.y = this.y;
+
       }
 
       specialEffect(){
+        stage.removeChild(this.extraImage);
+
         new FirePuddle({
           x: this.x,
           y: this.y
