@@ -5,6 +5,10 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     let explosionEmitters = [];
     let enemies = [];
     let stage = new PIXI.Stage();
+    let findEnd = (img) => {
+        if(img === "1") return 7;
+        else return 5;
+    }
     class Enemy {
         constructor(opts) {
             this.particleEmitters = {};
@@ -15,11 +19,9 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 this.imgContainer = new PIXI.Container();
                 if (opts.img) {
                     let array = [];
-                    let end;
-                    if(opts.img === 1) end = 7;
-                    else end = 5;
+                    let end = findEnd(opts.img);
                     for(let i=1; i < end; i++){
-                        let img = PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-blue/" + i.toString() + ".png");
+                        let img = PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-" + opts.color +"/" + i.toString() + ".png");
                         array.push(img)
                     }
                     this.img = new PIXI.extras.MovieClip(array);
@@ -53,21 +55,21 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             let xdone = false;
             let ydone = false;
             if(this.position.x > this.path[this.pathIndex].x + 5) {
-                this.img.rotation = 3.14;
+                if(!this.boss) this.img.rotation = 3.14;
                 this.position.x -= this.slowFactor * this.speed * delta;
 
             } else if(this.position.x < this.path[this.pathIndex].x - 5) {
-                this.img.rotation = 3.14*2;
+                if(!this.boss) this.img.rotation = 3.14*2;
                 this.position.x += this.slowFactor * this.speed * delta;
             } else{
                 xdone = true;
             }
             if(this.position.y > this.path[this.pathIndex].y + 5) {
-                this.img.rotation = (3*3.14) / 2;
+                if(!this.boss) this.img.rotation = (3*3.14) / 2;
                 this.position.y -= this.slowFactor * this.speed * delta;
             }else if(this.position.y < this.path[this.pathIndex].y - 5) {
                 this.position.y += this.slowFactor * this.speed * delta;
-                this.img.rotation = 3.14 / 2;
+                if(!this.boss) this.img.rotation = 3.14 / 2;
             }else{
                 ydone = true;
             }
@@ -87,7 +89,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
             explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', StateFactory.stages.play, ["core1", "wing1", "eye1", "ball1"]));
             explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
-
+            $rootScope.$emit("updateNumberOfEnemies");
             stage.removeChild(this.img);
             stage.removeChild(this.healthBar);
             stage.removeChild(this.imgContainer);
@@ -123,6 +125,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             if(!this.particleEmitters.damageSparks) this.particleEmitters.damageSparks = ParticleFactory.createEmitter('damageSparks', StateFactory.stages.play);
 
             if(this.health <= 0){
+                explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', StateFactory.stages.play));
+                explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
                 PlayerFactory.money += this.value;
                 $rootScope.$digest();
                 this.terminate();
@@ -143,7 +147,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
     }
 
-    class TrojanHorse extends Enemy {
+     class SmallBugRed  extends Enemy {
         constructor(opts) {
             super({
                 img: '1',
@@ -151,12 +155,55 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 path: opts.path,
                 value: 5,
                 speed: 128,
-                health: 10
+                health: 10,
+                color: "red"
             });
         }
     }
 
-    class BigBug extends Enemy {
+    class SmallBugGreen  extends Enemy {
+        constructor(opts) {
+            super({
+                img: '1',
+                power: 2,
+                path: opts.path,
+                value: 5,
+                speed: 128,
+                health: 10,
+                color: "green"
+            });
+        }
+    }
+
+    class SmallBugBlue extends Enemy {
+        constructor(opts) {
+            super({
+                img: '1',
+                power: 2,
+                path: opts.path,
+                value: 5,
+                speed: 128,
+                health: 10,
+                color: "blue"
+            });
+        }
+    }
+
+    class SmallBugYellow  extends Enemy {
+        constructor(opts) {
+            super({
+                img: '1',
+                power: 2,
+                path: opts.path,
+                value: 5,
+                speed: 128,
+                health: 10,
+                color: "yellow"
+            });
+        }
+    }
+
+    class BigBugRed extends Enemy {
         constructor(opts) {
             super({
                 img: '2',
@@ -164,12 +211,55 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 path: opts.path,
                 value: 5,
                 speed: 90,
-                health: 30
+                health: 30,
+                color: "red"
             });
         }
     }
 
-    class BossBug extends Enemy {
+    class BigBugGreen extends Enemy {
+        constructor(opts) {
+            super({
+                img: '2',
+                power: 2,
+                path: opts.path,
+                value: 5,
+                speed: 90,
+                health: 30,
+                color: "green"
+            });
+        }
+    }
+
+    class BigBugBlue extends Enemy {
+        constructor(opts) {
+            super({
+                img: '2',
+                power: 2,
+                path: opts.path,
+                value: 5,
+                speed: 90,
+                health: 30,
+                color: "blue"
+            });
+        }
+    }
+
+    class BigBugYellow extends Enemy {
+        constructor(opts) {
+            super({
+                img: '2',
+                power: 2,
+                path: opts.path,
+                value: 5,
+                speed: 90,
+                health: 30,
+                color: "yellow"
+            });
+        }
+    }
+
+    class SuperBigBugRed extends Enemy {
         constructor(opts) {
             super({
                 img: '3',
@@ -177,19 +267,75 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 path: opts.path,
                 value: 5,
                 speed: 100,
-                health: 100
+                health: 100,
+                color: "red"
             });
         }
     }
 
+    class SuperBigBugGreen extends Enemy {
+        constructor(opts) {
+            super({
+                img: '3',
+                power: 2,
+                path: opts.path,
+                value: 5,
+                speed: 100,
+                health: 100,
+                color: "green"
+            });
+        }
+    }
+
+    class SuperBigBugBlue extends Enemy {
+        constructor(opts) {
+            super({
+                img: '3',
+                power: 2,
+                path: opts.path,
+                value: 5,
+                speed: 100,
+                health: 100,
+                color: "blue"
+            });
+        }
+    }
+
+    class SuperBigBugYellow extends Enemy {
+        constructor(opts) {
+            super({
+                img: '3',
+                power: 2,
+                path: opts.path,
+                value: 5,
+                speed: 100,
+                health: 100,
+                color: "yellow"
+            });
+        }
+    }
+
+    class BossBug extends Enemy {
+        constructor(opts) {
+            super({
+                img: 'boss1',
+                power: 2,
+                path: opts.path,
+                value: 5,
+                speed: 10,
+                health: 10000,
+                color: 'none',
+                boss: true,
+            });
+        }
+    }
+
+
     let createEnemy = (type, path) => {
-
         let newEnemy;
-
         let enemyConstructor = enemiesConstructors[type];
         newEnemy = new enemyConstructor({path: path});
         enemies.push(newEnemy);
-
         return newEnemy;
     };
 
@@ -203,14 +349,26 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         });
     };
 
-    let reset = () => {
-        stage.removeChildren();
-        enemies = [];
+    let restart = () => {
+        console.log("Number of enemies", enemies.length);
+        console.log("Enemies", enemies);
+        for(let i = enemies.length -1; i >=0; i--){
+            let enemy = enemies[i];
+            enemy.terminate();       
+        }
+        // enemies.forEach((enemy) => {
+        //     console.log("Each enemy",enemy);
+        //     enemy.terminate();
+        // });
+        // // enemies = [];
     }
-    let enemiesConstructors = {TrojanHorse,BigBug,BossBug};
+    let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow, 
+                               BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,
+                               SuperBigBugRed,SuperBigBugGreen,SuperBigBugBlue,SuperBigBugYellow,
+                               BossBug};
     //adWare, worm
     return {
-        reset,
+        restart,
         stage,
         createEnemy,
         enemies,
