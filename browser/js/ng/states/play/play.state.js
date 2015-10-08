@@ -2,23 +2,27 @@
 app.config(function ($stateProvider) {
     $stateProvider
         .state('play', {
-            url: '/play',
+            url: '/play/:mode',
             templateUrl: '/js/ng/states/play/play.state.html',
             resolve: {
                 player : function(PlayerFactory){
-                    return PlayerFactory.getGame()
+                    return PlayerFactory.getGame();
+                },
+                mode: function($stateParams){
+                    console.log("Mode in resolve ", $stateParams.mode);
+                    return $stateParams.state;
                 }
             },
             controller: 'PlayController'
         })
 });
 
-app.controller('PlayController', function ($scope, player, $state,$timeout, $rootScope, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, ProjectileFactory, GameFactory) {
+app.controller('PlayController', function ($scope, player, mode, $state,$timeout, $rootScope, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, ProjectileFactory, GameFactory) {
     let data = StateFactory;
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(data.width, data.height, data.canvas);
     document.body.appendChild(data.renderer.view);
-    
+    StateFactory.mode = mode;
     let start = map => {
         data.map = map;
         StateFactory.stages.play = new PIXI.Stage();
@@ -47,9 +51,9 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
         init(mapNum);
     }
 
-    let init = (num) => {
+    let init = (num,state) => {
         if(num !== undefined) $scope.mapNum = num;
-        start(MapFactory.maps[$scope.mapNum]);
+        start(MapFactory.maps[$scope.mapNum],state);
     };
 
     $rootScope.$on('mapChosen', (event,data) => {

@@ -7,5 +7,5 @@ app.directive('startScreen', function(){
 });
 
 app.controller('StartScreenController', function($scope,$state){
-	$scope.goToLoadState = () => $state.go("play");
+	$scope.goToChoose = () => $state.go("choose");
 });

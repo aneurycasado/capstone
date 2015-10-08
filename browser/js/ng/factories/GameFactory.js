@@ -5,7 +5,6 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
     let loop = then =>  {
         let now = Date.now();
         let delta = (now - then) / 1000;
-
         if (data.state == "selection") {
             //more logic
         }
