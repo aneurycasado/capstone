@@ -356,11 +356,6 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             let enemy = enemies[i];
             enemy.terminate();       
         }
-        // enemies.forEach((enemy) => {
-        //     console.log("Each enemy",enemy);
-        //     enemy.terminate();
-        // });
-        // // enemies = [];
     }
     let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow, 
                                BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,

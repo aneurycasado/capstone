@@ -38,8 +38,6 @@ app.controller('PlayController', function ($scope, player, $state,$timeout, $roo
         ProjectileFactory.stage.removeChildren();
         TowerFactory.stage.removeChildren();
         EnemyFactory.restart();
-        // EnemyFactory.stage.removeChildren();
-        // EnemyFactory.enemies = [];
         StateFactory.stages.play.removeChildren(); 
         $rootScope.$emit('removeNextLevel');
         TowerFactory.resetTowers();
