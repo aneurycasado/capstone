@@ -569,10 +569,60 @@ app.factory('ParticleFactory', function() {
                     "y": 0,
                     "r": 0
                 }
-            }
+            },
+
+            blizzard: {
+                "alpha": {
+                    "start": 0.15,
+                    "end": 0.56
+                },
+                "scale": {
+                    "start": 0.6,
+                    "end": 0.6,
+                    "minimumScaleMultiplier": 1
+                },
+                "color": {
+                    "start": "#ffffff",
+                    "end": "#ffffff"
+                },
+                "speed": {
+                    "start": 400,
+                    "end": 0
+                },
+                "acceleration": {
+                    "x": 0,
+                    "y": 0
+                },
+                "startRotation": {
+                    "min": 265,
+                    "max": 275
+                },
+                "rotationSpeed": {
+                    "min": 50,
+                    "max": 50
+                },
+                "lifetime": {
+                    "min": 1,
+                    "max": 1
+                },
+                "blendMode": "normal",
+                "frequency": 0.001,
+                "emitterLifetime": -1,
+                "maxParticles": 2000,
+                "pos": {
+                    "x": 0,
+                    "y": 0
+                },
+                "addAtBack": false,
+                "spawnType": "ring",
+                "spawnCircle": {
+                    "x": 0,
+                    "y": 0,
+                    "r": 33,
+                    "minR": 33
+                }
+            },
     };
-
-
 
     var particleImageTable = {
         fire: [1, 2],
@@ -584,6 +634,7 @@ app.factory('ParticleFactory', function() {
         lightningBall:['lightning1', 'lightning2', 'HardCircle'],
         critter1pieces : ["core1", "wing1", "eye1", "ball1"],
         meteor: [1,2],
+        blizzard: [1,5, 3, 8],
     };
 
     let createEmitter = (emitterType, container, imageArr) => {

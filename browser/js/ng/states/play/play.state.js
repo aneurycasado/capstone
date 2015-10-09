@@ -30,6 +30,7 @@ app.controller('PlayController', function ($scope, player, mode, $state, $timeou
         let bg = new PIXI.Sprite(PIXI.Texture.fromImage("/images/bg.png"));
         bg.width = data.width;
         bg.height = data.height;
+        console.log(map.paths);
         StateFactory.stages.play.addChild(bg);//yaaaas
         StateFactory.stages.play.addChild(map.stage);//yaaaaa
         StateFactory.stages.play.addChild(TowerFactory.stage);//yaaaaa

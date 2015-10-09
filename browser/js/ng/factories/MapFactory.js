@@ -28,35 +28,27 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, ClickHandlerFact
     class Map {
         constructor(grid,num){
             this.stage = new PIXI.Stage();
-            this.grid = insertNodes(grid, this, false);
-            this.path = findPath(this.grid);
+            this.paths = findPath(grid);
+            this.grid = insertNodes(grid, this);
+
             this.imgSrc = "/images/maps/"+num+".png";
         }
     }
 
-    class MultiplePaths {
-        constructor(grid, gridArray,num){
-            this.stage = new PIXI.Stage();
-            this.grid = insertNodes(grid, this, false);
-            this.path = [];
-            gridArray.forEach(function(grid){
-                let newGrid = insertNodes(grid,this,true);
-                let path = findPath(newGrid);
-                this.path.push(path);
-            }.bind(this));
-            this.imgSrc = "/images/maps/"+num+".png";
-        }
-    }
+    let insertNodes = (grid, map) => {
 
-    let insertNodes = (grid, map,multiplePaths) => {
+        var newGrid = grid.slice();
+        newGrid.forEach(function(row){
+            row = row.slice();
+        });
 
-        for(let row = 0; row < grid.length; row++){
-            for(let col = 0; col < grid[row].length; col++){
+        for(let row = 0; row < newGrid.length; row++){
+            for(let col = 0; col < newGrid[row].length; col++){      
                 let texture;
                 let img;
                 let width;
                 let height;
-                let nodeValue = grid[row][col]
+                let nodeValue = newGrid[row][col];
                 if(typeof nodeValue == "number" && nodeValue >= 2 && nodeValue <= 8 && nodeValue !== 4){
                     width = 100;
                     height = 50;
@@ -68,82 +60,158 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, ClickHandlerFact
                     if(texture.constructor == Array) texture = texture[Math.floor(Math.random() * (texture.length))];
                     img = textureToImage[texture];
                 }
+          
+                newGrid[row][col] = new GridNode(col, row, {img: img, width: width, height: height, terrain: newGrid[row][col]});
+                if(newGrid[row][col].img) map.stage.addChild(newGrid[row][col].img);
 
-                grid[row][col] = new GridNode(col, row, {img: img, width: width, height: height, terrain: grid[row][col]});
-                if(!multiplePaths && grid[row][col].img) map.stage.addChild(grid[row][col].img);
             }
         }
-        return grid;
+        return newGrid;
     }
 
-    let findPath = function(grid) {
 
+
+    let findPath = function(terrain) {
+        let base = {}; 
+        let bases = [];
+        let destination = {};
         let path = [];
-
-        let start = {};
-
-        for(let x = 0; x < grid.length; x++) {
-            for(let y = 0; y < grid[x].length; y++) {
-                if(grid[x][y].terrain === 4) {
-                    path.push({x: grid[x][y].coords.x + (StateFactory.cellSize/2), y: grid[x][y].coords.y + (StateFactory.cellSize/2)})
-                    start.x = x;
-                    start.y = y;
-                    break;
-                }
+        let gridNodePath = [];
+        let sub_path_lengths = [];
+        let finalPath = [];
+        let getStartandEndPts = function () {
+            for(let x = 0; x < terrain.length; x++) {
+                 for(let y = 0; y < terrain[x].length; y++) {
+                     if(terrain[x][y] === 4) {
+                         bases.push({x: x, y: y, num: 4})
+                     }
+                     if(terrain[x][y] === 3) {
+                        destination.row = x;
+                        destination.column = y;
+                     }
+                 }
+             }
+        };
+        let checkUpIsWalkable = function (currentPosition) {
+            if (currentPosition.row === 0) return null;
+            return {
+                position: {
+                    row: currentPosition.row - 1,
+                    column: currentPosition.column
+                },
+                num: terrain[currentPosition.row - 1][currentPosition.column]
+            };
+        };
+        let checkDownIsWalkable = function (currentPosition) {
+            if (currentPosition.row + 1 > terrain.length - 1) return null;
+            return {
+                position: {
+                    row: currentPosition.row + 1,
+                    column: currentPosition.column
+                },
+                num: terrain[currentPosition.row + 1][currentPosition.column]
+            };
+        };
+        
+        let checkLeftIsWalkable = function (currentPosition) {
+            if (currentPosition.column === 0) return null;
+            return {
+                position: {
+                    row: currentPosition.row,
+                    column: currentPosition.column - 1
+                },
+                num: terrain[currentPosition.row][currentPosition.column - 1]
+            };
+        };
+        
+        let checkRightIsWalkable = function (currentPosition) {
+            if (currentPosition.column + 1 > terrain[0].length - 1) return null;
+            return {
+                position: {
+                    row: currentPosition.row,
+                    column: currentPosition.column + 1
+                },
+                num: terrain[currentPosition.row][currentPosition.column + 1]
+            };
+        };
+        
+        let getDirectionIsWalkableDict = {
+            left: checkLeftIsWalkable,
+            right: checkRightIsWalkable,
+            up: checkUpIsWalkable,
+            down: checkDownIsWalkable
+        };
+        
+        let getInverseDirection = function (direction) {
+            if (direction === null) return null;
+            return ({
+                left: 'right',
+                right: 'left',
+                up: 'down',
+                down: 'up'
+            })[direction];
+        };
+        
+        let calculateBestDirection = (currentPosition, directions, base) => {
+        
+            let closer = (key, dir) => {
+                return Math.abs(base[key] - currentPosition[key]) > Math.abs(base[key] - dir.position[key]);
+            };
+        
+            let goodEnoughDirection = directions.find(dir => {
+                return closer('column', dir) || closer('row', dir);
+            });
+        
+            return goodEnoughDirection || directions[0];
+        
+        };
+        
+        function getPathForEnemy(currentPosition, playerBaseCell, lastDirection) {
+        
+            let possibleDirections = ['up', 'left', 'down', 'right']
+                .filter(d => d !== getInverseDirection(lastDirection)) // remove inverse direction
+                .map(d => Object.assign({ direction: d }, getDirectionIsWalkableDict[d](currentPosition))) // map to information
+                .filter(dObj => [1,3].indexOf(dObj.num) !== -1); // remove 0, 2, 4
+        
+            let finalCell = possibleDirections.filter(d => d.num === 3)[0];
+            if (finalCell) return [finalCell.position];
+        
+            let chosenDirection;
+            if (possibleDirections.length === 1) {
+                chosenDirection = possibleDirections[0];
+            } else {
+                chosenDirection = calculateBestDirection(currentPosition, possibleDirections, playerBaseCell);
             }
+            return [chosenDirection.position, ...getPathForEnemy(chosenDirection.position, playerBaseCell, chosenDirection.direction)];
+        };
+        let determineSubPaths = function () {
+            getStartandEndPts();
+            bases.forEach(function(startNode){
+                path.push(getPathForEnemy({row: startNode.x, column: startNode.y}, destination, null))
+            })
         }
-
-        function lookAround(x, y, num, next, lastDirection){
-            if(grid[x-1] && grid[x-1][y].terrain == num && lastDirection !== "down") {
-                next.x = x-1;
-                next.direction = "up";
-                path.push({x: grid[x][y].coords.x + (StateFactory.cellSize/2), y: grid[x][y].coords.y + (StateFactory.cellSize/2), direction: lastDirection})
-                return true;
-            }
-            else if(grid[x+1] && grid[x+1][y].terrain == num && lastDirection !== "up"){
-                next.x = x+1;
-                next.direction = "down";
-                path.push({x: grid[x][y].coords.x + (StateFactory.cellSize/2), y: grid[x][y].coords.y + (StateFactory.cellSize/2), direction: lastDirection})
-                return true;
-            }
-            else if(grid[x][y-1] && grid[x][y-1].terrain == num && lastDirection !== "right"){
-                next.y = y-1;
-                next.direction = "left";
-                path.push({x: grid[x][y].coords.x + (StateFactory.cellSize/2), y: grid[x][y].coords.y + (StateFactory.cellSize/2), direction: lastDirection})
-                return true;
-            }
-            else if(grid[x][y+1] && grid[x][y+1].terrain == num && lastDirection !== "left"){
-                next.y = y+1;
-                next.direction = "right";
-                path.push({x: grid[x][y].coords.x + (StateFactory.cellSize/2), y: grid[x][y].coords.y + (StateFactory.cellSize/2), direction: lastDirection})
-                return true;
-            }
-
+        let determineArrayLength = function() {
+            path.forEach(function(sub_path){
+                sub_path_lengths.push(sub_path.length);
+            })
         }
-
-        let count = 0;
-        function explore(x, y, lastDirection){
-            count++;
-            if(grid[x][y].terrain == 3){
-                return path;
-            }
-            let next = {x: x, y: y};
-            if(lookAround(x, y, 3, next, lastDirection)){
-
-                path.push({x: grid[next.x][next.y].coords.x + (StateFactory.cellSize/2), y: grid[next.x][next.y].coords.y + (StateFactory.cellSize/2)})
-
-                return path;
-            }
-
-            lookAround(x, y, 1, next, lastDirection);
-
-
-            explore(next.x, next.y, next.direction)
+        let pathGenerator = function(path) {
+            determineSubPaths();
+            determineArrayLength();
+            path.forEach(function(sub_path){
+                sub_path.forEach(function(node){
+                    gridNodePath.push({
+                    x: node.column*StateFactory.cellSize + StateFactory.cellSize/2, 
+                    y: node.row*StateFactory.cellSize + StateFactory.cellSize/2 })
+                })
+            })
+            sub_path_lengths.forEach(function(spliceValue){
+                let reconfiguring = gridNodePath.splice(0, spliceValue);
+                finalPath.push(reconfiguring);
+            })
         }
-
-        explore(start.x, start.y, '');
-
-        return path;
+        pathGenerator(path);
+        return finalPath;
     }
 
     let textureToImage = {
@@ -182,9 +250,10 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, ClickHandlerFact
     };
 
     let maps = [];
+
     maps.push(new Map(DesignFactory.mapGrid1,1));
-    maps.push(new MultiplePaths(DesignFactory.mapGrid2,DesignFactory.mapGrid2Array,2));
-    maps.push(new MultiplePaths(DesignFactory.mapGrid3,DesignFactory.mapGrid3Array,3));
+
+
     let reset = () => {
         maps.forEach((map) => {
             map.grid.forEach((row) => {

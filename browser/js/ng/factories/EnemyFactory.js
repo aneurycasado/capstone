@@ -10,6 +10,17 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         if(img === "1") return 7;
         else return 5;
     }
+
+
+    function findRandomPath(opts){
+        var rando = Math.floor( Math.random() * opts.path.length);
+        let path = opts.path[rando];
+        let pathIndex = 0;
+        let position = {x: path[0].x, y: path[0].y};
+
+        return {path, pathIndex, position};
+    }
+
     class Enemy {
         constructor(opts) {
             this.particleEmitters = {};
@@ -19,6 +30,9 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 for(let opt in opts){
                     this[opt] = opts[opt];
                  }
+
+                Object.assign(this, findRandomPath.call(this, opts));
+
                 this.imgContainer = new PIXI.Container();
                 if (opts.img) {
                     let array = [];
@@ -29,7 +43,6 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                     }
                     this.img = new PIXI.extras.MovieClip(array);
                 }
-                this.position = {x: opts.path[0].x, y: opts.path[0].y};
                 this.img.position = this.position;
                 this.img.pivot.x = 0.5;
                 this.img.pivot.y = 0.5;
@@ -48,28 +61,30 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             stage.addChild(this.imgContainer);
             this.slowFactor = 1;
             this.maxHealth = this.health;
-            this.path = opts.path;
-            this.pathIndex = 0;
+
         }
 
         moveTowards(delta) {
             let xdone = false;
             let ydone = false;
-            if(this.position.x > this.path[this.pathIndex].x + 5) {
-                if(!this.boss) this.img.rotation = 3.14;
-                this.position.x -= this.slowFactor * this.speed * delta;
 
-            } else if(this.position.x < this.path[this.pathIndex].x - 5) {
+            let deltaSpeed = this.slowFactor * this.speed * delta;
+
+            if(this.position.x > this.path[this.pathIndex].x + deltaSpeed) {
+                if(!this.boss) this.img.rotation = 3.14;
+                this.position.x -= deltaSpeed;
+
+            } else if(this.position.x < this.path[this.pathIndex].x - deltaSpeed) {
                 if(!this.boss) this.img.rotation = 3.14*2;
-                this.position.x += this.slowFactor * this.speed * delta;
+                this.position.x += deltaSpeed;
             } else{
                 xdone = true;
             }
-            if(this.position.y > this.path[this.pathIndex].y + 5) {
+            if(this.position.y > this.path[this.pathIndex].y + deltaSpeed) {
                 if(!this.boss) this.img.rotation = (3*3.14) / 2;
-                this.position.y -= this.slowFactor * this.speed * delta;
-            }else if(this.position.y < this.path[this.pathIndex].y - 5) {
-                this.position.y += this.slowFactor * this.speed * delta;
+                this.position.y -= deltaSpeed;
+            }else if(this.position.y < this.path[this.pathIndex].y - deltaSpeed) {
+                this.position.y += deltaSpeed;
                 if(!this.boss) this.img.rotation = 3.14 / 2;
             }else{
                 ydone = true;
@@ -80,6 +95,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
 
         terminate(){
+
+
             for(var i in this.particleEmitters){
                 if(this.particleEmitters[i])this.particleEmitters[i].destroy();
             }
@@ -174,6 +191,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 health: 10,
                 color: "green"
             });
+
         }
     }
 

@@ -30,7 +30,6 @@ app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFacto
         let currentTower = new TowerFactory.towers[key](0,0);
         var img = currentTower.imgNum;
         currentTower.imgUrl = "./images/tower-defense-turrets/turret-" + img + "-1.png";
-        console.log(currentTower);
         $scope.towers.push(currentTower);
         currentTower.terminate();
     } 

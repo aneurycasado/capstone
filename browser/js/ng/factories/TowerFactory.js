@@ -170,12 +170,13 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
                 if (this.isEnemyInRange(EnemyFactory.enemies[i])) {
                     this.target = EnemyFactory.enemies[i];
-                    if (this.name == "Meteor") StateFactory.sloMo = true;
+                    if (this.name == "Meteor"){
+                        StateFactory.sloMo = true;
 
-                    setTimeout(function () {
-
-                        StateFactory.sloMo = false;
-                    }, 2500)
+                        setTimeout(function () {
+                            StateFactory.sloMo = false;
+                        },3500)
+                    } 
 
                     this.target = EnemyFactory.enemies[i];
                     return true;
@@ -243,6 +244,32 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
     }
 
+    class BlizzardTower extends Tower {
+        constructor(x, y) {
+            super(x, y, {
+                img: '4',
+                power: .00001,
+                price: 50,
+                reloadTime: 400,
+                range: 200,
+                name: "Blizzard",
+                effect: 'Fill in'
+            });
+        }
+
+        shoot(enemy){
+            this.img.play();
+            if(!this.projectile) this.projectile = new ProjectileFactory.BlizzardProjectile({
+                power: this.power,
+                x: this.img.position.x, y:
+                this.img.position.y,
+                speed: 0,
+                radius: 200,
+                enemy: enemy
+            });
+        }
+    }
+
     class FireTower extends Tower {
         constructor(x, y) {
             super(x, y, {
@@ -280,7 +307,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
         shoot(enemy){
             this.img.play();
-            new ProjectileFactory.MeteorProjectile({x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy});
+            if(!this.projectile) this.projectile = new ProjectileFactory.MeteorProjectile({x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy});
         }
     }
 
@@ -420,7 +447,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
     }
 
-    let towers = {IceTower, ThunderTower, FireTower, PoisonTower, FlameTower, MeteorTower};
+    let towers = {IceTower, ThunderTower, FireTower, PoisonTower, FlameTower, MeteorTower, BlizzardTower};
     // let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
 
     let updateAll = (delta) => {
