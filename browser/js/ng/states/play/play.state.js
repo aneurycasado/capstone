@@ -44,7 +44,7 @@ app.controller('PlayController', function ($scope, player, mode, $state,$timeout
         ProjectileFactory.stage.removeChildren();
         TowerFactory.stage.removeChildren();
         EnemyFactory.restart();
-        StateFactory.stages.play.removeChildren(); 
+        StateFactory.stages.play.removeChildren();
         $rootScope.$emit('removeNextLevel');
         TowerFactory.resetTowers();
         PlayerFactory.restart();
@@ -63,9 +63,16 @@ app.controller('PlayController', function ($scope, player, mode, $state,$timeout
         console.log("Map chosen ", data);
         init(data);
     });
+
+    $rootScope.$on('towerClicked', function(event, data) {
+        $scope.editing = true;
+        $scope.selectedTower = data;
+        $scope.$digest();
+    });
     $rootScope.$on('setEditing', function(event, data) {
         $scope.editing = data;
-    })
+        $scope.$digest();
+    });
     $rootScope.$on('choseADifferentMap', (event,data) => {
         restart(data);
     });
@@ -84,17 +91,22 @@ app.controller('PlayController', function ($scope, player, mode, $state,$timeout
         restart();
     });
     $scope.tower = null;
+
+
+
     $('canvas').on('click', (e) => {
         if ($scope.tower !== null) {
             let towerPositionX = Math.floor(e.offsetX / StateFactory.cellSize);
             let towerPositionY = Math.floor(e.offsetY / StateFactory.cellSize);
             let selectedGrid = data.map.grid[towerPositionY][towerPositionX];
-            $scope.selectedTower = selectedGrid.contains.tower;
-            if (selectedGrid.contains.tower) {
-                $scope.editing = true;
-                $scope.$digest();
-
-            }else if (typeof data.map.grid[towerPositionY][towerPositionX].terrain == "string") {
+            //$scope.selectedTower = selectedGrid.contains.tower;
+            //if (selectedGrid.contains.tower) {
+            //    $scope.editing = true;
+            //    $scope.$digest();
+            //
+            //}
+            console.log(selectedGrid.contains.tower);
+            if (!selectedGrid.contains.tower && typeof data.map.grid[towerPositionY][towerPositionX].terrain == "string") {
                 if(PlayerFactory.money - $scope.tower.price >= 0){
                     console.log("here");
                     TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.name + "Tower");
@@ -105,6 +117,7 @@ app.controller('PlayController', function ($scope, player, mode, $state,$timeout
                 console.log("Can't play");
             }
         }
+        $scope.tower = null;
     })
     GameFactory.loop(Date.now());
 });

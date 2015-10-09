@@ -20,6 +20,7 @@ var istanbul = require('gulp-istanbul');
 var babelify = require('babelify');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
+var notify = require('gulp-notify');
 
 // Development tasks
 // --------------------------------------------------------------
@@ -49,7 +50,8 @@ gulp.task('buildJS', ['lintJS'], function () {
         .pipe(concat('main.js'))
         .pipe(babel())
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest('./public'));
+        .pipe(gulp.dest('./public'))
+        .pipe(notify({message: 'Scripts task complete'}));
 });
 
 gulp.task('testServerJS', function () {
@@ -89,7 +91,8 @@ gulp.task('buildCSS', function () {
             errLogToConsole: true
         }))
         .pipe(rename('style.css'))
-        .pipe(gulp.dest('./public'));
+        .pipe(gulp.dest('./public'))
+        .pipe(notify({message: 'CSS tasks complete'}));
 });
 
 gulp.task('seedDB', function () {
