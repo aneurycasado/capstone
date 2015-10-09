@@ -176,7 +176,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
       super(opts);
       this.power = 0.2;
       this.radius = 20;
-      this.particleEmitter = ParticleFactory.createEmitter('ice2', stage);
+      this.particleEmitter = ParticleFactory.createEmitter('fire', stage);
       this.particleEmitter.updateOwnerPos(this.x, this.y);
       window.setTimeout(function(){
         if(projectiles.indexOf(this) !== -1) this.terminate();
