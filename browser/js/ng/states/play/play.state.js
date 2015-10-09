@@ -20,6 +20,14 @@ app.config(function ($stateProvider) {
 
 app.controller('PlayController', function ($scope, player, mode, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, SpriteEventFactory, ProjectileFactory, GameFactory) {
     let data = StateFactory;
+    $scope.mode = data.mode;
+    if(mode === 'mapEditor'){
+        console.log("Mode is in mapEditorap");
+        $scope.showLevelEditor = true;
+    }else {
+        console.log("Mode not in mapEditorap");
+        $scope.showPlaySideBar = true;
+    }
     console.log("Mode in playcontroller", StateFactory.mode)
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(data.width, data.height, data.canvas);
