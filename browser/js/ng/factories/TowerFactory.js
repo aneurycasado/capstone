@@ -276,13 +276,10 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 reloadTime: 1000,
                 range: 200,
                 name: "Fire",
-                effect: 'Fill in'
+                effect: 'Fill in',
+                activeWeapon: 'fire1'
             });
         }
-        // shoot(enemy){
-        //     this.img.play();
-        //     new ProjectileFactory.FireProjectile({x: this.img.position.x, y: this.img.position.y, speed: 4, radius: 0, enemy: enemy});
-        // }
         shoot(enemy){
             this.img.play();
             new ProjectileFactory.FireProjectile({x: this.img.position.x, y: this.img.position.y, speed: 50, radius: 0, enemy: enemy});

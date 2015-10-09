@@ -87,17 +87,11 @@ app.factory('ModFactory', function() {
       }
     }
 
-    class Weapon extends Mod {
-      constructor(name, functionToRun, context, purchased=false) {
-        super(name, functionToRun, context, purchased)
-      }
-    }
 
     return {
         Ability,
         Surrounding,
         Consumable,
         Effect,
-        Weapon
     }
 });
