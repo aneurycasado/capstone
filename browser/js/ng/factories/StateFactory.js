@@ -1,13 +1,13 @@
 'use strict'
 app.factory('StateFactory', function() {
     let game = {
-        width: 1000,
+        width: 800,
         rows: 13,
         cols: 20
     };
     game.mode = "unset";
     game.cellSize =  game.width /  game.cols;
-    game.height = (game.rows / game.cols) * game.width;
+    game.height = game.rows * game.cellSize;
     game.stages = {
         play: new PIXI.Stage(),
         menu: new PIXI.Stage(),

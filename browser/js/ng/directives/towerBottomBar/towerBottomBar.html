@@ -1,0 +1,53 @@
+<div>
+    <div class="panel-group">
+	     <div class="panel panel-default">
+	            <div class="panel-heading" role="tab" id="headingTwo">
+	                <h4 class="panel-title">
+	                       Your Tower
+	                </h4>
+	            </div>
+	            <div class="panel-body">
+	            	<div class = "row">
+	            		<div class = "col-md-3">
+	            			<div class = "row">
+		            			<div class = "col-md-4">
+		            				<img ng-src = "{{tower.imgUrl}}" style = "width:80px;height:80px"/>
+		            			</div>
+		            			<div class = "col-md-5">
+		            				<div class = "row">
+		            					<div class = "col-md-12">
+		            						{{tower.name}}
+		            					</div>	
+		            				</div>
+		            				<div class = "row">
+		            					<div class = "col-md-12">
+		            						Kill Count: {{tower.klled}}
+		            					</div>
+		            				</div>
+		            			</div>
+		            			<div class = "col-md-3">
+		            				<button class ="btn btn-danger" ng-click = "sellTower()">
+		            					<div class = "row">
+		            						 Sell
+		            					</div>
+		            					<div class = "row">
+		            						{{tower.price *.7}} 
+		            					</div>
+		            				 </button>
+		            			</div>
+		            		</div>
+		            	</div>
+	            		<div class = "col-md-3">
+	            			Mode 1
+	            		</div>
+	            		<div class = "col-md-3">
+	            			Mode 2
+	            		</div>
+	            		<div class = "col-md-3">
+	            			Special Ability
+	            		</div>	
+	            	</div>
+	            </div>
+	    	</div>
+    </div>
+</div>
