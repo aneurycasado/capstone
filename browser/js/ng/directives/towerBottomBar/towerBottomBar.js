@@ -7,15 +7,14 @@ app.directive('towerBottomBar', function(){
 });
 
 app.controller('TowerBottomBarController', function($scope,$rootScope,$state){
-
-	$rootScope.$on("currentTower", function(event,data){
-		console.log("Current Tower in TowerBottomBarController", data);
-		$scope.tower = data;
-	})
-
+	$rootScope.$on("setEditing",function(event,data){
+		if(data === false){
+			$scope.selectedTower = null;
+		}
+	});
 	$scope.sellTower = function(tower){
 		console.log("The tower being sold ", tower);
 		console.log("Sell Tower");
 	}
-	console.log("Cool");
+	
 });
