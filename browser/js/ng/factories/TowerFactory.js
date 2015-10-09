@@ -173,7 +173,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                             setTimeout(function(){
 
                                 StateFactory.sloMo = false;
-                            },2500)
+                            },3500)
 
                             this.target = EnemyFactory.enemies[i];
                             return true;
@@ -240,6 +240,32 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 this.img.position.y,
                 speed: 200,
                 radius: 8,
+                enemy: enemy
+            });
+        }
+    }
+
+    class BlizzardTower extends Tower {
+        constructor(x, y) {
+            super(x, y, {
+                img: '4',
+                power: 2,
+                price: 50,
+                reloadTime: 400,
+                range: 200,
+                name: "Blizzard",
+                effect: 'Fill in'
+            });
+        }
+
+        shoot(enemy){
+            this.img.play();
+            new ProjectileFactory.BlizzardProjectile({
+                power: this.power,
+                x: this.img.position.x, y:
+                this.img.position.y,
+                speed: 0,
+                radius: 200,
                 enemy: enemy
             });
         }
@@ -409,7 +435,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
     }
 
-    let towers = {IceTower, ThunderTower, FireTower, PoisonTower, FlameTower, MeteorTower};
+    let towers = {IceTower, ThunderTower, FireTower, PoisonTower, FlameTower, MeteorTower, BlizzardTower};
     // let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
 
     let updateAll = (delta) => {

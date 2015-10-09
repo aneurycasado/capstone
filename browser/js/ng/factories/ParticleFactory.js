@@ -569,7 +569,56 @@ app.factory('ParticleFactory', function() {
                     "y": 0,
                     "r": 0
                 }
-            }
+            },
+
+            blizzard: {
+                "alpha": {
+                    "start": 0.79,
+                    "end": 0
+                },
+                "scale": {
+                    "start": 0.25,
+                    "end": 0.75,
+                    "minimumScaleMultiplier": 1
+                },
+                "color": {
+                    "start": "#e0fdff",
+                    "end": "#ffffff"
+                },
+                "speed": {
+                    "start": 800,
+                    "end": 0
+                },
+                "acceleration": {
+                    "x": 0,
+                    "y": 0
+                },
+                "startRotation": {
+                    "min": 0,
+                    "max": 0
+                },
+                "rotationSpeed": {
+                    "min": 0,
+                    "max": 0
+                },
+                "lifetime": {
+                    "min": 0.6,
+                    "max": 0.8
+                },
+                "blendMode": "normal",
+                "frequency": 0.001,
+                "emitterLifetime": -1,
+                "maxParticles": 1000,
+                "pos": {
+                    "x": 0,
+                    "y": 0
+                },
+                "addAtBack": false,
+                "spawnType": "burst",
+                "particlesPerWave": 1,
+                "particleSpacing": 0,
+                "angleStart": 0
+            },
     };
 
 
@@ -584,6 +633,7 @@ app.factory('ParticleFactory', function() {
         lightningBall:['lightning1', 'lightning2', 'HardCircle'],
         critter1pieces : ["core1", "wing1", "eye1", "ball1"],
         meteor: [1,2],
+        blizzard: [6, 5, 3],
     };
 
     let createEmitter = (emitterType, container, imageArr) => {
