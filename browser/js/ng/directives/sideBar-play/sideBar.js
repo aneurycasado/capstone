@@ -9,11 +9,10 @@ app.directive("sideBarPlay", function(){
 app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFactory, GameFactory, StateFactory, WaveFactory, EnemyFactory, TowerFactory) {
     $scope.player = PlayerFactory;
     if(StateFactory.mode === "survival"){
-        console.log("survival in sideBar-play", StateFactory.mode);
         $scope.survival = true;
     }
     $scope.waves = WaveFactory.waves;
-    $scope.wavesCompleted = 0;
+    $scope.currentWave = 0;
     $scope.totalEnemiesKilled = 0;
     $scope.totalEnemies = 0;
     $scope.enemiesKilled = EnemyFactory.terminatedEnemies.length;
@@ -30,7 +29,6 @@ app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFacto
         let currentTower = new TowerFactory.towers[key](0,0);
         var img = currentTower.imgNum;
         currentTower.imgUrl = "./images/tower-defense-turrets/turret-" + img + "-1.png";
-        console.log(currentTower);
         $scope.towers.push(currentTower);
         currentTower.terminate();
     } 
@@ -55,8 +53,10 @@ app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFacto
     $scope.saveGame = () => {
         let player = {
             health: PlayerFactory.health,
-            money: PlayerFactory.money
-        }
+            money: PlayerFactory.money,
+            currentWave: $scope.currentWave,
+            totalEnemiesKilled: $scope.totalEnemiesKilled
+        };
         PlayerFactory.saveGame(player).then((savedInfo) => {
             console.log("Saved Info ", savedInfo);
         });
@@ -77,7 +77,7 @@ app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFacto
         $rootScope.$emit("currentTower", tower);
     }
     $scope.initiateWave = () => {
-        $scope.wavesCompleted++;
+        $scope.currentWave++;
         $scope.totalEnemiesKilled+= EnemyFactory.terminatedEnemies.length;
         GameFactory.changeStateTo("wave");
         EnemyFactory.resetTerminatedEnemies();
