@@ -12,14 +12,16 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, ClickHandlerFact
 
                 if (opts.img){
                     this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/background-tilesets/" + opts.img + ".png"));
+                    this.img.interactive = true;
+                    this.img.click = ClickHandlerFactory.gridClickHandler.bind(this);
                     this.img.position.x = this.coords.x;
                     this.img.position.y = this.coords.y;
                     if(opts.width) this.img.width = opts.width;
                     else this.img.width = StateFactory.cellSize;
                     if(opts.height) this.img.height = opts.height;
-                    else this.img.height = StateFactory.cellSize;                
+                    else this.img.height = StateFactory.cellSize;
                 }
-            } 
+            }
         }
     }
 
@@ -50,17 +52,18 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, ClickHandlerFact
                 if(typeof nodeValue == "number" && nodeValue >= 2 && nodeValue <= 8 && nodeValue !== 4){
                     width = 100;
                     height = 50;
-                } 
+                }
 
                 texture = terrainToTexture[nodeValue];
 
                 if(texture){
                     if(texture.constructor == Array) texture = texture[Math.floor(Math.random() * (texture.length))];
-                    img = textureToImage[texture]; 
+                    img = textureToImage[texture];
                 }
           
                 newGrid[row][col] = new GridNode(col, row, {img: img, width: width, height: height, terrain: newGrid[row][col]});
                 if(newGrid[row][col].img) map.stage.addChild(newGrid[row][col].img);
+
             }
         }
         return newGrid;
@@ -212,7 +215,7 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, ClickHandlerFact
     }
 
     let textureToImage = {
-        tile1: "01", tile2: "02", 
+        tile1: "01", tile2: "02",
         tile3: "03", detail1: "08",
         detail2: "09", detail3: "10",
         detail4: "11", lights1: "04",

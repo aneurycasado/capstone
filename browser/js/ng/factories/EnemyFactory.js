@@ -4,6 +4,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
     let explosionEmitters = [];
     let enemies = [];
+    let terminatedEnemies = [];
     let stage = new PIXI.Stage();
     let findEnd = (img) => {
         if(img === "1") return 7;
@@ -58,7 +59,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             this.imgContainer.position = this.position;
             stage.addChild(this.imgContainer);
             this.slowFactor = 1;
-            this.value = 0;
+            this.value = opts.value;
             this.maxHealth = this.health;
             this.radius = 10;
 
@@ -108,10 +109,12 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
             explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', stage, ["core1", "wing1", "eye1", "ball1"]));
             explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
-            $rootScope.$emit("updateNumberOfEnemies");
             stage.removeChild(this.img);
             stage.removeChild(this.healthBar);
             stage.removeChild(this.imgContainer);
+            
+            $rootScope.$emit("updateNumberOfEnemies");
+
 
         }
 
@@ -145,6 +148,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
             if(this.health <= 0){
                 PlayerFactory.money += this.value;
+                terminatedEnemies.push(this);
                 $rootScope.$digest();
                 this.terminate();
             }
@@ -371,18 +375,26 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         for(let i = enemies.length -1; i >=0; i--){
             let enemy = enemies[i];
             enemy.terminate();       
-        }
+        };
+        terminatedEnemies = [];
+    };
+
+    let resetTerminatedEnemies = () => {
+        terminatedEnemies.length = 0;
     }
+
     let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow, 
                                BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,
                                SuperBigBugRed,SuperBigBugGreen,SuperBigBugBlue,SuperBigBugYellow,
                                BossBug};
     //adWare, worm
     return {
+        resetTerminatedEnemies,
         restart,
         stage,
         createEnemy,
         enemies,
-        updateAll
+        updateAll,
+        terminatedEnemies
     };
 });

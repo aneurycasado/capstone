@@ -29,17 +29,44 @@
                         Waves
                     </div>
                     <div class = "col-md-4">
-                        Enemies
+                        Total Enemies
+                    </div>
+                      <div class = "col-md-4">
+                        Enemies Terminated
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class = "col-md-4" ng-hide ="survival">
+                        {{waves.length}}
+                    </div>
+                    <div class = "col-md-4" ng-show ="survival">
+                        Unlimited
+                    </div>
+                    <div class = "col-md-4">
+                        {{totalEnemies}}
+                    </div>
+                    <div class = "col-md-4">
+                        {{enemiesKilled}}
+                    </div>
+                </div>
+                <hr>
+                <div class = "row" ng-show ="survival">
+                    <div class = "col-md-4">
+                        Current Wave
+                    </div>
+                    <div class = "col-md-4">
+                        Total Enemies Killed
                     </div>
                 </div>
                 <div class = "row">
                     <div class = "col-md-4">
-                        {{waves.length}}
+                        {{wavesCompleted}}
                     </div>
                     <div class = "col-md-4">
-                        {{numOfEnemies}}
+                        {{totalEnemiesKilled}}
                     </div>
                 </div>
+                <hr>
                 <div class ="row">
                     <div class = "col-md-4">
                         <button class = "btn btn-primary" ng-click = "saveGame()">Save Game</button>

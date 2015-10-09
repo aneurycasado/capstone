@@ -7,6 +7,7 @@ app.directive('editor', function($rootScope) {
         templateUrl: '/js/ng/directives/editor/editor.html',
         scope: {
             tower: '=',
+            //toggleEditing: '&'
         },
         link: function(scope, element, attrs) {
             var editor = ace.edit("editor");
@@ -23,10 +24,12 @@ app.directive('editor', function($rootScope) {
             scope.saveCodeSnippet = function() {
                 scope.tower.codeSnippet = editor.getValue();
                 scope.tower.evalCodeSnippet();
-                scope.$parent.$parent.editing = false;
+                $rootScope.$broadcast('setEditing', false);
+                //scope.$parent.$parent.editing = false;
             }
             scope.goBack = () => {
                 scope.$parent.$parent.editing = false;
+                $rootScope.$broadcast('setEditing', false);
             }
         }
     }

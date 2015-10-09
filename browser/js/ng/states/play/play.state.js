@@ -8,8 +8,9 @@ app.config(function ($stateProvider) {
                 player : function(PlayerFactory){
                     return PlayerFactory.getGame();
                 },
-                mode: function($stateParams){
+                mode: function($stateParams, StateFactory){
                     console.log("Mode in resolve ", $stateParams.mode);
+                    StateFactory.mode = $stateParams.mode;
                     return $stateParams.state;
                 }
             },
@@ -19,10 +20,10 @@ app.config(function ($stateProvider) {
 
 app.controller('PlayController', function ($scope, player, mode, $state,$timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, ProjectileFactory, GameFactory) {
     let data = StateFactory;
+    console.log("Mode in playcontroller",StateFactory.mode)
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(data.width, data.height, data.canvas);
     document.body.appendChild(data.renderer.view);
-    StateFactory.mode = mode;
     let start = map => {
         data.map = map;
         StateFactory.stages.play = new PIXI.Stage();
@@ -49,7 +50,8 @@ app.controller('PlayController', function ($scope, player, mode, $state,$timeout
         TowerFactory.resetTowers();
         PlayerFactory.restart();
         MapFactory.reset();
-        WaveFactory.init();
+        WaveFactory.init(mode);
+        $rootScope.$emit('resetSideBar');
         init(mapNum);
     }
 
@@ -62,7 +64,9 @@ app.controller('PlayController', function ($scope, player, mode, $state,$timeout
         console.log("Map chosen ", data);
         init(data);
     });
-
+    $rootScope.$on('setEditing', function(event, data) {
+        $scope.editing = data;
+    })
     $rootScope.$on('choseADifferentMap', (event,data) => {
         restart(data);
     });
