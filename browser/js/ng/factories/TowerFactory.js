@@ -36,14 +36,14 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             }.bind(this));
             this.mods = {
                 surroundings: [
-                    new ModFactory.Surrounding('getEnemies', this.getEnemies, this, true),
-                    new ModFactory.Surrounding('getNearbyTowers', this.getNearbyTowersEncapsulated, this, true)
+                    new ModFactory.Surrounding('getEnemies', this.getEnemies, this, false),
+                    new ModFactory.Surrounding('getNearbyTowers', this.getNearbyTowersEncapsulated, this, false)
                 ],
                 abilities: [
                     new ModFactory.Ability('burst', burst, this, 25000, true)
                 ],
                 effects: [],
-                temp: []
+                consumables: []
             };
 
             this.codeSnippet = null;
@@ -173,7 +173,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                         setTimeout(function () {
                             StateFactory.sloMo = false;
                         },3500)
-                    } 
+                    }
 
                     this.target = EnemyFactory.enemies[i];
                     return true;

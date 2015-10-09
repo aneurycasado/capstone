@@ -61,8 +61,43 @@ app.factory('ModFactory', function() {
             }
         }
     }
+
+    class Consumable extends Mod {
+      constructor(name, functionToRun, context, quantity=0, purchased=false) {
+        super(name, functionToRun, context, purchased);
+        this.quantity = quantity;
+      }
+      addToQuantity() {
+        this.quantity++;
+      }
+      decrementQuantity() {
+        this.quantity--;
+      }
+      runMod(...newArgs) {
+        if(this.quantity) {
+          this.decrementQuantity();
+          return super.runMod(...newArgs);
+        }
+      }
+    }
+
+    class Effect extends Mod {
+      constructor(name, functionToRun, context, purchased=false) {
+        super(name, functionToRun, context, purchased)
+      }
+    }
+
+    class Weapon extends Mod {
+      constructor(name, functionToRun, context, purchased=false) {
+        super(name, functionToRun, context, purchased)
+      }
+    }
+
     return {
         Ability,
-        Surrounding
+        Surrounding,
+        Consumable,
+        Effect,
+        Weapon
     }
 });
