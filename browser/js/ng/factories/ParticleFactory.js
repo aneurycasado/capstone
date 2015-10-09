@@ -606,7 +606,7 @@ app.factory('ParticleFactory', function() {
                     "max": 1
                 },
                 "blendMode": "normal",
-                "frequency": 0.0001,
+                "frequency": 0.001,
                 "emitterLifetime": -1,
                 "maxParticles": 2000,
                 "pos": {
@@ -621,7 +621,7 @@ app.factory('ParticleFactory', function() {
                     "r": 33,
                     "minR": 33
                 }
-            }
+            },
     };
 
     var particleImageTable = {
@@ -634,7 +634,7 @@ app.factory('ParticleFactory', function() {
         lightningBall:['lightning1', 'lightning2', 'HardCircle'],
         critter1pieces : ["core1", "wing1", "eye1", "ball1"],
         meteor: [1,2],
-        blizzard: [5, 3],
+        blizzard: [1,5, 3, 8],
     };
 
     let createEmitter = (emitterType, container, imageArr) => {

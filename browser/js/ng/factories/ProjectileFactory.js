@@ -1,6 +1,8 @@
-app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFactory){
+app.factory("ProjectileFactory", function(LightningFactory, StateFactory, ParticleFactory, EnemyFactory){
 
   let projectiles = [];
+
+  //LightningFactory.lightning();
 
   let stage = new PIXI.Stage();
 

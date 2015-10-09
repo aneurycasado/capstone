@@ -62,8 +62,6 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             this.slowFactor = 1;
             this.maxHealth = this.health;
 
-            this.path = opts.path;
-            this.pathIndex = 0;
         }
 
         moveTowards(delta) {
@@ -92,7 +90,6 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 ydone = true;
             }
             if(xdone && ydone){
-
                 this.pathIndex++;
             }
         }
