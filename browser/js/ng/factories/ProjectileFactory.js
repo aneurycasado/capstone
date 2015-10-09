@@ -1,5 +1,4 @@
 app.factory("ProjectileFactory", function(LightningFactory, StateFactory, ParticleFactory, EnemyFactory){
-
   let projectiles = [];
 
   //LightningFactory.lightning();

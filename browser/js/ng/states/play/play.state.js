@@ -23,7 +23,8 @@ app.controller('PlayController', function ($scope, player, mode, $state, $timeou
     console.log("Mode in playcontroller", StateFactory.mode)
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(data.width, data.height, data.canvas);
-    document.body.appendChild(data.renderer.view);
+    $("#mainContainer").append(data.renderer.view);
+    $(data.renderer.view).attr('id','pixiCanvas');
     let start = map => {
         data.map = map;
         StateFactory.stages.play = new PIXI.Stage();
