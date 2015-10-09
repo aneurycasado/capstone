@@ -5,10 +5,10 @@ app.config(function ($stateProvider) {
             url: '/play/:mode',
             templateUrl: '/js/ng/states/play/play.state.html',
             resolve: {
-                player : function(PlayerFactory){
+                player: function (PlayerFactory) {
                     return PlayerFactory.getGame();
                 },
-                mode: function($stateParams, StateFactory){
+                mode: function ($stateParams, StateFactory) {
                     console.log("Mode in resolve ", $stateParams.mode);
                     StateFactory.mode = $stateParams.mode;
                     return $stateParams.state;
@@ -18,9 +18,9 @@ app.config(function ($stateProvider) {
         })
 });
 
-app.controller('PlayController', function ($scope, player, mode, $state,$timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, ProjectileFactory, GameFactory) {
+app.controller('PlayController', function ($scope, player, mode, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, ProjectileFactory, GameFactory) {
     let data = StateFactory;
-    console.log("Mode in playcontroller",StateFactory.mode)
+    console.log("Mode in playcontroller", StateFactory.mode)
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(data.width, data.height, data.canvas);
     document.body.appendChild(data.renderer.view);
@@ -54,26 +54,26 @@ app.controller('PlayController', function ($scope, player, mode, $state,$timeout
         init(mapNum);
     }
 
-    let init = (num,state) => {
-        if(num !== undefined) $scope.mapNum = num;
-        start(MapFactory.maps[$scope.mapNum],state);
+    let init = (num, state) => {
+        if (num !== undefined) $scope.mapNum = num;
+        start(MapFactory.maps[$scope.mapNum], state);
     };
 
-    $rootScope.$on('mapChosen', (event,data) => {
+    $rootScope.$on('mapChosen', (event, data) => {
         console.log("Map chosen ", data);
         init(data);
     });
 
-    $rootScope.$on('towerClicked', function(event, data) {
+    $rootScope.$on('towerClicked', function (event, data) {
         $scope.editing = true;
         $scope.selectedTower = data;
         $scope.$digest();
     });
-    $rootScope.$on('setEditing', function(event, data) {
+    $rootScope.$on('setEditing', function (event, data) {
         $scope.editing = data;
         $scope.$digest();
     });
-    $rootScope.$on('choseADifferentMap', (event,data) => {
+    $rootScope.$on('choseADifferentMap', (event, data) => {
         restart(data);
     });
     $rootScope.$on("currentTower", (event, data) => {
@@ -93,27 +93,18 @@ app.controller('PlayController', function ($scope, player, mode, $state,$timeout
     $scope.tower = null;
 
 
-
     $('canvas').on('click', (e) => {
         if ($scope.tower !== null) {
             let towerPositionX = Math.floor(e.offsetX / StateFactory.cellSize);
             let towerPositionY = Math.floor(e.offsetY / StateFactory.cellSize);
             let selectedGrid = data.map.grid[towerPositionY][towerPositionX];
-            //$scope.selectedTower = selectedGrid.contains.tower;
-            //if (selectedGrid.contains.tower) {
-            //    $scope.editing = true;
-            //    $scope.$digest();
-            //
-            //}
-            console.log(selectedGrid.contains.tower);
             if (!selectedGrid.contains.tower && typeof data.map.grid[towerPositionY][towerPositionX].terrain == "string") {
-                if(PlayerFactory.money - $scope.tower.price >= 0){
-                    console.log("here");
+                if (PlayerFactory.money - $scope.tower.price >= 0) {
                     TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.name + "Tower");
                     PlayerFactory.money -= $scope.tower.price;
                     $scope.$digest();
                 }
-            }else {
+            } else {
                 console.log("Can't play");
             }
         }
