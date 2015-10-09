@@ -19,7 +19,6 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
     //name, functionToRun, context, coolDownPeriod, time=Date.now(), purchased=false
     class Tower {
         constructor(x, y, options) {
-            //this.grid = grid;
             this.range = null;
             this.position = {x: x, y: y};
             this.rank = 1;
@@ -56,10 +55,11 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 let img = PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + i + ".png");
                 array.push(img)
             }
+            let imgPositions = [this.position.x * StateFactory.cellSize + (StateFactory.cellSize / 2), this.position.y * StateFactory.cellSize + (StateFactory.cellSize / 2)]
             this.imgContainer = new PIXI.Container();
-            SpriteGenFactory.attachSprite(this, new PIXI.extras.MovieClip(array));
+            SpriteGenFactory.attachSprite(this, new PIXI.extras.MovieClip(array), ...imgPositions);
             this.img.animationSpeed = .1;
-            this.imgContainer.addChild(this.img);
+            SpriteGenFactory.attachToContainer(this.imgContainer, this.img);
             stage.addChild(this.imgContainer);
 
             this.baseRangeCircle = new PIXI.Graphics();

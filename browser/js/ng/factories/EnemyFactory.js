@@ -1,6 +1,6 @@
 'use strict'
 //FIXME
-app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, PlayerFactory) {
+app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, PlayerFactory, SpriteGenFactory) {
 
     let explosionEmitters = [];
     let enemies = [];
@@ -19,22 +19,18 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 for(let opt in opts){
                     this[opt] = opts[opt];
                  }
+                this.position = {x: opts.path[0].x, y: opts.path[0].y};
                 this.imgContainer = new PIXI.Container();
+                let array = [];
                 if (opts.img) {
-                    let array = [];
                     let end = findEnd(opts.img);
                     for(let i=1; i < end; i++){
                         let img = PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-" + opts.color +"/" + i.toString() + ".png");
                         array.push(img)
                     }
-                    this.img = new PIXI.extras.MovieClip(array);
+                    SpriteGenFactory.attachSprite(this, new PIXI.extras.MovieClip(array));
                 }
-                this.position = {x: opts.path[0].x, y: opts.path[0].y};
                 this.img.position = this.position;
-                this.img.pivot.x = 0.5;
-                this.img.pivot.y = 0.5;
-                this.img.anchor.x  = 0.5;
-                this.img.anchor.y = 0.5;
                 this.img.animationSpeed = 0.5;
                 this.img.play();
                 if (opts.power) this.power = opts.power;
@@ -42,8 +38,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             this.healthBar = new PIXI.Graphics();
             this.healthBar.beginFill(0xFF0000);
             this.healthBar.drawRect(-20, -25, 40, 2);
-            this.imgContainer.addChild(this.img);
-            this.imgContainer.addChild(this.healthBar);
+            SpriteGenFactory.attachToContainer(this.imgContainer, this.img, this.healthBar)
             this.imgContainer.position = this.position;
             stage.addChild(this.imgContainer);
             this.slowFactor = 1;
@@ -93,7 +88,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             stage.removeChild(this.img);
             stage.removeChild(this.healthBar);
             stage.removeChild(this.imgContainer);
-            
+
             $rootScope.$emit("updateNumberOfEnemies");
 
 
@@ -354,7 +349,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     let restart = () => {
         for(let i = enemies.length -1; i >=0; i--){
             let enemy = enemies[i];
-            enemy.terminate();       
+            enemy.terminate();
         };
         terminatedEnemies = [];
     };
@@ -363,7 +358,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         terminatedEnemies.length = 0;
     }
 
-    let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow, 
+    let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow,
                                BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,
                                SuperBigBugRed,SuperBigBugGreen,SuperBigBugBlue,SuperBigBugYellow,
                                BossBug};
