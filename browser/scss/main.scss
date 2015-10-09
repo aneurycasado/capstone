@@ -14,11 +14,14 @@ img {
   height: 100%;
 }
 
+#mainContainer {
+  margin: 0 auto;
+  width: 1000px;
+}
+
 canvas{
 	position:fixed;
-	top:0px;
-	left:0px;
-	
+  float: left;
 }
 
 @import 'directives/main';
