@@ -248,7 +248,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         constructor(x, y) {
             super(x, y, {
                 img: '4',
-                power: 2,
+                power: .00001,
                 price: 50,
                 reloadTime: 400,
                 range: 200,
@@ -259,7 +259,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
         shoot(enemy){
             this.img.play();
-            new ProjectileFactory.BlizzardProjectile({
+            if(!this.projectile) this.projectile = new ProjectileFactory.BlizzardProjectile({
                 power: this.power,
                 x: this.img.position.x, y:
                 this.img.position.y,
@@ -307,7 +307,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
         shoot(enemy){
             this.img.play();
-            new ProjectileFactory.MeteorProjectile({x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy});
+            if(!this.projectile) this.projectile = new ProjectileFactory.MeteorProjectile({x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy});
         }
     }
 

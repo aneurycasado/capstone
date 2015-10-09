@@ -140,12 +140,12 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
       }
   }
 
-  class BlizzardProjectile extends Projectile{
+  class BlizzardProjectile extends StraightProjectile{
       constructor(opts){
         super(opts);
         this.slowSpeed = 0.5;
         this.slowDuration = 1000;
-        this.particleEmitter = ParticleFactory.createEmitter('ice', stage);
+        this.particleEmitter = ParticleFactory.createEmitter('blizzard', stage);
         this.particleEmitter.updateOwnerPos(this.x, this.y);
         this.particleEmitter.noSloMo = true;
         this.invincible = true;

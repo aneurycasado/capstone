@@ -573,20 +573,20 @@ app.factory('ParticleFactory', function() {
 
             blizzard: {
                 "alpha": {
-                    "start": 0.79,
-                    "end": 0
+                    "start": 0.15,
+                    "end": 0.56
                 },
                 "scale": {
-                    "start": 0.25,
-                    "end": 0.75,
+                    "start": 0.6,
+                    "end": 0.6,
                     "minimumScaleMultiplier": 1
                 },
                 "color": {
-                    "start": "#e0fdff",
+                    "start": "#ffffff",
                     "end": "#ffffff"
                 },
                 "speed": {
-                    "start": 800,
+                    "start": 400,
                     "end": 0
                 },
                 "acceleration": {
@@ -594,34 +594,35 @@ app.factory('ParticleFactory', function() {
                     "y": 0
                 },
                 "startRotation": {
-                    "min": 0,
-                    "max": 0
+                    "min": 265,
+                    "max": 275
                 },
                 "rotationSpeed": {
-                    "min": 0,
-                    "max": 0
+                    "min": 50,
+                    "max": 50
                 },
                 "lifetime": {
-                    "min": 0.6,
-                    "max": 0.8
+                    "min": 1,
+                    "max": 1
                 },
                 "blendMode": "normal",
-                "frequency": 0.001,
+                "frequency": 0.0001,
                 "emitterLifetime": -1,
-                "maxParticles": 1000,
+                "maxParticles": 2000,
                 "pos": {
                     "x": 0,
                     "y": 0
                 },
                 "addAtBack": false,
-                "spawnType": "burst",
-                "particlesPerWave": 1,
-                "particleSpacing": 0,
-                "angleStart": 0
-            },
+                "spawnType": "ring",
+                "spawnCircle": {
+                    "x": 0,
+                    "y": 0,
+                    "r": 33,
+                    "minR": 33
+                }
+            }
     };
-
-
 
     var particleImageTable = {
         fire: [1, 2],
@@ -633,7 +634,7 @@ app.factory('ParticleFactory', function() {
         lightningBall:['lightning1', 'lightning2', 'HardCircle'],
         critter1pieces : ["core1", "wing1", "eye1", "ball1"],
         meteor: [1,2],
-        blizzard: [6, 5, 3],
+        blizzard: [5, 3],
     };
 
     let createEmitter = (emitterType, container, imageArr) => {
