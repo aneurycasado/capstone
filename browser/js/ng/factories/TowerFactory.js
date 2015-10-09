@@ -1,5 +1,7 @@
 'use strict'
-app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactory, StateFactory, ParticleFactory, ClickHandlerFactory, CodeEvalFactory, ModFactory, $timeout) {
+app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactory, StateFactory,
+                                      ParticleFactory, SpriteEventFactory, CodeEvalFactory, ModFactory,
+                                      $timeout, SpriteGenFactory) {
 
     let allTowers = [];
 
@@ -36,9 +38,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             this.mods = {
                 surroundings: [
                     new ModFactory.Surrounding('getEnemies', this.getEnemies, this, true),
-                    //{name: 'getEnemies', functionToRun: this.getEnemies, purchased: true},
                     new ModFactory.Surrounding('getNearbyTowers', this.getNearbyTowersEncapsulated, this, true)
-                    //{name: 'getNearbyTowers', functionToRun: this.getNearbyTowersEncapsulated, purchased: true}
                 ],
                 abilities: [
                     new ModFactory.Ability('burst', burst, this, 25000, true)
@@ -57,12 +57,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 array.push(img)
             }
             this.imgContainer = new PIXI.Container();
-            this.img = new PIXI.extras.MovieClip(array);
-            this.img.interactive = true;
-            this.img.position.x = this.position.x * StateFactory.cellSize + (StateFactory.cellSize / 2);
-            this.img.position.y = this.position.y * StateFactory.cellSize + (StateFactory.cellSize / 2);
-            this.img.anchor.x = .5;
-            this.img.anchor.y = .5;
+            SpriteGenFactory.attachSprite(this, new PIXI.extras.MovieClip(array));
             this.img.animationSpeed = .1;
             this.imgContainer.addChild(this.img);
             stage.addChild(this.imgContainer);
@@ -73,7 +68,9 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             this.baseRangeCircle.drawCircle(this.img.position.x, this.img.position.y, this.range);
             this.towerControlFunction = null;
 
-            this.img.click = ClickHandlerFactory.towerClickHandler.bind(this);
+            this.img.click = SpriteEventFactory.towerClickHandler.bind(this);
+            //this.img.mouseover = SpriteEventFactory.towerMouseOverHandler.bind(this);
+            //this.img.mouseout = SpriteEventFactory.towerMouseLeaveHandler.bind(this);
 
         }
 

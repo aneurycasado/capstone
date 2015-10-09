@@ -1,5 +1,5 @@
 'use strict'
-app.factory('MapFactory', function(StateFactory, DesignFactory, ClickHandlerFactory) {
+app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFactory) {
     class GridNode {
         constructor(x, y, opts) {
             this.x = x;
@@ -13,7 +13,7 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, ClickHandlerFact
                 if (opts.img){
                     this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/background-tilesets/" + opts.img + ".png"));
                     this.img.interactive = true;
-                    this.img.click = ClickHandlerFactory.gridClickHandler.bind(this);
+                    this.img.click = SpriteEventFactory.gridClickHandler.bind(this);
                     this.img.position.x = this.coords.x;
                     this.img.position.y = this.coords.y;
                     if(opts.width) this.img.width = opts.width;
