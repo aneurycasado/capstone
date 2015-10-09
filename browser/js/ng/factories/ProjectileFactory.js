@@ -76,7 +76,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
 
         if(this.particleEmitter.noSloMo){
           delta = delta*StateFactory.sloMoMod;
-        } 
+        }
 
         this.x += this.xVel * delta;
         this.y += this.yVel * delta;
@@ -176,7 +176,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
       super(opts);
       this.power = 0.2;
       this.radius = 20;
-      this.particleEmitter = ParticleFactory.createEmitter('fire', stage);
+      this.particleEmitter = ParticleFactory.createEmitter('ice2', stage);
       this.particleEmitter.updateOwnerPos(this.x, this.y);
       window.setTimeout(function(){
         if(projectiles.indexOf(this) !== -1) this.terminate();
@@ -214,11 +214,11 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
       constructor(opts){
         super(opts);
 
-       
+
         this.particleEmitter = ParticleFactory.createEmitter('meteor', stage);
         this.particleEmitter.updateOwnerPos(this.x, this.y);
         this.particleEmitter.noSloMo = true;
-        
+
         this.extraImage = new PIXI.Sprite(PIXI.Texture.fromImage("/images/particles/meteor.png"));
         this.extraImage.anchor.x = .5;
         this.extraImage.anchor.y = .5;
