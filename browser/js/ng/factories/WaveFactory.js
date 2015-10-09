@@ -23,12 +23,7 @@ app.factory('WaveFactory', function($rootScope,EnemyFactory, StateFactory) {
         if(checkNodeClear(3)) {
             if(!currentWaveLength()) return;
             let newEn;
-            if(Array.isArray(StateFactory.map.path[0])){
-                let index = Math.floor(Math.random()*StateFactory.map.path.length);
-                newEn = EnemyFactory.createEnemy(popOffNextMonster(), StateFactory.map.path[index]);
-            }else{
-                newEn = EnemyFactory.createEnemy(popOffNextMonster(), StateFactory.map.path);
-            }
+            newEn = EnemyFactory.createEnemy(popOffNextMonster(), StateFactory.map.paths);
             EnemyFactory.stage.addChild(newEn.img);
         }
     };
