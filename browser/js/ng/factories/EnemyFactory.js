@@ -12,6 +12,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     class Enemy {
         constructor(opts) {
             this.particleEmitters = {};
+            this.value = 0;
+            this.radius = 10;
             if (opts) {
                 for(let opt in opts){
                     this[opt] = opts[opt];
@@ -44,9 +46,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             this.imgContainer.position = this.position;
             stage.addChild(this.imgContainer);
             this.slowFactor = 1;
-            this.value = 0;
             this.maxHealth = this.health;
-            this.radius = 10;
             this.path = opts.path;
             this.pathIndex = 0;
         }
@@ -79,7 +79,6 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
 
         terminate(){
-            if(this.circle) stage.removeChild(this.circle);
             for(var i in this.particleEmitters){
                 if(this.particleEmitters[i])this.particleEmitters[i].destroy();
             }
@@ -91,6 +90,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', stage, ["core1", "wing1", "eye1", "ball1"]));
             explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
             $rootScope.$emit("updateNumberOfEnemies");
+            //this.circle.destroy();
+            stage.removeChild(this.circle);
             stage.removeChild(this.img);
             stage.removeChild(this.healthBar);
             stage.removeChild(this.imgContainer);
@@ -113,6 +114,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 //     console.log("Game over ", PlayerFactory.health);
                 // }
                 $rootScope.$digest();
+                console.log('gonna terminate');
                 this.terminate();
             }
             if(this.poisoned) this.takeDamage(this.poisonDamage);

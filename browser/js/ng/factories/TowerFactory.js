@@ -186,7 +186,6 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
 
         isEnemyInRange(enemy){
-
             return((Math.pow(enemy.position.x - this.img.position.x, 2) + Math.pow(enemy.position.y - this.img.position.y, 2) <= Math.pow(this.range, 2)));
         }
 
@@ -367,15 +366,15 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 };
                 if(!this.circles[i]){
                     this.circles[i] = new PIXI.Graphics();
-                    this.circles[i].beginFill(0xFFFF99, 0.4);
-                    this.circles[i].lineStyle(2, 0xFFFF99);
+                    this.circles[i].beginFill(0xFF0000, 0.4);
+                    this.circles[i].lineStyle(2, 0xFF0000);
                     this.circles[i].drawCircle(this.flameCircleCenters[i].x, this.flameCircleCenters[i].y, this.flameCircleRadius);
                     stage.addChild(this.circles[i]);
                 }else{
                     stage.removeChild(this.circles[i]);
                     this.circles[i] = new PIXI.Graphics();
-                    this.circles[i].beginFill(0xFFFF99, 0.4);
-                    this.circles[i].lineStyle(2, 0xFFFF99);
+                    this.circles[i].beginFill(0xFF0000, 0.4);
+                    this.circles[i].lineStyle(2, 0xFF0000);
                     this.circles[i].drawCircle(this.flameCircleCenters[i].x, this.flameCircleCenters[i].y, this.flameCircleRadius);
                     stage.addChild(this.circles[i]);
                 }
@@ -432,7 +431,44 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
     }
 
-    let towers = {IceTower, ThunderTower, FireTower, PoisonTower, FlameTower, MeteorTower};
+    class GasTower extends Tower {
+        constructor(x, y) {
+            super(x, y, {
+                img: '6',
+                power: .1,
+                price: 50,
+                reloadTime: 3000,
+                range: 100,
+                name: 'Gas',
+                effect: 'Fill in'
+            });
+        }
+
+        shoot(enemy){
+            this.img.play();
+            var self = this;
+            this.particleEmitter = ParticleFactory.createEmitter('gas', stage);
+            this.particleEmitter.updateOwnerPos(this.img.position.x, this.img.position.y);
+            EnemyFactory.enemies.forEach(function(enemy){
+                if(self.isEnemyInRange(enemy)){
+                    enemy.poisoned = true;
+                    enemy.poisonDamage = self.power;
+                    if(!enemy.particleEmitters.poison){
+                        enemy.particleEmitters.poison = ParticleFactory.createEmitter('poison', stage);
+                    }
+                }
+            })
+        }
+
+        update(delta){
+            super.update(delta);
+            if(this.particleEmitter){
+                this.particleEmitter.update(delta);
+            }
+        }
+    }
+
+    let towers = {IceTower, ThunderTower, FireTower, FlameTower, PoisonTower, GasTower, MeteorTower};
     // let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
 
     let updateAll = (delta) => {

@@ -29,15 +29,15 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
       update(){
             if(!this.circle){
                 this.circle = new PIXI.Graphics();
-                this.circle.beginFill(0xFFFF99, 0.4);
-                this.circle.lineStyle(2, 0xFFFF99);
+                this.circle.beginFill(0xFF0000, 0.4);
+                this.circle.lineStyle(2, 0xFF0000);
                 this.circle.drawCircle(this.x, this.y, this.radius);
                 stage.addChild(this.circle);
             }else{
                 stage.removeChild(this.circle);
                 this.circle = new PIXI.Graphics();
-                this.circle.beginFill(0xFFFF99, 0.4);
-                this.circle.lineStyle(2, 0xFFFF99);
+                this.circle.beginFill(0xFF0000, 0.4);
+                this.circle.lineStyle(2, 0xFF0000);
                 this.circle.drawCircle(this.x, this.y, this.radius);
                 stage.addChild(this.circle);
             }
@@ -51,7 +51,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
      }
 
      update(delta) {
-         super.update();
+         super.update(delta);
          if(checkCircleCollision(this, this.target)){
              this.target.takeDamage(this.power);
              if(this.specialEffect) this.specialEffect();
@@ -90,7 +90,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
     }
 
     update(delta){
-        super.update();
+        super.update(delta);
 
         if(this.particleEmitter.noSloMo){
           delta = delta*StateFactory.sloMoMod;
