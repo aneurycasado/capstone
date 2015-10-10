@@ -7,6 +7,9 @@ app.directive("sideBarPlay", function(){
 });
 
 app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFactory, GameFactory, StateFactory, WaveFactory, EnemyFactory, TowerFactory) {
+    $(document).ready(function(){
+        $('.toolTipSideBar').tooltip();
+    });
     $scope.player = PlayerFactory;
     if(StateFactory.mode === "survival"){
         $scope.survival = true;
