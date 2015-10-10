@@ -30,7 +30,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
       if(!this.tower.target) {
         this.tower.img.stop();
       } else {
-        if(this.isEnemyInRange(this.tower.target)) {
+        if(this.tower.isEnemyInRange(this.tower.target)) {
           this.tower.target = null;
           this.particleEmitter.destroy();
           this.particleEmittter = null;
@@ -44,7 +44,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
       if(!this.particleEmitter) {
         this.particleEmitter = new ParticleFactory.createEmitter('flame', stage);
         // this.calcRotation();
-        this.particleEmitter.updateOwnerPos(this.img.position.x, this.img.position.y);
+        this.particleEmitter.updateOwnerPos(this.tower.img.position.x, this.tower.img.position.y);
       }
       this.calcRotation();
       this.calcFlameCircleCenters();
@@ -65,7 +65,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
        });
     }
     calcRotation() {
-       this.particleEmitter.rotation = (-57.3 * (Math.atan2((this.target.imgContainer.position.x - this.img.position.x) , (this.target.imgContainer.position.y - this.img.position.y))) + 180);
+       this.particleEmitter.rotation = (-57.3 * (Math.atan2((this.tower.target.imgContainer.position.x - this.img.position.x) , (this.target.imgContainer.position.y - this.img.position.y))) + 180);
     }
     checkRadius(center, enemy) {
          let dx = center.x - enemy.img.position.x;
@@ -93,6 +93,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     constructor(tower) {
       super(tower, 3, 200, 50, "Fire", "Fill in")
       this.reloadTime = 1000;
+      console.log('range', this.range);
     }
     shoot(enemy){
       super.shoot(enemy, 'FireProjectile', {speed: 50, radius: 0});
