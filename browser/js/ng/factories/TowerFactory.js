@@ -210,16 +210,6 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         }
     }
 
-    function createTower(x, y, name) {
-        let towerConstructor = towers[name];
-        let newTower = new towerConstructor(x, y);
-        console.log(newTower);
-        let currentGridNode = StateFactory.map.grid[y][x];
-        allTowers.push(newTower);
-        currentGridNode.contains.tower = newTower;
-        return newTower;
-    }
-
     class IceTower extends Tower {
         constructor(x, y) {
             super(x, y, {
@@ -432,13 +422,42 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
     //removed FlameTower, MeteorTower, and BlizzardTower to be refactored into weapons and abilities
     //put back in IceTower
     let towers = {IceTower, ThunderTower, FireTower, PoisonTower};
+
+    function createTower(x, y, name) {
+        let towerConstructor = towers[name];
+        let newTower = new towerConstructor(x, y);
+        console.log(newTower);
+        let currentGridNode = StateFactory.map.grid[y][x];
+        allTowers.push(newTower);
+        currentGridNode.contains.tower = newTower;
+        return newTower;
+    }
+
+    function removeTower(tower){
+        let currentGridNode = StateFactory.map.grid[tower.position.y][tower.position.x];
+        let removeIndex = null;
+        allTowers.forEach(function(currentTower,index){
+            console.log("currenTower");
+            if(currentTower.position.x === tower.position.x && currentTower.position.y === tower.position.y){
+                console.log("Found a match");
+                console.log("tower in allTower ", currentTower);
+                console.log("Tower passed in ", tower);
+                removeIndex = index;
+            }
+        });
+        let towerToRemove = allTowers[removeIndex];
+        currentGridNode.contains.tower = null;
+        stage.removeChild(towerToRemove.imgContainer);
+        allTowers.splice(removeIndex,1);
+    }
+
+
     // let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
 
     let updateAll = (delta) => {
         allTowers.forEach((tower) => {
             if (tower.update) tower.update(delta);
         });
-
     };
     let resetTowers = () => {
 
@@ -451,6 +470,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
     return {
         createTower,
+        removeTower,
         towers,
         updateAll,
         // prices,

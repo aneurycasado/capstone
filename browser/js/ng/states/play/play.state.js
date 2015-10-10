@@ -18,9 +18,9 @@ app.config(function ($stateProvider) {
         })
 });
 
-app.controller('PlayController', function ($scope, player, mode, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, ProjectileFactory, GameFactory) {
+app.controller('PlayController', function ($scope, player, mode, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, SpriteEventFactory, ProjectileFactory, GameFactory) {
     let data = StateFactory;
-    console.log("Mode in playcontroller", StateFactory.mode)
+    $scope.mode = data.mode;
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(data.width, data.height, data.canvas);
     $("#mainContainer").append(data.renderer.view);
@@ -29,6 +29,8 @@ app.controller('PlayController', function ($scope, player, mode, $state, $timeou
         data.map = map;
         StateFactory.stages.play = new PIXI.Stage();
         let bg = new PIXI.Sprite(PIXI.Texture.fromImage("/images/bg.png"));
+        bg.interactive = true;
+        bg.click = SpriteEventFactory.bgClickHandler;
         bg.width = data.width;
         bg.height = data.height;
         console.log(map.paths);
@@ -69,6 +71,8 @@ app.controller('PlayController', function ($scope, player, mode, $state, $timeou
     $rootScope.$on('towerClicked', function (event, data) {
         $scope.editing = true;
         $scope.selectedTower = data;
+        $scope.selectedTower.imgUrl = "/images/tower-defense-turrets/turret-" + $scope.selectedTower.imgNum + '-' + "1" + ".png";
+        console.log("Selected tower",$scope.selectedTower);
         $scope.$digest();
     });
     $rootScope.$on('setEditing', function (event, data) {
@@ -93,8 +97,6 @@ app.controller('PlayController', function ($scope, player, mode, $state, $timeou
         restart();
     });
     $scope.tower = null;
-
-
     $('canvas').on('click', (e) => {
         if ($scope.tower !== null) {
             let towerPositionX = Math.floor(e.offsetX / StateFactory.cellSize);

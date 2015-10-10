@@ -27,7 +27,9 @@ var schema = new mongoose.Schema({
     game: {
         player: {
             health: Number,
-            money: Number
+            money: Number,
+            currentWave: Number,
+            totalEnemiesKilled: Number
         }
     }
 });
