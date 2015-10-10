@@ -1,7 +1,6 @@
 
 <div class = "container" id ="mainContainer">
-	<side-bar-play id = "sideBar" ng-if = "!editing && showPlaySideBar"></side-bar-play>
-	<side-bar-level-editor ng-if = "showLevelEditing" id = "sideBar" ng-show = "!editing"></side-bar-level-editor>
+	<side-bar-play id = "sideBar" ng-if = "!editing"></side-bar-play>
 	<tower-bottom-bar id ="towerBottomBar" ng-show="selectedTower"></tower-bottom-bar>
 	<choose-map-modal></choose-map-modal>
 	<level-modal></level-modal>

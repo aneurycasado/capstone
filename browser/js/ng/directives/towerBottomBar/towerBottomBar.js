@@ -11,7 +11,7 @@ app.controller('TowerBottomBarController', function($scope,$rootScope,$state){
 		if(data === false){
 			$scope.selectedTower = null;
 		}
-	});
+	})
 	$scope.sellTower = function(tower){
 		console.log("The tower being sold ", tower);
 		console.log("Sell Tower");
