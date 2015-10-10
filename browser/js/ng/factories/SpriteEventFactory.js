@@ -30,11 +30,18 @@ app.factory('SpriteEventFactory', function($rootScope) {
         selectedTowerRemover();
     };
 
+    let bgClickHandler = function(mouseData) {
+        if(selectedGrid) {
+            selectedGrid = null;
+        }
+        selectedTowerRemover();
+    }
 
     return {
         towerClickHandler,
         towerMouseOverHandler,
         towerMouseLeaveHandler,
-        gridClickHandler
+        gridClickHandler,
+        bgClickHandler
     }
 });

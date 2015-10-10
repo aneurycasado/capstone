@@ -18,8 +18,16 @@ app.config(function ($stateProvider) {
         })
 });
 
-app.controller('PlayController', function ($scope, player, mode, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, ProjectileFactory, GameFactory) {
+app.controller('PlayController', function ($scope, player, mode, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, SpriteEventFactory, ProjectileFactory, GameFactory) {
     let data = StateFactory;
+    $scope.mode = data.mode;
+    if(mode === 'mapEditor'){
+        console.log("Mode is in mapEditorap");
+        $scope.showLevelEditor = true;
+    }else {
+        console.log("Mode not in mapEditorap");
+        $scope.showPlaySideBar = true;
+    }
     console.log("Mode in playcontroller", StateFactory.mode)
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(data.width, data.height, data.canvas);
@@ -29,6 +37,8 @@ app.controller('PlayController', function ($scope, player, mode, $state, $timeou
         data.map = map;
         StateFactory.stages.play = new PIXI.Stage();
         let bg = new PIXI.Sprite(PIXI.Texture.fromImage("/images/bg.png"));
+        bg.interactive = true;
+        bg.click = SpriteEventFactory.bgClickHandler;
         bg.width = data.width;
         bg.height = data.height;
         console.log(map.paths);
