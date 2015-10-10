@@ -6,15 +6,17 @@ app.directive('towerBottomBar', function(){
 	}
 });
 
-app.controller('TowerBottomBarController', function($scope,$rootScope,$state){
+app.controller('TowerBottomBarController', function($scope,$rootScope,$state, TowerFactory, PlayerFactory){
 	$rootScope.$on("setEditing",function(event,data){
 		if(data === false){
 			$scope.selectedTower = null;
 		}
 	})
 	$scope.sellTower = function(tower){
+		$scope.selectedTower = null;
 		console.log("The tower being sold ", tower);
 		console.log("Sell Tower");
+		TowerFactory.removeTower(tower);
+		PlayerFactory.money += (tower.price *.7);
 	}
-	
 });
