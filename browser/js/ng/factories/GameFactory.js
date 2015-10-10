@@ -1,6 +1,6 @@
 'use strict'
 
-app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, PlayerFactory, ParticleFactory, MapFactory, ProjectileFactory, StateFactory, TowerFactory) {
+app.factory('GameFactory', function($rootScope, LightningFactory, WaveFactory, EnemyFactory, PlayerFactory, ParticleFactory, MapFactory, ProjectileFactory, StateFactory, TowerFactory) {
     let data = StateFactory;
     let loop = then =>  {
         let now = Date.now();
@@ -21,7 +21,6 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
         if (data.state === "wave") {
             WaveFactory.update();
             ProjectileFactory.updateAll(delta);
-            TowerFactory.updateAll(delta);
             EnemyFactory.updateAll(delta);
 
             if((EnemyFactory.enemies.length === 0) && !WaveFactory.currentWaveLength()) {
@@ -33,6 +32,10 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
             } else if(PlayerFactory.health <= 0){
                 changeStateTo('gameOver');
             }
+
+            TowerFactory.updateAll(delta);
+
+
         }
         if (data.state === 'complete') {
 
@@ -47,7 +50,7 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
 
         }
 
-        
+
         StateFactory.renderer.render(StateFactory.stages.play); //FIXME: should be StateFactory.stages[StateFactory.state]
         requestAnimationFrame(loop.bind(null, now));
     };

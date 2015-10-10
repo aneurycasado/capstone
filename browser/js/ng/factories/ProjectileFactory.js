@@ -2,8 +2,6 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
 
   let projectiles = [];
 
-  //LightningFactory.lightning();
-
   let stage = new PIXI.Stage();
 
   class Projectile {
@@ -117,6 +115,23 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
     }
   }
 
+  class LightningProjectile{
+
+    constructor(opts){
+
+          // console.log("PROJ FACTORY BEAUTY", branchLightning);
+    }
+
+    // update(delta){
+    //   branchLightning.update();
+    // }
+  }
+
+
+
+            // var pos = new Yals.Vector2D(100, 100);
+
+            // branchLightning = new BranchLightning(screenMiddle, pos, '#4545DD');
   class IceProjectile extends HomingProjectile{
       constructor(opts){
         super(opts);
@@ -294,6 +309,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
     MeteorProjectile,
     ThunderBallProjectile,
     BlizzardProjectile,
+    LightningProjectile,
     updateAll
   };
 });
