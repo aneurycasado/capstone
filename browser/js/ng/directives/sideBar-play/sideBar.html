@@ -1,68 +1,45 @@
 <div class="panel-group">
-<!--     <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingOne">
-            <h4 class="panel-title">
-                Player Stats
-            </h4>
-        </div>
+    <div class="panel panel-default">
         <div class="panel-body">
+        <h3>TD.js</h3>
+        <hr>
             <div class = "row">
-                <div class = "col-md-4">
-                    Waves
+                <div class = "col-md-3">
+                    <img src = "/images/icons/waves.png" />
                 </div>
-                <div class = "col-md-4">
-                    Total Enemies
+                <div class = "col-md-3">
+                    {{waves.length}}
                 </div>
-                  <div class = "col-md-4">
-                    Enemies Terminated
+                <div class = "col-md-3">
+                    <img src = "/images/icons/wave.png" />
+                </div>
+                <div class = "col-md-3">
+                    {{currentWave}}
                 </div>
             </div>
             <div class = "row">
-                <div class = "col-md-4" ng-hide ="survival">
-                    {{waves.length}}
+                <div class = "col-md-3">
+                    <img src = "/images/icons/enemies.png" />
                 </div>
-                <div class = "col-md-4" ng-show ="survival">
-                    Unlimited
-                </div>
-                <div class = "col-md-4">
+                <div class = "col-md-3">
                     {{totalEnemies}}
                 </div>
-                <div class = "col-md-4">
+                <div class = "col-md-3">
+                     <img src = "/images/icons/enemiesKilled.png" />
+                </div>
+                <div class = "col-md-3">
                     {{enemiesKilled}}
                 </div>
             </div>
-            <hr>
-            <div class = "row" ng-show ="survival">
-                <div class = "col-md-4">
-                    Current Wave
+      <!--       <div class = "row">
+                <div class = "col-md-offset-3 col-md-3">
+                     <img src = "/images/icons/allEnemiesKilled.png" />
                 </div>
-                <div class = "col-md-4">
-                    Total Enemies Killed
-                </div>
-            </div>
-            <div class = "row">
-                <div class = "col-md-4">
-                    {{currentWave}}
-                </div>
-                <div class = "col-md-4">
+                <div class = "col-md-3">
                     {{totalEnemiesKilled}}
                 </div>
-            </div>
+            </div> -->
             <hr>
-            <div class ="row">
-                <div class = "col-md-4">
-                    <button class = "btn btn-primary" ng-click = "saveGame()">Save Game</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <div class="panel panel-default">
-<!--         <div class="panel-heading" role="tab" id="headingTwo">
-            <h4 class="panel-title">
-                    Game States
-            </h4>
-        </div> -->
-        <div class="panel-body">
             <div class = "row">
                 <div class = "col-md-4">
                     <img ng-src = "/images/icons/money.png"/>
@@ -80,14 +57,6 @@
                 </div>
             </div>
             <hr>
-            <div class = "row">
-                <div class = "col-md-12">
-                   <button class = "btn btn-primary col-md-6" ng-click = "saveGame()">
-                        <div class = "buttonText">Save Game</div>
-                   </button>
-               </div>
-            </div>
-            <hr>
             <tower-store ng-show = "showTowers"></tower-store>
             <hr>
             <div class ="row" ng-show = "state === 'complete'">
@@ -97,8 +66,8 @@
                     <button class = "btn btn-primary col-md-5" ng-click = "initiateWave()">
                         <div class = "buttonText">Start Wave</div>
                     </button>
-                    <button class = "btn btn-primary col-md-5 col-md-offset-2" ng-click = "showStats()">
-                        <div class = "buttonText">See Stats</div>
+                    <button class = "btn btn-primary col-md-5 col-md-offset-2" ng-click = "saveGame()">
+                        <div class = "buttonText">Save Game</div>
                     </button>
             </div>
         </div>

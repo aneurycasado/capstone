@@ -84,13 +84,6 @@ app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFacto
         $scope.state = StateFactory.state;
         $scope.totalEnemies = WaveFactory.currentWaveLength();
     }
-    $scope.showStats = () => {
-        $("#playerStatisticsModal").modal("toggle");
-    }
-    // $scope.initiateLevel = () => {
-    //     console.log("Next LEvel");
-    // }
-
 });
 
 function createTowers (){
