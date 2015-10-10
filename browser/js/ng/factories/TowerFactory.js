@@ -9,10 +9,10 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
     let burst = function() {
         let self = this;
-        let temp = self.reloadTime;
-        self.reloadTime = self.reloadTime / 3;
+        let temp = self.activeWeapon.reloadTime;
+        self.activeWeapon.reloadTime = self.activeWeapon.reloadTime / 3;
         $timeout(function() {
-            self.reloadTime = temp;
+            self.activeWeapon.reloadTime = temp;
         }, 3000);
     }
 
@@ -60,8 +60,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
             let array = [];
             for (let i = 1; i < 4; i++) {
-                let img = PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + i + ".png");
-                array.push(img);
+                array.push(PIXI.Texture.fromImage("/images/tower-defense-turrets/turret-" + options.img + '-' + i + ".png"));
             }
 
             let imgPositions = [this.position.x * StateFactory.cellSize + (StateFactory.cellSize / 2), this.position.y * StateFactory.cellSize + (StateFactory.cellSize / 2)]
@@ -176,7 +175,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
                         setTimeout(function () {
                             StateFactory.sloMo = false;
-                        },3500)
+                        }, 3500)
                     }
 
                     this.target = EnemyFactory.enemies[i];
@@ -198,6 +197,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             }
             console.log('reloadTime', this.activeWeapon.reloadTime);
             if (this.target) {
+              console.log('enemy health', this.target.health);
                 if (!this.reloading) {
                     this.shoot(this.target);
                     this.reloading = true;
@@ -220,32 +220,21 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         return newTower;
     }
 
-    // class IceTower extends Tower {
-    //     constructor(x, y) {
-    //         super(x, y, {
-    //             img: '4',
-    //             power: 2,
-    //             price: 50,
-    //             reloadTime: 400,
-    //             range: 200,
-    //             name: "Ice",
-    //             effect: 'Fill in',
-    //         });
-    //         console.log('baseRangeCircle', this.baseRangeCircle);
-    //     }
-    //
-    //     shoot(enemy) {
-    //         this.img.play();
-    //         new ProjectileFactory.IceProjectile({
-    //             power: this.power,
-    //             x: this.img.position.x,
-    //             y: this.img.position.y,
-    //             speed: 200,
-    //             radius: 8,
-    //             enemy: enemy
-    //         });
-    //     }
-    // }
+    class IceTower extends Tower {
+        constructor(x, y) {
+            super(x, y, {
+                img: '4',
+                price: 50,
+                // range: 200,
+                primaryWeaponConstructor: WeaponFactory.IceWeapon,
+                name: "Ice",
+                effect: 'Fill in',
+            });
+        }
+        shoot(enemy) {
+          this.activeWeapon.shoot(enemy);
+        }
+    }
 
     // class BlizzardTower extends Tower {
     //     constructor(x, y) {
@@ -282,7 +271,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 // reloadTime: 1000,
                 // range: 200,
                 name: "Fire",
-                // effect: 'Fill in'
+                effect: 'Fill in'
             });
         }
         swapWeaponTo(weapon) {
@@ -424,6 +413,8 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
                 price: 50,
                 range: 200,
                 primaryWeaponConstructor: WeaponFactory.PoisonWeapon,
+                name: "Poison",
+                effect: 'Fill in'
             });
         }
         swapToPrimary() {
@@ -440,7 +431,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
 
     //removed FlameTower, MeteorTower, and BlizzardTower to be refactored into weapons and abilities
     //put back in IceTower
-    let towers = {ThunderTower, FireTower, PoisonTower};
+    let towers = {IceTower, ThunderTower, FireTower, PoisonTower};
     // let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
 
     let updateAll = (delta) => {

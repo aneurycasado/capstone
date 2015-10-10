@@ -1,15 +1,15 @@
 app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyFactory) {
   class Weapon {
-    constructor(tower, power, range, price, name, effect) {
+    constructor(tower, power, range, name, effect) {
       this.tower = tower;
       this.power = power;
       this.range = range;
-      this.price = price;
       this.name = name;
       this.effect = effect;
     }
     shoot(enemy, projectile, options){
         this.tower.img.play();
+        options.power = this.power;
         options.x = this.tower.img.position.x;
         options.y = this.tower.img.position.y;
         options.enemy = enemy;
@@ -19,7 +19,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
 
   class FlameWeapon extends Weapon {
     constructor(tower) {
-      super(tower, 0.2, 150, 50, "Flame", 'Fill in')
+      super(tower, 0.2, 150, "Flame", 'Fill in')
       this.flameCircleCenters = [];
       this.numOfFlameCircles = 10;
       this.flameCircleRadius = 20;
@@ -91,7 +91,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
   }
   class FireWeapon extends Weapon {
     constructor(tower) {
-      super(tower, 3, 200, 50, "Fire", "Fill in")
+      super(tower, 3, 200, "Fire", "Fill in")
       this.reloadTime = 1000;
       console.log('range', this.range);
     }
@@ -102,7 +102,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
 
   class ThunderWeapon extends Weapon {
     constructor(tower) {
-      super(tower, 30, 800, 50, "Thunder", "Fill in")
+      super(tower, 30, 800, "Thunder", "Fill in")
       this.reloadTime = 2000;
     }
     shoot(enemy){
@@ -111,11 +111,21 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
   }
   class PoisonWeapon extends Weapon {
     constructor(tower) {
-      super(tower, 8, 200, 50, 'Poison', 'Fill in');
+      super(tower, 8, 200, 'Poison', 'Fill in');
       this.reloadTime = 1000;
     }
     shoot(enemy) {
       super.shoot(enemy, 'PoisonProjectile', {speed: 100, radius: 8})
+    }
+  }
+
+  class IceWeapon extends Weapon {
+    constructor(tower) {
+      super(tower, 2, 200, 'Ice', 'Fill In');
+      this.reloadTime = 400;
+    }
+    shoot(enemy) {
+      super.shoot(enemy, 'IceProjectile', {speed: 200, radius: 8})
     }
   }
 
@@ -133,10 +143,14 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
   //
   //   }
   // }
+
+
+
   return {
     FlameWeapon,
     ThunderWeapon,
     PoisonWeapon,
-    FireWeapon
+    FireWeapon,
+    IceWeapon
   };
 });
