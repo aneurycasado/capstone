@@ -254,6 +254,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             });
         }
 
+
         shoot(enemy){
             this.img.play();
             if(!this.projectile) this.projectile = new ProjectileFactory.BlizzardProjectile({

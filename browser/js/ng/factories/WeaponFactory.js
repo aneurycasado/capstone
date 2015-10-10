@@ -132,5 +132,10 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
   //
   //   }
   // }
-
+  return {
+    FlameWeapon,
+    ThunderWeapon,
+    PoisonWeapon,
+    FireWeapon
+  };
 });
