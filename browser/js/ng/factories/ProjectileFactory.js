@@ -11,7 +11,6 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
           this.y = 0;
           this.radius = 0;
           this.speed = 1;
-          this.power = 5;
           for(let opt in opts){
             this[opt] = opts[opt];
           }
