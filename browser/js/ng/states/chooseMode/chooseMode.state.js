@@ -1,4 +1,4 @@
-app.config(function ($stateProvider) {
+app.config(($stateProvider) => {
     $stateProvider
         .state('choose ', {
             url: '/choose',
@@ -12,7 +12,7 @@ app.config(function ($stateProvider) {
         })
 });
 
-app.controller("ChooseModeController", function($scope,$state){
+app.controller("ChooseModeController", ($scope,$state) => {
     $scope.goToStoryMode = () => {
         $state.go("play", {"mode": "story"})
     }

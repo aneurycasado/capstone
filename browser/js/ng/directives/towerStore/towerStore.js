@@ -1,4 +1,4 @@
-app.directive("towerStore", function(){
+app.directive("towerStore", () => {
     return {
         restrict: "E",
         templateUrl: 'js/ng/directives/towerStore/towerStore.html'

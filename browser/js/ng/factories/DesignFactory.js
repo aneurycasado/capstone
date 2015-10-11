@@ -1,4 +1,4 @@
-app.factory('DesignFactory', function(){
+app.factory('DesignFactory', () => {
     let mapGrid1 = [
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],

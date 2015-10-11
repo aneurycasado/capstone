@@ -1,6 +1,6 @@
 'use strict'
 //FIXME
-app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, PlayerFactory, SpriteGenFactory) {
+app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFactory, SpriteGenFactory) => {
 
     let explosionEmitters = [];
     let enemies = [];
@@ -11,13 +11,11 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         else return 5;
     }
 
-
-    function findRandomPath(opts){
-        var rando = Math.floor( Math.random() * opts.path.length);
+    const findRandomPath = (opts) => {
+        let rando = Math.floor( Math.random() * opts.path.length);
         let path = opts.path[rando];
         let pathIndex = 0;
         let position = {x: path[0].x, y: path[0].y};
-
         return {path, pathIndex, position};
     }
 

@@ -1,5 +1,5 @@
 'use strict'
-app.factory('StateFactory', function() {
+app.factory('StateFactory', () => {
     let game = {
         width: 800,
         rows: 13,

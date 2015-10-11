@@ -1,4 +1,4 @@
-app.directive("sideBarPlay", function(){
+app.directive("sideBarPlay", () => {
     return {
         restrict: "E",
         templateUrl: "js/ng/directives/sideBar-play/sideBar.html",
@@ -6,8 +6,8 @@ app.directive("sideBarPlay", function(){
     }
 });
 
-app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFactory, GameFactory, StateFactory, WaveFactory, EnemyFactory, TowerFactory) {
-    $(document).ready(function(){
+app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, GameFactory, StateFactory, WaveFactory, EnemyFactory, TowerFactory) => {
+    $(document).ready(() => {
         $('.toolTipSideBar').tooltip();
     });
     $scope.player = PlayerFactory;

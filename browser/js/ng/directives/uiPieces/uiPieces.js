@@ -1,4 +1,4 @@
-app.directive("uiPieces", function(){
+app.directive("uiPieces", () => {
     return {
         restrict: "E",
         templateUrl: "js/ng/directives/uiPieces/uiPieces.html",

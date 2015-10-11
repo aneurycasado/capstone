@@ -1,15 +1,14 @@
 'use strict';
-app.config(function ($stateProvider) {
+app.config(($stateProvider) => {
     $stateProvider
         .state('play', {
             url: '/play/:mode',
             templateUrl: '/js/ng/states/play/play.state.html',
             resolve: {
-                player: function (PlayerFactory) {
+                player: (PlayerFactory) => {
                     return PlayerFactory.getGame();
                 },
-                mode: function ($stateParams, StateFactory) {
-                    console.log("Mode in resolve ", $stateParams.mode);
+                mode: ($stateParams, StateFactory) => {
                     StateFactory.mode = $stateParams.mode;
                     return $stateParams.state;
                 }
@@ -73,14 +72,14 @@ app.controller('PlayController', function ($scope, player, mode, $state, $timeou
         init(mapNum);
     });
 
-    $rootScope.$on('towerClicked', function (event, tower) {
+    $rootScope.$on('towerClicked', (event, tower) => {
         $scope.editing = true;
         $scope.selectedTower = tower;
         $scope.selectedTower.imgUrl = "/images/tower-defense-turrets/turret-" + $scope.selectedTower.imgNum + '-' + "1" + ".png";
         console.log("Selected tower",$scope.selectedTower);
         $scope.$digest();
     });
-    $rootScope.$on('setEditing', function (event, editing) {
+    $rootScope.$on('setEditing', (event, editing) => {
         $scope.editing = editing;
         $scope.$digest();
     });

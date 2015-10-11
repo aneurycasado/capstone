@@ -1,5 +1,5 @@
 'use strict'
-app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFactory) {
+app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory) => {
     class GridNode {
         constructor(x, y, opts) {
             this.x = x;
@@ -25,7 +25,7 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
         }
     }
 
-    let findPath = function(terrain) {
+    const findPath = (terrain) => {
         let base = {}; 
         let bases = [];
         let destination = {};
@@ -33,7 +33,7 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
         let gridNodePath = [];
         let sub_path_lengths = [];
         let finalPath = [];
-        const getStartandEndPts = function () {
+        const getStartandEndPts = () => {
             for(let x = 0; x < terrain.length; x++) {
                  for(let y = 0; y < terrain[x].length; y++) {
                      if(terrain[x][y] === 4) {
@@ -46,7 +46,7 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
                  }
              }
         };
-        const checkUpIsWalkable = function (currentPosition) {
+        const checkUpIsWalkable = (currentPosition) =>  {
             if (currentPosition.row === 0) return null;
             return {
                 position: {
@@ -56,7 +56,7 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
                 num: terrain[currentPosition.row - 1][currentPosition.column]
             };
         };
-        const checkDownIsWalkable = function (currentPosition) {
+        const checkDownIsWalkable = (currentPosition) => {
             if (currentPosition.row + 1 > terrain.length - 1) return null;
             return {
                 position: {
@@ -67,7 +67,7 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
             };
         };
         
-        const checkLeftIsWalkable = function (currentPosition) {
+        const checkLeftIsWalkable = (currentPosition) => {
             if (currentPosition.column === 0) return null;
             return {
                 position: {
@@ -78,7 +78,7 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
             };
         };
         
-        const checkRightIsWalkable = function (currentPosition) {
+        const checkRightIsWalkable = (currentPosition) => {
             if (currentPosition.column + 1 > terrain[0].length - 1) return null;
             return {
                 position: {
@@ -96,7 +96,7 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
             down: checkDownIsWalkable
         };
         
-        const getInverseDirection = function (direction) {
+        const getInverseDirection = (direction) => {
             if (direction === null) return null;
             return ({
                 left: 'right',
@@ -119,9 +119,7 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
             return goodEnoughDirection || directions[0];
         
         };
-        
-        function getPathForEnemy(currentPosition, playerBaseCell, lastDirection) {
-        
+        const getPathForEnemy = (currentPosition, playerBaseCell, lastDirection) => {
             let possibleDirections = ['up', 'left', 'down', 'right']
                 .filter(d => d !== getInverseDirection(lastDirection)) // remove inverse direction
                 .map(d => Object.assign({ direction: d }, getDirectionIsWalkableDict[d](currentPosition))) // map to information
@@ -138,28 +136,28 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
             }
             return [chosenDirection.position, ...getPathForEnemy(chosenDirection.position, playerBaseCell, chosenDirection.direction)];
         };
-        const determineSubPaths = function () {
+        const determineSubPaths = () => {
             getStartandEndPts();
             bases.forEach(function(startNode){
                 path.push(getPathForEnemy({row: startNode.x, column: startNode.y}, destination, null))
             })
         }
-        const determineArrayLength = function() {
+        const determineArrayLength = () => {
             path.forEach(function(sub_path){
                 sub_path_lengths.push(sub_path.length);
             })
         }
-        const pathGenerator = function(path) {
+        const pathGenerator = (path) => {
             determineSubPaths();
             determineArrayLength();
-            path.forEach(function(sub_path){
-                sub_path.forEach(function(node){
+            path.forEach((sub_path) => {
+                sub_path.forEach((node) => {
                     gridNodePath.push({
                     x: node.column*StateFactory.cellSize + StateFactory.cellSize/2, 
                     y: node.row*StateFactory.cellSize + StateFactory.cellSize/2 })
                 })
             })
-            sub_path_lengths.forEach(function(spliceValue){
+            sub_path_lengths.forEach((spliceValue) => {
                 let reconfiguring = gridNodePath.splice(0, spliceValue);
                 finalPath.push(reconfiguring);
             })
@@ -171,7 +169,7 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
     const insertNodes = (grid, map) => {
 
         var newGrid = grid.slice();
-        newGrid.forEach(function(row){
+        newGrid.forEach((row) => {
             row = row.slice();
         });
 
@@ -211,8 +209,6 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
             this.imgSrc = "/images/maps/"+num+".png";
         }
     }
-
-
 
     const textureToImage = {
         tile1: "01", tile2: "02",

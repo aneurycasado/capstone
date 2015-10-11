@@ -1,6 +1,6 @@
-app.factory('WaveFactory', function($rootScope,EnemyFactory, StateFactory) {
+app.factory('WaveFactory', ($rootScope,EnemyFactory, StateFactory) => {
     let waves = [];
-    let createWave = critterObjArr => {
+    const createWave = critterObjArr => {
         let wave = []
         critterObjArr.forEach(element => {
             for(let i = 0; i < element.num; i++) {
@@ -10,17 +10,17 @@ app.factory('WaveFactory', function($rootScope,EnemyFactory, StateFactory) {
         waves.push(wave);
     };
     let currentWave;
-    let setCurrentWave = () => {
+    const setCurrentWave = () => {
         currentWave = waves.shift();
     }
-    let popOffNextMonster = () => currentWave.pop();
-    let currentWaveLength = () => currentWave.length;
-    let endOfWaves = () => !!waves.length;
-    let checkNodeClear = nodeNum => {
+    const popOffNextMonster = () => currentWave.pop();
+    const currentWaveLength = () => currentWave.length;
+    const endOfWaves = () => !!waves.length;
+    const checkNodeClear = nodeNum => {
         if(!EnemyFactory.enemies.length) return true;
         return EnemyFactory.enemies[EnemyFactory.enemies.length - 1].pathIndex === nodeNum;
     };
-    let loadEnemy = () => {
+    const loadEnemy = () => {
         if(checkNodeClear(3)) {
             if(!currentWaveLength()) return;
             let newEn;
@@ -28,14 +28,14 @@ app.factory('WaveFactory', function($rootScope,EnemyFactory, StateFactory) {
             EnemyFactory.stage.addChild(newEn.img);
         }
     };
-    let update = () => {
+    const update = () => {
         loadEnemy();
     };
     let wavesDefinition = [];
-    let randomInt = (min,max) => {
+    const randomInt = (min,max) => {
         return Math.floor(Math.random()*(max-min+1)+min);
     }
-    let createWaves = () => {
+    const createWaves = () => {
         let mode = StateFactory.mode;
         let newWaves = [];
         let numOfWaves;
@@ -50,7 +50,7 @@ app.factory('WaveFactory', function($rootScope,EnemyFactory, StateFactory) {
         }
         return newWaves;
     }
-    let generateWaveSurvival = (newWaves,numOfWaves) => {
+    const generateWaveSurvival = (newWaves,numOfWaves) => {
         let wave = [];
         let enemies = ['SmallBugRed', 'SmallBugGreen', 'SmallBugBlue', 'SmallBugYellow', 'BigBugRed' ,'BigBugGreen' ,'BigBugBlue' ,'BigBugYellow' ,'SuperBigBugRed', 'SuperBigBugGreen', 'SuperBigBugBlue', 'SuperBigBugYellow']
         let numOfEnemies = newWaves.length * 5;
@@ -80,7 +80,7 @@ app.factory('WaveFactory', function($rootScope,EnemyFactory, StateFactory) {
         return wave;
     }
 
-    let init = () => {
+    const init = () => {
         waves.length = 0;
         wavesDefinition = createWaves();
         wavesDefinition.forEach((wave) => {

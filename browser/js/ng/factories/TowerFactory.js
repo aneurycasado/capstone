@@ -1,7 +1,7 @@
 'use strict'
-app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactory, StateFactory,
+app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateFactory,
                                       ParticleFactory, SpriteEventFactory, CodeEvalFactory, ModFactory,
-                                      $timeout, SpriteGenFactory, WeaponFactory) {
+                                      $timeout, SpriteGenFactory, WeaponFactory) => {
 
     let allTowers = [];
 
