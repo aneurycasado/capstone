@@ -96,9 +96,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             }
             $rootScope.$emit('deadEnemy', this);
             if(enemies.indexOf(this) !== -1) {
-                let x = enemies.splice(enemies.indexOf(this),1);
+                enemies.splice(enemies.indexOf(this),1);
             }
-
             explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', stage, ["core1", "wing1", "eye1", "ball1"]));
             explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
             stage.removeChild(this.img);
@@ -161,7 +160,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
     }
 
-     class SmallBugRed  extends Enemy {
+     class SmallBugRed extends Enemy {
         constructor(opts) {
             super({
                 img: '1',
@@ -175,7 +174,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
     }
 
-    class SmallBugGreen  extends Enemy {
+    class SmallBugGreen extends Enemy {
         constructor(opts) {
             super({
                 img: '1',
@@ -204,7 +203,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
     }
 
-    class SmallBugYellow  extends Enemy {
+    class SmallBugYellow extends Enemy {
         constructor(opts) {
             super({
                 img: '1',
@@ -345,6 +344,10 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
     }
 
+    let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow,
+                               BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,
+                               SuperBigBugRed,SuperBigBugGreen,SuperBigBugBlue,SuperBigBugYellow,
+                               BossBug};
 
     let createEnemy = (type, path) => {
         let newEnemy;
@@ -373,10 +376,6 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     };
 
 
-    let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow,
-                               BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,
-                               SuperBigBugRed,SuperBigBugGreen,SuperBigBugBlue,SuperBigBugYellow,
-                               BossBug};
     //adWare, worm
     return {
         restart,

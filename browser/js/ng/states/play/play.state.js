@@ -19,13 +19,17 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('PlayController', function ($scope, player, mode, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, SpriteEventFactory, ProjectileFactory, GameFactory) {
+    console.log("Player ", player);
+    if(player.player === "notLoggedIn"){
+        console.log("Good");
+    }
     let data = StateFactory;
     $scope.mode = data.mode;
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(data.width, data.height, data.canvas);
     $("#mainContainer").append(data.renderer.view);
     $(data.renderer.view).attr('id','pixiCanvas');
-    let start = map => {
+    const start = map => {
         data.map = map;
         StateFactory.stages.play = new PIXI.Stage();
         let bg = new PIXI.Sprite(PIXI.Texture.fromImage("/images/bg.png"));
@@ -43,8 +47,14 @@ app.controller('PlayController', function ($scope, player, mode, $state, $timeou
         // StateFactory.stages.play.addChild(ParticleFactory.stage);//yaaaas
         data.state = "standby";
     };
+
+    const init = (num, state) => {
+        if (num !== undefined) $scope.mapNum = num;
+        start(MapFactory.maps[$scope.mapNum], state);
+    };
+    
     //Placed here for now
-    let restart = (mapNum) => {
+    const restart = (mapNum) => {
         ProjectileFactory.stage.removeChildren();
         TowerFactory.stage.removeChildren();
         EnemyFactory.restart();
@@ -58,42 +68,37 @@ app.controller('PlayController', function ($scope, player, mode, $state, $timeou
         init(mapNum);
     }
 
-    let init = (num, state) => {
-        if (num !== undefined) $scope.mapNum = num;
-        start(MapFactory.maps[$scope.mapNum], state);
-    };
-
-    $rootScope.$on('mapChosen', (event, data) => {
-        console.log("Map chosen ", data);
-        init(data);
+    $rootScope.$on('mapChosen', (event, mapNum) => {
+        console.log("Map chosen ", mapNum);
+        init(mapNum);
     });
 
-    $rootScope.$on('towerClicked', function (event, data) {
+    $rootScope.$on('towerClicked', function (event, tower) {
         $scope.editing = true;
-        $scope.selectedTower = data;
+        $scope.selectedTower = tower;
         $scope.selectedTower.imgUrl = "/images/tower-defense-turrets/turret-" + $scope.selectedTower.imgNum + '-' + "1" + ".png";
         console.log("Selected tower",$scope.selectedTower);
         $scope.$digest();
     });
-    $rootScope.$on('setEditing', function (event, data) {
-        $scope.editing = data;
+    $rootScope.$on('setEditing', function (event, editing) {
+        $scope.editing = editing;
         $scope.$digest();
     });
-    $rootScope.$on('choseADifferentMap', (event, data) => {
-        restart(data);
+    $rootScope.$on('choseADifferentMap', (event, mapNum) => {
+        restart(mapNum);
     });
-    $rootScope.$on("currentTower", (event, data) => {
-        $scope.tower = data;
+    $rootScope.$on("currentTower", (event, tower) => {
+        $scope.tower = tower;
     });
-    $rootScope.$on("initiateWave", (event, data) => {
+    $rootScope.$on("initiateWave", (event, passedWave) => {
         $scope.setUp = false;
         $scope.playing = true;
-        data.initiateWave();
+        passedWave.initiateWave();
     });
-    $rootScope.$on("readyForNextWave", (event, data) => {
+    $rootScope.$on("readyForNextWave", (event) => {
         StateFactory.initiateWave();
     });
-    $rootScope.$on('restartLevel', (event, data) => {
+    $rootScope.$on('restartLevel', (event) => {
         restart();
     });
     $scope.tower = null;
@@ -102,7 +107,7 @@ app.controller('PlayController', function ($scope, player, mode, $state, $timeou
             let towerPositionX = Math.floor(e.offsetX / StateFactory.cellSize);
             let towerPositionY = Math.floor(e.offsetY / StateFactory.cellSize);
             let selectedGrid = data.map.grid[towerPositionY][towerPositionX];
-            if (!selectedGrid.contains.tower && typeof data.map.grid[towerPositionY][towerPositionX].terrain == "string") {
+            if (!selectedGrid.contains.tower && typeof data.map.grid[towerPositionY][towerPositionX].terrain === "string") {
                 if (PlayerFactory.money - $scope.tower.price >= 0) {
                     TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.name + "Tower");
                     PlayerFactory.money -= $scope.tower.price;

@@ -95,6 +95,3 @@ app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFacto
     }
 });
 
-function createTowers (){
-    return array;
-}

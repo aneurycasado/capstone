@@ -26,7 +26,7 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             this.reloading = false;
             this.imgNum = options.img;
             $rootScope.$on('deadEnemy', function(event, deadEnemy){
-                if(deadEnemy == this.target) {
+                if(deadEnemy === this.target) {
                     this.target = null;
                     if(this.particleEmitter){
                         this.particleEmitter.destroy();
@@ -170,9 +170,8 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
             for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
                 if (this.isEnemyInRange(EnemyFactory.enemies[i])) {
                     this.target = EnemyFactory.enemies[i];
-                    if (this.name == "Meteor"){
+                    if (this.name === "Meteor"){
                         StateFactory.sloMo = true;
-
                         setTimeout(function () {
                             StateFactory.sloMo = false;
                         }, 3500)

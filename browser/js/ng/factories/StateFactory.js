@@ -6,7 +6,7 @@ app.factory('StateFactory', function() {
         cols: 20
     };
     game.mode = "unset";
-    game.cellSize =  game.width /  game.cols;
+    game.cellSize = game.width / game.cols;
     game.height = game.rows * game.cellSize;
     game.stages = {
         play: new PIXI.Stage(),

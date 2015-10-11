@@ -37,7 +37,7 @@ app.factory('WaveFactory', function($rootScope,EnemyFactory, StateFactory) {
     }
     let createWaves = () => {
         let mode = StateFactory.mode;
-        let waves = [];
+        let newWaves = [];
         let numOfWaves;
         if(mode === "survival"){
              numOfWaves = 1000;
@@ -46,28 +46,28 @@ app.factory('WaveFactory', function($rootScope,EnemyFactory, StateFactory) {
         }
         for(let i = 1; i <= numOfWaves; i++){
             let wave = generateWaveSurvival(waves,numOfWaves);
-            waves.push(wave);
+            newWaves.push(wave);
         }
-        return waves;
+        return newWaves;
     }
-    let generateWaveSurvival = (waves,numOfWaves) => {
+    let generateWaveSurvival = (newWaves,numOfWaves) => {
         let wave = [];
         let enemies = ['SmallBugRed', 'SmallBugGreen', 'SmallBugBlue', 'SmallBugYellow', 'BigBugRed' ,'BigBugGreen' ,'BigBugBlue' ,'BigBugYellow' ,'SuperBigBugRed', 'SuperBigBugGreen', 'SuperBigBugBlue', 'SuperBigBugYellow']
-        let numOfEnemies = waves.length * 5;
+        let numOfEnemies = newWaves.length * 5;
         if(numOfEnemies === 0) numOfEnemies = 50
-        if(waves.length <= (numOfWaves / 10)){
+        if(newWaves.length <= (numOfWaves / 10)){
             for(let i = 0; i < numOfEnemies; i++){
                 let enemyindex = randomInt(0,3);
                 let enemy = enemies[enemyindex];
                 wave.push({name: enemy, num:1});
             }
-        }else if(waves.length >= (numOfWaves / 10) && waves.length < (numOfWaves / 5)){
+        }else if(newWaves.length >= (numOfWaves / 10) && newWaves.length < (numOfWaves / 5)){
              for(let i = 0; i < numOfEnemies; i++){
                 let enemyindex = randomInt(0,7);
                 let enemy = enemies[enemyindex];
                 wave.push({name: enemy, num:1})
             }
-        }else if(waves.length === numOfWaves-1){
+        }else if(newWaves.length === numOfWaves-1){
             wave.push({name: "SmallBugRed", num:1});
             //wave.push({name: "BossBug", num:1});
         }else{

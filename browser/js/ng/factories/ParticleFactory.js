@@ -48,9 +48,9 @@ app.factory('ParticleFactory', function () {
                 config
             );
 
-            if (type == "path")
+            if (type === "path")
                 this.emitter.particleConstructor = cloudkid.PathParticle;
-            else if (type == "anim")
+            else if (type === "anim")
                 this.emitter.particleConstructor = cloudkid.AnimatedParticle;
 
             return this.emitter;
