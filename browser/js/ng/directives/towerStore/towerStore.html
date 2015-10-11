@@ -1,9 +1,9 @@
-<div class="row">
-	<a href = "#" ng-repeat = "tower in towers" ng-click = "towerClicked(tower)" data-content="Popover with data-trigger" rel="popover" data-placement="bottom" data-original-title="Title" data-trigger="hover" class = "popOverSideBar">
-	     <div class = "col-lg-6 toweSelect">
-	         <img ng-src = "{{tower.imgUrl}}"/>
-	     </div>
-    </a>
+<div class="row" ng-repeat = "tower in towers" >
+	<a href = "#" ng-click = "towerClicked(tower)" rel="popover" data-placement="left" data-trigger="hover" popover>
+		<div class = " col-md-offset-2 col-md-6" data-name = "{{tower.name}}" data-price = "{{tower.price}}" data-effect = "{{tower.effect}}">
+			<img ng-src = "{{tower.imgUrl}}" style = "width: 75px; height:75px"/>
+		</div>
+	</a>
 </div>
 
 
