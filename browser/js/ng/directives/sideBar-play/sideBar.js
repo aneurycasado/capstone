@@ -36,6 +36,7 @@ app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFacto
         currentTower.terminate();
     }
     $rootScope.$on('wavesDone', () => {
+        $scope.totalEnemiesKilled+= EnemyFactory.terminatedEnemies.length;
         $scope.state = 'complete';
         $scope.$digest();
     });
@@ -53,6 +54,12 @@ app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFacto
     $rootScope.$on('mapChosen', () => {
         $scope.state = 'standby';
     });
+    $rootScope.$on('restartLevel', () => {
+        $scope.currentWave = 0;
+        $scope.totalEnemiesKilled = 0; 
+        $scope.totalEnemies = 0;
+        $scope.enemiesKilled = 0;
+    })
     $scope.saveGame = () => {
         let player = {
             health: PlayerFactory.health,
@@ -81,11 +88,10 @@ app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFacto
     }
     $scope.initiateWave = () => {
         $scope.currentWave++;
-        $scope.totalEnemiesKilled+= EnemyFactory.terminatedEnemies.length;
         GameFactory.changeStateTo("wave");
-        EnemyFactory.resetTerminatedEnemies();
         $scope.state = StateFactory.state;
         $scope.totalEnemies = WaveFactory.currentWaveLength();
+        $scope.enemiesKilled = EnemyFactory.terminatedEnemies.length;
     }
 });
 

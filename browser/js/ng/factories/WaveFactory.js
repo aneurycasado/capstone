@@ -1,4 +1,5 @@
 app.factory('WaveFactory', function($rootScope,EnemyFactory, StateFactory) {
+    let waves = [];
     let createWave = critterObjArr => {
         let wave = []
         critterObjArr.forEach(element => {
@@ -30,7 +31,6 @@ app.factory('WaveFactory', function($rootScope,EnemyFactory, StateFactory) {
     let update = () => {
         loadEnemy();
     };
-    let waves = [];
     let wavesDefinition = [];
     let randomInt = (min,max) => {
         return Math.floor(Math.random()*(max-min+1)+min);
@@ -81,6 +81,7 @@ app.factory('WaveFactory', function($rootScope,EnemyFactory, StateFactory) {
     }
 
     let init = () => {
+        waves.length = 0;
         wavesDefinition = createWaves();
         wavesDefinition.forEach((wave) => {
             createWave(wave);

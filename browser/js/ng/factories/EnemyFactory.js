@@ -139,6 +139,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             if(!this.particleEmitters.damageSparks) this.particleEmitters.damageSparks = ParticleFactory.createEmitter('damageSparks', stage);
 
             if(this.health <= 0){
+                console.log("This is true");
                 PlayerFactory.money += this.value;
                 terminatedEnemies.push(this);
                 $rootScope.$digest();
@@ -368,12 +369,9 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             let enemy = enemies[i];
             enemy.terminate();
         };
-        terminatedEnemies = [];
+        terminatedEnemies.length = [];
     };
 
-    let resetTerminatedEnemies = () => {
-        terminatedEnemies.length = 0;
-    }
 
     let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow,
                                BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,
@@ -381,7 +379,6 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                                BossBug};
     //adWare, worm
     return {
-        resetTerminatedEnemies,
         restart,
         stage,
         createEnemy,
