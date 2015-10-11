@@ -477,5 +477,4 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
         stage,
         resetTowers,
     };
-
 });
