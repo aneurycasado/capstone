@@ -11,7 +11,7 @@ router.get("/me", function(req,res){
             res.json(foundUser);
         }) 
     }else{
-        res.json({});
+        res.json({player:"notLoggedIn"});
     }
 });
 

@@ -1,4 +1,4 @@
-app.directive('towerBottomBar', function(){
+app.directive('towerBottomBar', () => {
 	return {
 		restrict: "E",
 		templateUrl: "js/ng/directives/towerBottomBar/towerBottomBar.html",
@@ -6,13 +6,13 @@ app.directive('towerBottomBar', function(){
 	}
 });
 
-app.controller('TowerBottomBarController', function($scope,$rootScope,$state, TowerFactory, PlayerFactory){
-	$rootScope.$on("setEditing",function(event,data){
+app.controller('TowerBottomBarController', ($scope,$rootScope,$state, TowerFactory, PlayerFactory) => {
+	$rootScope.$on("setEditing",(event,data) => {
 		if(data === false){
 			$scope.selectedTower = null;
 		}
 	})
-	$scope.sellTower = function(tower){
+	$scope.sellTower = (tower) => {
 		$scope.selectedTower = null;
 		console.log("The tower being sold ", tower);
 		console.log("Sell Tower");

@@ -7,30 +7,30 @@ app.factory('SpriteEventFactory', function($rootScope) {
             $rootScope.$broadcast('setEditing', false);
         }
     };
-
-    let towerClickHandler = function(mouseData) {
+//Removed mouseData from all of these functions for ESLint warings to go away. 
+    let towerClickHandler = function() {
         selectedTowerRemover();
         $rootScope.$broadcast('towerClicked', this);
         this.imgContainer.addChildAt(this.baseRangeCircle, 0);
         selectedTower = this;
     };
 
-    let towerMouseOverHandler = function(mouseData) {
+    let towerMouseOverHandler = function() {
         this.imgContainer.addChildAt(this.baseRangeCircle, 0);
     };
 
-    let towerMouseLeaveHandler = function(mouseData) {
+    let towerMouseLeaveHandler = function() {
         this.imgContainer.removeChild(this.baseRangeCircle);
     };
 
-    let gridClickHandler = function(mouseData) {
+    let gridClickHandler = function() {
         if(selectedGrid) {
             selectedGrid = this;
         }
         selectedTowerRemover();
     };
 
-    let bgClickHandler = function(mouseData) {
+    let bgClickHandler = function() {
         if(selectedGrid) {
             selectedGrid = null;
         }

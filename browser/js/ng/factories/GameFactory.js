@@ -1,8 +1,8 @@
 'use strict'
 
-app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, PlayerFactory, ParticleFactory, MapFactory, ProjectileFactory, StateFactory, TowerFactory) {
+app.factory('GameFactory', ($rootScope, WaveFactory, EnemyFactory, PlayerFactory, ParticleFactory, MapFactory, ProjectileFactory, StateFactory, TowerFactory) => {
     let data = StateFactory;
-    let loop = then =>  {
+    let loop = then => {
         let now = Date.now();
         let delta = (now - then) / 1000;
 
@@ -10,7 +10,7 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
             delta = delta/StateFactory.sloMoMod;
         }
 
-        if (data.state == "selection") {
+        if (data.state === "selection") {
             //more logic
         }
         if (data.state === "standby") {
@@ -34,20 +34,15 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
                 changeStateTo('gameOver');
             }
         }
-        if (data.state === 'complete') {
+        // if (data.state === 'complete') {
 
-        }
-        if (data.state === 'editing') {
+        // }
+        // if (data.state === 'editing') {
 
-        }
-        if (data.launchCritters) {
-            loadEnemy();
-        }
-        if(data.state === 'gameOver'){
+        // }
+        // if(data.state === 'gameOver'){
 
-        }
-
-        
+        // }        
         StateFactory.renderer.render(StateFactory.stages.play); //FIXME: should be StateFactory.stages[StateFactory.state]
         requestAnimationFrame(loop.bind(null, now));
     };
@@ -61,9 +56,9 @@ app.factory('GameFactory', function($rootScope, WaveFactory, EnemyFactory, Playe
         if(state === 'standby') {
             $rootScope.$emit('nextWave');
         }
-        if(state === 'editing') {
+        // if(state === 'editing') {
 
-        }
+        // }
         if(state === 'gameOver'){
             $rootScope.$emit('gameOver');
         }

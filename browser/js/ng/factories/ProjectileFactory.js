@@ -1,9 +1,33 @@
 app.factory("ProjectileFactory", function(LightningFactory, StateFactory, ParticleFactory, EnemyFactory){
   let projectiles = [];
-
   //LightningFactory.lightning();
 
   let stage = new PIXI.Stage();
+
+
+
+
+  const checkCircleCollision = (circle1, circle2) => {
+      circle2.x = circle2.position.x;
+      circle2.y = circle2.position.y;
+      let dx = circle1.x - circle2.x;
+      let dy = circle1.y - circle2.y;
+      let distance = Math.sqrt(dx * dx + dy * dy);
+
+      return (distance < circle1.radius + circle2.radius);
+  };
+
+  const outOfBounds = (mod) => {
+    return this.x - mod > StateFactory.width || this.x < -mod || this.y - mod > StateFactory.height || this.y < -mod;
+  }
+  
+  const outOfTime = (time) => {
+    return Date.now() > this.startTime + time;
+  }
+
+  const invincibleConditions = () => {
+       return outOfBounds.call(this, 200) && outOfTime.call(this, 3500);
+  };
 
   class Projectile {
     constructor(opts){
@@ -95,18 +119,6 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
 
   }
 
-  function outOfBounds(mod){
-    return this.x - mod > StateFactory.width || this.x < -mod || this.y - mod > StateFactory.height || this.y < -mod;
-  }
-
-  function outOfTime(time){
-    return Date.now() > this.startTime + time;
-  }
-
-  function invincibleConditions(){
-       return outOfBounds.call(this, 200) && outOfTime.call(this, 3500);
-  }
-
   class ThunderBallProjectile extends StraightProjectile{
     constructor(opts){
       super(opts);
@@ -131,11 +143,11 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
             this.target.img.tint = 12168959;
         }
         window.setTimeout(function(){
-            if(Date.now() - this.target.lastSlowed >=  this.slowDuration) {
+            if(Date.now() - this.target.lastSlowed >= this.slowDuration) {
               this.target.slowFactor = 1;
               this.target.img.tint = 16777215;
             }
-        }.bind(this), this.slowDuration);
+        }.bind(this),this.slowDuration);
 
       }
   }
@@ -160,11 +172,11 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
             this.target.img.tint = 12168959;
         }
         window.setTimeout(function(){
-            if(Date.now() - this.target.lastSlowed >=  this.slowDuration) {
+            if(Date.now() - this.target.lastSlowed >= this.slowDuration) {
               this.target.slowFactor = 1;
               this.target.img.tint = 16777215;
             }
-        }.bind(this), this.slowDuration);
+        }.bind(this),this.slowDuration);
 
       }
   }
@@ -264,15 +276,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
 
 
 
-  let checkCircleCollision = (circle1, circle2) => {
-      circle2.x = circle2.position.x;
-      circle2.y = circle2.position.y;
-      let dx = circle1.x - circle2.x;
-      let dy = circle1.y - circle2.y;
-      let distance = Math.sqrt(dx * dx + dy * dy);
 
-      return (distance < circle1.radius + circle2.radius);
-  };
 
 
   let updateAll = (delta) => {

@@ -1,8 +1,8 @@
-app.directive("levelModal", function($rootScope){
+app.directive("levelModal", ($rootScope) => {
     return {
         restrict: "E",
         templateUrl: "js/ng/directives/levelModal/levelModal.html",
-        link: function(scope){
+        link: (scope) => {
             $rootScope.$on('wavesDone', () => {
                 $("#levelModal").modal("show");
                 scope.$digest();

@@ -1,9 +1,9 @@
 //Gameover modal
-app.directive("gameOverModal", function($rootScope){
+app.directive("gameOverModal", ($rootScope) => {
     return {
         restrict: "E",
         templateUrl: "js/ng/directives/gameOverModal/gameOverModal.html",
-        link: function(scope){
+        link: (scope) => {
             $rootScope.$on('gameOver', () => {
                 $("#gameOverModal").modal("toggle");
                 scope.$digest();

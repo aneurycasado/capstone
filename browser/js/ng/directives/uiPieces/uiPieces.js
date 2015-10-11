@@ -1,11 +1,11 @@
-app.directive("uiPieces", function(){
+app.directive("uiPieces", () => {
     return {
         restrict: "E",
         templateUrl: "js/ng/directives/uiPieces/uiPieces.html",
-        controller: 'uiPiecesController'
+        // controller: 'uiPiecesController'
     }
 });
 
-app.controller('uiPiecesController', function($scope){
-	console.log("called");
-});
+// app.controller('uiPiecesController', function(){
+// 	console.log("called");
+// });
