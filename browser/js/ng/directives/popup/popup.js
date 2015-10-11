@@ -9,12 +9,10 @@ app.directive('popover', function() {
    			console.log(name,price,effect);
    			$(elem).popover({
    				html: true,
+   				template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>',
    				content: function(){
-   					return "<div class='row'>Price:" + price + "</div><div class = 'row'>" + effect + "</div>"; 
+   					return "<div class='row'>" + name + " Tower</div><div class='row'>$" + price + "</div><div class = 'row'>" + effect + "</div>"
    				},
-   				title: function(){
-   					return name;
-   				}
    			});
    		}
    	}   	
