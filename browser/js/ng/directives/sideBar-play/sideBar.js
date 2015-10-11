@@ -7,6 +7,9 @@ app.directive("sideBarPlay", function(){
 });
 
 app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFactory, GameFactory, StateFactory, WaveFactory, EnemyFactory, TowerFactory) {
+    $(document).ready(function(){
+        $('.toolTipSideBar').tooltip();
+    });
     $scope.player = PlayerFactory;
     if(StateFactory.mode === "survival"){
         $scope.survival = true;
@@ -84,13 +87,6 @@ app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFacto
         $scope.state = StateFactory.state;
         $scope.totalEnemies = WaveFactory.currentWaveLength();
     }
-    $scope.showStats = () => {
-        $("#playerStatisticsModal").modal("toggle");
-    }
-    // $scope.initiateLevel = () => {
-    //     console.log("Next LEvel");
-    // }
-
 });
 
 function createTowers (){
