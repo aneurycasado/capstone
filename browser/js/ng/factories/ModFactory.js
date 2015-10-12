@@ -9,7 +9,7 @@ app.factory('ModFactory', function() {
             return time - this.startTime;
         }
         checkCoolDownPassed(time=Date.now()) {
-            return this.coolDownPeriod  < this.elapsedTime(time);
+            return this.coolDownPeriod < this.elapsedTime(time);
         }
         checkCoolDownAndReset(time=Date.now()) {
             if(this.checkCoolDownPassed(time)) this.setNewTime(time);

@@ -1,31 +1,4 @@
 <div class = "container">
-	<div class = "row">
-		<h1>Chose a Mode</h1>
-	</div>
-	<div class = "row">
-		<div class ="col-md-4">
-			<div class = "row" ng-click = "goToStoryMode()">
-				<h3>Story</h3>
-				<img  ng-src = "images/icons/story.png" />
-			</div>
-		</div>
-		<div class ="col-md-4">
-			<div class = "row" ng-click = "goToSurvivalMode()">
-				<h3>Survival</h3>
-				<img  ng-src = "images/icons/survival.png" />
-			</div>
-		</div>
-		<div class ="col-md-4">
-			<div class = "row" ng-click = "goToDefault()">
-				<h3>Level Selection</h3>
-				<img  ng-src = "images/icons/selection.png" />
-			</div>
-		</div>
-		<div class ="col-md-4">
-			<div class = "row" ng-click = "goToMapEditor()">
-				<h3>Map Creator</h3>
-				<img  ng-src = "images/icons/creator.png"/>
-			</div>
-		</div>
-	</div>
+	<load-game ng-hide = "pickGameType"></load-game>
+	<game-types ng-show = "pickGameType"></game-types>
 </div>

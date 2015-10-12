@@ -1,4 +1,4 @@
-app.factory('SpriteGenFactory', function() {
+app.factory('SpriteGenFactory', () =>  {
     let attachSprite = (obj, spriteObj, positionX, positionY) => {
         obj.img = spriteObj;
         obj.img.interactive = true;

@@ -1,4 +1,4 @@
-app.factory('CodeEvalFactory', function() {
+app.factory('CodeEvalFactory', () => {
     let assignObjForContext = function(obj) {
         let keys = Object.keys(obj);
         console.log('keys' , keys);

@@ -1,20 +1,16 @@
-app.directive('popover', function() {
+app.directive('popover', () => {
    return {
    		restrict: "A",
-   		link: function(scope,elem){
-   			console.log("scope", scope);
+   		link: (scope,elem) => {
    			let name = scope.tower.name;
    			let price = scope.tower.price;
    			let effect = scope.tower.effect;
-   			console.log(name,price,effect);
    			$(elem).popover({
    				html: true,
-   				content: function(){
-   					return "<div class='row'>Price:" + price + "</div><div class = 'row'>" + effect + "</div>"; 
+   				template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>',
+   				content: () => {
+   					return "<div class = 'container'><div class='row'>" + name + " Tower</div><div class='row'>$" + price + "</div><div class = 'row'>" + effect + "</div></div>"
    				},
-   				title: function(){
-   					return name;
-   				}
    			});
    		}
    	}   	

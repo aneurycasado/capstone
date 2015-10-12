@@ -1,7 +1,7 @@
 //Ace editor directive
 'use strict'
 
-app.directive('editor', function($rootScope) {
+app.directive('editor', ($rootScope) => {
     return {
         restrict: 'E',
         templateUrl: '/js/ng/directives/editor/editor.html',
@@ -9,8 +9,8 @@ app.directive('editor', function($rootScope) {
             tower: '=',
             //toggleEditing: '&'
         },
-        link: function(scope, element, attrs) {
-            var editor = ace.edit("editor");
+        link: (scope, element, attrs) => {
+            let editor = ace.edit("editor");
             editor.setTheme("ace/theme/monokai");
             editor.getSession().setMode("ace/mode/javascript");
             editor.focus();
@@ -20,7 +20,7 @@ app.directive('editor', function($rootScope) {
                     editor.session.setValue(scope.tower.codeSnippet);
                 }
             }
-            scope.saveCodeSnippet = function() {
+            scope.saveCodeSnippet = () => {
                 scope.tower.codeSnippet = editor.getValue();
                 scope.tower.evalCodeSnippet();
                 $rootScope.$broadcast('setEditing', false);
