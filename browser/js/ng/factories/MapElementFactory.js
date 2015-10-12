@@ -41,11 +41,17 @@ app.factory("MapElementFactory", (StateFactory, $http) => {
         return $http.post("/api/maps/",map).then(response => response.data);
     }
 
+    const getMaps = () => {
+    	console.log("Get maps called");
+    	return $http.get("/api/maps/").then(response => response.data);
+    }
+
 	return {
 		stage,
 		createMapElement,
 		mapElements,
 		createMap,
+		getMaps
 	}
 
 })

@@ -260,10 +260,20 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory, $htt
         })
     }
 
- 
+    const createMap = (mapGrid) => {
+        let grid = [];
+        for(let key in mapGrid){
+            console.log("key",key);
+            grid.push(mapGrid[key]);
+        }
+        maps.push(new Map(grid,4));
+    }
+
+
     return {
         reset,
         Map,
         maps,
+        createMap
     };
 })

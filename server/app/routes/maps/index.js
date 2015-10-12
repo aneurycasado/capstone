@@ -16,3 +16,10 @@ router.post('/', function(req,res){
 		console.log(error);
 	});
 });
+
+router.get("/", function(req,res){
+	Map.find().then((maps) => {
+		console.log("Maps in route", maps);
+		res.json(maps);
+	})
+});
