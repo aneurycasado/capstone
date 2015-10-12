@@ -8,7 +8,8 @@ app.config(($stateProvider) => {
 });
 
 app.controller("MapCreatorModeController", ($scope,$state, StateFactory, SpriteEventFactory, MapElementFactory, MapFactory, DesignFactory) => {
-    let blankMap = new MapFactory.Map(DesignFactory.blankMap,0)
+    let blankMap = new MapFactory.Map(DesignFactory.blankMap2,0)
+    console.log("blank map", blankMap);
     StateFactory.map = blankMap;
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(StateFactory.width, StateFactory.height, StateFactory.canvas);
@@ -29,6 +30,7 @@ app.controller("MapCreatorModeController", ($scope,$state, StateFactory, SpriteE
             let elementPositionX = Math.floor(e.offsetX / StateFactory.cellSize);
             let elementPositionY = Math.floor(e.offsetY / StateFactory.cellSize);
             let selectedGridNode = StateFactory.map.grid[elementPositionY][elementPositionX];
+            console.log("Map", StateFactory.map.grid);
             if (!selectedGridNode.contains.element) {
                 console.log("grid node does not contain an element")
                 MapElementFactory.createMapElement(elementPositionX, elementPositionY, $scope.currentElement);

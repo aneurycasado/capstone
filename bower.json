@@ -14,6 +14,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular-ui-ace": "bower"
+    "angular-ui-ace": "bower",
+    "pathfinding": "~0.4.17"
   }
 }
