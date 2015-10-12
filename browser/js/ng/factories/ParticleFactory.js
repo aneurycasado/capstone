@@ -1,5 +1,5 @@
 'use strict'
-app.factory('ParticleFactory', function () {
+app.factory('ParticleFactory', () => {
 
     class ParticleEmitter {
         constructor(stageIn, imagePaths, config, type, useParticleContainer) {
@@ -48,9 +48,9 @@ app.factory('ParticleFactory', function () {
                 config
             );
 
-            if (type == "path")
+            if (type === "path")
                 this.emitter.particleConstructor = cloudkid.PathParticle;
-            else if (type == "anim")
+            else if (type === "anim")
                 this.emitter.particleConstructor = cloudkid.AnimatedParticle;
 
             return this.emitter;
@@ -787,7 +787,7 @@ app.factory('ParticleFactory', function () {
         },
     };
 
-    var particleImageTable = {
+    let particleImageTable = {
         fire: [1, 2],
         ice: [3],
         poison: [4],

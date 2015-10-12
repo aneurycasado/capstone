@@ -1,4 +1,4 @@
-app.factory('SpriteGenFactory', function() {
+app.factory('SpriteGenFactory', () =>  {
     let attachSprite = (obj, spriteObj, positionX, positionY) => {
         obj.img = spriteObj;
         obj.img.interactive = true;
@@ -15,8 +15,16 @@ app.factory('SpriteGenFactory', function() {
             container.addChild(sprite);
         })
     }
+
+    let drawWeaponRangeCircle = (tower, range) => {
+      tower.baseRangeCircle = new PIXI.Graphics();
+      tower.baseRangeCircle.beginFill(0xFFFF99, .4);
+      tower.baseRangeCircle.lineStyle(2, 0xFFFF99);
+      tower.baseRangeCircle.drawCircle(tower.img.position.x, tower.img.position.y, range);
+    }
     return {
         attachSprite,
-        attachToContainer
+        attachToContainer,
+        drawWeaponRangeCircle
     }
 })

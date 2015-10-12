@@ -25,13 +25,21 @@ var schema = new mongoose.Schema({
         id: String
     },
     game: {
-        player: {
-            health: Number,
-            money: Number
-        }
+        health: Number,
+        money: Number,
+        mapNum: Number,
+        currentWave: Number,
+        totalEnemiesKilled: Number,
+        towers: [
+            {
+                name: String,
+                x: Number,
+                y: Number
+            }
+        ],
+        mode: String
     }
 });
-
 // generateSalt, encryptPassword and the pre 'save' and 'correctPassword' operations
 // are all used for local authentication security.
 var generateSalt = function () {

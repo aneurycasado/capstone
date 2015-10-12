@@ -1,12 +1,12 @@
 'use strict'
-app.factory('StateFactory', function() {
+app.factory('StateFactory', () => {
     let game = {
         width: 800,
         rows: 13,
         cols: 20
     };
     game.mode = "unset";
-    game.cellSize =  game.width /  game.cols;
+    game.cellSize = game.width / game.cols;
     game.height = game.rows * game.cellSize;
     game.stages = {
         play: new PIXI.Stage(),

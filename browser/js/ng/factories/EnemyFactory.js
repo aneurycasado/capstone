@@ -1,6 +1,6 @@
 'use strict'
 //FIXME
-app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, PlayerFactory, SpriteGenFactory) {
+app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFactory, SpriteGenFactory) => {
 
     let explosionEmitters = [];
     let enemies = [];
@@ -11,13 +11,11 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         else return 5;
     }
 
-
-    function findRandomPath(opts){
-        var rando = Math.floor( Math.random() * opts.path.length);
+    const findRandomPath = (opts) => {
+        let rando = Math.floor( Math.random() * opts.path.length);
         let path = opts.path[rando];
         let pathIndex = 0;
         let position = {x: path[0].x, y: path[0].y};
-
         return {path, pathIndex, position};
     }
 
@@ -97,9 +95,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             }
             $rootScope.$emit('deadEnemy', this);
             if(enemies.indexOf(this) !== -1) {
-                let x = enemies.splice(enemies.indexOf(this),1);
+                enemies.splice(enemies.indexOf(this),1);
             }
-
             explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', stage, ["core1", "wing1", "eye1", "ball1"]));
             explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
             $rootScope.$emit("updateNumberOfEnemies");
@@ -158,6 +155,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             if(!this.particleEmitters.damageSparks) this.particleEmitters.damageSparks = ParticleFactory.createEmitter('damageSparks', stage);
 
             if(this.health <= 0){
+                console.log("This is true");
                 PlayerFactory.money += this.value;
                 terminatedEnemies.push(this);
                 $rootScope.$digest();
@@ -179,7 +177,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
     }
 
-     class SmallBugRed  extends Enemy {
+     class SmallBugRed extends Enemy {
         constructor(opts) {
             super({
                 img: '1',
@@ -193,7 +191,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
     }
 
-    class SmallBugGreen  extends Enemy {
+    class SmallBugGreen extends Enemy {
         constructor(opts) {
             super({
                 img: '1',
@@ -222,7 +220,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
     }
 
-    class SmallBugYellow  extends Enemy {
+    class SmallBugYellow extends Enemy {
         constructor(opts) {
             super({
                 img: '1',
@@ -363,6 +361,10 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
     }
 
+    let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow,
+                               BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,
+                               SuperBigBugRed,SuperBigBugGreen,SuperBigBugBlue,SuperBigBugYellow,
+                               BossBug};
 
     let createEnemy = (type, path) => {
         let newEnemy;
@@ -387,20 +389,12 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             let enemy = enemies[i];
             enemy.terminate();
         };
-        terminatedEnemies = [];
+        terminatedEnemies.length = 0;
     };
 
-    let resetTerminatedEnemies = () => {
-        terminatedEnemies.length = 0;
-    }
 
-    let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow,
-                               BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,
-                               SuperBigBugRed,SuperBigBugGreen,SuperBigBugBlue,SuperBigBugYellow,
-                               BossBug};
     //adWare, worm
     return {
-        resetTerminatedEnemies,
         restart,
         stage,
         createEnemy,

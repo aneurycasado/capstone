@@ -1,7 +1,11 @@
-#sideBar {
+.sideBar {
   width: 200px;
   float: right;
   padding-left: 30px;
+}
+
+.buttonText {
+	font-size: .7em;
 }
 
 .panel-body {

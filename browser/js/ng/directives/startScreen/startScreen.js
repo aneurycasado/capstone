@@ -1,4 +1,4 @@
-app.directive('startScreen', function(){
+app.directive('startScreen', () =>{
 	return {
 		restrict: "E",
 		templateUrl: "js/ng/directives/startScreen/startScreen.html",
@@ -6,6 +6,6 @@ app.directive('startScreen', function(){
 	}
 });
 
-app.controller('StartScreenController', function($scope,$state){
+app.controller('StartScreenController', ($scope,$state) => {
 	$scope.goToChoose = () => $state.go("choose");
 });
