@@ -120,20 +120,27 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
 
         unlockMod(modName, category) {
             var currentArr;
-            if(category) {
+            if (category) {
                 currentArr = this.mods[category];
             } else {
                 currentArr = [];
                 let keys = Object.keys(this.mods);
-                for(let i; i < keys; i++) {
+                for (let i; i < keys; i++) {
                     currentArr = currentArr.concat(this.mods[keys[i]]);
                 }
             }
-            for(let i = 0; i < currentArr.length; i++) {
-                if(currentArr[i].name === modName) currentArr[i].purchased = true;
+            for (let i = 0; i < currentArr.length; i++) {
+                if (currentArr[i].name === modName) currentArr[i].purchased = true;
             }
         }
-        
+        swapToSecondary() {
+            this.activeWeapon = this.secondaryWeapon;
+        }
+
+        swapToPrimary() {
+            this.activeWeapon = this.primaryWeapon;
+        }
+
         towerInRange(tower) {
             let distance = Math.sqrt(
                 Math.pow(tower.img.position.x - this.position.img.x, 2) +
