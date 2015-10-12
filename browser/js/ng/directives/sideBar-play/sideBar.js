@@ -10,6 +10,12 @@ app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, Game
     $(document).ready(() => {
         $('.toolTipSideBar').tooltip();
     });
+    const towersToBuy = [
+                        {name: "Ice", price: 50, effect: "Fill in", imgUrl: "./images/tower-defense-turrets/turret-4-1.png"}, 
+                        {name: "Thunder", price: 50, effect: "Fill in", imgUrl: "./images/tower-defense-turrets/turret-5-1.png"}, 
+                        {name: "Poison", price: 50, effect: "Fill in", imgUrl: "./images/tower-defense-turrets/turret-6-1.png"},
+                        {name: "Fire", price: 50, effect: "Fill in", imgUrl: "./images/tower-defense-turrets/turret-7-1.png"}
+    ]
     $scope.playerStats = PlayerFactory;
     if(StateFactory.mode === "survival"){
         $scope.survival = true;
@@ -25,14 +31,7 @@ app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, Game
     $scope.count = 0;
     $scope.state = StateFactory.state;
     $scope.constructors = TowerFactory.towers;
-    $scope.towers = [];
-    for(let key in TowerFactory.towers){
-        let currentTower = new TowerFactory.towers[key](0,0);
-        let img = currentTower.imgNum;
-        currentTower.imgUrl = "./images/tower-defense-turrets/turret-" + img + "-1.png";
-        $scope.towers.push(currentTower);
-        currentTower.terminate();
-    }
+    $scope.towers = towersToBuy;
     $rootScope.$on('wavesDone', () => {
         $scope.totalEnemiesKilled+= EnemyFactory.terminatedEnemies.length;
         $scope.state = 'complete';
@@ -64,7 +63,6 @@ app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, Game
         $scope.totalEnemiesKilled = $scope.player.game.totalEnemiesKilled;
         $scope.waves = WaveFactory.waves;
         $scope.state = StateFactory.state;
-        console.log($scope.waves.length);
     });
     $scope.saveGame = () => {
         let player = {
@@ -90,4 +88,7 @@ app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, Game
         $scope.enemiesKilled = EnemyFactory.terminatedEnemies.length;
     }
 });
+
+
+
 

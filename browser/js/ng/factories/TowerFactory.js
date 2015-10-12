@@ -163,8 +163,12 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
         }
 
         terminate() {
+            console.log("Terminate is called");
+            console.log("The tower being terminated",this);
             stage.removeChild(this.imgContainer);
+            console.log("All towers before splice", allTowers);
             allTowers.splice(allTowers.indexOf(this), 1);
+            console.log("All towers after splice", allTowers);
             let removalIndex;
             savedTowers.forEach((tower, index) => {
                 if(tower.x === this.position.x && tower.y === this.position.y){
@@ -437,30 +441,22 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
         allTowers.push(newTower);
         savedTowers.push({name: name, x: x, y: y});
         currentGridNode.contains.tower = newTower;
+        console.log("allTower length", allTowers.length)
         return newTower;
     }
 
     function removeTower(tower){
+        console.log("Tower being removed in removeTower",tower);
+        console.log("Length",allTowers.length);
+        for(let i = 0; i < allTowers.length; i++){
+            let currentTower = allTowers[i];
+             if(currentTower.position.x === tower.position.x && currentTower.position.y === tower.position.y){
+                currentTower.terminate();
+                break;
+            }
+        }
         let currentGridNode = StateFactory.map.grid[tower.position.y][tower.position.x];
-        let removalIndexAllTowers = null;
-        let removalIndexSavedTowers;
-        console.log("Tower being removed in removeTower",tower)
-        allTowers.forEach(function(currentTower,index){
-            if(currentTower.position.x === tower.position.x && currentTower.position.y === tower.position.y){
-                console.log("We found the a tower in allTower", currentTower);
-                removalIndexAllTowers = index;
-            }
-        });
-        savedTowers.forEach(function(currentTower,index){
-            if(currentTower.x === tower.position.x && currentTower.y === tower.position.y){
-                removalIndexSavedTowers = index;
-            }
-        });
-        let towerToRemove = allTowers[removalIndexAllTowers];
         currentGridNode.contains.tower = null;
-        stage.removeChild(towerToRemove.imgContainer);
-        allTowers.splice(removalIndexAllTowers,1);
-        savedTowers.splice(removalIndexSavedTowers,1);
     }
 
     let updateAll = (delta) => {

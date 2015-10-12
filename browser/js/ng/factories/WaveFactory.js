@@ -92,6 +92,7 @@ app.factory('WaveFactory', ($rootScope,EnemyFactory, StateFactory) => {
         console.log("Before in WaveFactory", waves.length);
         waves.splice(0,currentWaveNum); 
         console.log("After in WaveFactory", waves.length);
+        setCurrentWave();
     }
 
     wavesDefinition = createWaves(StateFactory.mode);

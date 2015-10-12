@@ -31,7 +31,7 @@ app.controller("PlayController", function ($scope, player, mode, $state, $timeou
     StateFactory.renderer = PIXI.autoDetectRenderer(StateFactory.width, StateFactory.height, StateFactory.canvas);
     $("#mainContainer").append(StateFactory.renderer.view);
     $(StateFactory.renderer.view).attr("id","pixiCanvas");
-    const start = map => {
+    const start = (map, gameType) => {
         StateFactory.map = map;
         StateFactory.stages.play = new PIXI.Stage();
         let bg = new PIXI.Sprite(PIXI.Texture.fromImage("/images/bg.png"));
@@ -45,7 +45,7 @@ app.controller("PlayController", function ($scope, player, mode, $state, $timeou
         // StateFactory.stages.play.addChild(EnemyFactory.stage);//yaaaaa
         StateFactory.stages.play.addChild(EnemyFactory.stage);//yaaaaa
         StateFactory.stages.play.addChild(ProjectileFactory.stage);//yaaaas
-        if($scope.player !== "Guest"){
+        if(gameType === "loadGame"){
             $scope.player.game.towers.forEach(function(tower){
                 TowerFactory.createTower(tower.x,tower.y,tower.name);
             });
@@ -55,7 +55,7 @@ app.controller("PlayController", function ($scope, player, mode, $state, $timeou
     };
     const init = (num, state) => {
         if (num !== undefined) $scope.mapNum = num;
-        start(MapFactory.maps[$scope.mapNum], state);
+        start(MapFactory.maps[$scope.mapNum], "newGame");
     };
     const loadGame = () => {
         console.log("The player in loadGame ", $scope.player);
@@ -66,7 +66,7 @@ app.controller("PlayController", function ($scope, player, mode, $state, $timeou
         WaveFactory.loadWaves($scope.player.game.currentWave);
         console.log("Map num",$scope.player.game.mapNum);
         console.log("Map in start ")
-        start(MapFactory.maps[$scope.player.game.mapNum]);
+        start(MapFactory.maps[$scope.player.game.mapNum] ,"loadGame");
     }
     
     const restart = (mapNum) => {
@@ -92,7 +92,6 @@ app.controller("PlayController", function ($scope, player, mode, $state, $timeou
         $scope.editing = true;
         $scope.selectedTower = tower;
         $scope.selectedTower.imgUrl = "/images/tower-defense-turrets/turret-" + $scope.selectedTower.imgNum + '-' + "1" + ".png";
-        console.log("Selected tower",$scope.selectedTower);
         $scope.$digest();
     });
     $rootScope.$on('setEditing', (event, editing) => {
