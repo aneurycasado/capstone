@@ -38,7 +38,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             }.bind(this));
             this.mods = {
                 surroundings: [
-                    new ModFactory.Surrounding('getEnemies', this.getEnemies, this, false),
+                    new ModFactory.Surrounding('getEnemies', this.getEnemies, this, true),
                     new ModFactory.Surrounding('getNearbyTowers', this.getNearbyTowersEncapsulated, this, false)
                 ],
                 abilities: [
