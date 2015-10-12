@@ -15,7 +15,7 @@ app.directive('editor', ($rootScope) => {
             editor.getSession().setMode("ace/mode/javascript");
             editor.focus();
             if(scope.tower) {
-                if(scope.tower.codeSnippet === null) editor.session.setValue('function(context) {}');
+                if(scope.tower.codeSnippet === null) editor.session.setValue('function() {}');
                 else {
                     editor.session.setValue(scope.tower.codeSnippet);
 
