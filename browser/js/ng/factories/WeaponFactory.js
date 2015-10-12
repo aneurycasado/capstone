@@ -1,4 +1,4 @@
-app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyFactory) {
+app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyFactory, StateFactory) {
   class Weapon {
     constructor(tower, power, range, name, effect) {
       this.tower = tower;
@@ -143,7 +143,63 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
   //
   //   }
   // }
+  class MeteorWeapon extends Weapon {
+    constructor(tower) {
+      super(tower, 10, null, 'Meteor', 'Fill in');
+      this.sloMoTime = 3500;
+    }
+    shoot(enemy){
+        this.tower.img.play();
+        setTimeout(function() {
+          new ProjectileFactory.MeteorProjectile({power: this.power, x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy});
+        }.bind(this), 300)
+        setTimeout(function() {
+          new ProjectileFactory.MeteorProjectile({power: this.power, x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy});
+        }.bind(this), 900)
 
+        setTimeout(function() {
+          new ProjectileFactory.MeteorProjectile({power: this.power, x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy});
+        }.bind(this), 1500)
+        
+        StateFactory.sloMo = true;
+        setTimeout(function() {
+          StateFactory.sloMo = false;
+        }, this.sloMoTime);
+        // if(this.proj && this.proj.constructor == Array && this.proj.length){
+
+        // }else if(this.proj && this.proj.constructor !== Array){
+
+        // }else{
+        //     StateFactory.sloMo = true;
+        //     setTimeout(function () {
+        //         StateFactory.sloMo = false;
+        //     },this.sloMoTime)
+        // }
+    }
+  }
+    //     class MeteorTower extends Tower {
+    //     constructor(x, y){
+    //         super(x, y, {
+    //             power: 10,
+    //             price:50,
+    //             reloadTime: 1000,
+    //             range: 200,
+    //             name: "Meteor",
+    //             effect: 'Fill in'
+    //         });
+
+    //         this.ultimate = true;
+    //         this.sloMoTime = 3500;
+    //         this.proj = [];
+    //     }
+
+    //     shoot(enemy){
+    //         this.img.play();
+    //         if(this.proj.length < 3) this.proj.push(new ProjectileFactory.MeteorProjectile({x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy}));
+    //     }
+      
+
+    // }
 
 
   return {
@@ -151,6 +207,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     ThunderWeapon,
     PoisonWeapon,
     FireWeapon,
-    IceWeapon
+    IceWeapon,
+    MeteorWeapon
   };
 });
