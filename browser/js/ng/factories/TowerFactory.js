@@ -1,7 +1,5 @@
 'use strict'
-app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateFactory,
-                                      ParticleFactory, SpriteEventFactory, CodeEvalFactory, ModFactory,
-                                      $timeout, SpriteGenFactory, WeaponFactory) => {
+app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory, StateFactory, ParticleFactory, SpriteEventFactory, CodeEvalFactory, ModFactory, $timeout, SpriteGenFactory, LightningFactory, WeaponFactory) {
 
     let allTowers = [];
     let savedTowers = [];
@@ -15,6 +13,9 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
         $timeout(function() {
             self.activeWeapon.reloadTime = temp;
         }, 3000);
+    }
+    let launchUltimate = function() {
+        this.ultimateWeapon.shoot(this.target);    
     }
 
     //name, functionToRun, context, coolDownPeriod, time=Date.now(), purchased=false
@@ -41,7 +42,8 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
                     new ModFactory.Surrounding('getNearbyTowers', this.getNearbyTowersEncapsulated, this, false)
                 ],
                 abilities: [
-                    new ModFactory.Ability('burst', burst, this, 25000, true)
+                    new ModFactory.Ability('burst', burst, this, 25000, true),
+                    new ModFactory.Ability('ultimateWeapon', launchUltimate, this, 30000, true)
                 ],
                 effects: [],
                 consumables: []
@@ -57,6 +59,9 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
             }
             if(this.secondaryWeaponConstructor) {
               this.secondaryWeapon = new this.secondaryWeaponConstructor(this);
+            }
+            if(this.ultimateWeaponConstructor) {
+                this.ultimateWeapon = new this.ultimateWeaponConstructor(this);
             }
 
             let array = [];
@@ -182,14 +187,7 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
             for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
                 if (this.isEnemyInRange(EnemyFactory.enemies[i])) {
                     this.target = EnemyFactory.enemies[i];
-                    if (this.name === "Meteor"){
-                        StateFactory.sloMo = true;
-                        setTimeout(function () {
-                            StateFactory.sloMo = false;
-                        }, 3500)
-                    }
 
-                    this.target = EnemyFactory.enemies[i];
                     return true;
                 }
             }
@@ -246,19 +244,22 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
     //             reloadTime: 400,
     //             range: 200,
     //             name: "Blizzard",
-    //             effect: 'Fill in',
+    //             effect: 'Fill in'
     //         });
+    //         this.ultimate = true;
+    //         this.sloMoTime = 3500;
     //     }
-    //     shoot(enemy) {
-    //       this.img.play();
-    //       if(!this.projectile) this.projectile = new ProjectileFactory.BlizzardProjectile({
-    //           power: this.power,
-    //           x: this.img.position.x, y:
-    //           this.img.position.y,
-    //           speed: 0,
-    //           radius: 200,
-    //           enemy: enemy
-    //       });
+
+    //     shoot(enemy){
+    //         this.img.play();
+    //         if(!this.proj) this.proj= new ProjectileFactory.BlizzardProjectile({
+    //             power: this.power,
+    //             x: this.img.position.x, y:
+    //             this.img.position.y,
+    //             speed: 0,
+    //             radius: 200,
+    //             enemy: enemy
+    //         });
     //     }
     // }
 
@@ -269,18 +270,15 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
                 price: 50,
                 primaryWeaponConstructor: WeaponFactory.FireWeapon,
                 secondaryWeaponConstructor: WeaponFactory.FlameWeapon,
-                // reloadTime: 1000,
-                // range: 200,
+                ultimateWeaponConstructor: WeaponFactory.MeteorWeapon,
                 name: "Fire",
                 effect: 'Fill in'
             });
         }
-        swapWeaponTo(weapon) {
-          this.activeWeapon = this.weaponArmory[weapon];
-        }
-        shoot(enemy) {
-          console.log('in the shoot');
-          this.activeWeapon.shoot(enemy);
+
+        shoot(enemy){
+            this.img.play();
+            new ProjectileFactory.FireProjectile({x: this.img.position.x, y: this.img.position.y, speed: 50, radius: 0, enemy: enemy});
         }
     }
 
@@ -403,92 +401,7 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
     //     }
     // }
 
-    // class FlameTower extends Tower {
-    //     constructor(x, y){
-    //             super(x, y, {
-    //             img: '7',
-    //             power: 0.2,
-    //             price: 50,
-    //             range: 150,
-    //             name: "Flame",
-    //             effect: 'Fill in'
-    //         });
-    //         this.flameCircleCenters = [];
-    //         this.numOfFlameCircles = 10;
-    //         this.flameCircleRadius = 20;
-    //         this.circles = [];
-    //         this.baseRangeCircle.drawCircle(this.img.position.x, this.range);
-    //      }
-    //
-    //      update(delta){
-    //         this.acquireTarget(); //FIXME
-    //         if(!this.target){
-    //             //this.acquireTarget();
-    //             this.img.stop();
-    //             //this.target = EnemyFactory.enemies[0];
-    //         }
-    //         if(this.target){
-    //
-    //             if(!this.isEnemyInRange(this.target)) {
-    //                 this.target = null;
-    //                 this.particleEmitter.destroy();
-    //                 this.particleEmitter = null;
-    //             }
-    //             else{
-    //                 if(!this.particleEmitter){
-    //                     this.particleEmitter = new ParticleFactory.createEmitter('flame', stage);
-    //                     this.calcRotation();
-    //                     this.particleEmitter.updateOwnerPos(this.img.position.x, this.img.position.y);
-    //                 }
-    //                 this.calcRotation();
-    //                 this.particleEmitter.update(delta);
-    //                 this.calcFlameCircleCenters();
-    //                 this.dealDamage();
-    //             }
-    //             //else
-    //         }
-    //     }
-    //     calcRotation(){
-    //         this.particleEmitter.rotation = (-57.3 * (Math.atan2((this.target.imgContainer.position.x - this.img.position.x) , (this.target.imgContainer.position.y - this.img.position.y))) + 180);
-    //     }
-    //
-    //     dealDamage(){
-    //         var self = this;
-    //         var inFire = false;
-    //         EnemyFactory.enemies.forEach(function(enemy){
-    //             self.flameCircleCenters.forEach(function(flameCircleCenter){
-    //                 if(self.checkRadius(flameCircleCenter, enemy)){
-    //                     inFire = true;
-    //                 }
-    //             });
-    //             if(inFire) enemy.takeDamage(self.power);
-    //             inFire = false;
-    //         });
-    //     }
-    //
-    //     checkRadius(center, enemy){
-    //           let dx = center.x - enemy.img.position.x;
-    //           let dy = center.y - enemy.img.position.y;
-    //           let distance = Math.sqrt(dx * dx + dy * dy);
-    //           return (distance < this.flameCircleRadius + enemy.radius);
-    //     }
-    //
-    //     calcFlameCircleCenters(){
-    //         var xDiff = this.target.img.position.x - this.img.position.x;
-    //         var yDiff = this.target.img.position.y - this.img.position.y;
-    //         var theta = Math.atan2(xDiff, yDiff);
-    //         var farthestPoint = {
-    //             x: this.range*Math.sin(theta),
-    //             y: this.range*Math.cos(theta),
-    //         };
-    //         for(var i = 1; i <= this.numOfFlameCircles; i++){
-    //             this.flameCircleCenters[i] = {
-    //                 x: (farthestPoint.x / this.numOfFlameCircles) * i + this.img.position.x,
-    //                 y: (farthestPoint.y / this.numOfFlameCircles) * i + this.img.position.y
-    //             };
-    //         }
-    //     }
-    // }
+
 
     class ThunderTower extends Tower {
         constructor(x, y) {
@@ -504,6 +417,60 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
 
         shoot(enemy) {
           this.activeWeapon.shoot(enemy);
+        }
+
+     
+    }
+
+    class LightningTower extends Tower {
+        constructor(x, y) {
+            super(x, y, {
+                img: '5',
+                power: 30,
+                price: 50,
+                range: 120,
+                reloadTime: 300,
+                name: "Lightning",
+                effect: 'Fill in'
+            });
+
+            this.ultimate = true;
+            this.sloMoTime = 400;
+        }
+        shoot(enemy) {
+            this.tower.img.play();
+
+            setTimeout(function(){
+                var start = new LightningFactory.Yals.Vector2D(enemy.position.x, -100);
+                var end = new LightningFactory.Yals.Vector2D(enemy.position.x, enemy.position.y);
+
+                this.proj = new LightningFactory.BranchLightning(start,end, '#FFFFFF', 6);
+                enemy.terminate(true);
+
+
+            }.bind(this), 250)
+
+        }
+
+        update(){
+            super.update();
+
+            if (this.proj) {
+                
+                this.proj.update();
+
+            }
+
+            LightningFactory.ctx.clearRect(0, 0, LightningFactory.scene.width, LightningFactory.scene.width);
+            if (this.proj){
+
+                $(StateFactory.renderer.view).css({'z-index' : '1'})
+                $(LightningFactory.scene.canvasElement).css({'z-index' : '2'});
+
+                this.proj.render(LightningFactory.ctx);
+
+            } 
+
         }
     }
 
@@ -556,7 +523,7 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
                         enemy.particleEmitters.poison = ParticleFactory.createEmitter('poison', stage);
                     }
                 }
-            })
+            });
         }
 
         update(delta){

@@ -1,11 +1,7 @@
 app.factory("ProjectileFactory", function(LightningFactory, StateFactory, ParticleFactory, EnemyFactory){
   let projectiles = [];
-  //LightningFactory.lightning();
 
   let stage = new PIXI.Stage();
-
-
-
 
   const checkCircleCollision = (circle1, circle2) => {
       circle2.x = circle2.position.x;
@@ -293,10 +289,6 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
         }
       }
   }
-
-
-
-
 
 
   let updateAll = (delta) => {

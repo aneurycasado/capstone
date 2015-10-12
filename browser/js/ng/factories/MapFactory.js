@@ -22,6 +22,7 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory) => {
                     if(opts.height) this.img.height = opts.height;
                     else this.img.height = StateFactory.cellSize;
                     this.img.width = StateFactory.cellSize;
+                    this.img.height = StateFactory.cellSize;
                 }
             }
         }
@@ -183,8 +184,8 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory) => {
                 let height;
                 let nodeValue = newGrid[row][col];
                 if(typeof nodeValue === "number" && nodeValue >= 2 && nodeValue <= 8 && nodeValue !== 4){
-                    width = 100;
-                    height = 50;
+                    width = 80;
+                    height = 40;
                 }
 
                 texture = terrainToTexture[nodeValue];
