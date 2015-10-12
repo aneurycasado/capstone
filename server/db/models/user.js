@@ -36,7 +36,8 @@ var schema = new mongoose.Schema({
                 x: Number,
                 y: Number
             }
-        ]
+        ],
+        mode: String
     }
 });
 // generateSalt, encryptPassword and the pre 'save' and 'correctPassword' operations

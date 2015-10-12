@@ -89,7 +89,7 @@ app.factory('WaveFactory', ($rootScope,EnemyFactory, StateFactory) => {
 
     const loadWaves = (currentWaveNum) => {
         console.log("Before in WaveFactory", waves.length);
-        waves.splice(0,currentWaveNum); 
+        waves.splice(0,currentWaveNum+1); 
         console.log("After in WaveFactory", waves.length);
         setCurrentWave();
     }

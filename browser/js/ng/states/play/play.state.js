@@ -9,6 +9,9 @@ app.config(($stateProvider) => {
                     return PlayerFactory.getGame();
                 },
                 mode: ($stateParams, StateFactory) => {
+                    if($stateParams.mode === "savedGame"){
+                        StateFactory.loadGame = true; 
+                    }
                     StateFactory.mode = $stateParams.mode;
                 }
             },
@@ -19,6 +22,10 @@ app.config(($stateProvider) => {
 app.controller("PlayController", function ($scope, player, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, SpriteEventFactory, ProjectileFactory, GameFactory) {
     $scope.mode = StateFactory.mode;
     $scope.player = player;
+    if($scope.player.game.mode){
+        StateFactory.mode = $scope.player.game.mode;
+        WaveFactory.init();
+    }
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(StateFactory.width, StateFactory.height, StateFactory.canvas);
     $("#mainContainer").append(StateFactory.renderer.view);
@@ -33,6 +40,7 @@ app.controller("PlayController", function ($scope, player, $state, $timeout, $ro
         PlayerFactory.money = $scope.player.game.money;
         start(MapFactory.maps[$scope.player.game.mapNum]);
         WaveFactory.loadWaves($scope.player.game.currentWave);
+        $rootScope.$emit("loadGameSideBar")
         start(MapFactory.maps[$scope.player.game.mapNum] ,"loadGame");
     };
     const restart = (mapNum) => {

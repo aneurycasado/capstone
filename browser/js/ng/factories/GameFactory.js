@@ -35,10 +35,9 @@ app.factory('GameFactory', ($rootScope, WaveFactory, EnemyFactory, PlayerFactory
                 changeStateTo('gameOver');
             }
         }
-        if(data.mode === "savedGame"){
-            console.log("Called");
+        if(data.loadGame){
             $rootScope.$emit("loadGame");
-            data.mode = $scope.player.game.mode;
+            data.loadGame = false;
         }
         // if (data.state === 'complete') {
 
