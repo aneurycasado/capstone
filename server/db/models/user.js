@@ -25,12 +25,18 @@ var schema = new mongoose.Schema({
         id: String
     },
     game: {
-        player: {
-            health: Number,
-            money: Number,
-            currentWave: Number,
-            totalEnemiesKilled: Number
-        }
+        health: Number,
+        money: Number,
+        mapNum: Number,
+        currentWave: Number,
+        totalEnemiesKilled: Number,
+        towers: [
+            {
+                name: String,
+                x: Number,
+                y: Number
+            }
+        ],
     }
 });
 

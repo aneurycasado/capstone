@@ -4,10 +4,11 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Welcome Player. Chose a map</h4>
+                <h4 class="modal-title" id="myModalLabel" ng-hide = "notAGuest">Welcome Player. Chose a map</h4>
+                <h4 class="modal-title" id="myModalLabel" ng-show = "notAGuest">Welcome Friend</h4>
             </div>
             <div class="modal-body">
-                <div class = "row" >
+                <div class = "row" ng-hide = "notAGuest" >
                     <div class = "col-md-4" ng-repeat = "map in maps" ng-click = "choseMap($index)">
                         <div class = "row">
                             <div class = "col-md-12">
@@ -20,6 +21,10 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class = "row" ng-show = "notAGuest">
+                    <button class = "btn btn-primary" ng-click = "notAGuest = false">New Game</button>
+                    <button class = "btn btn-primary" ng-click = "loadGame()">Load Game</button>
                 </div>
             </div>
         <!--     <div class="modal-footer">

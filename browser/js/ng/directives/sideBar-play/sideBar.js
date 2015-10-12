@@ -10,7 +10,7 @@ app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, Game
     $(document).ready(() => {
         $('.toolTipSideBar').tooltip();
     });
-    $scope.player = PlayerFactory;
+    $scope.playerStats = PlayerFactory;
     if(StateFactory.mode === "survival"){
         $scope.survival = true;
     }
@@ -19,9 +19,7 @@ app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, Game
     $scope.totalEnemiesKilled = 0;
     $scope.totalEnemies = 0;
     $scope.enemiesKilled = EnemyFactory.terminatedEnemies.length;
-    $scope.showTowers = true;
     $scope.firstWave = true;
-    $scope.showPowerUps = false;
     $scope.nextWave = false;
     $scope.nextLevel = false;
     $scope.count = 0;
@@ -30,7 +28,7 @@ app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, Game
     $scope.towers = [];
     for(let key in TowerFactory.towers){
         let currentTower = new TowerFactory.towers[key](0,0);
-        var img = currentTower.imgNum;
+        let img = currentTower.imgNum;
         currentTower.imgUrl = "./images/tower-defense-turrets/turret-" + img + "-1.png";
         $scope.towers.push(currentTower);
         currentTower.terminate();
@@ -59,29 +57,27 @@ app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, Game
         $scope.totalEnemiesKilled = 0; 
         $scope.totalEnemies = 0;
         $scope.enemiesKilled = 0;
-    })
+    });
+    $rootScope.$on('loadGame', () => {
+        console.log("We are updating load game");
+        $scope.currentWave = $scope.player.game.currentWave;
+        $scope.totalEnemiesKilled = $scope.player.game.totalEnemiesKilled;
+        $scope.waves = WaveFactory.waves;
+        $scope.state = StateFactory.state;
+        console.log($scope.waves.length);
+    });
     $scope.saveGame = () => {
         let player = {
             health: PlayerFactory.health,
             money: PlayerFactory.money,
             currentWave: $scope.currentWave,
-            totalEnemiesKilled: $scope.totalEnemiesKilled
+            totalEnemiesKilled: $scope.totalEnemiesKilled,
+            mapNum: $scope.mapNum,
+            towers: TowerFactory.savedTowers
         };
         PlayerFactory.saveGame(player).then((savedInfo) => {
             console.log("Saved Info ", savedInfo);
         });
-    }
-    $scope.changeStore = (tab) => {
-        if(tab === "tower"){
-            $scope.showTowers = true;
-            $scope.showPowerUps = false;
-        }else if(tab === "powerUp") {
-            $scope.showTowers = false;
-            $scope.showPowerUps = true;
-        }else if(tab === "all") {
-            $scope.showTowers = true;
-            $scope.showPowerUps = true;
-        }
     }
     $scope.towerClicked = (tower) => {
         $rootScope.$emit("currentTower", tower);

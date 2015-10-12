@@ -88,6 +88,12 @@ app.factory('WaveFactory', ($rootScope,EnemyFactory, StateFactory) => {
         });
     }
 
+    const loadWaves = (currentWaveNum) => {
+        console.log("Before in WaveFactory", waves.length);
+        waves.splice(0,currentWaveNum); 
+        console.log("After in WaveFactory", waves.length);
+    }
+
     wavesDefinition = createWaves(StateFactory.mode);
     wavesDefinition.forEach((wave) => {
         createWave(wave);
@@ -95,6 +101,7 @@ app.factory('WaveFactory', ($rootScope,EnemyFactory, StateFactory) => {
     return {
         init,
         waves,
+        loadWaves,
         update,
         createWave,
         currentWave,

@@ -14,45 +14,61 @@ app.config(($stateProvider) => {
                 }
             },
             controller: 'PlayController'
-        })
+        });
 });
 
-app.controller('PlayController', function ($scope, player, mode, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, SpriteEventFactory, ProjectileFactory, GameFactory) {
+app.controller("PlayController", function ($scope, player, mode, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, SpriteEventFactory, ProjectileFactory, GameFactory) {
     console.log("Player ", player);
-    if(player.player === "notLoggedIn"){
-        console.log("Good");
+    if(player.game.mapNum | player.game.mapNum === 0){
+        console.log("game is defined", player.game);
+        $scope.player = player;
+    }else{
+        console.log("game is undefined", player.game);
+        $scope.player = "Guest";
     }
-    let data = StateFactory;
-    $scope.mode = data.mode;
+    $scope.mode = StateFactory.mode;
     StateFactory.canvas = document.getElementById("stage");
-    StateFactory.renderer = PIXI.autoDetectRenderer(data.width, data.height, data.canvas);
-    $("#mainContainer").append(data.renderer.view);
-    $(data.renderer.view).attr('id','pixiCanvas');
+    StateFactory.renderer = PIXI.autoDetectRenderer(StateFactory.width, StateFactory.height, StateFactory.canvas);
+    $("#mainContainer").append(StateFactory.renderer.view);
+    $(StateFactory.renderer.view).attr("id","pixiCanvas");
     const start = map => {
-        data.map = map;
+        StateFactory.map = map;
         StateFactory.stages.play = new PIXI.Stage();
         let bg = new PIXI.Sprite(PIXI.Texture.fromImage("/images/bg.png"));
         bg.interactive = true;
         bg.click = SpriteEventFactory.bgClickHandler;
-        bg.width = data.width;
-        bg.height = data.height;
-        console.log(map.paths);
+        bg.width = StateFactory.width;
+        bg.height = StateFactory.height;
         StateFactory.stages.play.addChild(bg);//yaaaas
         StateFactory.stages.play.addChild(map.stage);//yaaaaa
         StateFactory.stages.play.addChild(TowerFactory.stage);//yaaaaa
         // StateFactory.stages.play.addChild(EnemyFactory.stage);//yaaaaa
         StateFactory.stages.play.addChild(EnemyFactory.stage);//yaaaaa
         StateFactory.stages.play.addChild(ProjectileFactory.stage);//yaaaas
+        if($scope.player !== "Guest"){
+            $scope.player.game.towers.forEach(function(tower){
+                TowerFactory.createTower(tower.x,tower.y,tower.name);
+            });
+        }
         // StateFactory.stages.play.addChild(ParticleFactory.stage);//yaaaas
-        data.state = "standby";
+        StateFactory.state = "standby";
     };
-
     const init = (num, state) => {
         if (num !== undefined) $scope.mapNum = num;
         start(MapFactory.maps[$scope.mapNum], state);
     };
+    const loadGame = () => {
+        console.log("The player in loadGame ", $scope.player);
+        $scope.mapNum = $scope.player.game.mapNum;
+        PlayerFactory.health = $scope.player.game.health;
+        PlayerFactory.money = $scope.player.game.money;
+        start(MapFactory.maps[$scope.player.game.mapNum]);
+        WaveFactory.loadWaves($scope.player.game.currentWave);
+        console.log("Map num",$scope.player.game.mapNum);
+        console.log("Map in start ")
+        start(MapFactory.maps[$scope.player.game.mapNum]);
+    }
     
-    //Placed here for now
     const restart = (mapNum) => {
         ProjectileFactory.stage.removeChildren();
         TowerFactory.stage.removeChildren();
@@ -68,7 +84,7 @@ app.controller('PlayController', function ($scope, player, mode, $state, $timeou
     }
 
     $rootScope.$on('mapChosen', (event, mapNum) => {
-        console.log("Map chosen ", mapNum);
+        console.log("Map chosen", mapNum);
         init(mapNum);
     });
 
@@ -100,13 +116,16 @@ app.controller('PlayController', function ($scope, player, mode, $state, $timeou
     $rootScope.$on('restartLevel', (event) => {
         restart();
     });
+    $rootScope.$on('loadGame', (event) => {
+       loadGame();
+    });
     $scope.tower = null;
     $('canvas').on('click', (e) => {
         if ($scope.tower !== null) {
             let towerPositionX = Math.floor(e.offsetX / StateFactory.cellSize);
             let towerPositionY = Math.floor(e.offsetY / StateFactory.cellSize);
-            let selectedGrid = data.map.grid[towerPositionY][towerPositionX];
-            if (!selectedGrid.contains.tower && typeof data.map.grid[towerPositionY][towerPositionX].terrain === "string") {
+            let selectedGrid = StateFactory.map.grid[towerPositionY][towerPositionX];
+            if (!selectedGrid.contains.tower && typeof StateFactory.map.grid[towerPositionY][towerPositionX].terrain === "string") {
                 if (PlayerFactory.money - $scope.tower.price >= 0) {
                     TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.name + "Tower");
                     PlayerFactory.money -= $scope.tower.price;
