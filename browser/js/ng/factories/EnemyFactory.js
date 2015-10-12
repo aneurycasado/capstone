@@ -64,12 +64,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
         }
 
-        moveTowards(delta) {
-            let xdone = false;
-            let ydone = false;
-
-            let deltaSpeed = this.slowFactor * this.speed * delta;
-
+        moveX(deltaSpeed){
             if(this.position.x > this.path[this.pathIndex].x + deltaSpeed) {
                 if(!this.boss) this.img.rotation = 3.14;
                 this.position.x -= deltaSpeed;
@@ -78,8 +73,14 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 if(!this.boss) this.img.rotation = 3.14*2;
                 this.position.x += deltaSpeed;
             } else{
-                xdone = true;
+                return true;
             }
+
+            return false;
+        }
+
+        moveY(deltaSpeed){
+
             if(this.position.y > this.path[this.pathIndex].y + deltaSpeed) {
                 if(!this.boss) this.img.rotation = (3*3.14) / 2;
                 this.position.y -= deltaSpeed;
@@ -87,14 +88,29 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 this.position.y += deltaSpeed;
                 if(!this.boss) this.img.rotation = 3.14 / 2;
             }else{
-                ydone = true;
+                return true;
             }
+
+            return false;
+
+        }
+
+        moveOnPath(delta) {
+            let xdone = false;
+            let ydone = false;
+
+            let deltaSpeed = this.slowFactor * this.speed * delta;
+
+            xdone = this.moveX(deltaSpeed);
+
+            ydone = this.moveY(deltaSpeed);
+
             if(xdone && ydone){
                 this.pathIndex++;
             }
         }
 
-        terminate(){
+        terminate(explode){
 
 
             for(var i in this.particleEmitters){
@@ -105,8 +121,11 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 let x = enemies.splice(enemies.indexOf(this),1);
             }
 
-            explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', stage, ["core1", "wing1", "eye1", "ball1"]));
-            explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
+            if(explode){
+                explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', stage, ["core1", "wing1", "eye1", "ball1"]));
+                explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
+            } 
+
             stage.removeChild(this.img);
             stage.removeChild(this.healthBar);
             stage.removeChild(this.imgContainer);
@@ -117,7 +136,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
 
         update(delta){
-            this.moveTowards(delta);
+            this.moveOnPath(delta);
             for(var i in this.particleEmitters){
                 if(this.particleEmitters[i]){
                     this.particleEmitters[i].update(delta);
@@ -132,7 +151,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 //     console.log("Game over ", PlayerFactory.health);
                 // }
                 $rootScope.$digest();
-                this.terminate();
+                this.terminate(false);
             }
             if(this.poisoned) this.takeDamage(this.poisonDamage);
         }
@@ -148,7 +167,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 PlayerFactory.money += this.value;
                 terminatedEnemies.push(this);
                 $rootScope.$digest();
-                this.terminate();
+                this.terminate(true);
             }
         }
         getHealth() {

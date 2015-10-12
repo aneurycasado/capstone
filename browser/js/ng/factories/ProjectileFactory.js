@@ -1,5 +1,4 @@
 app.factory("ProjectileFactory", function(LightningFactory, StateFactory, ParticleFactory, EnemyFactory){
-
   let projectiles = [];
 
   let stage = new PIXI.Stage();
@@ -74,7 +73,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
 
         if(this.particleEmitter.noSloMo){
           delta = delta*StateFactory.sloMoMod;
-        } 
+        }
 
         this.x += this.xVel * delta;
         this.y += this.yVel * delta;
@@ -115,23 +114,6 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
     }
   }
 
-  class LightningProjectile{
-
-    constructor(opts){
-
-          // console.log("PROJ FACTORY BEAUTY", branchLightning);
-    }
-
-    // update(delta){
-    //   branchLightning.update();
-    // }
-  }
-
-
-
-            // var pos = new Yals.Vector2D(100, 100);
-
-            // branchLightning = new BranchLightning(screenMiddle, pos, '#4545DD');
   class IceProjectile extends HomingProjectile{
       constructor(opts){
         super(opts);
@@ -229,11 +211,11 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
       constructor(opts){
         super(opts);
 
-       
+
         this.particleEmitter = ParticleFactory.createEmitter('meteor', stage);
         this.particleEmitter.updateOwnerPos(this.x, this.y);
         this.particleEmitter.noSloMo = true;
-        
+
         this.extraImage = new PIXI.Sprite(PIXI.Texture.fromImage("/images/particles/meteor.png"));
         this.extraImage.anchor.x = .5;
         this.extraImage.anchor.y = .5;
@@ -309,7 +291,6 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
     MeteorProjectile,
     ThunderBallProjectile,
     BlizzardProjectile,
-    LightningProjectile,
     updateAll
   };
 });

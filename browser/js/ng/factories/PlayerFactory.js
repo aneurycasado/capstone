@@ -2,6 +2,7 @@
 app.factory('PlayerFactory', function($http) {
     let factory = {health:20,money:500000};
     factory.saveGame = (player) => {
+        console.log("Player in saveGame", player);
     	return $http.put("/api/players/",player).then(response => response.data);
     }
     factory.getGame = () => {

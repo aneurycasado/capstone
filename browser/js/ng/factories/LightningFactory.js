@@ -74,6 +74,7 @@ app.factory('LightningFactory', function(StateFactory) {
 
     scene.canvasElement.width = StateFactory.width;
     scene.canvasElement.height = StateFactory.height;
+    $(scene.canvasElement).appendTo($("#mainContainer"));
 
 
     //this will be used by LightningSegment.prototype.render
@@ -89,34 +90,6 @@ app.factory('LightningFactory', function(StateFactory) {
         var branchLightning = null,
             screenMiddle = new Yals.Vector2D(scene.width / 2, scene.height / 2),
             i, j;
-
-
-        game.update = function () {
-
-            // var pos = new Yals.Vector2D(100, 100);
-
-            // branchLightning = new BranchLightning(screenMiddle, pos, '#4545DD');
-
-            // if (branchLightning !== null) {
-
-            //     branchLightning.update();
-
-            // }
-
-        };
-
-        game.render = function () {
-
-            $debug.text(JSON.stringify(mouse, null, 4));
-            // ctx.clearRect(0, 0, scene.width, scene.width);
-            // if (branchLightning !== null) branchLightning.render(ctx);
-
-            // if (isOperaOrChrome) ctx.globalCompositeOperation = 'lighter'; //very slow with Firefox and IE
-
-
-        };
-
-        gameManager.setScene(scene).start();
 
     }
 
@@ -281,7 +254,7 @@ app.factory('LightningFactory', function(StateFactory) {
             tangent = endingPoint.getSubtracted(startingPoint),
             normal = tangent.clone().turnLeft().normalize(),
             length = tangent.length(),
-            SWAY = 80,
+            SWAY = 60,
             JAGGEDNESS = 1 / SWAY,
             prevPoint = startingPoint,
             prevDisplacement = 0,
@@ -379,7 +352,7 @@ app.factory('LightningFactory', function(StateFactory) {
 
     };
 
-    function BranchLightning(startingPoint, endingPoint, color) {
+    function BranchLightning(startingPoint, endingPoint, color, numBranchesIn) {
 
         this.startingPoint = startingPoint;
         this.endingPoint = endingPoint;
@@ -390,15 +363,15 @@ app.factory('LightningFactory', function(StateFactory) {
 
         this.bolts = [];
 
-        this._createBranchs();
+        this._createBranchs(numBranchesIn);
 
     }
 
-    BranchLightning.prototype._createBranchs = function () {
+    BranchLightning.prototype._createBranchs = function (numBranchesIn) {
 
         var mainBolt = new LightningBolt(this.startingPoint, this.endingPoint, this.color),
             bolts = this.bolts,
-            numBranches = 1,
+            numBranches = numBranchesIn || 3,
             branchPoints = [],
             i, len;
 
@@ -421,6 +394,9 @@ app.factory('LightningFactory', function(StateFactory) {
 
             // rotate 30 degrees. Alternate between rotating left and right.
             shouldInvert = ((i & 1) == 0 ? 1 : -1);
+
+            //prevents it from branching out, makes all branches end in one points
+            shouldInvert = 0;
 
             diff.scale(1 - branchPoints[i]);
 
@@ -449,7 +425,20 @@ app.factory('LightningFactory', function(StateFactory) {
             if (!bolts[i].isComplete()) bolts[i].update();
         }
 
+        if( this.isComplete() ){
+            // this = undefined;
+        } 
+
     };
+
+    BranchLightning.prototype.isComplete = function(){
+
+
+        return this.bolts.every(function(bolt){
+            return bolt.isComplete();
+        });
+
+    }
 
     BranchLightning.prototype.render = function (ctx) {
 
@@ -460,44 +449,6 @@ app.factory('LightningFactory', function(StateFactory) {
         }
 
     };
-
-    //-- demo code
-
-     // var branchLightning = null,
-     //        screenMiddle = new Yals.Vector2D(scene.width / 2, scene.height / 2),
-     //        i, j;
-
-
-     //    game.update = function () {
-
-     //        var pos = new Yals.Vector2D(100, 100);
-
-     //        if (mouse.wasClicked()) {
-
-     //            branchLightning = new BranchLightning(screenMiddle, pos, '#4545DD');
-
-     //        }
-
-     //        if (branchLightning !== null) {
-
-     //            branchLightning.update();
-
-     //        }
-
-     //    };
-
-     //    game.render = function () {
-
-     //        $debug.text(JSON.stringify(mouse, null, 4));
-     //        ctx.clearRect(0, 0, scene.width, scene.width);
-
-     //        // if (isOperaOrChrome) ctx.globalCompositeOperation = 'lighter'; //very slow with Firefox and IE
-
-     //        if (branchLightning !== null) branchLightning.render(ctx);
-
-     //    };
-
-     //    gameManager.setScene(scene).start();
 
     loadImages({
         HalfCircle : 'http://dl.dropbox.com/u/3902537/assets/imgs/half-circle-2.png',
