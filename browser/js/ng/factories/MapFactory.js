@@ -31,7 +31,7 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
         constructor(grid, num){
             console.log("grid before findpath", grid)
             this.stage = new PIXI.Stage();
-            this.paths = findPath(grid);
+            this.paths = Pathfinder(grid);
             console.log("invoked", this.paths)
             this.grid = insertNodes(grid, this);
             console.log("after InsertNodes:", grid)
@@ -74,7 +74,7 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
 
 
 
-    let findPath = function(layout) {
+    let Pathfinder = function(layout) {
         let base = {}; 
         let bases = [];
         let destination = {};
@@ -86,23 +86,12 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
         let gridColLength = layout[0].length;
         let barrenPath = new PF.Grid(DesignFactory.blankMap);
         let finder = new PF.AStarFinder({
-                allowDiagonal: false,
-                dontCrossCorners: false
-
-        })
+             diagonalMovement: PF.DiagonalMovement.Never
+        });
         let OptimalPath = [];
         let returnedPath = [];
         let array_lengths = [];
         let finalPaths = [];
-
-
-
-        // let PFWalkableGrid = function (barrenPath) {
-        //     barrenPath.forEach(function(node){
-
-        //     })
-    
-        console.log(finder)
 
         let PFwalkableGrid = (function () {
             for(let x = 0; x < gridRowLength; x++) {
@@ -127,8 +116,8 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
                          bases.push({x: x, y: y, num: 4})
                      }
                      if(layout[x][y] === 3) {
-                        destination.row = x;
                         destination.column = y;
+                        destination.row = x;
                      }
                  }
              }
@@ -143,9 +132,10 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
                 console.log("destination inside forEach", destination)
                 let walkablePath = barrenPath.clone();
                 console.log("individual grids", walkablePath)
-                OptimalPath.push(finder.findPath(startNode.x,startNode.y, destination.column, destination.row, walkablePath))
+                OptimalPath.push(finder.findPath(startNode.y,startNode.x, destination.column, destination.row, walkablePath))
             })
-            OptimalPath.forEach(function(arr){
+            console.log("OPtimal Pathgingng", OptimalPath)
+            OptimalPath.forEach(function(arr){  
                 array_lengths.push(arr.length);
             })
             // console.log("OPOPOPOPOOPOPOP", OptimalPath)
@@ -167,130 +157,6 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
 
    
 
-        let checkUpIsWalkable = function (currentPosition) {
-            if (currentPosition.row === 0) return null;
-            return {
-                position: {
-                    row: currentPosition.row - 1,
-                    column: currentPosition.column
-                },
-                num: layout[currentPosition.row - 1][currentPosition.column]
-            };
-        };
-
-        let checkDownIsWalkable = function (currentPosition) {
-            if (currentPosition.row + 1 > layout.length - 1) return null;
-            return {
-                position: {
-                    row: currentPosition.row + 1,
-                    column: currentPosition.column
-                },
-                num: layout[currentPosition.row + 1][currentPosition.column]
-            };
-        };
-        
-        let checkLeftIsWalkable = function (currentPosition) {
-            if (currentPosition.column === 0) return null;
-            return {
-                position: {
-                    row: currentPosition.row,
-                    column: currentPosition.column - 1
-                },
-                num: layout[currentPosition.row][currentPosition.column - 1]
-            };
-        };
-        
-        let checkRightIsWalkable = function (currentPosition) {
-            if (currentPosition.column + 1 > layout[0].length - 1) return null;
-            return {
-                position: {
-                    row: currentPosition.row,
-                    column: currentPosition.column + 1
-                },
-                num: layout[currentPosition.row][currentPosition.column + 1]
-            };
-        };
-        
-        let getDirectionIsWalkableDict = {
-            left: checkLeftIsWalkable,
-            right: checkRightIsWalkable,
-            up: checkUpIsWalkable,
-            down: checkDownIsWalkable
-        };
-        
-        let getInverseDirection = function (direction) {
-            if (direction === null) return null;
-            return ({
-                left: 'right',
-                right: 'left',
-                up: 'down',
-                down: 'up'
-            })[direction];
-        };
-        
-        let calculateBestDirection = (currentPosition, directions, base) => {
-        
-            let closer = (key, dir) => {
-                return Math.abs(base[key] - currentPosition[key]) > Math.abs(base[key] - dir.position[key]);
-            };
-        
-            let goodEnoughDirection = directions.find(dir => {
-                return closer('column', dir) || closer('row', dir);
-            });
-        
-            return goodEnoughDirection || directions[0];
-        
-        };
-        
-        function getPathForEnemy(currentPosition, playerBaseCell, lastDirection) {
-        
-            let possibleDirections = ['up', 'left', 'down', 'right']
-                .filter(d => d !== getInverseDirection(lastDirection)) // remove inverse direction
-                .map(d => Object.assign({ direction: d }, getDirectionIsWalkableDict[d](currentPosition))) // map to information
-                .filter(dObj => [1,3].indexOf(dObj.num) !== -1); // remove 0, 2, 4
-        
-            let finalCell = possibleDirections.filter(d => d.num === 3)[0];
-            if (finalCell) return [finalCell.position];
-        
-            let chosenDirection;
-            if (possibleDirections.length === 1) {
-                chosenDirection = possibleDirections[0];
-            } 
-        
-            else {
-                chosenDirection = calculateBestDirection(currentPosition, possibleDirections, playerBaseCell);
-            }
-            return [chosenDirection.position, ...getPathForEnemy(chosenDirection.position, playerBaseCell, chosenDirection.direction)];
-        };
-        let determineSubPaths = function () {
-            // getStartandEndPts();
-            bases.forEach(function(startNode){
-                path.push(getPathForEnemy({row: startNode.x, column: startNode.y}, destination, null))
-            })
-        }
-        let determineArrayLength = function() {
-            path.forEach(function(sub_path){
-                sub_path_lengths.push(sub_path.length);
-            })
-        }
-        let pathGenerator = function(path) {
-            determineSubPaths();
-            determineArrayLength();
-            path.forEach(function(sub_path){
-                sub_path.forEach(function(node){
-                    gridNodePath.push({
-                    x: node.column*StateFactory.cellSize + StateFactory.cellSize/2, 
-                    y: node.row*StateFactory.cellSize + StateFactory.cellSize/2 })
-                })
-            })
-            sub_path_lengths.forEach(function(spliceValue){
-                let reconfiguring = gridNodePath.splice(0, spliceValue);
-                finalPath.push(reconfiguring);
-            })
-
-        }
-        pathGenerator(path);
-        console.log("finalPath::::", finalPath)
         return finalPaths;
 
     }
@@ -331,7 +197,7 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
     };
 
     let maps = [];
-    maps.push(new Map(DesignFactory.mapGrid1,1));
+    maps.push(new Map(DesignFactory.mapGrid3,3));
     // maps.push(new Map(DesignFactory.mapGrid2, 2));
     // maps.push(new Map(DesignFactory.mapGrid3, 3));
 
