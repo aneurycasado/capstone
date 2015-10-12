@@ -61,6 +61,13 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             stage.addChild(this.imgContainer);
             this.slowFactor = 1;
             this.maxHealth = this.health;
+            this.enemyEncapsulated = {
+                getIndex: this.getIndex,
+                getHealth: this.getHealth,
+                getSpeed: this.getSpeed,
+                getPosition: this.getPosition,
+                name: this.getName()
+            }
         }
 
         moveX(deltaSpeed){
@@ -123,12 +130,12 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             if(explode){
                 explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', stage, ["core1", "wing1", "eye1", "ball1"]));
                 explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
-            } 
+            }
 
             stage.removeChild(this.img);
             stage.removeChild(this.healthBar);
             stage.removeChild(this.imgContainer);
-            
+
             $rootScope.$emit("updateNumberOfEnemies");
 
 
@@ -197,7 +204,9 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         getName() {
             return this.constructor.name;
         }
-
+        getIndex() {
+            return enemies.indexOf(this);
+        }
     }
 
      class SmallBugRed extends Enemy {
@@ -405,13 +414,13 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     let restart = () => {
         for(let i = enemies.length -1; i >=0; i--){
             let enemy = enemies[i];
-            enemy.terminate();       
+            enemy.terminate();
         };
         terminatedEnemies.length = 0;
     };
 
 
-    let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow, 
+    let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow,
                                BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,
                                SuperBigBugRed,SuperBigBugGreen,SuperBigBugBlue,SuperBigBugYellow,
                                BossBug};

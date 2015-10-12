@@ -107,17 +107,12 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
 
         getEnemies() {
+            //let enemiesArr = [];
             let enemies = EnemyFactory.enemies;
             let arr = [];
             for (let i = enemies.length - 1; i >= 0; i--) {
                 if (this.isEnemyInRange(enemies[i])) {
-                    arr.push({
-                        index: i,
-                        health: enemies[i].getHealth(),
-                        speed: enemies[i].getSpeed(),
-                        position: enemies[i].getPosition(),
-                        name: enemies[i].getName()
-                    })
+                    arr.push(enemies[i].enemyEncapsulated)
                 }
             }
             return arr;
