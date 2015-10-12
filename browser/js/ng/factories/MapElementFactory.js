@@ -1,4 +1,4 @@
-app.factory("MapElementFactory", (StateFactory) => {
+app.factory("MapElementFactory", (StateFactory, $http) => {
 	let mapElements = [];
 	let stage = new PIXI.Stage();
 	class MapElement {
@@ -35,10 +35,17 @@ app.factory("MapElementFactory", (StateFactory) => {
         currentGridNode.contains.element = mapElement;
 	}
 
+	const createMap = (map) => {
+		console.log("map in createMap",map);
+		console.log(typeof map);
+        return $http.post("/api/maps/",map).then(response => response.data);
+    }
+
 	return {
 		stage,
 		createMapElement,
 		mapElements,
+		createMap,
 	}
 
 })

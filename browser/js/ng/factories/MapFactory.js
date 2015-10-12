@@ -1,5 +1,5 @@
 'use strict'
-app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory) => {
+app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory, $http) => {
     class GridNode {
         constructor(x, y, opts) {
             this.x = x;
@@ -259,9 +259,11 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory) => {
             })
         })
     }
+
+ 
     return {
         reset,
         Map,
-        maps
+        maps,
     };
 })

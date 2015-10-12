@@ -38,7 +38,7 @@ app.controller("MapCreatorModeController", ($scope,$state, StateFactory, SpriteE
                 console.log("Can't play");
             }
         }
-        $scope.currentElement = null;
+        // $scope.currentElement = null;
     })
     const draw = () => {
         requestAnimationFrame(draw);
