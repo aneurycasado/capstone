@@ -1,18 +1,18 @@
 'use strict'
 app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateFactory,
-                                      ParticleFactory, SpriteEventFactory, CodeEvalFactory, ModFactory,
-                                      $timeout, SpriteGenFactory, WeaponFactory) => {
+                             ParticleFactory, SpriteEventFactory, CodeEvalFactory, ModFactory,
+                             $timeout, SpriteGenFactory, WeaponFactory) => {
 
     let allTowers = [];
     let savedTowers = [];
 
     let stage = new PIXI.Stage();
 
-    let burst = function() {
+    let burst = function () {
         let self = this;
         let temp = self.activeWeapon.reloadTime;
         self.activeWeapon.reloadTime = self.activeWeapon.reloadTime / 3;
-        $timeout(function() {
+        $timeout(function () {
             self.activeWeapon.reloadTime = temp;
         }, 3000);
     }
@@ -26,10 +26,10 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
             this.kills = 0;
             this.reloading = false;
             this.imgNum = options.img;
-            $rootScope.$on('deadEnemy', function(event, deadEnemy){
-                if(deadEnemy === this.target) {
+            $rootScope.$on('deadEnemy', function (event, deadEnemy) {
+                if (deadEnemy === this.target) {
                     this.target = null;
-                    if(this.particleEmitter){
+                    if (this.particleEmitter) {
                         this.particleEmitter.destroy();
                         this.particleEmitter = null;
                     }
@@ -51,12 +51,12 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
             for (let opt in options) {
                 this[opt] = options[opt];
             }
-            if(this.primaryWeaponConstructor) {
-              this.primaryWeapon = new this.primaryWeaponConstructor(this);
-              this.activeWeapon = this.primaryWeapon;
+            if (this.primaryWeaponConstructor) {
+                this.primaryWeapon = new this.primaryWeaponConstructor(this);
+                this.activeWeapon = this.primaryWeapon;
             }
-            if(this.secondaryWeaponConstructor) {
-              this.secondaryWeapon = new this.secondaryWeaponConstructor(this);
+            if (this.secondaryWeaponConstructor) {
+                this.secondaryWeapon = new this.secondaryWeaponConstructor(this);
             }
 
             let array = [];
@@ -118,6 +118,22 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
             return arr;
         }
 
+        unlockMod(modName, category) {
+            var currentArr;
+            if(category) {
+                currentArr = this.mods[category];
+            } else {
+                currentArr = [];
+                let keys = Object.keys(this.mods);
+                for(let i; i < keys; i++) {
+                    currentArr = currentArr.concat(this.mods[keys[i]]);
+                }
+            }
+            for(let i = 0; i < currentArr.length; i++) {
+                if(currentArr[i].name === modName) currentArr[i].purchased = true;
+            }
+        }
+        
         towerInRange(tower) {
             let distance = Math.sqrt(
                 Math.pow(tower.img.position.x - this.position.img.x, 2) +
@@ -164,25 +180,25 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
 
         terminate() {
             console.log("Terminate is called");
-            console.log("The tower being terminated",this);
+            console.log("The tower being terminated", this);
             stage.removeChild(this.imgContainer);
             console.log("All towers before splice", allTowers);
             allTowers.splice(allTowers.indexOf(this), 1);
             console.log("All towers after splice", allTowers);
             let removalIndex;
             savedTowers.forEach((tower, index) => {
-                if(tower.x === this.position.x && tower.y === this.position.y){
+                if (tower.x === this.position.x && tower.y === this.position.y) {
                     removalIndex = index;
                 }
             })
-            savedTowers.splice(removalIndex,1);
+            savedTowers.splice(removalIndex, 1);
         }
 
         acquireTarget() { //FIXME: should have a better name
             for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
                 if (this.isEnemyInRange(EnemyFactory.enemies[i])) {
                     this.target = EnemyFactory.enemies[i];
-                    if (this.name === "Meteor"){
+                    if (this.name === "Meteor") {
                         StateFactory.sloMo = true;
                         setTimeout(function () {
                             StateFactory.sloMo = false;
@@ -208,7 +224,7 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
             }
             // console.log('reloadTime', this.activeWeapon.reloadTime);
             if (this.target) {
-              // console.log('enemy health', this.target.health);
+                // console.log('enemy health', this.target.health);
                 if (!this.reloading) {
                     this.shoot(this.target);
                     this.reloading = true;
@@ -232,8 +248,9 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
                 effect: 'Fill in',
             });
         }
+
         shoot(enemy) {
-          this.activeWeapon.shoot(enemy);
+            this.activeWeapon.shoot(enemy);
         }
     }
 
@@ -275,12 +292,8 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
                 effect: 'Fill in'
             });
         }
-        swapWeaponTo(weapon) {
-          this.activeWeapon = this.weaponArmory[weapon];
-        }
         shoot(enemy) {
-          console.log('in the shoot');
-          this.activeWeapon.shoot(enemy);
+            this.activeWeapon.shoot(enemy);
         }
     }
 
@@ -403,7 +416,7 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
         }
 
         shoot(enemy) {
-          this.activeWeapon.shoot(enemy);
+            this.activeWeapon.shoot(enemy);
         }
     }
 
@@ -418,15 +431,17 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
                 effect: 'Fill in'
             });
         }
+
         swapToPrimary() {
-          this.activeWeapon = this.weaponArmory.primary;
+            this.activeWeapon = this.weaponArmory.primary;
         }
+
         swapToSecondary() {
-          this.activeWeapon = this.weaponArmory.secondary;
+            this.activeWeapon = this.weaponArmory.secondary;
         }
 
         shoot(enemy) {
-          this.activeWeapon.shoot(enemy);
+            this.activeWeapon.shoot(enemy);
         }
     }
 
@@ -445,12 +460,12 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
         return newTower;
     }
 
-    function removeTower(tower){
-        console.log("Tower being removed in removeTower",tower);
-        console.log("Length",allTowers.length);
-        for(let i = 0; i < allTowers.length; i++){
+    function removeTower(tower) {
+        console.log("Tower being removed in removeTower", tower);
+        console.log("Length", allTowers.length);
+        for (let i = 0; i < allTowers.length; i++) {
             let currentTower = allTowers[i];
-             if(currentTower.position.x === tower.position.x && currentTower.position.y === tower.position.y){
+            if (currentTower.position.x === tower.position.x && currentTower.position.y === tower.position.y) {
                 currentTower.terminate();
                 break;
             }
