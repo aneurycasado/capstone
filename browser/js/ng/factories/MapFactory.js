@@ -1,7 +1,6 @@
 'use strict'
-app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFactory) {
 
-
+app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory, $http) => {
     class GridNode {
         constructor(x, y, opts) {
             this.x = x;
@@ -18,10 +17,13 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
                     this.img.click = SpriteEventFactory.gridClickHandler.bind(this);
                     this.img.position.x = this.coords.x;
                     this.img.position.y = this.coords.y;
+                    this.img.texture.width = StateFactory.cellSize;
                     if(opts.width) this.img.width = opts.width;
                     else this.img.width = StateFactory.cellSize;
                     if(opts.height) this.img.height = opts.height;
                     else this.img.height = StateFactory.cellSize;
+                    this.img.width = StateFactory.cellSize;
+                    this.img.height = StateFactory.cellSize;
                 }
             }
         }
@@ -29,12 +31,9 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
 
     class Map {
         constructor(grid, num){
-            console.log("grid before findpath", grid)
             this.stage = new PIXI.Stage();
             this.paths = Pathfinder(grid);
-            console.log("invoked", this.paths)
             this.grid = insertNodes(grid, this);
-            console.log("after InsertNodes:", grid)
             this.imgSrc = "/images/maps/"+num+".png";
         }
     }
@@ -55,6 +54,9 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
                 if(typeof nodeValue == "number" && nodeValue >= 2 && nodeValue <= 8 && nodeValue !== 4){
                     width = 100;
                     height = 50;
+                if(typeof nodeValue === "number" && nodeValue >= 2 && nodeValue <= 8 && nodeValue !== 4){
+                    width = 80;
+                    height = 40;
                 }
 
                 texture = terrainToTexture[nodeValue];
@@ -71,6 +73,7 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
         }
         return newGrid;
     }
+}
 
 
 
@@ -79,8 +82,6 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
         let bases = [];
         let destination = {};
         let path = [];
-        let gridNodePath = [];
-        let sub_path_lengths = [];
         let finalPath = [];
         let gridRowLength = layout.length; 
         let gridColLength = layout[0].length;
@@ -91,9 +92,8 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
         let OptimalPath = [];
         let returnedPath = [];
         let array_lengths = [];
-        let finalPaths = [];
 
-        let PFwalkableGrid = (function () {
+        let PFwalkableGrid = function () {
             for(let x = 0; x < gridRowLength; x++) {
                 for(let y = 0; y < gridColLength; y++) {
                     if(layout[x][y] === 1 || layout[x][y] === 3 || layout[x][y] === 4) {
@@ -104,11 +104,8 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
                     }
                 }
             }
-        })();
+        };
         
-
-        console.log("barrenPath", barrenPath)
-
         let getStartandEndPts = function () {
             for(let x = 0; x < layout.length; x++) {
                  for(let y = 0; y < layout[x].length; y++) {
@@ -123,22 +120,16 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
              }
         };
 
-        let Pathfinder = (function() {
+        let getPathforEnemy = function() {
+            PFwalkableGrid();
             getStartandEndPts();
-            console.log("StartNodes", bases);
-            console.log("end nodes", destination);
             bases.forEach(function(startNode){
-                console.log("startnodes inside forEach", startNode);
-                console.log("destination inside forEach", destination)
                 let walkablePath = barrenPath.clone();
-                console.log("individual grids", walkablePath)
                 OptimalPath.push(finder.findPath(startNode.y,startNode.x, destination.column, destination.row, walkablePath))
             })
-            console.log("OPtimal Pathgingng", OptimalPath)
             OptimalPath.forEach(function(arr){  
                 array_lengths.push(arr.length);
             })
-            // console.log("OPOPOPOPOOPOPOP", OptimalPath)
             OptimalPath.forEach(function(sub_path){
                 sub_path.forEach(function(coords){
                     let coordinates = {};
@@ -147,17 +138,13 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
                     returnedPath.push(coordinates);
                 })
             })
-            console.log("RP",returnedPath)
             array_lengths.forEach(function(length){
-                finalPaths.push(returnedPath.splice(0, length))
+                finalPath.push(returnedPath.splice(0, length))
             })
-        })();
-        console.log("array_lengths", array_lengths)
-        console.log("OP", finalPaths)
-
-   
-
-        return finalPaths;
+        };
+        
+        getPathforEnemy();
+        return finalPath;
 
     }
 
@@ -175,12 +162,13 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
         platformBR: "19", platformUR: "20",
         platformH: "21", platformV: "22",
         platformX: "16", hangar: "23",
+        base: "turret-base",
     };
 
     let terrainToTexture = {
         0: "none",
         1: "none",
-        3: "base1",
+        3: "base",
         2: ["detail1", "detail2", "detail3"],
         5: ["lights1", "lights2", "lights3", "lights4"],
         6: ["tile1", "tile2", "tile3"],
@@ -194,6 +182,9 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
         "UL": "platformUL",
         "UR": "platformUR",
         "X": "platformX",
+        "B1": "base1",
+        "B2": "base2",
+        "B3": "base3",
     };
 
     let maps = [];
@@ -213,10 +204,22 @@ app.factory('MapFactory', function(StateFactory, DesignFactory, SpriteEventFacto
             })
         })
     }
+
+    const createMap = (mapGrid) => {
+        let grid = [];
+        for(let key in mapGrid){
+            console.log("key",key);
+            grid.push(mapGrid[key]);
+        }
+        console.log("The grid ", grid);
+        maps.push(new Map(grid,4));
+    }
+
+
     return {
         reset,
         Map,
-        maps
+        maps,
+        createMap
     };
-})
-
+});

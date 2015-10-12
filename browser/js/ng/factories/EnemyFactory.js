@@ -1,6 +1,7 @@
 'use strict'
 //FIXME
-app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFactory, SpriteGenFactory) => {
+
+app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, PlayerFactory, SpriteGenFactory) {
 
     let explosionEmitters = [];
     let enemies = [];
@@ -22,7 +23,8 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
     class Enemy {
         constructor(opts) {
             this.particleEmitters = {};
-            this.value = opts.value;
+            this.value = 0;
+            //this.value = opts.value; <---- silly
             this.radius = 10;
             if (opts) {
                 for(let opt in opts){
@@ -30,17 +32,22 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                  }
 
                 Object.assign(this, findRandomPath.call(this, opts));
+
                 this.imgContainer = new PIXI.Container();
-                let array = [];
                 if (opts.img) {
+                    let array = [];
                     let end = findEnd(opts.img);
                     for(let i=1; i < end; i++){
                         let img = PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-" + opts.color +"/" + i.toString() + ".png");
                         array.push(img)
                     }
-                    SpriteGenFactory.attachSprite(this, new PIXI.extras.MovieClip(array));
+                    this.img = new PIXI.extras.MovieClip(array);
                 }
                 this.img.position = this.position;
+                this.img.pivot.x = 0.5;
+                this.img.pivot.y = 0.5;
+                this.img.anchor.x  = 0.5;
+                this.img.anchor.y = 0.5;
                 this.img.animationSpeed = 0.5;
                 this.img.play();
                 if (opts.power) this.power = opts.power;
@@ -48,20 +55,22 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
             this.healthBar = new PIXI.Graphics();
             this.healthBar.beginFill(0xFF0000);
             this.healthBar.drawRect(-20, -25, 40, 2);
-            SpriteGenFactory.attachToContainer(this.imgContainer, this.img, this.healthBar)
+            this.imgContainer.addChild(this.img);
+            this.imgContainer.addChild(this.healthBar);
             this.imgContainer.position = this.position;
             stage.addChild(this.imgContainer);
             this.slowFactor = 1;
             this.maxHealth = this.health;
-
+            this.enemyEncapsulated = {
+                getIndex: this.getIndex,
+                getHealth: this.getHealth,
+                getSpeed: this.getSpeed,
+                getPosition: this.getPosition,
+                name: this.getName()
+            }
         }
 
-        moveTowards(delta) {
-            let xdone = false;
-            let ydone = false;
-
-            let deltaSpeed = this.slowFactor * this.speed * delta;
-
+        moveX(deltaSpeed){
             if(this.position.x > this.path[this.pathIndex].x + deltaSpeed) {
                 if(!this.boss) this.img.rotation = 3.14;
                 this.position.x -= deltaSpeed;
@@ -70,8 +79,14 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 if(!this.boss) this.img.rotation = 3.14*2;
                 this.position.x += deltaSpeed;
             } else{
-                xdone = true;
+                return true;
             }
+
+            return false;
+        }
+
+        moveY(deltaSpeed){
+
             if(this.position.y > this.path[this.pathIndex].y + deltaSpeed) {
                 if(!this.boss) this.img.rotation = (3*3.14) / 2;
                 this.position.y -= deltaSpeed;
@@ -79,14 +94,29 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 this.position.y += deltaSpeed;
                 if(!this.boss) this.img.rotation = 3.14 / 2;
             }else{
-                ydone = true;
+                return true;
             }
+
+            return false;
+
+        }
+
+        moveOnPath(delta) {
+            let xdone = false;
+            let ydone = false;
+
+            let deltaSpeed = this.slowFactor * this.speed * delta;
+
+            xdone = this.moveX(deltaSpeed);
+
+            ydone = this.moveY(deltaSpeed);
+
             if(xdone && ydone){
                 this.pathIndex++;
             }
         }
 
-        terminate(){
+        terminate(explode){
 
 
             for(var i in this.particleEmitters){
@@ -96,8 +126,12 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
             if(enemies.indexOf(this) !== -1) {
                 enemies.splice(enemies.indexOf(this),1);
             }
-            explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', stage, ["core1", "wing1", "eye1", "ball1"]));
-            explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
+
+            if(explode){
+                explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', stage, ["core1", "wing1", "eye1", "ball1"]));
+                explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
+            }
+
             stage.removeChild(this.img);
             stage.removeChild(this.healthBar);
             stage.removeChild(this.imgContainer);
@@ -108,7 +142,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
         }
 
         update(delta){
-            this.moveTowards(delta);
+            this.moveOnPath(delta);
             for(var i in this.particleEmitters){
                 if(this.particleEmitters[i]){
                     this.particleEmitters[i].update(delta);
@@ -123,9 +157,24 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 //     console.log("Game over ", PlayerFactory.health);
                 // }
                 $rootScope.$digest();
-                this.terminate();
+
+                this.terminate(false);
             }
             if(this.poisoned) this.takeDamage(this.poisonDamage);
+            // if(!this.circle){
+            //         this.circle = new PIXI.Graphics();
+            //         this.circle.beginFill(0xFFFF99, 0.4);
+            //         this.circle.lineStyle(2, 0xFFFF99);
+            //         this.circle.drawCircle(this.img.position.x, this.img.position.y, this.radius);
+            //         stage.addChild(this.circle);
+            //     }else{
+            //         stage.removeChild(this.circle);
+            //         this.circle = new PIXI.Graphics();
+            //         this.circle.beginFill(0xFFFF99, 0.4);
+            //         this.circle.lineStyle(2, 0xFFFF99);
+            //         this.circle.drawCircle(this.img.position.x, this.img.position.y, this.radius);
+            //         stage.addChild(this.circle);
+            //     }
         }
 
         takeDamage(damage){
@@ -140,7 +189,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 PlayerFactory.money += this.value;
                 terminatedEnemies.push(this);
                 $rootScope.$digest();
-                this.terminate();
+                this.terminate(true);
             }
         }
         getHealth() {
@@ -155,7 +204,9 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
         getName() {
             return this.constructor.name;
         }
-
+        getIndex() {
+            return enemies.indexOf(this);
+        }
     }
 
      class SmallBugRed extends Enemy {
@@ -164,7 +215,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '1',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 1,
                 speed: 128,
                 health: 10,
                 color: "red"
@@ -178,7 +229,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '1',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 1,
                 speed: 128,
                 health: 10,
                 color: "green"
@@ -193,7 +244,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '1',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 1,
                 speed: 128,
                 health: 10,
                 color: "blue"
@@ -207,7 +258,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '1',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 1,
                 speed: 128,
                 health: 10,
                 color: "yellow"
@@ -221,7 +272,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '2',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 2,
                 speed: 90,
                 health: 30,
                 color: "red"
@@ -235,7 +286,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '2',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 2,
                 speed: 90,
                 health: 30,
                 color: "green"
@@ -249,7 +300,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '2',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 2,
                 speed: 90,
                 health: 30,
                 color: "blue"
@@ -263,7 +314,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '2',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 3,
                 speed: 90,
                 health: 30,
                 color: "yellow"
@@ -277,7 +328,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '3',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 3,
                 speed: 100,
                 health: 100,
                 color: "red"
@@ -291,7 +342,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '3',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 3,
                 speed: 100,
                 health: 100,
                 color: "green"
@@ -305,7 +356,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '3',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 3,
                 speed: 100,
                 health: 100,
                 color: "blue"
@@ -319,7 +370,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '3',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 3,
                 speed: 100,
                 health: 100,
                 color: "yellow"
@@ -333,7 +384,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: 'boss1',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 100,
                 speed: 10,
                 health: 10000,
                 color: 'none',
@@ -341,11 +392,6 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
             });
         }
     }
-
-    let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow,
-                               BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,
-                               SuperBigBugRed,SuperBigBugGreen,SuperBigBugBlue,SuperBigBugYellow,
-                               BossBug};
 
     let createEnemy = (type, path) => {
         let newEnemy;
@@ -373,6 +419,11 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
         terminatedEnemies.length = 0;
     };
 
+
+    let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow,
+                               BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,
+                               SuperBigBugRed,SuperBigBugGreen,SuperBigBugBlue,SuperBigBugYellow,
+                               BossBug};
 
     //adWare, worm
     return {
