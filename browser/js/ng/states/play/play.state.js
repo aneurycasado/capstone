@@ -14,16 +14,16 @@ app.config(($stateProvider) => {
                     }
                     StateFactory.mode = $stateParams.mode;
                 },
-                // maps: (MapElementFactory, MapFactory) => {
-                //     MapElementFactory.getMaps().then((maps) => {
-                //         console.log("maps in resolve in play state", maps);
-                //         maps.forEach((map) => {
-                //             let parsedMap = JSON.parse(map.map);
-                //             MapFactory.createMap(parsedMap);
-                //             console.log("An individual map ",parsedMap);
-                //         })
-                //     })
-                // }
+                maps: (MapElementFactory, MapFactory) => {
+                    MapElementFactory.getMaps().then((maps) => {
+                        console.log("maps in resolve in play state", maps);
+                        maps.forEach((map) => {
+                            let parsedMap = JSON.parse(map.map);
+                            MapFactory.createMap(parsedMap);
+                            //console.log("An individual map ",parsedMap);
+                        })
+                    })
+                }
             },
             controller: 'PlayController'
         });

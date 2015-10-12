@@ -273,6 +273,7 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory, $htt
             console.log("key",key);
             grid.push(mapGrid[key]);
         }
+        console.log("The grid ", grid);
         maps.push(new Map(grid,4));
     }
 
