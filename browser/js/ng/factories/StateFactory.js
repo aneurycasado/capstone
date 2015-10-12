@@ -14,6 +14,7 @@ app.factory('StateFactory', () => {
         //standby: new PIXI.Stage(),
         //complete: new PIXI.Stage()
     };
+    console.log(game.cellSize);
     game.map = null;
     game.sloMoMod = 4;
     game.sloMo = false;

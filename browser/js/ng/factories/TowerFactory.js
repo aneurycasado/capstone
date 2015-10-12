@@ -489,7 +489,6 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
     //         }
     //     }
     // }
->>>>>>> ff745f44146c12e6466ba5655cc6e8db62b449a5
 
     class ThunderTower extends Tower {
         constructor(x, y) {
@@ -568,11 +567,11 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
         }
     }
 
-    let towers = {IceTower, ThunderTower, FireTower, FlameTower, PoisonTower, GasTower, BlizzardTower, MeteorTower};
+    //let towers = {IceTower, ThunderTower, FireTower, FlameTower, PoisonTower, GasTower, BlizzardTower, MeteorTower};
     // let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
     //removed FlameTower, MeteorTower, and BlizzardTower to be refactored into weapons and abilities
     //put back in IceTower
-    //let towers = {IceTower, ThunderTower, FireTower, PoisonTower};
+    let towers = {IceTower, ThunderTower, FireTower, PoisonTower};
 
     function createTower(x, y, name) {
         let towerConstructor = towers[name];
