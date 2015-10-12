@@ -29,7 +29,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
     constructor(opts){
           this.x = 0;
           this.y = 0;
-          this.radius = 0;
+          this.radius = 3;
           this.speed = 1;
           for(let opt in opts){
             this[opt] = opts[opt];
@@ -41,8 +41,26 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
       }
 
       terminate() {
+          if(this.circle) stage.removeChild(this.circle);
           this.particleEmitter.destroy();
           projectiles.splice(projectiles.indexOf(this), 1);
+      }
+
+      update(){
+            // if(!this.circle){
+            //     this.circle = new PIXI.Graphics();
+            //     this.circle.beginFill(0xFF0000, 0.4);
+            //     this.circle.lineStyle(2, 0xFF0000);
+            //     this.circle.drawCircle(this.x, this.y, this.radius);
+            //     stage.addChild(this.circle);
+            // }else{
+            //     stage.removeChild(this.circle);
+            //     this.circle = new PIXI.Graphics();
+            //     this.circle.beginFill(0xFF0000, 0.4);
+            //     this.circle.lineStyle(2, 0xFF0000);
+            //     this.circle.drawCircle(this.x, this.y, this.radius);
+            //     stage.addChild(this.circle);
+            // }
       }
   }
 
@@ -53,6 +71,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
      }
 
      update(delta) {
+         super.update(delta);
          if(checkCircleCollision(this, this.target)){
              this.target.takeDamage(this.power);
              if(this.specialEffect) this.specialEffect();
@@ -91,6 +110,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
     }
 
     update(delta){
+        super.update(delta);
 
         if(this.particleEmitter.noSloMo){
           delta = delta*StateFactory.sloMoMod;
@@ -180,7 +200,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
   class FirePuddle extends Projectile{
     constructor(opts){
       super(opts);
-      this.power = 0.2;
+      this.power = 0.1;
       this.radius = 20;
       this.particleEmitter = ParticleFactory.createEmitter('fire', stage);
       this.particleEmitter.updateOwnerPos(this.x, this.y);
@@ -204,7 +224,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
   class FireProjectile extends HomingProjectile{
       constructor(opts){
         super(opts);
-        this.particleEmitter = ParticleFactory.createEmitter('fire2', stage);
+        this.particleEmitter = ParticleFactory.createEmitter('fire', stage);
         this.particleEmitter.updateOwnerPos(this.x, this.y);
       }
 

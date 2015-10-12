@@ -92,11 +92,11 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
   class FireWeapon extends Weapon {
     constructor(tower) {
       super(tower, 3, 200, "Fire", "Fill in")
-      this.reloadTime = 1000;
+      this.reloadTime = 2000;
       console.log('range', this.range);
     }
     shoot(enemy){
-      super.shoot(enemy, 'FireProjectile', {speed: 50, radius: 0});
+      super.shoot(enemy, 'FireProjectile', {speed: 200, radius: 0});
     }
   }
 
@@ -111,11 +111,11 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
   }
   class PoisonWeapon extends Weapon {
     constructor(tower) {
-      super(tower, 8, 200, 'Poison', 'Fill in');
-      this.reloadTime = 1000;
+      super(tower, 4, 200, 'Poison', 'Fill in');
+      this.reloadTime = 1500;
     }
     shoot(enemy) {
-      super.shoot(enemy, 'PoisonProjectile', {speed: 100, radius: 8})
+      super.shoot(enemy, 'PoisonProjectile', {speed: 150, radius: 8})
     }
   }
 

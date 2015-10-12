@@ -23,7 +23,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     class Enemy {
         constructor(opts) {
             this.particleEmitters = {};
-            this.value = opts.value;
+            this.value = 0;
+            //this.value = opts.value; <---- silly
             this.radius = 10;
             if (opts) {
                 for(let opt in opts){
@@ -60,7 +61,6 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             stage.addChild(this.imgContainer);
             this.slowFactor = 1;
             this.maxHealth = this.health;
-
         }
 
         moveX(deltaSpeed){
@@ -150,9 +150,24 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 //     console.log("Game over ", PlayerFactory.health);
                 // }
                 $rootScope.$digest();
+
                 this.terminate(false);
             }
             if(this.poisoned) this.takeDamage(this.poisonDamage);
+            // if(!this.circle){
+            //         this.circle = new PIXI.Graphics();
+            //         this.circle.beginFill(0xFFFF99, 0.4);
+            //         this.circle.lineStyle(2, 0xFFFF99);
+            //         this.circle.drawCircle(this.img.position.x, this.img.position.y, this.radius);
+            //         stage.addChild(this.circle);
+            //     }else{
+            //         stage.removeChild(this.circle);
+            //         this.circle = new PIXI.Graphics();
+            //         this.circle.beginFill(0xFFFF99, 0.4);
+            //         this.circle.lineStyle(2, 0xFFFF99);
+            //         this.circle.drawCircle(this.img.position.x, this.img.position.y, this.radius);
+            //         stage.addChild(this.circle);
+            //     }
         }
 
         takeDamage(damage){
@@ -191,7 +206,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '1',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 1,
                 speed: 128,
                 health: 10,
                 color: "red"
@@ -205,7 +220,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '1',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 1,
                 speed: 128,
                 health: 10,
                 color: "green"
@@ -220,7 +235,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '1',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 1,
                 speed: 128,
                 health: 10,
                 color: "blue"
@@ -234,7 +249,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '1',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 1,
                 speed: 128,
                 health: 10,
                 color: "yellow"
@@ -248,7 +263,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '2',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 2,
                 speed: 90,
                 health: 30,
                 color: "red"
@@ -262,7 +277,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '2',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 2,
                 speed: 90,
                 health: 30,
                 color: "green"
@@ -276,7 +291,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '2',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 2,
                 speed: 90,
                 health: 30,
                 color: "blue"
@@ -290,7 +305,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '2',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 3,
                 speed: 90,
                 health: 30,
                 color: "yellow"
@@ -304,7 +319,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '3',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 3,
                 speed: 100,
                 health: 100,
                 color: "red"
@@ -318,7 +333,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '3',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 3,
                 speed: 100,
                 health: 100,
                 color: "green"
@@ -332,7 +347,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '3',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 3,
                 speed: 100,
                 health: 100,
                 color: "blue"
@@ -346,7 +361,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '3',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 3,
                 speed: 100,
                 health: 100,
                 color: "yellow"
@@ -360,7 +375,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: 'boss1',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 100,
                 speed: 10,
                 health: 10000,
                 color: 'none',

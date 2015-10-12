@@ -14,6 +14,7 @@ app.factory('StateFactory', function() {
         //standby: new PIXI.Stage(),
         //complete: new PIXI.Stage()
     };
+
     state.map = null;
     state.sloMoMod = 4;
     state.sloMo = false;

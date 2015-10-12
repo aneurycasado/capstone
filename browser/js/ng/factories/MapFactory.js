@@ -16,10 +16,13 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory) => {
                     this.img.click = SpriteEventFactory.gridClickHandler.bind(this);
                     this.img.position.x = this.coords.x;
                     this.img.position.y = this.coords.y;
+                    this.img.texture.width = StateFactory.cellSize;
                     if(opts.width) this.img.width = opts.width;
                     else this.img.width = StateFactory.cellSize;
                     if(opts.height) this.img.height = opts.height;
                     else this.img.height = StateFactory.cellSize;
+                    this.img.width = StateFactory.cellSize;
+                    this.img.height = StateFactory.cellSize;
                 }
             }
         }
@@ -181,8 +184,8 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory) => {
                 let height;
                 let nodeValue = newGrid[row][col];
                 if(typeof nodeValue === "number" && nodeValue >= 2 && nodeValue <= 8 && nodeValue !== 4){
-                    width = 100;
-                    height = 50;
+                    width = 80;
+                    height = 40;
                 }
 
                 texture = terrainToTexture[nodeValue];
@@ -224,12 +227,13 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory) => {
         platformBR: "19", platformUR: "20",
         platformH: "21", platformV: "22",
         platformX: "16", hangar: "23",
+        base: "turret-base",
     };
 
     const terrainToTexture = {
         0: "none",
         1: "none",
-        3: "base1",
+        3: "base",
         2: ["detail1", "detail2", "detail3"],
         5: ["lights1", "lights2", "lights3", "lights4"],
         6: ["tile1", "tile2", "tile3"],
@@ -243,6 +247,9 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory) => {
         "UL": "platformUL",
         "UR": "platformUR",
         "X": "platformX",
+        "B1": "base1",
+        "B2": "base2",
+        "B3": "base3",
     };
 
     let maps = [];

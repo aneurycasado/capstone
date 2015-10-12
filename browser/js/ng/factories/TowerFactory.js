@@ -282,6 +282,125 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
     }
 
+    class FlameTower extends Tower {
+        constructor(x, y){
+                super(x, y, {
+                img: '7',
+                power: 0.2,
+                price: 50,
+                range: 150,
+                name: "Flame",
+                effect: 'Fill in'
+            });
+            this.flameCircleCenters = [];
+            this.numOfFlameCircles = 10;
+            this.flameCircleRadius = 20;
+            this.circles = [];
+         }
+
+         update(delta){
+            this.acquireTarget(); //FIXME
+            if(!this.target){
+                //this.acquireTarget();
+                this.img.stop();
+                //this.target = EnemyFactory.enemies[0];
+            }
+            if(this.target){
+
+                if(!this.isEnemyInRange(this.target)) {
+                    this.target = null;
+                    this.particleEmitter.destroy();
+                    this.particleEmitter = null;
+                }
+                else{
+                    if(!this.particleEmitter){
+                        this.particleEmitter = new ParticleFactory.createEmitter('flame', stage);
+                        this.calcRotation();
+                        this.particleEmitter.updateOwnerPos(this.img.position.x, this.img.position.y);
+                    }
+                    this.calcRotation();
+                    this.particleEmitter.update(delta);
+                    this.calcFlameCircleCenters();
+                    this.dealDamage();
+                }
+                //else
+            }
+        }
+        calcRotation(){
+            this.particleEmitter.rotation = (-57.3 * (Math.atan2((this.target.imgContainer.position.x - this.img.position.x) , (this.target.imgContainer.position.y - this.img.position.y))) + 180);
+        }
+
+        dealDamage(){
+            var self = this;
+            var inFire = false;
+            EnemyFactory.enemies.forEach(function(enemy){
+                self.flameCircleCenters.forEach(function(flameCircleCenter){
+                    if(self.checkRadius(flameCircleCenter, enemy)){
+                        inFire = true;
+                    }
+                });
+                if(inFire) enemy.takeDamage(self.power);
+                inFire = false;
+            });
+        }
+
+        checkRadius(center, enemy){
+              let dx = center.x - enemy.img.position.x;
+              let dy = center.y - enemy.img.position.y;
+              let distance = Math.sqrt(dx * dx + dy * dy);
+              return (distance < this.flameCircleRadius + enemy.radius);
+        }
+
+        calcFlameCircleCenters(){
+            var xDiff = this.target.img.position.x - this.img.position.x;
+            var yDiff = this.target.img.position.y - this.img.position.y;
+            var theta = Math.atan2(xDiff, yDiff);
+            var farthestPoint = {
+                x: this.range*Math.sin(theta),
+                y: this.range*Math.cos(theta),
+            };
+            for(var i = 1; i <= this.numOfFlameCircles; i++){
+                this.flameCircleCenters[i] = {
+                    x: (farthestPoint.x / this.numOfFlameCircles) * i + this.img.position.x,
+                    y: (farthestPoint.y / this.numOfFlameCircles) * i + this.img.position.y
+                };
+                if(!this.circles[i]){
+                    this.circles[i] = new PIXI.Graphics();
+                    this.circles[i].beginFill(0xFF0000, 0.4);
+                    this.circles[i].lineStyle(2, 0xFF0000);
+                    this.circles[i].drawCircle(this.flameCircleCenters[i].x, this.flameCircleCenters[i].y, this.flameCircleRadius);
+                    stage.addChild(this.circles[i]);
+                }else{
+                    stage.removeChild(this.circles[i]);
+                    this.circles[i] = new PIXI.Graphics();
+                    this.circles[i].beginFill(0xFF0000, 0.4);
+                    this.circles[i].lineStyle(2, 0xFF0000);
+                    this.circles[i].drawCircle(this.flameCircleCenters[i].x, this.flameCircleCenters[i].y, this.flameCircleRadius);
+                    stage.addChild(this.circles[i]);
+                }
+            }
+        }
+    }
+
+    // class MeteorTower extends Tower {
+    //     constructor(x, y){
+    //         super(x, y, {
+    //             img: '7',
+    //             power: 10,
+    //             price:50,
+    //             reloadTime: 1000,
+    //             range: 200,
+    //             name: "Meteor",
+    //             effect: 'Fill in'
+    //         });
+    //     }
+    //
+    //     shoot(enemy){
+    //         this.img.play();
+    //         if(!this.projectile) this.projectile = new ProjectileFactory.MeteorProjectile({x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy});
+    //     }
+    // }
+
 
 
     class ThunderTower extends Tower {
@@ -360,7 +479,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             super(x, y, {
                 img: '6',
                 price: 50,
-                range: 200,
+                range: 400,
                 primaryWeaponConstructor: WeaponFactory.PoisonWeapon,
                 name: "Poison",
                 effect: 'Fill in'
@@ -378,6 +497,45 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
     }
 
+    class GasTower extends Tower {
+        constructor(x, y) {
+            super(x, y, {
+                img: '6',
+                power: .1,
+                price: 50,
+                reloadTime: 3000,
+                range: 100,
+                name: 'Gas',
+                effect: 'Fill in'
+            });
+        }
+
+        shoot(enemy){
+            this.img.play();
+            var self = this;
+            this.particleEmitter = ParticleFactory.createEmitter('gas', stage);
+            this.particleEmitter.updateOwnerPos(this.img.position.x, this.img.position.y);
+            EnemyFactory.enemies.forEach(function(enemy){
+                if(self.isEnemyInRange(enemy)){
+                    enemy.poisoned = true;
+                    enemy.poisonDamage = self.power;
+                    if(!enemy.particleEmitters.poison){
+                        enemy.particleEmitters.poison = ParticleFactory.createEmitter('poison', stage);
+                    }
+                }
+            });
+        }
+
+        update(delta){
+            super.update(delta);
+            if(this.particleEmitter){
+                this.particleEmitter.update(delta);
+            }
+        }
+    }
+
+    //let towers = {IceTower, ThunderTower, FireTower, FlameTower, PoisonTower, GasTower, BlizzardTower, MeteorTower};
+    // let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
     //removed FlameTower, MeteorTower, and BlizzardTower to be refactored into weapons and abilities
     //put back in IceTower
     let towers = {IceTower, ThunderTower, FireTower, PoisonTower};
