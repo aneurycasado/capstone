@@ -268,7 +268,6 @@ app.factory('TowerFactory', function ($rootScope, EnemyFactory, ProjectileFactor
           this.activeWeapon = this.weaponArmory[weapon];
         }
         shoot(enemy) {
-          console.log('in the shoot');
           this.activeWeapon.shoot(enemy);
         }
     }

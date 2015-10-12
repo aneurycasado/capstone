@@ -15,10 +15,9 @@ app.directive('editor', function($rootScope) {
             editor.getSession().setMode("ace/mode/javascript");
             editor.focus();
             if(scope.tower) {
-                if(scope.tower.codeSnippet === null) editor.session.setValue('function(context) {}');
+                if(scope.tower.codeSnippet === null) editor.session.setValue('function() {}');
                 else {
                     editor.session.setValue(scope.tower.codeSnippet);
-
                 }
             }
             scope.saveCodeSnippet = function() {
@@ -34,6 +33,3 @@ app.directive('editor', function($rootScope) {
         }
     }
 });
-
-
-
