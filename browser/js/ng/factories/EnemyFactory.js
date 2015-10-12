@@ -370,7 +370,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
             let enemy = enemies[i];
             enemy.terminate();
         };
-        terminatedEnemies.length = [];
+        terminatedEnemies.length = 0;
     };
 
 

@@ -4,6 +4,7 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
                                       $timeout, SpriteGenFactory, WeaponFactory) => {
 
     let allTowers = [];
+    let savedTowers = [];
 
     let stage = new PIXI.Stage();
 
@@ -162,8 +163,19 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
         }
 
         terminate() {
+            console.log("Terminate is called");
+            console.log("The tower being terminated",this);
             stage.removeChild(this.imgContainer);
+            console.log("All towers before splice", allTowers);
             allTowers.splice(allTowers.indexOf(this), 1);
+            console.log("All towers after splice", allTowers);
+            let removalIndex;
+            savedTowers.forEach((tower, index) => {
+                if(tower.x === this.position.x && tower.y === this.position.y){
+                    removalIndex = index;
+                }
+            })
+            savedTowers.splice(removalIndex,1);
         }
 
         acquireTarget() { //FIXME: should have a better name
@@ -194,9 +206,9 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
                 this.img.stop();
                 //this.target = EnemyFactory.enemies[0];
             }
-            console.log('reloadTime', this.activeWeapon.reloadTime);
+            // console.log('reloadTime', this.activeWeapon.reloadTime);
             if (this.target) {
-              console.log('enemy health', this.target.health);
+              // console.log('enemy health', this.target.health);
                 if (!this.reloading) {
                     this.shoot(this.target);
                     this.reloading = true;
@@ -425,33 +437,27 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
     function createTower(x, y, name) {
         let towerConstructor = towers[name];
         let newTower = new towerConstructor(x, y);
-        console.log(newTower);
         let currentGridNode = StateFactory.map.grid[y][x];
         allTowers.push(newTower);
+        savedTowers.push({name: name, x: x, y: y});
         currentGridNode.contains.tower = newTower;
+        console.log("allTower length", allTowers.length)
         return newTower;
     }
 
     function removeTower(tower){
-        let currentGridNode = StateFactory.map.grid[tower.position.y][tower.position.x];
-        let removeIndex = null;
-        allTowers.forEach(function(currentTower,index){
-            console.log("currenTower");
-            if(currentTower.position.x === tower.position.x && currentTower.position.y === tower.position.y){
-                console.log("Found a match");
-                console.log("tower in allTower ", currentTower);
-                console.log("Tower passed in ", tower);
-                removeIndex = index;
+        console.log("Tower being removed in removeTower",tower);
+        console.log("Length",allTowers.length);
+        for(let i = 0; i < allTowers.length; i++){
+            let currentTower = allTowers[i];
+             if(currentTower.position.x === tower.position.x && currentTower.position.y === tower.position.y){
+                currentTower.terminate();
+                break;
             }
-        });
-        let towerToRemove = allTowers[removeIndex];
+        }
+        let currentGridNode = StateFactory.map.grid[tower.position.y][tower.position.x];
         currentGridNode.contains.tower = null;
-        stage.removeChild(towerToRemove.imgContainer);
-        allTowers.splice(removeIndex,1);
     }
-
-
-    // let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
 
     let updateAll = (delta) => {
         allTowers.forEach((tower) => {
@@ -461,7 +467,8 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
     let resetTowers = () => {
 
 
-        allTowers = [];
+        allTowers.length = 0;
+        savedTowers.length = 0;
 
         return allTowers;
     }
@@ -472,7 +479,7 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
         removeTower,
         towers,
         updateAll,
-        // prices,
+        savedTowers,
         stage,
         resetTowers,
     };
