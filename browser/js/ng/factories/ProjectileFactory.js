@@ -140,6 +140,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
       super(opts);
       this.particleEmitter = ParticleFactory.createEmitter('lightningBall', stage);
       this.particleEmitter.updateOwnerPos(this.x, this.y);
+      window.setTimeout(() => this.destroy, 3000);
     }
   }
 
@@ -147,7 +148,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
       constructor(opts){
         super(opts);
         this.slowSpeed = 0.5;
-        this.slowDuration = 1000;
+        this.slowDuration = 2000;
         this.particleEmitter = ParticleFactory.createEmitter('ice', stage);
         this.particleEmitter.updateOwnerPos(this.x, this.y);
       }
