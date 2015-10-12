@@ -35,14 +35,17 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
             this[opt] = opts[opt];
           }
           projectiles.push(this);
-          window.setTimeout(function(){
-            if(projectiles.indexOf(this) !== -1) this.terminate();
-          }.bind(this), 20000);
+          window.setTimeout(() => {
+            if(this) this.terminate();
+          }, 10000);
       }
 
       terminate() {
           if(this.circle) stage.removeChild(this.circle);
-          this.particleEmitter.destroy();
+          if(this.particleEmitter){
+            this.particleEmitter.destroy();
+            this.particleEmitter = null;
+          }
           projectiles.splice(projectiles.indexOf(this), 1);
       }
 
@@ -140,7 +143,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
       super(opts);
       this.particleEmitter = ParticleFactory.createEmitter('lightningBall', stage);
       this.particleEmitter.updateOwnerPos(this.x, this.y);
-      window.setTimeout(() => this.destroy, 3000);
+      window.setTimeout(() => this.terminate(), 3000);
     }
   }
 

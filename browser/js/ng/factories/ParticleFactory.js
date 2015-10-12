@@ -97,7 +97,7 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "normal",
             "frequency": 0.063,
-            "emitterLifetime": 500,
+            "emitterLifetime": 5,
             "maxParticles": 50,
             "pos": {
                 "x": 0,
@@ -149,7 +149,7 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "screen",
             "frequency": 0.02,
-            "emitterLifetime": -1,
+            "emitterLifetime": 10,
             "maxParticles": 150,
             "pos": {
                 "x": 0.5,
@@ -200,7 +200,7 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "normal",
             "frequency": 0.001,
-            "emitterLifetime": -1,
+            "emitterLifetime": 10,
             "maxParticles": 100,
             "pos": {
                 "x": 0,
@@ -302,7 +302,7 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "normal",
             "frequency": 0.0015,
-            "emitterLifetime": -1,
+            "emitterLifetime": 10,
             "maxParticles": 200,
             "pos": {
                 "x": 0,
@@ -353,7 +353,7 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "normal",
             "frequency": 0.001,
-            "emitterLifetime": -1,
+            "emitterLifetime": 300,
             "maxParticles": 1000,
             "pos": {
                 "x": 0,
@@ -405,7 +405,7 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "normal",
             "frequency": 0.001,
-            "emitterLifetime": -1,
+            "emitterLifetime": 5,
             "maxParticles": 100,
             "pos": {
                 "x": 0,
@@ -506,7 +506,7 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "normal",
             "frequency": 0.001,
-            "emitterLifetime": -1,
+            "emitterLifetime": 10,
             "maxParticles": 100,
             "pos": {
                 "x": 0,
@@ -555,7 +555,7 @@ app.factory('ParticleFactory', () => {
                 },
                 "blendMode": "normal",
                 "frequency": 0.001,
-                "emitterLifetime": -1,
+                "emitterLifetime": 10,
                 "maxParticles": 1000,
                 "pos": {
                     "x": 0,
@@ -668,7 +668,7 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "screen",
             "frequency": 0.0001,
-            "emitterLifetime": -1,
+            "emitterLifetime": 3,
             "maxParticles": 300,
             "pos": {
                 "x": 0,
@@ -719,7 +719,7 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "normal",
             "frequency": 0.001,
-            "emitterLifetime": -1,
+            "emitterLifetime": 10,
             "maxParticles": 1000,
             "pos": {
                 "x": 0,
@@ -770,7 +770,7 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "normal",
             "frequency": 0.001,
-            "emitterLifetime": -1,
+            "emitterLifetime": 30,
             "maxParticles": 2000,
             "pos": {
                 "x": 0,
