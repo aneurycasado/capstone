@@ -11,10 +11,10 @@ app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, Game
         $('.toolTipSideBar').tooltip();
     });
     const towersToBuy = [
-                        {name: "Ice", price: 50, effect: "Fill in", imgUrl: "./images/tower-defense-turrets/turret-4-1.png"}, 
-                        {name: "Thunder", price: 50, effect: "Fill in", imgUrl: "./images/tower-defense-turrets/turret-5-1.png"}, 
-                        {name: "Poison", price: 50, effect: "Fill in", imgUrl: "./images/tower-defense-turrets/turret-6-1.png"},
-                        {name: "Fire", price: 50, effect: "Fill in", imgUrl: "./images/tower-defense-turrets/turret-7-1.png"}
+            {name: "Ice", price: 50, effect: "Fill in", imgUrl: "./images/tower-defense-turrets/turret-4-1.png"}, 
+            {name: "Thunder", price: 50, effect: "Fill in", imgUrl: "./images/tower-defense-turrets/turret-5-1.png"}, 
+            {name: "Poison", price: 50, effect: "Fill in", imgUrl: "./images/tower-defense-turrets/turret-6-1.png"},
+            {name: "Fire", price: 50, effect: "Fill in", imgUrl: "./images/tower-defense-turrets/turret-7-1.png"}
     ]
     $scope.playerStats = PlayerFactory;
     $scope.waves = WaveFactory.waves;
@@ -83,6 +83,7 @@ app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, Game
         $scope.currentWave++;
         GameFactory.changeStateTo("wave");
         $scope.state = StateFactory.state;
+        EnemyFactory.terminatedEnemies.length = 0;
         $scope.totalEnemies = WaveFactory.currentWaveLength();
         $scope.enemiesKilled = EnemyFactory.terminatedEnemies.length;
     }
