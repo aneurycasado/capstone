@@ -115,7 +115,7 @@ app.factory('ParticleFactory', () => {
 
         poison: {
             "alpha": {
-                "start": 0.4,
+                "start": 0.6,
                 "end": 0
             },
             "scale": {
@@ -201,7 +201,7 @@ app.factory('ParticleFactory', () => {
             "blendMode": "normal",
             "frequency": 0.001,
             "emitterLifetime": -1,
-            "maxParticles": 1000,
+            "maxParticles": 100,
             "pos": {
                 "x": 0,
                 "y": 0
@@ -268,42 +268,42 @@ app.factory('ParticleFactory', () => {
 
         fire: {
             "alpha": {
-                "start": 0.62,
+                "start": 0.24,
                 "end": 0
             },
             "scale": {
-                "start": 0.02,
-                "end": 0.5,
+                "start": 0.15,
+                "end": 0.45,
                 "minimumScaleMultiplier": 1
             },
             "color": {
-                "start": "#fff191 ",
-                "end": "#ff622c "
+                "start": "#fff191",
+                "end": "#ff7029"
             },
             "speed": {
-                "start": 500,
-                "end": 500
+                "start": 100,
+                "end": 10
             },
             "acceleration": {
                 "x": 0,
                 "y": 0
             },
             "startRotation": {
-                "min": 265,
-                "max": 275
+                "min": 260,
+                "max": 280
             },
             "rotationSpeed": {
                 "min": 50,
                 "max": 50
             },
             "lifetime": {
-                "min": 0.02,
-                "max": 0.02
+                "min": 0.05,
+                "max": 0.1
             },
             "blendMode": "normal",
-            "frequency": 0.001,
-            "emitterLifetime": 2000,
-            "maxParticles": 1000,
+            "frequency": 0.0015,
+            "emitterLifetime": -1,
+            "maxParticles": 200,
             "pos": {
                 "x": 0,
                 "y": 0
@@ -312,8 +312,8 @@ app.factory('ParticleFactory', () => {
             "spawnType": "circle",
             "spawnCircle": {
                 "x": 0,
-                "y": 0,
-                "r": 4
+                "y": 20,
+                "r": 10
             }
         },
 
@@ -371,7 +371,7 @@ app.factory('ParticleFactory', () => {
 
         fire2: {
             "alpha": {
-                "start": 0.6,
+                "start": 0.9,
                 "end": 0
             },
             "scale": {
@@ -406,7 +406,7 @@ app.factory('ParticleFactory', () => {
             "blendMode": "normal",
             "frequency": 0.001,
             "emitterLifetime": -1,
-            "maxParticles": 1000,
+            "maxParticles": 100,
             "pos": {
                 "x": 0,
                 "y": 0
@@ -507,7 +507,7 @@ app.factory('ParticleFactory', () => {
             "blendMode": "normal",
             "frequency": 0.001,
             "emitterLifetime": -1,
-            "maxParticles": 1000,
+            "maxParticles": 100,
             "pos": {
                 "x": 0,
                 "y": 0
@@ -788,7 +788,7 @@ app.factory('ParticleFactory', () => {
     };
 
     let particleImageTable = {
-        fire: [1, 2],
+        fire: [6],
         ice: [3],
         poison: [4],
         damageSparks: [5],

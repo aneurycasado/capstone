@@ -512,7 +512,7 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
             super(x, y, {
                 img: '6',
                 price: 50,
-                range: 200,
+                range: 400,
                 primaryWeaponConstructor: WeaponFactory.PoisonWeapon,
                 name: "Poison",
                 effect: 'Fill in'

@@ -183,7 +183,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '1',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 1,
                 speed: 128,
                 health: 10,
                 color: "red"
@@ -197,7 +197,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '1',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 1,
                 speed: 128,
                 health: 10,
                 color: "green"
@@ -212,7 +212,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '1',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 1,
                 speed: 128,
                 health: 10,
                 color: "blue"
@@ -226,7 +226,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '1',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 1,
                 speed: 128,
                 health: 10,
                 color: "yellow"
@@ -240,7 +240,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '2',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 2,
                 speed: 90,
                 health: 30,
                 color: "red"
@@ -254,7 +254,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '2',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 2,
                 speed: 90,
                 health: 30,
                 color: "green"
@@ -268,7 +268,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '2',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 2,
                 speed: 90,
                 health: 30,
                 color: "blue"
@@ -282,7 +282,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '2',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 3,
                 speed: 90,
                 health: 30,
                 color: "yellow"
@@ -296,7 +296,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '3',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 3,
                 speed: 100,
                 health: 100,
                 color: "red"
@@ -310,7 +310,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '3',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 3,
                 speed: 100,
                 health: 100,
                 color: "green"
@@ -324,7 +324,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '3',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 3,
                 speed: 100,
                 health: 100,
                 color: "blue"
@@ -338,7 +338,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: '3',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 3,
                 speed: 100,
                 health: 100,
                 color: "yellow"
@@ -352,7 +352,7 @@ app.factory('EnemyFactory', ($rootScope, ParticleFactory, StateFactory, PlayerFa
                 img: 'boss1',
                 power: 2,
                 path: opts.path,
-                value: 5,
+                value: 100,
                 speed: 10,
                 health: 10000,
                 color: 'none',

@@ -204,7 +204,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
   class FirePuddle extends Projectile{
     constructor(opts){
       super(opts);
-      this.power = 0.2;
+      this.power = 0.1;
       this.radius = 20;
       this.particleEmitter = ParticleFactory.createEmitter('fire', stage);
       this.particleEmitter.updateOwnerPos(this.x, this.y);
@@ -228,7 +228,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
   class FireProjectile extends HomingProjectile{
       constructor(opts){
         super(opts);
-        this.particleEmitter = ParticleFactory.createEmitter('fire2', stage);
+        this.particleEmitter = ParticleFactory.createEmitter('fire', stage);
         this.particleEmitter.updateOwnerPos(this.x, this.y);
       }
 
