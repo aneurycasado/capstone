@@ -66,7 +66,7 @@ app.factory('DesignFactory', () => {
     ]
 
     return {
-        mapGrid1,
+        mapGrid1: angular.copy(mapGrid1),
         mapGrid2,
         mapGrid3,
         blankMap
