@@ -1,4 +1,4 @@
-app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyFactory, StateFactory) {
+app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyFactory, StateFactory, LightningFactory) {
   class Weapon {
     constructor(tower, power, range, name, effect) {
       this.tower = tower;
@@ -13,6 +13,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
         options.x = this.tower.img.position.x;
         options.y = this.tower.img.position.y;
         options.enemy = enemy;
+        console.log(options.speed);
         new ProjectileFactory[projectile](options);
     }
   }
@@ -201,6 +202,100 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
 
     // }
 
+  class BlizzardWeapon extends Weapon {
+      constructor(tower) {
+          super(tower, .0001, null, 'Blizzard', 'Fill in');
+          this.ultimate = true;
+          this.sloMoTime = 3500;
+      }
+
+      shoot(enemy){
+          this.tower.img.play();
+          new ProjectileFactory.BlizzardProjectile({
+              power: this.power,
+              x: this.tower.img.position.x, 
+              y: this.tower.img.position.y,
+              speed: 0,
+              radius: 200,
+              enemy: enemy
+          });
+
+          StateFactory.sloMo = true;
+          setTimeout(function() {
+              StateFactory.sloMo = false;
+          }, this.sloMoTime);
+      }
+  }
+
+  class BlizzardWeapon extends Weapon {
+    constructor(tower) {
+        super(tower, .0001, null, 'Blizzard', 'Fill in');
+        this.ultimate = true;
+        this.sloMoTime = 3500;
+    }
+
+    shoot(enemy){
+        this.tower.img.play();
+        new ProjectileFactory.BlizzardProjectile({
+            power: this.power,
+            x: this.tower.img.position.x, 
+            y: this.tower.img.position.y,
+            speed: 0,
+            radius: 200,
+            enemy: enemy
+        });
+
+        StateFactory.sloMo = true;
+        setTimeout(function() {
+            StateFactory.sloMo = false;
+        }, this.sloMoTime);
+    }
+  }
+
+  class LightningWeapon extends Weapon {
+    constructor(tower) {
+        super(tower, 1, null, 'Lightning', 'Fill in');
+        this.ultimate = true;
+        this.sloMoTime = 400;
+    }
+
+    shoot(enemy) {
+        this.tower.img.play();
+
+        setTimeout(function(){
+            var start = new LightningFactory.Yals.Vector2D(enemy.position.x, -100);
+            var end = new LightningFactory.Yals.Vector2D(enemy.position.x, enemy.position.y);
+
+            lightnings.push( new LightningFactory.BranchLightning(start,end, '#FFFFFF', 6) );
+            enemy.terminate(true);
+
+
+        }.bind(this), 250);
+
+        StateFactory.sloMo = true;
+        setTimeout(function() {
+            StateFactory.sloMo = false;
+        }, this.sloMoTime);
+
+    }
+
+  }
+
+  let lightnings = [];
+
+  let updateLightnings = function(){
+      $(StateFactory.renderer.view).css({'z-index' : '1'})
+      $(LightningFactory.scene.canvasElement).css({'z-index' : '2'});
+
+      LightningFactory.ctx.clearRect(0, 0, LightningFactory.scene.width, LightningFactory.scene.width);
+      lightnings.forEach(function(branch){
+          branch.update();
+          branch.render(LightningFactory.ctx);
+      });
+     
+  }
+
+
 
   return {
     FlameWeapon,
@@ -208,6 +303,9 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     PoisonWeapon,
     FireWeapon,
     IceWeapon,
-    MeteorWeapon
+    MeteorWeapon,
+    BlizzardWeapon,
+    LightningWeapon,
+    updateLightnings,
   };
 });
