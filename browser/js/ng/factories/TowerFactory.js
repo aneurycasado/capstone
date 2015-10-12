@@ -243,6 +243,8 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 price: 50,
                 // range: 200,
                 primaryWeaponConstructor: WeaponFactory.IceWeapon,
+                // secondaryWeaponConstructor: WeaponFactory.FlameWeapon,
+                ultimateWeaponConstructor: WeaponFactory.BlizzardWeapon,
                 name: "Ice",
                 effect: 'Fill in',
             });
@@ -337,60 +339,69 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             this.activeWeapon.shoot(enemy);
         }
 
+     }
 
-    }
+//     class LightningTower extends Tower {
+//         constructor(x, y) {
+//             super(x, y, {
+//                 img: '5',
+//                 power: 30,
+//                 price: 50,
+//                 range: 120,
+//                 reloadTime: 300,
+//                 name: "Lightning",
+//                 effect: 'Fill in'
+//             });
 
-    class LightningTower extends Tower {
-        constructor(x, y) {
-            super(x, y, {
-                img: '5',
-                power: 30,
-                price: 50,
-                range: 120,
-                reloadTime: 300,
-                name: "Lightning",
-                effect: 'Fill in'
-            });
+//             this.ultimate = true;
+//             this.sloMoTime = 400;
+//         }
+//         // shoot(enemy) {
+//         //     this.tower.img.play();
 
-            this.ultimate = true;
-            this.sloMoTime = 400;
-        }
-        shoot(enemy) {
-            this.tower.img.play();
+//         //     setTimeout(function(){
+//         //         var start = new LightningFactory.Yals.Vector2D(enemy.position.x, -100);
+//         //         var end = new LightningFactory.Yals.Vector2D(enemy.position.x, enemy.position.y);
 
-            setTimeout(function(){
-                var start = new LightningFactory.Yals.Vector2D(enemy.position.x, -100);
-                var end = new LightningFactory.Yals.Vector2D(enemy.position.x, enemy.position.y);
-
-                this.proj = new LightningFactory.BranchLightning(start,end, '#FFFFFF', 6);
-                enemy.terminate(true);
+//         //         this.proj = new LightningFactory.BranchLightning(start,end, '#FFFFFF', 6);
+//         //         enemy.terminate(true);
 
 
-            }.bind(this), 250)
+//         //     }.bind(this), 250)
 
-        }
+//         // }
 
-        update(){
-            super.update();
+//         // update(){
+//         //     super.update();
 
-            if (this.proj) {
+// <<<<<<< HEAD
+//         //     if (this.proj) {
+                
+//         //         this.proj.update();
+// =======
+//             if (this.proj) {
 
-                this.proj.update();
+//                 this.proj.update();
+// >>>>>>> 7eda97d45381c9c9a9d068acca049735b7cb9395
 
-            }
+//         //     }
 
-            LightningFactory.ctx.clearRect(0, 0, LightningFactory.scene.width, LightningFactory.scene.width);
-            if (this.proj){
+//         //     LightningFactory.ctx.clearRect(0, 0, LightningFactory.scene.width, LightningFactory.scene.width);
+//         //     if (this.proj){
 
-                $(StateFactory.renderer.view).css({'z-index' : '1'})
-                $(LightningFactory.scene.canvasElement).css({'z-index' : '2'});
+//         //         $(StateFactory.renderer.view).css({'z-index' : '1'})
+//         //         $(LightningFactory.scene.canvasElement).css({'z-index' : '2'});
 
-                this.proj.render(LightningFactory.ctx);
+//         //         this.proj.render(LightningFactory.ctx);
 
-            }
+// <<<<<<< HEAD
+//         //     } 
+// =======
+//             }
+// >>>>>>> 7eda97d45381c9c9a9d068acca049735b7cb9395
 
-        }
-    }
+//         // }
+//     }
 
     class PoisonTower extends Tower {
         constructor(x, y) {

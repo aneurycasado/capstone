@@ -16,11 +16,9 @@ app.config(($stateProvider) => {
                 },
                 maps: (MapElementFactory, MapFactory) => {
                     MapElementFactory.getMaps().then((maps) => {
-                        console.log("maps in resolve in play state", maps);
                         maps.forEach((map) => {
                             let parsedMap = JSON.parse(map.map);
                             MapFactory.createMap(parsedMap);
-                            //console.log("An individual map ",parsedMap);
                         })
                     })
                 }
@@ -31,11 +29,14 @@ app.config(($stateProvider) => {
 
 app.controller("PlayController", function ($scope, player, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, SpriteEventFactory, ProjectileFactory, GameFactory) {
     $scope.mode = StateFactory.mode;
+    console.log("StateFactory", StateFactory.mode);
+    console.log("PlayController", player);
     $scope.player = player;
-    if($scope.player.game.mode){
+    if($scope.player.player !== "notLoggedIn" && $scope.player.game.mode){
         StateFactory.mode = $scope.player.game.mode;
         WaveFactory.init();
     }
+    console.log("We reached here");
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(StateFactory.width, StateFactory.height, StateFactory.canvas);
     $("#mainContainer").append(StateFactory.renderer.view);
