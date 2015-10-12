@@ -5,7 +5,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #000000;
+/*  background-color: #000000;*/
   width: 100%
 }
 
@@ -15,6 +15,11 @@ img {
 }
 
 #mainContainer {
+  margin: 0 auto;
+  width: 1000px;
+}
+
+#mainContainerCreateMap {
   margin: 0 auto;
   width: 1000px;
 }

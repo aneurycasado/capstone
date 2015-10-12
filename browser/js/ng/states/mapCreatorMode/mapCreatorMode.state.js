@@ -12,7 +12,7 @@ app.controller("MapCreatorModeController", ($scope,$state, StateFactory, SpriteE
     StateFactory.map = blankMap;
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(StateFactory.width, StateFactory.height, StateFactory.canvas);
-    $("#mapCreatorMainContainer").append(StateFactory.renderer.view);
+    $("#mainContainerCreateMap").append(StateFactory.renderer.view);
     StateFactory.stages.newMap = new PIXI.Stage();
     let bg = new PIXI.Sprite(PIXI.Texture.fromImage("/images/bg.png"));
     bg.interactive = true;
