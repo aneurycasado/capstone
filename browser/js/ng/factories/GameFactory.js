@@ -3,6 +3,7 @@
 app.factory('GameFactory', ($rootScope, WaveFactory, EnemyFactory, PlayerFactory, ParticleFactory, MapFactory, ProjectileFactory, StateFactory, TowerFactory) => {
     let data = StateFactory;
     let loop = then => {
+        //console.log(data.mode);
         let now = Date.now();
         let delta = (now - then) / 1000;
 
@@ -33,6 +34,11 @@ app.factory('GameFactory', ($rootScope, WaveFactory, EnemyFactory, PlayerFactory
             } else if(PlayerFactory.health <= 0){
                 changeStateTo('gameOver');
             }
+        }
+        if(data.mode === "savedGame"){
+            console.log("Called");
+            $rootScope.$emit("loadGame");
+            data.mode = $scope.player.game.mode;
         }
         // if (data.state === 'complete') {
 

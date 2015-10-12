@@ -45,7 +45,7 @@ app.factory('WaveFactory', ($rootScope,EnemyFactory, StateFactory) => {
             numOfWaves = 10;
         }
         for(let i = 1; i <= numOfWaves; i++){
-            let wave = generateWaveSurvival(waves,numOfWaves);
+            let wave = generateWaveSurvival(newWaves,numOfWaves);
             newWaves.push(wave);
         }
         return newWaves;
@@ -53,8 +53,7 @@ app.factory('WaveFactory', ($rootScope,EnemyFactory, StateFactory) => {
     const generateWaveSurvival = (newWaves,numOfWaves) => {
         let wave = [];
         let enemies = ['SmallBugRed', 'SmallBugGreen', 'SmallBugBlue', 'SmallBugYellow', 'BigBugRed' ,'BigBugGreen' ,'BigBugBlue' ,'BigBugYellow' ,'SuperBigBugRed', 'SuperBigBugGreen', 'SuperBigBugBlue', 'SuperBigBugYellow']
-        let numOfEnemies = newWaves.length * 5;
-        if(numOfEnemies === 0) numOfEnemies = 50
+        let numOfEnemies = (newWaves.length + 1) * 5;
         if(newWaves.length <= (numOfWaves / 10)){
             for(let i = 0; i < numOfEnemies; i++){
                 let enemyindex = randomInt(0,3);

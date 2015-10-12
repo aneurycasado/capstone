@@ -71,7 +71,8 @@ app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, Game
             currentWave: $scope.currentWave,
             totalEnemiesKilled: $scope.totalEnemiesKilled,
             mapNum: $scope.mapNum,
-            towers: TowerFactory.savedTowers
+            towers: TowerFactory.savedTowers,
+            mode: StateFactory.mode,
         };
         PlayerFactory.saveGame(player).then((savedInfo) => {
             console.log("Saved Info ", savedInfo);
