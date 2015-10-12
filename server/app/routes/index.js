@@ -3,6 +3,7 @@ var router = require('express').Router();
 module.exports = router;
 
 router.use('/players', require('./players'));
+router.use('/maps', require('./maps'));
 
 // Make sure this is after all of
 // the registered routes!
