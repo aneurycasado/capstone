@@ -6,16 +6,16 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
 
     let stage = new PIXI.Stage();
 
-    let burst = function() {
+    let burst = function () {
         let self = this;
         let temp = self.activeWeapon.reloadTime;
         self.activeWeapon.reloadTime = self.activeWeapon.reloadTime / 3;
-        $timeout(function() {
+        $timeout(function () {
             self.activeWeapon.reloadTime = temp;
         }, 3000);
     }
     let launchUltimate = function() {
-        this.ultimateWeapon.shoot(this.target);    
+        this.ultimateWeapon.shoot(this.target);
     }
 
     //name, functionToRun, context, coolDownPeriod, time=Date.now(), purchased=false
@@ -27,10 +27,10 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             this.kills = 0;
             this.reloading = false;
             this.imgNum = options.img;
-            $rootScope.$on('deadEnemy', function(event, deadEnemy){
-                if(deadEnemy === this.target) {
+            $rootScope.$on('deadEnemy', function (event, deadEnemy) {
+                if (deadEnemy === this.target) {
                     this.target = null;
-                    if(this.particleEmitter){
+                    if (this.particleEmitter) {
                         this.particleEmitter.destroy();
                         this.particleEmitter = null;
                     }
@@ -53,12 +53,12 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             for (let opt in options) {
                 this[opt] = options[opt];
             }
-            if(this.primaryWeaponConstructor) {
-              this.primaryWeapon = new this.primaryWeaponConstructor(this);
-              this.activeWeapon = this.primaryWeapon;
+            if (this.primaryWeaponConstructor) {
+                this.primaryWeapon = new this.primaryWeaponConstructor(this);
+                this.activeWeapon = this.primaryWeapon;
             }
-            if(this.secondaryWeaponConstructor) {
-              this.secondaryWeapon = new this.secondaryWeaponConstructor(this);
+            if (this.secondaryWeaponConstructor) {
+                this.secondaryWeapon = new this.secondaryWeaponConstructor(this);
             }
             if(this.ultimateWeaponConstructor) {
                 this.ultimateWeapon = new this.ultimateWeaponConstructor(this);
@@ -87,7 +87,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             if (this.target) {
                 //console.log(this.target.getSpeed());
                 return {
-                    enemyIndex: EnemyFactory.enemies.indexOf(this.target),
+                    index: EnemyFactory.enemies.indexOf(this.target),
                     health: this.target.getHealth(),
                     speed: this.target.getSpeed(),
                     position: this.target.getPosition(),
@@ -102,25 +102,43 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
 
 
-        setTargetBasedOnIndex(index) {
-            this.setTarget(EnemyFactory.enemies[index]);
+        setTargetBasedOnIndex(enemy) {
+            this.setTarget(EnemyFactory.enemies[enemy.index]);
         }
 
         getEnemies() {
+            //let enemiesArr = [];
             let enemies = EnemyFactory.enemies;
             let arr = [];
             for (let i = enemies.length - 1; i >= 0; i--) {
                 if (this.isEnemyInRange(enemies[i])) {
-                    arr.push({
-                        enemyIndex: i,
-                        health: enemies[i].getHealth(),
-                        speed: enemies[i].getSpeed(),
-                        position: enemies[i].getPosition(),
-                        name: enemies[i].getName()
-                    })
+                    arr.push(enemies[i].enemyEncapsulated)
                 }
             }
             return arr;
+        }
+
+        unlockMod(modName, category) {
+            var currentArr;
+            if (category) {
+                currentArr = this.mods[category];
+            } else {
+                currentArr = [];
+                let keys = Object.keys(this.mods);
+                for (let i; i < keys; i++) {
+                    currentArr = currentArr.concat(this.mods[keys[i]]);
+                }
+            }
+            for (let i = 0; i < currentArr.length; i++) {
+                if (currentArr[i].name === modName) currentArr[i].purchased = true;
+            }
+        }
+        swapToSecondary() {
+            this.activeWeapon = this.secondaryWeapon;
+        }
+
+        swapToPrimary() {
+            this.activeWeapon = this.primaryWeapon;
         }
 
         towerInRange(tower) {
@@ -169,25 +187,24 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
 
         terminate() {
             console.log("Terminate is called");
-            console.log("The tower being terminated",this);
+            console.log("The tower being terminated", this);
             stage.removeChild(this.imgContainer);
             console.log("All towers before splice", allTowers);
             allTowers.splice(allTowers.indexOf(this), 1);
             console.log("All towers after splice", allTowers);
             let removalIndex;
             savedTowers.forEach((tower, index) => {
-                if(tower.x === this.position.x && tower.y === this.position.y){
+                if (tower.x === this.position.x && tower.y === this.position.y) {
                     removalIndex = index;
                 }
             })
-            savedTowers.splice(removalIndex,1);
+            savedTowers.splice(removalIndex, 1);
         }
 
         acquireTarget() { //FIXME: should have a better name
             for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
                 if (this.isEnemyInRange(EnemyFactory.enemies[i])) {
                     this.target = EnemyFactory.enemies[i];
-
                     return true;
                 }
             }
@@ -206,7 +223,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             }
             // console.log('reloadTime', this.activeWeapon.reloadTime);
             if (this.target) {
-              // console.log('enemy health', this.target.health);
+                // console.log('enemy health', this.target.health);
                 if (!this.reloading) {
                     this.shoot(this.target);
                     this.reloading = true;
@@ -230,8 +247,9 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 effect: 'Fill in',
             });
         }
+
         shoot(enemy) {
-          this.activeWeapon.shoot(enemy);
+            this.activeWeapon.shoot(enemy);
         }
     }
 
@@ -275,112 +293,12 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 effect: 'Fill in'
             });
         }
+        shoot(enemy) {
+            this.activeWeapon.shoot(enemy);
 
-        shoot(enemy){
-            this.img.play();
-            new ProjectileFactory.FireProjectile({x: this.img.position.x, y: this.img.position.y, speed: 50, radius: 0, enemy: enemy});
         }
     }
 
-    class FlameTower extends Tower {
-        constructor(x, y){
-                super(x, y, {
-                img: '7',
-                power: 0.2,
-                price: 50,
-                range: 150,
-                name: "Flame",
-                effect: 'Fill in'
-            });
-            this.flameCircleCenters = [];
-            this.numOfFlameCircles = 10;
-            this.flameCircleRadius = 20;
-            this.circles = [];
-         }
-
-         update(delta){
-            this.acquireTarget(); //FIXME
-            if(!this.target){
-                //this.acquireTarget();
-                this.img.stop();
-                //this.target = EnemyFactory.enemies[0];
-            }
-            if(this.target){
-
-                if(!this.isEnemyInRange(this.target)) {
-                    this.target = null;
-                    this.particleEmitter.destroy();
-                    this.particleEmitter = null;
-                }
-                else{
-                    if(!this.particleEmitter){
-                        this.particleEmitter = new ParticleFactory.createEmitter('flame', stage);
-                        this.calcRotation();
-                        this.particleEmitter.updateOwnerPos(this.img.position.x, this.img.position.y);
-                    }
-                    this.calcRotation();
-                    this.particleEmitter.update(delta);
-                    this.calcFlameCircleCenters();
-                    this.dealDamage();
-                }
-                //else
-            }
-        }
-        calcRotation(){
-            this.particleEmitter.rotation = (-57.3 * (Math.atan2((this.target.imgContainer.position.x - this.img.position.x) , (this.target.imgContainer.position.y - this.img.position.y))) + 180);
-        }
-
-        dealDamage(){
-            var self = this;
-            var inFire = false;
-            EnemyFactory.enemies.forEach(function(enemy){
-                self.flameCircleCenters.forEach(function(flameCircleCenter){
-                    if(self.checkRadius(flameCircleCenter, enemy)){
-                        inFire = true;
-                    }
-                });
-                if(inFire) enemy.takeDamage(self.power);
-                inFire = false;
-            });
-        }
-
-        checkRadius(center, enemy){
-              let dx = center.x - enemy.img.position.x;
-              let dy = center.y - enemy.img.position.y;
-              let distance = Math.sqrt(dx * dx + dy * dy);
-              return (distance < this.flameCircleRadius + enemy.radius);
-        }
-
-        calcFlameCircleCenters(){
-            var xDiff = this.target.img.position.x - this.img.position.x;
-            var yDiff = this.target.img.position.y - this.img.position.y;
-            var theta = Math.atan2(xDiff, yDiff);
-            var farthestPoint = {
-                x: this.range*Math.sin(theta),
-                y: this.range*Math.cos(theta),
-            };
-            for(var i = 1; i <= this.numOfFlameCircles; i++){
-                this.flameCircleCenters[i] = {
-                    x: (farthestPoint.x / this.numOfFlameCircles) * i + this.img.position.x,
-                    y: (farthestPoint.y / this.numOfFlameCircles) * i + this.img.position.y
-                };
-                if(!this.circles[i]){
-                    this.circles[i] = new PIXI.Graphics();
-                    this.circles[i].beginFill(0xFF0000, 0.4);
-                    this.circles[i].lineStyle(2, 0xFF0000);
-                    this.circles[i].drawCircle(this.flameCircleCenters[i].x, this.flameCircleCenters[i].y, this.flameCircleRadius);
-                    stage.addChild(this.circles[i]);
-                }else{
-                    stage.removeChild(this.circles[i]);
-                    this.circles[i] = new PIXI.Graphics();
-                    this.circles[i].beginFill(0xFF0000, 0.4);
-                    this.circles[i].lineStyle(2, 0xFF0000);
-                    this.circles[i].drawCircle(this.flameCircleCenters[i].x, this.flameCircleCenters[i].y, this.flameCircleRadius);
-                    stage.addChild(this.circles[i]);
-                }
-            }
-        }
-    }
 
     // class MeteorTower extends Tower {
     //     constructor(x, y){
@@ -416,10 +334,10 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
 
         shoot(enemy) {
-          this.activeWeapon.shoot(enemy);
+            this.activeWeapon.shoot(enemy);
         }
 
-     
+
     }
 
     class LightningTower extends Tower {
@@ -456,7 +374,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             super.update();
 
             if (this.proj) {
-                
+
                 this.proj.update();
 
             }
@@ -469,7 +387,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
 
                 this.proj.render(LightningFactory.ctx);
 
-            } 
+            }
 
         }
     }
@@ -485,15 +403,17 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 effect: 'Fill in'
             });
         }
+
         swapToPrimary() {
-          this.activeWeapon = this.weaponArmory.primary;
+            this.activeWeapon = this.weaponArmory.primary;
         }
+
         swapToSecondary() {
-          this.activeWeapon = this.weaponArmory.secondary;
+            this.activeWeapon = this.weaponArmory.secondary;
         }
 
         shoot(enemy) {
-          this.activeWeapon.shoot(enemy);
+            this.activeWeapon.shoot(enemy);
         }
     }
 
@@ -551,12 +471,12 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         return newTower;
     }
 
-    function removeTower(tower){
-        console.log("Tower being removed in removeTower",tower);
-        console.log("Length",allTowers.length);
-        for(let i = 0; i < allTowers.length; i++){
+    function removeTower(tower) {
+        console.log("Tower being removed in removeTower", tower);
+        console.log("Length", allTowers.length);
+        for (let i = 0; i < allTowers.length; i++) {
             let currentTower = allTowers[i];
-             if(currentTower.position.x === tower.position.x && currentTower.position.y === tower.position.y){
+            if (currentTower.position.x === tower.position.x && currentTower.position.y === tower.position.y) {
                 currentTower.terminate();
                 break;
             }
