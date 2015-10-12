@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<!-- saved from url=(0040)https://github.com/asyncly/EventEmitter2 -->
+<html lang="en" class=" is-copy-enabled"><head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object# article: http://ogp.me/ns/article# profile: http://ogp.me/ns/profile#"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="viewport" content="width=1020">
+    
+    
+    <title>asyncly/EventEmitter2</title>
+    <link rel="search" type="application/opensearchdescription+xml" href="https://github.com/opensearch.xml" title="GitHub">
+    <link rel="fluid-icon" href="https://github.com/fluidicon.png" title="GitHub">
+    <link rel="apple-touch-icon" sizes="57x57" href="https://github.com/apple-touch-icon-114.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="https://github.com/apple-touch-icon-114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="https://github.com/apple-touch-icon-144.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="https://github.com/apple-touch-icon-144.png">
+    <meta property="fb:app_id" content="1401488693436528">
+
+      <meta content="@github" name="twitter:site"><meta content="summary" name="twitter:card"><meta content="asyncly/EventEmitter2" name="twitter:title"><meta content="EventEmitter2 - A nodejs event emitter implementation with namespaces, wildcards, TTL, works in the browser" name="twitter:description"><meta content="https://avatars3.githubusercontent.com/u/1173911?v=3&amp;s=400" name="twitter:image:src">
+      <meta content="GitHub" property="og:site_name"><meta content="object" property="og:type"><meta content="https://avatars3.githubusercontent.com/u/1173911?v=3&amp;s=400" property="og:image"><meta content="asyncly/EventEmitter2" property="og:title"><meta content="https://github.com/asyncly/EventEmitter2" property="og:url"><meta content="EventEmitter2 - A nodejs event emitter implementation with namespaces, wildcards, TTL, works in the browser" property="og:description">
+      <meta name="browser-stats-url" content="https://api.github.com/_private/browser/stats">
+    <meta name="browser-errors-url" content="https://api.github.com/_private/browser/errors">
+    <link rel="assets" href="https://assets-cdn.github.com/">
+    <link rel="web-socket" href="wss://live.github.com/_sockets/MTA0NDU5MjY6YzUyN2QxMzk4ODZiMWI0YTQyMTc4MGJhZWIwMTk5ZTc6YWUxZmE0OTFkZmZlNDAyNDE5MTcyNWFlOGYwZjAyMjFmZGJjOTcyZDQ2N2UxMThiYWNjY2M2NjU1NjRlN2I4OA==--e854427f4beb9ca77031163ace0925681e0714ef">
+    <meta name="pjax-timeout" content="1000">
+    <link rel="sudo-modal" href="https://github.com/sessions/sudo_modal">
+
+    <meta name="msapplication-TileImage" content="/windows-tile.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="selected-link" value="repo_source" data-pjax-transient="">
+
+    <meta name="google-site-verification" content="KT5gs8h0wvaagLKAVWq8bbeNwnZZK1r1XQysX3xurLU">
+    <meta name="google-analytics" content="UA-3769691-2">
+
+<meta content="collector.githubapp.com" name="octolytics-host"><meta content="collector-cdn.github.com" name="octolytics-script-host"><meta content="github" name="octolytics-app-id"><meta content="47B744E5:7D24:4379C0D:561C1A63" name="octolytics-dimension-request_id"><meta content="10445926" name="octolytics-actor-id"><meta content="jbarabander" name="octolytics-actor-login"><meta content="a2c411a91440f316fec9d9f87399933d5e0070f6f238a5807e025a2a62aa64f7" name="octolytics-actor-hash">
+
+<meta content="Rails, view, files#disambiguate" data-pjax-transient="true" name="analytics-event">
+
+
+  <meta class="js-ga-set" name="dimension1" content="Logged In">
+    <meta class="js-ga-set" name="dimension4" content="Current repo nav">
+
+
+
+
+    <meta name="is-dotcom" content="true">
+        <meta name="hostname" content="github.com">
+    <meta name="user-login" content="jbarabander">
+
+      <link rel="mask-icon" href="https://assets-cdn.github.com/pinned-octocat.svg" color="#4078c0">
+      <link rel="icon" type="image/x-icon" href="https://assets-cdn.github.com/favicon.ico">
+
+    <meta content="e1c31688c794d2dc92eb2052c8e7f052cb0aad6a" name="form-nonce">
+
+    <link crossorigin="anonymous" href="./asyncly_EventEmitter2_files/github-4fb2951910292e447b02038004afc1cb52066737eae7585406ec7f5d507810af.css" integrity="sha256-T7KVGRApLkR7AgOABK/By1IGZzfq51hUBux/XVB4EK8=" media="all" rel="stylesheet">
+    <link crossorigin="anonymous" href="./asyncly_EventEmitter2_files/github2-bed57ffc09d9dc51b56b011c61d551407cc16a668491bcfb4f5d89bbad0067d8.css" integrity="sha256-vtV//AnZ3FG1awEcYdVRQHzBamaEkbz7T12Ju60AZ9g=" media="all" rel="stylesheet">
+    
+    
+    
+
+
+    <meta http-equiv="x-pjax-version" content="77a41d614143841279f9c366fc90e327">
+
+      
+  <meta name="description" content="EventEmitter2 - A nodejs event emitter implementation with namespaces, wildcards, TTL, works in the browser">
+  <meta name="go-import" content="github.com/asyncly/EventEmitter2 git https://github.com/asyncly/EventEmitter2.git">
+
+  <meta content="1173911" name="octolytics-dimension-user_id"><meta content="asyncly" name="octolytics-dimension-user_login"><meta content="1823764" name="octolytics-dimension-repository_id"><meta content="asyncly/EventEmitter2" name="octolytics-dimension-repository_nwo"><meta content="true" name="octolytics-dimension-repository_public"><meta content="false" name="octolytics-dimension-repository_is_fork"><meta content="1823764" name="octolytics-dimension-repository_network_root_id"><meta content="asyncly/EventEmitter2" name="octolytics-dimension-repository_network_root_nwo">
+  <link href="https://github.com/asyncly/EventEmitter2/commits/master.atom" rel="alternate" title="Recent Commits to EventEmitter2:master" type="application/atom+xml">
+
+  <script type="text/javascript" async="" src="./asyncly_EventEmitter2_files/api.js"></script></head>
+
+
+  <body class="logged_in   env-production macintosh vis-public">
+    <a href="https://github.com/asyncly/EventEmitter2#start-of-content" tabindex="1" class="accessibility-aid js-skip-to-content">Skip to content</a>
+
+    
+    
+    
+
+
+
+      <div class="header header-logged-in true" role="banner">
+  <div class="container clearfix">
+
+    <a class="header-logo-invertocat" href="https://github.com/" data-hotkey="g d" aria-label="Homepage" data-ga-click="Header, go to dashboard, icon:logo">
+  <span class="mega-octicon octicon-mark-github"></span>
+</a>
+
+
+      <div class="site-search repo-scope js-site-search" role="search">
+          <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="https://github.com/asyncly/EventEmitter2/search" class="js-site-search-form" data-global-search-url="/search" data-repo-search-url="/asyncly/EventEmitter2/search" method="get"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"></div>
+  <label class="js-chromeless-input-container form-control">
+    <div class="scope-badge">This repository</div>
+    <input type="text" class="js-site-search-focus js-site-search-field is-clearable chromeless-input" data-hotkey="s" name="q" placeholder="Search" aria-label="Search this repository" data-global-scope-placeholder="Search GitHub" data-repo-scope-placeholder="Search" tabindex="1" autocapitalize="off">
+  </label>
+</form>
+      </div>
+
+      <ul class="header-nav left" role="navigation">
+        <li class="header-nav-item">
+          <a href="https://github.com/pulls" class="js-selected-navigation-item header-nav-link" data-ga-click="Header, click, Nav menu - item:pulls context:user" data-hotkey="g p" data-selected-links="/pulls /pulls/assigned /pulls/mentioned /pulls">
+            Pull requests
+</a>        </li>
+        <li class="header-nav-item">
+          <a href="https://github.com/issues" class="js-selected-navigation-item header-nav-link" data-ga-click="Header, click, Nav menu - item:issues context:user" data-hotkey="g i" data-selected-links="/issues /issues/assigned /issues/mentioned /issues">
+            Issues
+</a>        </li>
+          <li class="header-nav-item">
+            <a class="header-nav-link" href="https://gist.github.com/" data-ga-click="Header, go to gist, text:gist">Gist</a>
+          </li>
+      </ul>
+
+    
+<ul class="header-nav user-nav right" id="user-links">
+  <li class="header-nav-item">
+      <span class="js-socket-channel js-updatable-content" data-channel="notification-changed:jbarabander" data-url="/notifications/header">
+      <a href="https://github.com/notifications" aria-label="You have unread notifications" class="header-nav-link notification-indicator tooltipped tooltipped-s" data-ga-click="Header, go to notifications, icon:unread" data-hotkey="g n">
+          <span class="mail-status unread"></span>
+          <span class="octicon octicon-bell"></span>
+</a>  </span>
+
+  </li>
+
+  <li class="header-nav-item dropdown js-menu-container">
+    <a class="header-nav-link tooltipped tooltipped-s js-menu-target" href="https://github.com/new" aria-label="Create new…" data-ga-click="Header, create new, icon:add">
+      <span class="octicon octicon-plus left"></span>
+      <span class="dropdown-caret"></span>
+    </a>
+
+    <div class="dropdown-menu-content js-menu-content">
+      <ul class="dropdown-menu dropdown-menu-sw">
+        
+<a class="dropdown-item" href="https://github.com/new" data-ga-click="Header, create new repository">
+  New repository
+</a>
+
+
+  <a class="dropdown-item" href="https://github.com/organizations/new" data-ga-click="Header, create new organization">
+    New organization
+  </a>
+
+
+
+  <div class="dropdown-divider"></div>
+  <div class="dropdown-header">
+    <span title="asyncly/EventEmitter2">This repository</span>
+  </div>
+    <a class="dropdown-item" href="https://github.com/asyncly/EventEmitter2/issues/new" data-ga-click="Header, create new issue">
+      New issue
+    </a>
+
+      </ul>
+    </div>
+  </li>
+
+  <li class="header-nav-item dropdown js-menu-container">
+    <a class="header-nav-link name tooltipped tooltipped-s js-menu-target" href="https://github.com/jbarabander" aria-label="View profile and more" data-ga-click="Header, show menu, icon:avatar">
+      <img alt="@jbarabander" class="avatar" height="20" src="./asyncly_EventEmitter2_files/10445926" width="20">
+      <span class="dropdown-caret"></span>
+    </a>
+
+    <div class="dropdown-menu-content js-menu-content">
+      <div class="dropdown-menu  dropdown-menu-sw">
+        <div class=" dropdown-header header-nav-current-user css-truncate">
+            Signed in as <strong class="css-truncate-target">jbarabander</strong>
+
+        </div>
+
+
+        <div class="dropdown-divider"></div>
+
+          <a class="dropdown-item" href="https://github.com/jbarabander" data-ga-click="Header, go to profile, text:your profile">
+            Your profile
+          </a>
+        <a class="dropdown-item" href="https://github.com/stars" data-ga-click="Header, go to starred repos, text:your stars">
+          Your stars
+        </a>
+        <a class="dropdown-item" href="https://github.com/explore" data-ga-click="Header, go to explore, text:explore">
+          Explore
+        </a>
+          <a class="dropdown-item" href="https://github.com/integrations" data-ga-click="Header, go to integrations, text:integrations">
+            Integrations
+          </a>
+        <a class="dropdown-item" href="https://help.github.com/" data-ga-click="Header, go to help, text:help">
+          Help
+        </a>
+
+          <div class="dropdown-divider"></div>
+
+          <a class="dropdown-item" href="https://github.com/settings/profile" data-ga-click="Header, go to settings, icon:settings">
+            Settings
+          </a>
+
+          <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="https://github.com/logout" class="logout-form" data-form-nonce="e1c31688c794d2dc92eb2052c8e7f052cb0aad6a" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="zWmoplz7xX2w2Yx6qjPa3Nlus35TVUxLnphEFoWQ0ymUiXFY2n01RKrFCovezpNJdRza9u0ME3KUfb7FE7Ondw=="></div>
+            <button class="dropdown-item dropdown-signout" data-ga-click="Header, sign out, icon:logout">
+              Sign out
+            </button>
+</form>
+      </div>
+    </div>
+  </li>
+</ul>
+
+
+    
+  </div>
+</div>
+
+      
+
+      
+
+
+    <div id="start-of-content" class="accessibility-aid"></div>
+
+    <div id="js-flash-container">
+</div>
+
+
+    <div role="main" class="main-content">
+        <div itemscope="" itemtype="http://schema.org/WebPage">
+    <div class="pagehead repohead instapaper_ignore readability-menu">
+
+      <div class="container">
+
+        <div class="clearfix">
+          
+
+<ul class="pagehead-actions">
+
+  <li>
+      <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="https://github.com/notifications/subscribe" class="js-social-container" data-autosubmit="true" data-form-nonce="e1c31688c794d2dc92eb2052c8e7f052cb0aad6a" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="kVhBJuCVwbPXau02jDUQz8uYpIBn15JgfPMt3R+SEHVeCsAWlHS9awyNDwiAkpJSHPsP96ddBX+YqjlrkbTb0A=="></div>    <input id="repository_id" name="repository_id" type="hidden" value="1823764">
+
+      <div class="select-menu js-menu-container js-select-menu">
+        <a href="https://github.com/asyncly/EventEmitter2/subscription" class="btn btn-sm btn-with-count select-menu-button js-menu-target" role="button" tabindex="0" aria-haspopup="true" data-ga-click="Repository, click Watch settings, action:files#disambiguate">
+          <span class="js-select-button">
+            <span class="octicon octicon-eye"></span>
+            Watch
+          </span>
+        </a>
+        <a class="social-count js-social-count" href="https://github.com/asyncly/EventEmitter2/watchers">
+          33
+        </a>
+
+        <div class="select-menu-modal-holder">
+          <div class="select-menu-modal subscription-menu-modal js-menu-content" aria-hidden="true">
+            <div class="select-menu-header">
+              <span class="select-menu-title">Notifications</span>
+              <span class="octicon octicon-x js-menu-close" role="button" aria-label="Close"></span>
+            </div>
+
+            <div class="select-menu-list js-navigation-container" role="menu">
+
+              <div class="select-menu-item js-navigation-item selected" role="menuitem" tabindex="0">
+                <span class="select-menu-item-icon octicon octicon-check"></span>
+                <div class="select-menu-item-text">
+                  <input checked="checked" id="do_included" name="do" type="radio" value="included">
+                  <span class="select-menu-item-heading">Not watching</span>
+                  <span class="description">Be notified when participating or @mentioned.</span>
+                  <span class="js-select-button-text hidden-select-button-text">
+                    <span class="octicon octicon-eye"></span>
+                    Watch
+                  </span>
+                </div>
+              </div>
+
+              <div class="select-menu-item js-navigation-item " role="menuitem" tabindex="0">
+                <span class="select-menu-item-icon octicon octicon octicon-check"></span>
+                <div class="select-menu-item-text">
+                  <input id="do_subscribed" name="do" type="radio" value="subscribed">
+                  <span class="select-menu-item-heading">Watching</span>
+                  <span class="description">Be notified of all conversations.</span>
+                  <span class="js-select-button-text hidden-select-button-text">
+                    <span class="octicon octicon-eye"></span>
+                    Unwatch
+                  </span>
+                </div>
+              </div>
+
+              <div class="select-menu-item js-navigation-item " role="menuitem" tabindex="0">
+                <span class="select-menu-item-icon octicon octicon-check"></span>
+                <div class="select-menu-item-text">
+                  <input id="do_ignore" name="do" type="radio" value="ignore">
+                  <span class="select-menu-item-heading">Ignoring</span>
+                  <span class="description">Never be notified.</span>
+                  <span class="js-select-button-text hidden-select-button-text">
+                    <span class="octicon octicon-mute"></span>
+                    Stop ignoring
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+</form>
+  </li>
+
+  <li>
+    
+  <div class="js-toggler-container js-social-container starring-container ">
+
+    <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="https://github.com/asyncly/EventEmitter2/unstar" class="js-toggler-form starred js-unstar-button" data-form-nonce="e1c31688c794d2dc92eb2052c8e7f052cb0aad6a" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="5Vrmgll/Qxh0uUoDTl8mDymo2q7WxB/Z8PZEqbJ2OuReqUv16ZlMz9dTL2FCMhbrVVfgSsF+4vaKAY8hacbF2g=="></div>
+      <button class="btn btn-sm btn-with-count js-toggler-target" aria-label="Unstar this repository" title="Unstar asyncly/EventEmitter2" data-ga-click="Repository, click unstar button, action:files#disambiguate; text:Unstar">
+        <span class="octicon octicon-star"></span>
+        Unstar
+      </button>
+        <a class="social-count js-social-count" href="https://github.com/asyncly/EventEmitter2/stargazers">
+          1,183
+        </a>
+</form>
+    <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="https://github.com/asyncly/EventEmitter2/star" class="js-toggler-form unstarred js-star-button" data-form-nonce="e1c31688c794d2dc92eb2052c8e7f052cb0aad6a" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="3bZ8liceWJLa5RuWxuHxa6qgvKFEflE5beIcuAQUqQctH1tPYTPOr47I0BcaoULeHE9oJIQGJOvHZfxMLpkZ2Q=="></div>
+      <button class="btn btn-sm btn-with-count js-toggler-target" aria-label="Star this repository" title="Star asyncly/EventEmitter2" data-ga-click="Repository, click star button, action:files#disambiguate; text:Star">
+        <span class="octicon octicon-star"></span>
+        Star
+      </button>
+        <a class="social-count js-social-count" href="https://github.com/asyncly/EventEmitter2/stargazers">
+          1,183
+        </a>
+</form>  </div>
+
+  </li>
+
+  <li>
+          <a href="https://github.com/asyncly/EventEmitter2#fork-destination-box" class="btn btn-sm btn-with-count" title="Fork your own copy of asyncly/EventEmitter2 to your account" aria-label="Fork your own copy of asyncly/EventEmitter2 to your account" rel="facebox" data-ga-click="Repository, show fork modal, action:files#disambiguate; text:Fork">
+            <span class="octicon octicon-repo-forked"></span>
+            Fork
+          </a>
+
+          <div id="fork-destination-box" style="display: none;">
+            <h2 class="facebox-header" data-facebox-id="facebox-header">Where should we fork this repository?</h2>
+            <include-fragment src="" class="js-fork-select-fragment fork-select-fragment" data-url="/asyncly/EventEmitter2/fork?fragment=1">
+              <img alt="Loading" height="64" src="./asyncly_EventEmitter2_files/octocat-spinner-128.gif" width="64">
+            </include-fragment>
+          </div>
+
+    <a href="https://github.com/asyncly/EventEmitter2/network" class="social-count">
+      124
+    </a>
+  </li>
+</ul>
+
+          <h1 itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" class="entry-title public ">
+  <span class="mega-octicon octicon-repo"></span>
+  <span class="author"><a href="https://github.com/asyncly" class="url fn" itemprop="url" rel="author"><span itemprop="title">asyncly</span></a></span><!--
+--><span class="path-divider">/</span><!--
+--><strong><a href="./asyncly_EventEmitter2_files/asyncly_EventEmitter2.html" data-pjax="#js-repo-pjax-container">EventEmitter2</a></strong>
+
+  <span class="page-context-loader">
+    <img alt="" height="16" src="./asyncly_EventEmitter2_files/octocat-spinner-32.gif" width="16">
+  </span>
+
+</h1>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="repository-with-sidebar repo-container new-discussion-timeline with-full-navigation">
+        <div class="repository-sidebar clearfix">
+          
+<nav class="sunken-menu repo-nav js-repo-nav js-sidenav-container-pjax js-octicon-loaders" role="navigation" data-pjax="#js-repo-pjax-container" data-issue-count-url="/asyncly/EventEmitter2/issues/counts">
+  <ul class="sunken-menu-group">
+    <li class="tooltipped tooltipped-w" aria-label="Code">
+      <a href="./asyncly_EventEmitter2_files/asyncly_EventEmitter2.html" aria-label="Code" aria-selected="true" class="js-selected-navigation-item selected sunken-menu-item" data-hotkey="g c" data-selected-links="repo_source repo_downloads repo_commits repo_releases repo_tags repo_branches /asyncly/EventEmitter2">
+        <span class="octicon octicon-code"></span> <span class="full-word">Code</span>
+        <img alt="" class="mini-loader" height="16" src="./asyncly_EventEmitter2_files/octocat-spinner-32.gif" width="16">
+</a>    </li>
+
+      <li class="tooltipped tooltipped-w" aria-label="Issues">
+        <a href="https://github.com/asyncly/EventEmitter2/issues" aria-label="Issues" class="js-selected-navigation-item sunken-menu-item" data-hotkey="g i" data-selected-links="repo_issues repo_labels repo_milestones /asyncly/EventEmitter2/issues">
+          <span class="octicon octicon-issue-opened"></span> <span class="full-word">Issues</span>
+          <span class="counter">24</span>
+
+          <img alt="" class="mini-loader" height="16" src="./asyncly_EventEmitter2_files/octocat-spinner-32.gif" width="16">
+</a>      </li>
+
+    <li class="tooltipped tooltipped-w" aria-label="Pull requests">
+      <a href="https://github.com/asyncly/EventEmitter2/pulls" aria-label="Pull requests" class="js-selected-navigation-item sunken-menu-item" data-hotkey="g p" data-selected-links="repo_pulls /asyncly/EventEmitter2/pulls">
+          <span class="octicon octicon-git-pull-request"></span> <span class="full-word">Pull requests</span>
+          <span class="counter">10</span>
+
+          <img alt="" class="mini-loader" height="16" src="./asyncly_EventEmitter2_files/octocat-spinner-32.gif" width="16">
+</a>    </li>
+
+      <li class="tooltipped tooltipped-w" aria-label="Wiki">
+        <a href="https://github.com/asyncly/EventEmitter2/wiki" aria-label="Wiki" class="js-selected-navigation-item sunken-menu-item" data-hotkey="g w" data-selected-links="repo_wiki /asyncly/EventEmitter2/wiki">
+          <span class="octicon octicon-book"></span> <span class="full-word">Wiki</span>
+          <img alt="" class="mini-loader" height="16" src="./asyncly_EventEmitter2_files/octocat-spinner-32.gif" width="16">
+</a>      </li>
+  </ul>
+  <div class="sunken-menu-separator"></div>
+  <ul class="sunken-menu-group">
+
+    <li class="tooltipped tooltipped-w" aria-label="Pulse">
+      <a href="https://github.com/asyncly/EventEmitter2/pulse" aria-label="Pulse" class="js-selected-navigation-item sunken-menu-item" data-selected-links="pulse /asyncly/EventEmitter2/pulse">
+        <span class="octicon octicon-pulse"></span> <span class="full-word">Pulse</span>
+        <img alt="" class="mini-loader" height="16" src="./asyncly_EventEmitter2_files/octocat-spinner-32.gif" width="16">
+</a>    </li>
+
+    <li class="tooltipped tooltipped-w" aria-label="Graphs">
+      <a href="https://github.com/asyncly/EventEmitter2/graphs" aria-label="Graphs" class="js-selected-navigation-item sunken-menu-item" data-selected-links="repo_graphs repo_contributors /asyncly/EventEmitter2/graphs">
+        <span class="octicon octicon-graph"></span> <span class="full-word">Graphs</span>
+        <img alt="" class="mini-loader" height="16" src="./asyncly_EventEmitter2_files/octocat-spinner-32.gif" width="16">
+</a>    </li>
+  </ul>
+
+
+</nav>
+
+            <div class="only-with-full-nav">
+                
+<div class="js-clone-url clone-url open" data-protocol-type="http">
+  <h3 class="text-small"><span class="text-emphasized">HTTPS</span> clone URL</h3>
+  <div class="input-group js-zeroclipboard-container">
+    <input type="text" class="input-mini text-small input-monospace js-url-field js-zeroclipboard-target" value="https://github.com/asyncly/EventEmitter2.git" readonly="readonly" aria-label="HTTPS clone URL">
+    <span class="input-group-button">
+      <button aria-label="Copy to clipboard" class="js-zeroclipboard btn btn-sm zeroclipboard-button tooltipped tooltipped-s" data-copied-hint="Copied!" type="button"><span class="octicon octicon-clippy"></span></button>
+    </span>
+  </div>
+</div>
+
+  
+<div class="js-clone-url clone-url " data-protocol-type="ssh">
+  <h3 class="text-small"><span class="text-emphasized">SSH</span> clone URL</h3>
+  <div class="input-group js-zeroclipboard-container">
+    <input type="text" class="input-mini text-small input-monospace js-url-field js-zeroclipboard-target" value="git@github.com:asyncly/EventEmitter2.git" readonly="readonly" aria-label="SSH clone URL">
+    <span class="input-group-button">
+      <button aria-label="Copy to clipboard" class="js-zeroclipboard btn btn-sm zeroclipboard-button tooltipped tooltipped-s" data-copied-hint="Copied!" type="button"><span class="octicon octicon-clippy"></span></button>
+    </span>
+  </div>
+</div>
+
+  
+<div class="js-clone-url clone-url " data-protocol-type="subversion">
+  <h3 class="text-small"><span class="text-emphasized">Subversion</span> checkout URL</h3>
+  <div class="input-group js-zeroclipboard-container">
+    <input type="text" class="input-mini text-small input-monospace js-url-field js-zeroclipboard-target" value="https://github.com/asyncly/EventEmitter2" readonly="readonly" aria-label="Subversion checkout URL">
+    <span class="input-group-button">
+      <button aria-label="Copy to clipboard" class="js-zeroclipboard btn btn-sm zeroclipboard-button tooltipped tooltipped-s" data-copied-hint="Copied!" type="button"><span class="octicon octicon-clippy"></span></button>
+    </span>
+  </div>
+</div>
+
+
+
+<div class="clone-options text-small">You can clone with
+  <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="https://github.com/users/set_protocol?protocol_selector=http&protocol_type=clone" class="inline-form js-clone-selector-form is-enabled" data-form-nonce="e1c31688c794d2dc92eb2052c8e7f052cb0aad6a" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="SloWG3aAAMMCzBW97Q/IZO3bMB6zTd9x6ESi6pJ6HA/GeJQ64MpP83lPWdf+n3gPkh0cRuPoYQANt19blpKYtw=="></div><button class="btn-link js-clone-selector" data-protocol="http" type="submit">HTTPS</button></form>, <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="https://github.com/users/set_protocol?protocol_selector=ssh&protocol_type=clone" class="inline-form js-clone-selector-form is-enabled" data-form-nonce="e1c31688c794d2dc92eb2052c8e7f052cb0aad6a" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="mbfPRRVCeq031+Avf526Blf7VTR27HbGsNeC+tjNHIBdMhJmj3EEPUC5exk6jZU99WyGq6+u1Jn1KDCQTvpBRQ=="></div><button class="btn-link js-clone-selector" data-protocol="ssh" type="submit">SSH</button></form>, or <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="https://github.com/users/set_protocol?protocol_selector=subversion&protocol_type=clone" class="inline-form js-clone-selector-form is-enabled" data-form-nonce="e1c31688c794d2dc92eb2052c8e7f052cb0aad6a" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="w9GGqroo1yr2dioEjBZyrcm/xxeC49v9kywIBxzGV+f2/NJSLIg34Ib57TTIgyZAyjQdmW6xE3xcEHFuMXLE6Q=="></div><button class="btn-link js-clone-selector" data-protocol="subversion" type="submit">Subversion</button></form>.
+  <a href="https://help.github.com/articles/which-remote-url-should-i-use" class="help tooltipped tooltipped-n" aria-label="Get help on which URL is right for you.">
+    <span class="octicon octicon-question"></span>
+  </a>
+</div>
+  <a href="https://mac.github.com/" class="btn btn-sm sidebar-button" title="Save asyncly/EventEmitter2 to your computer and use it in GitHub Desktop." aria-label="Save asyncly/EventEmitter2 to your computer and use it in GitHub Desktop.">
+    <span class="octicon octicon-desktop-download"></span>
+    Clone in Desktop
+  </a>
+
+              <a href="https://github.com/asyncly/EventEmitter2/archive/master.zip" class="btn btn-sm sidebar-button" aria-label="Download the contents of asyncly/EventEmitter2 as a zip file" title="Download the contents of asyncly/EventEmitter2 as a zip file" rel="nofollow">
+                <span class="octicon octicon-cloud-download"></span>
+                Download ZIP
+              </a>
+            </div>
+        </div>
+        <div id="js-repo-pjax-container" class="repository-content context-loader-container" data-pjax-container="">
+
+          
+<span id="js-show-full-navigation"></span>
+
+  <div class="repository-meta js-details-container ">
+    <div class="repository-description">
+      A nodejs event emitter implementation with namespaces, wildcards, TTL, works in the browser
+    </div>
+
+
+</div>
+
+
+<div class="overall-summary overall-summary-bottomless">
+
+  <div class="stats-switcher-viewport js-stats-switcher-viewport">
+    <div class="stats-switcher-wrapper">
+    <ul class="numbers-summary">
+      <li class="commits">
+        <a data-pjax="" href="https://github.com/asyncly/EventEmitter2/commits/master">
+            <span class="octicon octicon-history"></span>
+            <span class="num text-emphasized">
+              331
+            </span>
+            commits
+        </a>
+      </li>
+      <li>
+        <a data-pjax="" href="https://github.com/asyncly/EventEmitter2/branches">
+          <span class="octicon octicon-git-branch"></span>
+          <span class="num text-emphasized">
+            3
+          </span>
+          branches
+        </a>
+      </li>
+
+      <li>
+        <a data-pjax="" href="https://github.com/asyncly/EventEmitter2/releases">
+          <span class="octicon octicon-tag"></span>
+          <span class="num text-emphasized">
+            18
+          </span>
+          releases
+        </a>
+      </li>
+
+      <li>
+        
+  <a href="https://github.com/asyncly/EventEmitter2/graphs/contributors">
+    <span class="octicon octicon-organization"></span>
+    <span class="num text-emphasized">
+      43
+    </span>
+    contributors
+  </a>
+      </li>
+    </ul>
+
+      <div class="repository-lang-stats">
+        <ol class="repository-lang-stats-numbers">
+          <li>
+              <a href="https://github.com/asyncly/EventEmitter2/search?l=javascript">
+                <span class="color-block language-color" style="background-color:#f1e05a;"></span>
+                <span class="lang">JavaScript</span>
+                <span class="percent">100.0%</span>
+              </a>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+  <div class="repository-lang-stats-graph js-toggle-lang-stats" title="Click for language details">
+    <span class="language-color" aria-label="JavaScript 100.0%" style="width:100.0%; background-color:#f1e05a;" itemprop="keywords">JavaScript</span>
+  </div>
+
+
+
+  <div class="file-navigation in-mid-page">
+  <a href="https://github.com/asyncly/EventEmitter2/find/master" class="js-show-file-finder btn btn-sm empty-icon tooltipped tooltipped-s right" data-pjax="" data-hotkey="t" aria-label="Quickly jump between files" data-ga-click="Repository, find file, location:repo overview">
+    <span class="octicon octicon-list-unordered"></span>
+  </a>
+    <a href="https://github.com/asyncly/EventEmitter2/compare" aria-label="Compare, review, create a pull request" class="btn btn-sm btn-primary tooltipped tooltipped-se left compare-button" data-pjax="" data-ga-click="Repository, go to compare view, location:repo overview; icon:git-compare">
+      <span class="octicon octicon-git-compare"></span>
+    </a>
+
+  
+<div class="select-menu js-menu-container js-select-menu left">
+  <span class="btn btn-sm select-menu-button js-menu-target css-truncate" data-hotkey="w" title="master" role="button" aria-label="Switch branches or tags" tabindex="0" aria-haspopup="true">
+    <i>Branch:</i>
+    <span class="js-select-button css-truncate-target">master</span>
+  </span>
+
+  <div class="select-menu-modal-holder js-menu-content js-navigation-container" data-pjax="" aria-hidden="true">
+
+    <div class="select-menu-modal">
+      <div class="select-menu-header">
+        <span class="select-menu-title">Switch branches/tags</span>
+        <span class="octicon octicon-x js-menu-close" role="button" aria-label="Close"></span>
+      </div>
+
+      <div class="select-menu-filters">
+        <div class="select-menu-text-filter">
+          <input type="text" aria-label="Filter branches/tags" id="context-commitish-filter-field" class="js-filterable-field js-navigation-enable" placeholder="Filter branches/tags">
+        </div>
+        <div class="select-menu-tabs">
+          <ul>
+            <li class="select-menu-tab">
+              <a href="https://github.com/asyncly/EventEmitter2#" data-tab-filter="branches" data-filter-placeholder="Filter branches/tags" class="js-select-menu-tab" role="tab">Branches</a>
+            </li>
+            <li class="select-menu-tab">
+              <a href="https://github.com/asyncly/EventEmitter2#" data-tab-filter="tags" data-filter-placeholder="Find a tag…" class="js-select-menu-tab" role="tab">Tags</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="select-menu-list select-menu-tab-bucket js-select-menu-tab-bucket" data-tab-filter="branches" role="menu">
+
+        <div data-filterable-for="context-commitish-filter-field" data-filterable-type="substring">
+
+
+            <a class="select-menu-item js-navigation-item js-navigation-open selected" href="https://github.com/asyncly/EventEmitter2/tree/master" data-name="master" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="master">
+                master
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/asyncly/EventEmitter2/tree/onAny" data-name="onAny" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="onAny">
+                onAny
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/asyncly/EventEmitter2/tree/testing" data-name="testing" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="testing">
+                testing
+              </span>
+            </a>
+        </div>
+
+          <div class="select-menu-no-results">Nothing to show</div>
+      </div>
+
+      <div class="select-menu-list select-menu-tab-bucket js-select-menu-tab-bucket" data-tab-filter="tags">
+        <div data-filterable-for="context-commitish-filter-field" data-filterable-type="substring">
+
+
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/asyncly/EventEmitter2/tree/v0.4.11" data-name="v0.4.11" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="v0.4.11">v0.4.11</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/asyncly/EventEmitter2/tree/v0.4.8" data-name="v0.4.8" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="v0.4.8">v0.4.8</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/asyncly/EventEmitter2/tree/v0.4.7" data-name="v0.4.7" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="v0.4.7">v0.4.7</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/asyncly/EventEmitter2/tree/v0.4.5" data-name="v0.4.5" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="v0.4.5">v0.4.5</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/asyncly/EventEmitter2/tree/v0.4.3" data-name="v0.4.3" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="v0.4.3">v0.4.3</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/asyncly/EventEmitter2/tree/v0.4.1" data-name="v0.4.1" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="v0.4.1">v0.4.1</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/asyncly/EventEmitter2/tree/v0.4.0" data-name="v0.4.0" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="v0.4.0">v0.4.0</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/asyncly/EventEmitter2/tree/v0.3.7" data-name="v0.3.7" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="v0.3.7">v0.3.7</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/asyncly/EventEmitter2/tree/v0.3.5" data-name="v0.3.5" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="v0.3.5">v0.3.5</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/asyncly/EventEmitter2/tree/v0.3.0" data-name="v0.3.0" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="v0.3.0">v0.3.0</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/asyncly/EventEmitter2/tree/v0.2.7" data-name="v0.2.7" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="v0.2.7">v0.2.7</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/asyncly/EventEmitter2/tree/v0.2.6" data-name="v0.2.6" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="v0.2.6">v0.2.6</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/asyncly/EventEmitter2/tree/v0.2.5" data-name="v0.2.5" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="v0.2.5">v0.2.5</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/asyncly/EventEmitter2/tree/v0.2.0" data-name="v0.2.0" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="v0.2.0">v0.2.0</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/asyncly/EventEmitter2/tree/v0.1.1" data-name="v0.1.1" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="v0.1.1">v0.1.1</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/asyncly/EventEmitter2/tree/v0.0.2" data-name="v0.0.2" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="v0.0.2">v0.0.2</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/asyncly/EventEmitter2/tree/0.4.14" data-name="0.4.14" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.4.14">0.4.14</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/asyncly/EventEmitter2/tree/0.4.13" data-name="0.4.13" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.4.13">0.4.13</a>
+            </div>
+        </div>
+
+        <div class="select-menu-no-results">Nothing to show</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+  <div class="breadcrumb"><span class="repo-root js-repo-root"><span itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="./asyncly_EventEmitter2_files/asyncly_EventEmitter2.html" class="" data-branch="master" data-pjax="true" itemscope="url"><span itemprop="title">EventEmitter2</span></a></span></span><span class="separator">/</span>
+  <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="https://github.com/asyncly/EventEmitter2/new/master" class="js-new-blob-form inline-form" data-form-nonce="e1c31688c794d2dc92eb2052c8e7f052cb0aad6a" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="pXdPZYaJOXVwp4g4XMRhGD+jW7kFJ3uM4uZ0PqP5ly/hSpLdgUndjKN5FOh+CSSFx8sTAU9UfKmYoYwjCYNkwg=="></div>
+    <button class="btn-link tooltipped tooltipped-e" type="submit" data-disable-with="working…" aria-label="Fork this project and create a new file">
+      <span class="js-new-blob-submit octicon octicon-plus"></span>
+    </button>
+</form></div>
+</div>
+
+
+
+
+
+  <div class="commit commit-tease js-details-container">
+    <p class="commit-title ">
+        <a href="https://github.com/asyncly/EventEmitter2/commit/cca1ae40b77c1d7a72b78cdb9f9728e9b9898a0e" class="message" data-pjax="true" title="Merge pull request #152 from Rayman/add-events-test
+
+Fix removeListener when _events might not exist yet">Merge pull request</a> <a href="https://github.com/asyncly/EventEmitter2/pull/152" class="issue-link" title="Fix removeListener when _events might not exist yet">#152</a> <a href="https://github.com/asyncly/EventEmitter2/commit/cca1ae40b77c1d7a72b78cdb9f9728e9b9898a0e" class="message" data-pjax="true" title="Merge pull request #152 from Rayman/add-events-test
+
+Fix removeListener when _events might not exist yet">from Rayman/add-events-test</a>
+        <span class="hidden-text-expander inline"><a href="https://github.com/asyncly/EventEmitter2#" class="js-details-target">…</a></span>
+    </p>
+      <div class="commit-desc"><pre class="text-small">Fix removeListener when _events might not exist yet</pre></div>
+    <div class="commit-meta">
+      <button aria-label="Copy SHA" class="js-zeroclipboard zeroclipboard-link tooltipped tooltipped-s" data-clipboard-text="cca1ae40b77c1d7a72b78cdb9f9728e9b9898a0e" data-copied-hint="Copied!" type="button"><span class="octicon octicon-clippy"></span></button>
+      <a href="https://github.com/asyncly/EventEmitter2/commit/cca1ae40b77c1d7a72b78cdb9f9728e9b9898a0e" class="sha-block" data-pjax="">latest commit <span class="sha">cca1ae40b7</span></a>
+
+      <div class="authorship">
+        <img alt="@hij1nx" class="avatar" height="20" src="./asyncly_EventEmitter2_files/136109" width="20">
+        <span class="author-name"><a href="https://github.com/hij1nx" rel="contributor">hij1nx</a></span>
+        authored <time class="updated" datetime="2015-10-07T10:27:05Z" is="relative-time" title="Oct 7, 2015, 6:27 AM EDT">5 days ago</time>
+
+      </div>
+    </div>
+  </div>
+
+
+<div class="file-wrap">
+  <a href="https://github.com/asyncly/EventEmitter2/tree/cca1ae40b77c1d7a72b78cdb9f9728e9b9898a0e" class="hidden js-permalink-shortcut" data-hotkey="y">Permalink</a>
+
+  <table class="files js-navigation-container js-active-navigation-container" data-pjax="">
+
+
+    <tbody>
+      <tr class="warning include-fragment-error">
+        <td class="icon"><span class="octicon octicon-alert"></span></td>
+        <td class="content" colspan="3">Failed to load latest commit information.</td>
+      </tr>
+
+        <tr class="js-navigation-item">
+          <td class="icon">
+            <span class="octicon octicon-file-directory"></span>
+            <img alt="" class="spinner" height="16" src="./asyncly_EventEmitter2_files/octocat-spinner-32.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/asyncly/EventEmitter2/tree/master/lib" class="js-directory-link js-navigation-open" id="e8acc63b1e238f3255c900eed37254b8-6fb48873b8b24f47d6ddcb194fa610f50d759af4" title="lib">lib</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/asyncly/EventEmitter2/commit/4f49b174b5b1e65ffbd4340799acd77600280bde" class="message" data-pjax="true" title="_events might not exist yet">_events might not exist yet</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2015-08-23T21:32:34Z" is="time-ago" title="Aug 23, 2015, 5:32 PM EDT">2 months ago</time></span>
+          </td>
+        </tr>
+        <tr class="js-navigation-item">
+          <td class="icon">
+            <span class="octicon octicon-file-directory"></span>
+            <img alt="" class="spinner" height="16" src="./asyncly_EventEmitter2_files/octocat-spinner-32.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/asyncly/EventEmitter2/tree/master/test" class="js-directory-link js-navigation-open" id="098f6bcd4621d373cade4e832627b4f6-484eb7300443a0fe5169801b8187a484b94ddd98" title="test">test</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/asyncly/EventEmitter2/commit/cdbe7989f3e47503d4a075538daa58c11638a448" class="message" data-pjax="true" title="add test for when _events doesn&#39;t exist">add test for when _events doesn't exist</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2015-08-23T21:32:56Z" is="time-ago" title="Aug 23, 2015, 5:32 PM EDT">2 months ago</time></span>
+          </td>
+        </tr>
+        <tr class="js-navigation-item">
+          <td class="icon">
+            <span class="octicon octicon-file-text"></span>
+            <img alt="" class="spinner" height="16" src="./asyncly_EventEmitter2_files/octocat-spinner-32.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/asyncly/EventEmitter2/blob/master/.gitignore" class="js-directory-link js-navigation-open" id="a084b794bc0759e7a6b77810e01874f2-dbed6714ece08e9491c23ae058ba3abdebbc1df4" title=".gitignore">.gitignore</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/asyncly/EventEmitter2/commit/755c28118f054f297bd2408a54a1f8fc5024a0cc" class="message" data-pjax="true" title="[test] house cleaning, benchmark files are now .tmp">[test] house cleaning, benchmark files are now .tmp</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2011-06-29T05:12:34Z" is="time-ago" title="Jun 29, 2011, 1:12 AM EDT">4 years ago</time></span>
+          </td>
+        </tr>
+        <tr class="js-navigation-item">
+          <td class="icon">
+            <span class="octicon octicon-file-text"></span>
+            <img alt="" class="spinner" height="16" src="./asyncly_EventEmitter2_files/octocat-spinner-32.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/asyncly/EventEmitter2/blob/master/README.md" class="js-directory-link js-navigation-open" id="04c6e90faac2675aa89e2176d2eec7d8-2e9cb71ba672e0bd2cfc6fe6145a0a7639c1c689" title="README.md">README.md</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/asyncly/EventEmitter2/commit/2f6cb0514049619d3a84a258e4ed45cfa88fcd4a" class="message" data-pjax="true" title="added npm and bower links
+
+Useful for installing !">added npm and bower links</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2014-12-11T17:12:01Z" is="time-ago" title="Dec 11, 2014, 12:12 PM EST">10 months ago</time></span>
+          </td>
+        </tr>
+        <tr class="js-navigation-item">
+          <td class="icon">
+            <span class="octicon octicon-file-text"></span>
+            <img alt="" class="spinner" height="16" src="./asyncly_EventEmitter2_files/octocat-spinner-32.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/asyncly/EventEmitter2/blob/master/bower.json" class="js-directory-link js-navigation-open" id="0a08a7565aba4405282251491979bb6b-07af65a0aee7ceb51ba6d244812cca6381dce6ef" title="bower.json">bower.json</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/asyncly/EventEmitter2/commit/fcdc46278aa2b46cceb10200389080e4e5949db3" class="message" data-pjax="true" title="Release patch 0.14.4">Release patch 0.14.4</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2014-06-12T14:44:16Z" is="time-ago" title="Jun 12, 2014, 10:44 AM EDT">a year ago</time></span>
+          </td>
+        </tr>
+        <tr class="js-navigation-item">
+          <td class="icon">
+            <span class="octicon octicon-file-text"></span>
+            <img alt="" class="spinner" height="16" src="./asyncly_EventEmitter2_files/octocat-spinner-32.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/asyncly/EventEmitter2/blob/master/component.json" class="js-directory-link js-navigation-open" id="162d38b326426c84ac91e51f931105bb-d0fdbb22866e5008e53690d0e3aacd835cd5e6c5" title="component.json">component.json</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/asyncly/EventEmitter2/commit/fcdc46278aa2b46cceb10200389080e4e5949db3" class="message" data-pjax="true" title="Release patch 0.14.4">Release patch 0.14.4</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2014-06-12T14:44:16Z" is="time-ago" title="Jun 12, 2014, 10:44 AM EDT">a year ago</time></span>
+          </td>
+        </tr>
+        <tr class="js-navigation-item navigation-focus">
+          <td class="icon">
+            <span class="octicon octicon-file-text"></span>
+            <img alt="" class="spinner" height="16" src="./asyncly_EventEmitter2_files/octocat-spinner-32.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/asyncly/EventEmitter2/blob/master/index.js" class="js-directory-link js-navigation-open" id="168726dbe96b3ce427e7fedce31bb0bc-6f583b5f6d4d5140d8afe35116a818a92cad3bc8" title="index.js">index.js</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/asyncly/EventEmitter2/commit/2256ecc9c9421e737b2b07e2afe8f6bff8f812f0" class="message" data-pjax="true" title="removed duplicate example.js">removed duplicate example.js</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2011-06-20T23:58:44Z" is="time-ago" title="Jun 20, 2011, 7:58 PM EDT">4 years ago</time></span>
+          </td>
+        </tr>
+        <tr class="js-navigation-item">
+          <td class="icon">
+            <span class="octicon octicon-file-text"></span>
+            <img alt="" class="spinner" height="16" src="./asyncly_EventEmitter2_files/octocat-spinner-32.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/asyncly/EventEmitter2/blob/master/package.json" class="js-directory-link js-navigation-open" id="b9cfc7f2cdf78a7f4b91a753d10865a2-2c0be76f0b0b5576244d1c60a59c7ced8d0088ed" title="package.json">package.json</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/asyncly/EventEmitter2/commit/fcdc46278aa2b46cceb10200389080e4e5949db3" class="message" data-pjax="true" title="Release patch 0.14.4">Release patch 0.14.4</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2014-06-12T14:44:16Z" is="time-ago" title="Jun 12, 2014, 10:44 AM EDT">a year ago</time></span>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+</div>
+
+
+  <div id="readme" class="boxed-group flush clearfix announce instapaper_body md">
+    <h3>
+      <span class="octicon octicon-book"></span>
+      README.md
+    </h3>
+
+    <article class="markdown-body entry-content" itemprop="mainContentOfPage"><p><a href="https://www.codeship.io/projects/11259"><img src="./asyncly_EventEmitter2_files/68747470733a2f2f7777772e636f6465736869702e696f2f70726f6a656374732f33616435383934302d346337642d303133312d313564352d3561386364336635353066382f737461747573" alt="build-status" data-canonical-src="https://www.codeship.io/projects/3ad58940-4c7d-0131-15d5-5a8cd3f550f8/status" style="max-width:100%;"></a></p>
+
+<p><a href="http://badge.fury.io/js/eventemitter2"><img src="./asyncly_EventEmitter2_files/68747470733a2f2f62616467652e667572792e696f2f6a732f6576656e74656d6974746572322e706e67" alt="NPM version" data-canonical-src="https://badge.fury.io/js/eventemitter2.png" style="max-width:100%;"></a>
+<a href="http://badge.fury.io/bo/eventemitter2"><img src="./asyncly_EventEmitter2_files/68747470733a2f2f62616467652e667572792e696f2f626f2f6576656e74656d6974746572322e706e67" alt="Bower version" data-canonical-src="https://badge.fury.io/bo/eventemitter2.png" style="max-width:100%;"></a></p>
+
+<h1><a id="user-content-synopsis" class="anchor" href="https://github.com/asyncly/EventEmitter2#synopsis" aria-hidden="true"><span class="octicon octicon-link"></span></a>SYNOPSIS</h1>
+
+<p>EventEmitter2 is an implementation of the EventEmitter found in Node.js</p>
+
+<h1><a id="user-content-description" class="anchor" href="https://github.com/asyncly/EventEmitter2#description" aria-hidden="true"><span class="octicon octicon-link"></span></a>DESCRIPTION</h1>
+
+<h3><a id="user-content-features" class="anchor" href="https://github.com/asyncly/EventEmitter2#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>FEATURES</h3>
+
+<ul>
+<li>Namespaces/Wildcards.</li>
+<li>Times To Listen (TTL), extends the <code>once</code> concept with <code>many</code>.</li>
+<li>Browser environment compatibility.</li>
+<li>Demonstrates good performance in benchmarks</li>
+</ul>
+
+<pre><code>EventEmitterHeatUp x 3,728,965 ops/sec \302\2610.68% (60 runs sampled)
+EventEmitter x 2,822,904 ops/sec \302\2610.74% (63 runs sampled)
+EventEmitter2 x 7,251,227 ops/sec \302\2610.55% (58 runs sampled)
+EventEmitter2 (wild) x 3,220,268 ops/sec \302\2610.44% (65 runs sampled)
+Fastest is EventEmitter2
+</code></pre>
+
+<h3><a id="user-content-differences-non-breaking-compatible-with-existing-eventemitter" class="anchor" href="https://github.com/asyncly/EventEmitter2#differences-non-breaking-compatible-with-existing-eventemitter" aria-hidden="true"><span class="octicon octicon-link"></span></a>Differences (Non breaking, compatible with existing EventEmitter)</h3>
+
+<ul>
+<li>The constructor takes a configuration object.</li>
+</ul>
+
+<div class="highlight highlight-source-js"><pre>    <span class="pl-k">var</span> EventEmitter2 <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>eventemitter2<span class="pl-pds">'</span></span>).EventEmitter2;
+    <span class="pl-k">var</span> server <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">EventEmitter2</span>({
+
+      <span class="pl-c">//</span>
+      <span class="pl-c">// use wildcards.</span>
+      <span class="pl-c">//</span>
+      wildcard<span class="pl-k">:</span> <span class="pl-c1">true</span>,
+
+      <span class="pl-c">//</span>
+      <span class="pl-c">// the delimiter used to segment namespaces, defaults to `.`.</span>
+      <span class="pl-c">//</span>
+      delimiter<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>::<span class="pl-pds">'</span></span>, 
+
+      <span class="pl-c">//</span>
+      <span class="pl-c">// if you want to emit the newListener event set to true.</span>
+      <span class="pl-c">//</span>
+      newListener<span class="pl-k">:</span> <span class="pl-c1">false</span>, 
+
+      <span class="pl-c">//</span>
+      <span class="pl-c">// max listeners that can be assigned to an event, default 10.</span>
+      <span class="pl-c">//</span>
+      maxListeners<span class="pl-k">:</span> <span class="pl-c1">20</span>
+    });</pre></div>
+
+<ul>
+<li>Getting the actual event that fired.</li>
+</ul>
+
+<div class="highlight highlight-source-js"><pre>    server.on(<span class="pl-s"><span class="pl-pds">'</span>foo.*<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">value1</span>, <span class="pl-smi">value2</span>) {
+      <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-v">this</span>.<span class="pl-c1">event</span>, value1, value2);
+    });</pre></div>
+
+<ul>
+<li>Fire an event N times and then remove it, an extension of the <code>once</code> concept.</li>
+</ul>
+
+<div class="highlight highlight-source-js"><pre>    server.many(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-c1">4</span>, <span class="pl-k">function</span>() {
+      <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>hello<span class="pl-pds">'</span></span>);
+    });</pre></div>
+
+<ul>
+<li>Pass in a namespaced event as an array rather than a delimited string.</li>
+</ul>
+
+<div class="highlight highlight-source-js"><pre>    server.many([<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>bar<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>bazz<span class="pl-pds">'</span></span>], <span class="pl-k">function</span>() {
+      <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>hello<span class="pl-pds">'</span></span>);
+    });</pre></div>
+
+<h1><a id="user-content-api" class="anchor" href="https://github.com/asyncly/EventEmitter2#api" aria-hidden="true"><span class="octicon octicon-link"></span></a>API</h1>
+
+<p>When an <code>EventEmitter</code> instance experiences an error, the typical action is
+to emit an <code>error</code> event. Error events are treated as a special case.
+If there is no listener for it, then the default action is to print a stack
+trace and exit the program.</p>
+
+<p>All EventEmitters emit the event <code>newListener</code> when new listeners are
+added.</p>
+
+<p><strong>Namespaces</strong> with <strong>Wildcards</strong>
+To use namespaces/wildcards, pass the <code>wildcard</code> option into the EventEmitter 
+constructor. When namespaces/wildcards are enabled, events can either be 
+strings (<code>foo.bar</code>) separated by a delimiter or arrays (<code>['foo', 'bar']</code>). The 
+delimiter is also configurable as a constructor option.</p>
+
+<p>An event name passed to any event emitter method can contain a wild card (the 
+<code>*</code> character). If the event name is a string, a wildcard may appear as <code>foo.*</code>. 
+If the event name is an array, the wildcard may appear as <code>['foo', '*']</code>.</p>
+
+<p>If either of the above described events were passed to the <code>on</code> method, 
+subsequent emits such as the following would be observed...</p>
+
+<div class="highlight highlight-source-js"><pre>   emitter.emit(<span class="pl-s"><span class="pl-pds">'</span>foo.bazz<span class="pl-pds">'</span></span>);
+   emitter.emit([<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>bar<span class="pl-pds">'</span></span>]);</pre></div>
+
+<h3><a id="user-content-emitteraddlistenerevent-listener" class="anchor" href="https://github.com/asyncly/EventEmitter2#emitteraddlistenerevent-listener" aria-hidden="true"><span class="octicon octicon-link"></span></a>emitter.addListener(event, listener)</h3>
+
+<h3><a id="user-content-emitteronevent-listener" class="anchor" href="https://github.com/asyncly/EventEmitter2#emitteronevent-listener" aria-hidden="true"><span class="octicon octicon-link"></span></a>emitter.on(event, listener)</h3>
+
+<p>Adds a listener to the end of the listeners array for the specified event.</p>
+
+<div class="highlight highlight-source-js"><pre>    server.on(<span class="pl-s"><span class="pl-pds">'</span>data<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">value1</span>, <span class="pl-smi">value2</span>, <span class="pl-smi">value3</span>, ...) {
+      <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>The event was raised!<span class="pl-pds">'</span></span>);
+    });</pre></div>
+
+<div class="highlight highlight-source-js"><pre>    server.on(<span class="pl-s"><span class="pl-pds">'</span>data<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">value</span>) {
+      <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>The event was raised!<span class="pl-pds">'</span></span>);
+    });</pre></div>
+
+<h3><a id="user-content-emitteronanylistener" class="anchor" href="https://github.com/asyncly/EventEmitter2#emitteronanylistener" aria-hidden="true"><span class="octicon octicon-link"></span></a>emitter.onAny(listener)</h3>
+
+<p>Adds a listener that will be fired when any event is emitted.</p>
+
+<div class="highlight highlight-source-js"><pre>    server.onAny(<span class="pl-k">function</span>(<span class="pl-smi">value</span>) {
+      <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>All events trigger this.<span class="pl-pds">'</span></span>);
+    });</pre></div>
+
+<h3><a id="user-content-emitteroffanylistener" class="anchor" href="https://github.com/asyncly/EventEmitter2#emitteroffanylistener" aria-hidden="true"><span class="octicon octicon-link"></span></a>emitter.offAny(listener)</h3>
+
+<p>Removes the listener that will be fired when any event is emitted.</p>
+
+<div class="highlight highlight-source-js"><pre>    server.offAny(<span class="pl-k">function</span>(<span class="pl-smi">value</span>) {
+      <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>The event was raised!<span class="pl-pds">'</span></span>);
+    });</pre></div>
+
+<h4><a id="user-content-emitteronceevent-listener" class="anchor" href="https://github.com/asyncly/EventEmitter2#emitteronceevent-listener" aria-hidden="true"><span class="octicon octicon-link"></span></a>emitter.once(event, listener)</h4>
+
+<p>Adds a <strong>one time</strong> listener for the event. The listener is invoked 
+only the first time the event is fired, after which it is removed.</p>
+
+<div class="highlight highlight-source-js"><pre>    server.once(<span class="pl-s"><span class="pl-pds">'</span>get<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">value</span>) {
+      <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>Ah, we have our first value!<span class="pl-pds">'</span></span>);
+    });</pre></div>
+
+<h3><a id="user-content-emittermanyevent-timestolisten-listener" class="anchor" href="https://github.com/asyncly/EventEmitter2#emittermanyevent-timestolisten-listener" aria-hidden="true"><span class="octicon octicon-link"></span></a>emitter.many(event, timesToListen, listener)</h3>
+
+<p>Adds a listener that will execute <strong>n times</strong> for the event before being
+removed. The listener is invoked only the first <strong>n times</strong> the event is 
+fired, after which it is removed.</p>
+
+<div class="highlight highlight-source-js"><pre>    server.many(<span class="pl-s"><span class="pl-pds">'</span>get<span class="pl-pds">'</span></span>, <span class="pl-c1">4</span>, <span class="pl-k">function</span> (<span class="pl-smi">value</span>) {
+      <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>This event will be listened to exactly four times.<span class="pl-pds">'</span></span>);
+    });</pre></div>
+
+<h3><a id="user-content-emitterremovelistenerevent-listener" class="anchor" href="https://github.com/asyncly/EventEmitter2#emitterremovelistenerevent-listener" aria-hidden="true"><span class="octicon octicon-link"></span></a>emitter.removeListener(event, listener)</h3>
+
+<h3><a id="user-content-emitteroffevent-listener" class="anchor" href="https://github.com/asyncly/EventEmitter2#emitteroffevent-listener" aria-hidden="true"><span class="octicon octicon-link"></span></a>emitter.off(event, listener)</h3>
+
+<p>Remove a listener from the listener array for the specified event. 
+<strong>Caution</strong>: changes array indices in the listener array behind the listener.</p>
+
+<div class="highlight highlight-source-js"><pre>    <span class="pl-k">var</span> <span class="pl-en">callback</span> <span class="pl-k">=</span> <span class="pl-k">function</span>(<span class="pl-smi">value</span>) {
+      <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>someone connected!<span class="pl-pds">'</span></span>);
+    };
+    server.on(<span class="pl-s"><span class="pl-pds">'</span>get<span class="pl-pds">'</span></span>, callback);
+    <span class="pl-c">// ...</span>
+    server.removeListener(<span class="pl-s"><span class="pl-pds">'</span>get<span class="pl-pds">'</span></span>, callback);</pre></div>
+
+<h3><a id="user-content-emitterremovealllistenersevent" class="anchor" href="https://github.com/asyncly/EventEmitter2#emitterremovealllistenersevent" aria-hidden="true"><span class="octicon octicon-link"></span></a>emitter.removeAllListeners([event])</h3>
+
+<p>Removes all listeners, or those of the specified event.</p>
+
+<h3><a id="user-content-emittersetmaxlistenersn" class="anchor" href="https://github.com/asyncly/EventEmitter2#emittersetmaxlistenersn" aria-hidden="true"><span class="octicon octicon-link"></span></a>emitter.setMaxListeners(n)</h3>
+
+<p>By default EventEmitters will print a warning if more than 10 listeners 
+are added to it. This is a useful default which helps finding memory leaks. 
+Obviously not all Emitters should be limited to 10. This function allows 
+that to be increased. Set to zero for unlimited.</p>
+
+<h3><a id="user-content-emitterlistenersevent" class="anchor" href="https://github.com/asyncly/EventEmitter2#emitterlistenersevent" aria-hidden="true"><span class="octicon octicon-link"></span></a>emitter.listeners(event)</h3>
+
+<p>Returns an array of listeners for the specified event. This array can be 
+manipulated, e.g. to remove listeners.</p>
+
+<div class="highlight highlight-source-js"><pre>    server.on(<span class="pl-s"><span class="pl-pds">'</span>get<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">value</span>) {
+      <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>someone connected!<span class="pl-pds">'</span></span>);
+    });
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(server.listeners(<span class="pl-s"><span class="pl-pds">'</span>get<span class="pl-pds">'</span></span>)); <span class="pl-c">// [ [Function] ]</span></pre></div>
+
+<h3><a id="user-content-emitterlistenersany" class="anchor" href="https://github.com/asyncly/EventEmitter2#emitterlistenersany" aria-hidden="true"><span class="octicon octicon-link"></span></a>emitter.listenersAny()</h3>
+
+<p>Returns an array of listeners that are listening for any event that is 
+specified. This array can be manipulated, e.g. to remove listeners.</p>
+
+<div class="highlight highlight-source-js"><pre>    server.onAny(<span class="pl-k">function</span>(<span class="pl-smi">value</span>) {
+      <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>someone connected!<span class="pl-pds">'</span></span>);
+    });
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(server.listenersAny()[<span class="pl-c1">0</span>]); <span class="pl-c">// [ [Function] ]</span></pre></div>
+
+<h3><a id="user-content-emitteremitevent-arg1-arg2-" class="anchor" href="https://github.com/asyncly/EventEmitter2#emitteremitevent-arg1-arg2-" aria-hidden="true"><span class="octicon octicon-link"></span></a>emitter.emit(event, [arg1], [arg2], [...])</h3>
+
+<p>Execute each of the listeners that may be listening for the specified event 
+name in order with the list of arguments.</p>
+
+<h1><a id="user-content-license" class="anchor" href="https://github.com/asyncly/EventEmitter2#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>LICENSE</h1>
+
+<p>(The MIT License)</p>
+
+<p>Copyright (c) 2011 hij1nx <a href="http://www.twitter.com/hij1nx">http://www.twitter.com/hij1nx</a></p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy 
+of this software and associated documentation files (the 'Software'), to deal 
+in the Software without restriction, including without limitation the rights 
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+copies of the Software, and to permit persons to whom the Software is furnished
+to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
+AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+</article>
+  </div>
+
+
+        </div>
+      </div>
+      <div class="modal-backdrop"></div>
+    </div>
+  </div>
+
+
+    </div>
+
+      <div class="container">
+  <div class="site-footer" role="contentinfo">
+    <ul class="site-footer-links right">
+        <li><a href="https://status.github.com/" data-ga-click="Footer, go to status, text:status">Status</a></li>
+      <li><a href="https://developer.github.com/" data-ga-click="Footer, go to api, text:api">API</a></li>
+      <li><a href="https://training.github.com/" data-ga-click="Footer, go to training, text:training">Training</a></li>
+      <li><a href="https://shop.github.com/" data-ga-click="Footer, go to shop, text:shop">Shop</a></li>
+        <li><a href="https://github.com/blog" data-ga-click="Footer, go to blog, text:blog">Blog</a></li>
+        <li><a href="https://github.com/about" data-ga-click="Footer, go to about, text:about">About</a></li>
+        <li><a href="https://github.com/pricing" data-ga-click="Footer, go to pricing, text:pricing">Pricing</a></li>
+
+    </ul>
+
+    <a href="https://github.com/" aria-label="Homepage">
+      <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+</a>
+    <ul class="site-footer-links">
+      <li>© 2015 <span title="0.09415s from github-fe132-cp1-prd.iad.github.net">GitHub</span>, Inc.</li>
+        <li><a href="https://github.com/site/terms" data-ga-click="Footer, go to terms, text:terms">Terms</a></li>
+        <li><a href="https://github.com/site/privacy" data-ga-click="Footer, go to privacy, text:privacy">Privacy</a></li>
+        <li><a href="https://github.com/security" data-ga-click="Footer, go to security, text:security">Security</a></li>
+        <li><a href="https://github.com/contact" data-ga-click="Footer, go to contact, text:contact">Contact</a></li>
+        <li><a href="https://help.github.com/" data-ga-click="Footer, go to help, text:help">Help</a></li>
+    </ul>
+  </div>
+</div>
+
+
+
+    
+    
+    
+
+    <div id="ajax-error-message" class="flash flash-error">
+      <span class="octicon octicon-alert"></span>
+      <button type="button" class="flash-close js-flash-close js-ajax-error-dismiss" aria-label="Dismiss error">
+        <span class="octicon octicon-x"></span>
+      </button>
+      Something went wrong with that request. Please try again.
+    </div>
+
+
+      <script crossorigin="anonymous" integrity="sha256-+Ec97OckLaaiDVIxNjSIGzl1xSzrqh5sOBV8DyYYVpE=" src="./asyncly_EventEmitter2_files/frameworks-f8473dece7242da6a20d52313634881b3975c52cebaa1e6c38157c0f26185691.js"></script>
+      <script async="async" crossorigin="anonymous" integrity="sha256-rSB5vmwNry9nKQXUxKHtpRfAWt5+JBbuWzWspCdgNSM=" src="./asyncly_EventEmitter2_files/github-ad2079be6c0daf2f672905d4c4a1eda517c05ade7e2416ee5b35aca427603523.js"></script>
+      
+      
+    <div class="js-stale-session-flash stale-session-flash flash flash-warn flash-banner hidden">
+      <span class="octicon octicon-alert"></span>
+      <span class="signed-in-tab-flash">You signed in with another tab or window. <a href="">Reload</a> to refresh your session.</span>
+      <span class="signed-out-tab-flash">You signed out in another tab or window. <a href="">Reload</a> to refresh your session.</span>
+    </div>
+  
+
+
+    <div class="facebox" id="facebox" style="display:none;">       <div class="facebox-popup">         <div class="facebox-content" role="dialog" aria-labelledby="facebox-header" aria-describedby="facebox-description">         </div>         <button type="button" class="facebox-close js-facebox-close" aria-label="Close modal">           <span class="octicon octicon-remove-close"></span>         </button>       </div>     </div></body></html>

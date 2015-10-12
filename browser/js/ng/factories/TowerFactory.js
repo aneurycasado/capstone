@@ -27,6 +27,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             this.kills = 0;
             this.reloading = false;
             this.imgNum = options.img;
+            //this.eventRegister = {};
             $rootScope.$on('deadEnemy', function (event, deadEnemy) {
                 if (deadEnemy === this.target) {
                     this.target = null;
@@ -38,7 +39,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             }.bind(this));
             this.mods = {
                 surroundings: [
-                    new ModFactory.Surrounding('getEnemies', this.getEnemies, this, true),
+                    new ModFactory.Surrounding('getEnemies', this.getEnemies, this, false),
                     new ModFactory.Surrounding('getNearbyTowers', this.getNearbyTowersEncapsulated, this, false)
                 ],
                 abilities: [
@@ -82,7 +83,18 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             //this.img.mouseout = SpriteEventFactory.towerMouseLeaveHandler.bind(this);
 
         }
-
+        //on(name, cb) {
+        //    if(this.eventRegister[name]) {
+        //        this.eventRegister[name] = [];
+        //    }
+        //    this.eventRegister[name].push(cb);
+        //}
+        //
+        //emit(name, ...args) {
+        //    this.eventRegister[name].forEach(cb => {
+        //        cb(...args)
+        //    });
+        //}
         getCurrentTarget() {
             if (this.target) {
                 //console.log(this.target.getSpeed());
@@ -233,6 +245,9 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 }
                 if (!this.isEnemyInRange(this.target)) this.target = null;
             }
+        }
+        shoot(enemy) {
+
         }
     }
 
