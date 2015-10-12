@@ -57,6 +57,7 @@ app.controller('SideBarLevelEditorController', function($scope, $rootScope) {
 		{name: "platormX", imgUrl: "/images/background-tilesets/16.png", mapNum: "X"},{name: "hanger", imgUrl: "/images/background-tilesets/23.png", mapNum: 4}
 	]
 	$scope.elementClicked = (element) => {
+		$scope.currentElement = element;
 		console.log("The element clicked ", element);
 	}
 	$scope.saveMap = () => {
