@@ -466,7 +466,6 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
     };
     let resetTowers = () => {
 
-
         allTowers.length = 0;
         savedTowers.length = 0;
 

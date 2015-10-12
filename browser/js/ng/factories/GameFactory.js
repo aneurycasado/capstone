@@ -3,6 +3,7 @@
 app.factory('GameFactory', ($rootScope, WaveFactory, EnemyFactory, PlayerFactory, ParticleFactory, MapFactory, ProjectileFactory, StateFactory, TowerFactory) => {
     let data = StateFactory;
     let loop = then => {
+        //console.log(data.mode);
         let now = Date.now();
         let delta = (now - then) / 1000;
 
@@ -33,6 +34,10 @@ app.factory('GameFactory', ($rootScope, WaveFactory, EnemyFactory, PlayerFactory
             } else if(PlayerFactory.health <= 0){
                 changeStateTo('gameOver');
             }
+        }
+        if(data.loadGame){
+            $rootScope.$emit("loadGame");
+            data.loadGame = false;
         }
         // if (data.state === 'complete') {
 

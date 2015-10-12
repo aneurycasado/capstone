@@ -9,28 +9,54 @@ app.config(($stateProvider) => {
                     return PlayerFactory.getGame();
                 },
                 mode: ($stateParams, StateFactory) => {
+                    if($stateParams.mode === "savedGame"){
+                        StateFactory.loadGame = true; 
+                    }
                     StateFactory.mode = $stateParams.mode;
-                    return $stateParams.state;
                 }
             },
             controller: 'PlayController'
         });
 });
 
-app.controller("PlayController", function ($scope, player, mode, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, SpriteEventFactory, ProjectileFactory, GameFactory) {
-    console.log("Player ", player);
-    if(player.game.mapNum | player.game.mapNum === 0){
-        console.log("game is defined", player.game);
-        $scope.player = player;
-    }else{
-        console.log("game is undefined", player.game);
-        $scope.player = "Guest";
-    }
+app.controller("PlayController", function ($scope, player, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, SpriteEventFactory, ProjectileFactory, GameFactory) {
     $scope.mode = StateFactory.mode;
+    $scope.player = player;
+    if($scope.player.game.mode){
+        StateFactory.mode = $scope.player.game.mode;
+        WaveFactory.init();
+    }
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(StateFactory.width, StateFactory.height, StateFactory.canvas);
     $("#mainContainer").append(StateFactory.renderer.view);
     $(StateFactory.renderer.view).attr("id","pixiCanvas");
+    const init = (num, state) => {
+        if (num !== undefined) $scope.mapNum = num;
+        start(MapFactory.maps[$scope.mapNum], "newGame");
+    };
+    const loadGame = () => {
+        $scope.mapNum = $scope.player.game.mapNum;
+        PlayerFactory.health = $scope.player.game.health;
+        PlayerFactory.money = $scope.player.game.money;
+        start(MapFactory.maps[$scope.player.game.mapNum]);
+        WaveFactory.loadWaves($scope.player.game.currentWave);
+        $rootScope.$emit("loadGameSideBar")
+        start(MapFactory.maps[$scope.player.game.mapNum] ,"loadGame");
+    };
+    const restart = (mapNum) => {
+        let mode = StateFactory.mode;
+        ProjectileFactory.stage.removeChildren();
+        TowerFactory.stage.removeChildren();
+        EnemyFactory.restart();
+        StateFactory.stages.play.removeChildren();
+        $rootScope.$emit('removeNextLevel');
+        TowerFactory.resetTowers();
+        PlayerFactory.restart();
+        MapFactory.reset();
+        WaveFactory.init(mode);
+        $rootScope.$emit('resetSideBar');
+        init(mapNum);
+    } 
     const start = (map, gameType) => {
         StateFactory.map = map;
         StateFactory.stages.play = new PIXI.Stage();
@@ -53,41 +79,13 @@ app.controller("PlayController", function ($scope, player, mode, $state, $timeou
         // StateFactory.stages.play.addChild(ParticleFactory.stage);//yaaaas
         StateFactory.state = "standby";
     };
-    const init = (num, state) => {
-        if (num !== undefined) $scope.mapNum = num;
-        start(MapFactory.maps[$scope.mapNum], "newGame");
-    };
-    const loadGame = () => {
-        console.log("The player in loadGame ", $scope.player);
-        $scope.mapNum = $scope.player.game.mapNum;
-        PlayerFactory.health = $scope.player.game.health;
-        PlayerFactory.money = $scope.player.game.money;
-        start(MapFactory.maps[$scope.player.game.mapNum]);
-        WaveFactory.loadWaves($scope.player.game.currentWave);
-        console.log("Map num",$scope.player.game.mapNum);
-        console.log("Map in start ")
-        start(MapFactory.maps[$scope.player.game.mapNum] ,"loadGame");
-    }
-    
-    const restart = (mapNum) => {
-        ProjectileFactory.stage.removeChildren();
-        TowerFactory.stage.removeChildren();
-        EnemyFactory.restart();
-        StateFactory.stages.play.removeChildren();
-        $rootScope.$emit('removeNextLevel');
-        TowerFactory.resetTowers();
-        PlayerFactory.restart();
-        MapFactory.reset();
-        WaveFactory.init(mode);
-        $rootScope.$emit('resetSideBar');
-        init(mapNum);
-    }
-
     $rootScope.$on('mapChosen', (event, mapNum) => {
-        console.log("Map chosen", mapNum);
         init(mapNum);
     });
-
+    $rootScope.$on('loadGame', () => {
+        console.log("Load game in play state");
+        loadGame();
+    });
     $rootScope.$on('towerClicked', (event, tower) => {
         $scope.editing = true;
         $scope.selectedTower = tower;
@@ -114,9 +112,6 @@ app.controller("PlayController", function ($scope, player, mode, $state, $timeou
     });
     $rootScope.$on('restartLevel', (event) => {
         restart();
-    });
-    $rootScope.$on('loadGame', (event) => {
-       loadGame();
     });
     $scope.tower = null;
     $('canvas').on('click', (e) => {
