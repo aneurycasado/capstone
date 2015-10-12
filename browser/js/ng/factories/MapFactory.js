@@ -54,13 +54,12 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory, $htt
                 if(typeof nodeValue == "number" && nodeValue >= 2 && nodeValue <= 8 && nodeValue !== 4){
                     width = 100;
                     height = 50;
+                }
                 if(typeof nodeValue === "number" && nodeValue >= 2 && nodeValue <= 8 && nodeValue !== 4){
                     width = 80;
                     height = 40;
                 }
-
                 texture = terrainToTexture[nodeValue];
-
                 if(texture){
                     if(texture.constructor == Array) texture = texture[Math.floor(Math.random() * (texture.length))];
                     img = textureToImage[texture];
@@ -73,8 +72,6 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory, $htt
         }
         return newGrid;
     }
-}
-
 
 
     let Pathfinder = function(layout) {
