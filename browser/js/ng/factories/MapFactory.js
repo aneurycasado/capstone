@@ -1,6 +1,5 @@
 'use strict'
-
-app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory, $http) => {
+app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory) => {
     class GridNode {
         constructor(x, y, opts) {
             this.x = x;
@@ -27,18 +26,151 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory, $htt
         }
     }
 
-    class Map {
-        constructor(grid, num){
-            this.stage = new PIXI.Stage();
-            this.paths = Pathfinder(grid);
-            this.grid = insertNodes(grid, this);
-            this.imgSrc = "/images/maps/"+num+".png";
+    const findPath = (terrain) => {
+        let base = {}; 
+        let bases = [];
+        let destination = {};
+        let path = [];
+        let gridNodePath = [];
+        let sub_path_lengths = [];
+        let finalPath = [];
+        const getStartandEndPts = () => {
+            for(let x = 0; x < terrain.length; x++) {
+                 for(let y = 0; y < terrain[x].length; y++) {
+                     if(terrain[x][y] === 4) {
+                         bases.push({x: x, y: y, num: 4})
+                     }
+                     if(terrain[x][y] === 3) {
+                        destination.row = x;
+                        destination.column = y;
+                     }
+                 }
+             }
+        };
+        const checkUpIsWalkable = (currentPosition) =>  {
+            if (currentPosition.row === 0) return null;
+            return {
+                position: {
+                    row: currentPosition.row - 1,
+                    column: currentPosition.column
+                },
+                num: terrain[currentPosition.row - 1][currentPosition.column]
+            };
+        };
+        const checkDownIsWalkable = (currentPosition) => {
+            if (currentPosition.row + 1 > terrain.length - 1) return null;
+            return {
+                position: {
+                    row: currentPosition.row + 1,
+                    column: currentPosition.column
+                },
+                num: terrain[currentPosition.row + 1][currentPosition.column]
+            };
+        };
+        
+        const checkLeftIsWalkable = (currentPosition) => {
+            if (currentPosition.column === 0) return null;
+            return {
+                position: {
+                    row: currentPosition.row,
+                    column: currentPosition.column - 1
+                },
+                num: terrain[currentPosition.row][currentPosition.column - 1]
+            };
+        };
+        
+        const checkRightIsWalkable = (currentPosition) => {
+            if (currentPosition.column + 1 > terrain[0].length - 1) return null;
+            return {
+                position: {
+                    row: currentPosition.row,
+                    column: currentPosition.column + 1
+                },
+                num: terrain[currentPosition.row][currentPosition.column + 1]
+            };
+        };
+        
+        const getDirectionIsWalkableDict = {
+            left: checkLeftIsWalkable,
+            right: checkRightIsWalkable,
+            up: checkUpIsWalkable,
+            down: checkDownIsWalkable
+        };
+        
+        const getInverseDirection = (direction) => {
+            if (direction === null) return null;
+            return ({
+                left: 'right',
+                right: 'left',
+                up: 'down',
+                down: 'up'
+            })[direction];
+        };
+        
+        const calculateBestDirection = (currentPosition, directions, base) => {
+        
+            let closer = (key, dir) => {
+                return Math.abs(base[key] - currentPosition[key]) > Math.abs(base[key] - dir.position[key]);
+            };
+        
+            let goodEnoughDirection = directions.find(dir => {
+                return closer('column', dir) || closer('row', dir);
+            });
+        
+            return goodEnoughDirection || directions[0];
+        
+        };
+        const getPathForEnemy = (currentPosition, playerBaseCell, lastDirection) => {
+            let possibleDirections = ['up', 'left', 'down', 'right']
+                .filter(d => d !== getInverseDirection(lastDirection)) // remove inverse direction
+                .map(d => Object.assign({ direction: d }, getDirectionIsWalkableDict[d](currentPosition))) // map to information
+                .filter(dObj => [1,3].indexOf(dObj.num) !== -1); // remove 0, 2, 4
+        
+            let finalCell = possibleDirections.filter(d => d.num === 3)[0];
+            if (finalCell) return [finalCell.position];
+        
+            let chosenDirection;
+            if (possibleDirections.length === 1) {
+                chosenDirection = possibleDirections[0];
+            } else {
+                chosenDirection = calculateBestDirection(currentPosition, possibleDirections, playerBaseCell);
+            }
+            return [chosenDirection.position, ...getPathForEnemy(chosenDirection.position, playerBaseCell, chosenDirection.direction)];
+        };
+        const determineSubPaths = () => {
+            getStartandEndPts();
+            bases.forEach(function(startNode){
+                path.push(getPathForEnemy({row: startNode.x, column: startNode.y}, destination, null))
+            })
         }
+        const determineArrayLength = () => {
+            path.forEach(function(sub_path){
+                sub_path_lengths.push(sub_path.length);
+            })
+        }
+        const pathGenerator = (path) => {
+            determineSubPaths();
+            determineArrayLength();
+            path.forEach((sub_path) => {
+                sub_path.forEach((node) => {
+                    gridNodePath.push({
+                    x: node.column*StateFactory.cellSize + StateFactory.cellSize/2, 
+                    y: node.row*StateFactory.cellSize + StateFactory.cellSize/2 })
+                })
+            })
+            sub_path_lengths.forEach((spliceValue) => {
+                let reconfiguring = gridNodePath.splice(0, spliceValue);
+                finalPath.push(reconfiguring);
+            })
+        }
+        pathGenerator(path);
+        return finalPath;
     }
 
-    let insertNodes = (grid, map) => {
+    const insertNodes = (grid, map) => {
+
         var newGrid = grid.slice();
-        newGrid.forEach(function(row){
+        newGrid.forEach((row) => {
             row = row.slice();
         });
 
@@ -49,9 +181,6 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory, $htt
                 let width;
                 let height;
                 let nodeValue = newGrid[row][col];
-                if(typeof nodeValue == "number" && nodeValue >= 2 && nodeValue <= 8 && nodeValue !== 4){
-                    width = 100;
-                    height = 50;
                 if(typeof nodeValue === "number" && nodeValue >= 2 && nodeValue <= 8 && nodeValue !== 4){
                     width = 80;
                     height = 40;
@@ -60,7 +189,7 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory, $htt
                 texture = terrainToTexture[nodeValue];
 
                 if(texture){
-                    if(texture.constructor == Array) texture = texture[Math.floor(Math.random() * (texture.length))];
+                    if(texture.constructor === Array) texture = texture[Math.floor(Math.random() * (texture.length))];
                     img = textureToImage[texture];
                 }
           
@@ -71,82 +200,18 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory, $htt
         }
         return newGrid;
     }
-}
 
+    class Map {
+        constructor(grid,num){
+            this.stage = new PIXI.Stage();
+            this.paths = findPath(grid);
+            this.grid = insertNodes(grid, this);
 
-
-    let Pathfinder = function(layout) {
-        let base = {}; 
-        let bases = [];
-        let destination = {};
-        let path = [];
-        let finalPath = [];
-        let gridRowLength = layout.length; 
-        let gridColLength = layout[0].length;
-        let barrenPath = new PF.Grid(DesignFactory.blankMap);
-        let finder = new PF.AStarFinder({
-             diagonalMovement: PF.DiagonalMovement.Never
-        });
-        let OptimalPath = [];
-        let returnedPath = [];
-        let array_lengths = [];
-
-        let PFwalkableGrid = function () {
-            for(let x = 0; x < gridRowLength; x++) {
-                for(let y = 0; y < gridColLength; y++) {
-                    if(layout[x][y] === 1 || layout[x][y] === 3 || layout[x][y] === 4) {
-                        barrenPath.nodes[x][y].walkable = true;
-                    }
-                    else {
-                        barrenPath.nodes[x][y].walkable = false;
-                    }
-                }
-            }
-        };
-        
-        let getStartandEndPts = function () {
-            for(let x = 0; x < layout.length; x++) {
-                 for(let y = 0; y < layout[x].length; y++) {
-                     if(layout[x][y] === 4) {
-                         bases.push({x: x, y: y, num: 4})
-                     }
-                     if(layout[x][y] === 3) {
-                        destination.column = y;
-                        destination.row = x;
-                     }
-                 }
-             }
-        };
-
-        let getPathforEnemy = function() {
-            PFwalkableGrid();
-            getStartandEndPts();
-            bases.forEach(function(startNode){
-                let walkablePath = barrenPath.clone();
-                OptimalPath.push(finder.findPath(startNode.y,startNode.x, destination.column, destination.row, walkablePath))
-            })
-            OptimalPath.forEach(function(arr){  
-                array_lengths.push(arr.length);
-            })
-            OptimalPath.forEach(function(sub_path){
-                sub_path.forEach(function(coords){
-                    let coordinates = {};
-                    coordinates.x = coords[0]*StateFactory.cellSize + StateFactory.cellSize/2; 
-                    coordinates.y = coords[1]*StateFactory.cellSize + StateFactory.cellSize/2;
-                    returnedPath.push(coordinates);
-                })
-            })
-            array_lengths.forEach(function(length){
-                finalPath.push(returnedPath.splice(0, length))
-            })
-        };
-        
-        getPathforEnemy();
-        return finalPath;
-
+            this.imgSrc = "/images/maps/"+num+".png";
+        }
     }
 
-    let textureToImage = {
+    const textureToImage = {
         tile1: "01", tile2: "02",
         tile3: "03", detail1: "08",
         detail2: "09", detail3: "10",
@@ -163,7 +228,7 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory, $htt
         base: "13",
     };
 
-    let terrainToTexture = {
+    const terrainToTexture = {
         0: "none",
         1: "none",
         3: "base",
@@ -186,38 +251,22 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory, $htt
     };
 
     let maps = [];
-    maps.push(new Map(DesignFactory.mapGrid3,3));
-    // maps.push(new Map(DesignFactory.mapGrid2, 2));
-    // maps.push(new Map(DesignFactory.mapGrid3, 3));
 
+    maps.push(new Map(DesignFactory.mapGrid1,1));
 
-
-    let reset = () => {
+    const reset = () => {
         maps.forEach((map) => {
             map.grid.forEach((row) => {
                 row.forEach((node) => {
                     node.contains = {};
-                    if(node.terrain == 0) node.canPlaceTower = true;
+                    if(node.terrain === 0) node.canPlaceTower = true;
                 });
             })
         })
     }
-
-    const createMap = (mapGrid) => {
-        let grid = [];
-        for(let key in mapGrid){
-            console.log("key",key);
-            grid.push(mapGrid[key]);
-        }
-        console.log("The grid ", grid);
-        maps.push(new Map(grid,4));
-    }
-
-
     return {
         reset,
         Map,
-        maps,
-        createMap
+        maps
     };
-});
+})

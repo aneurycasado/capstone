@@ -321,8 +321,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
     //     }
     // }
 
-
-
     class ThunderTower extends Tower {
         constructor(x, y) {
             super(x, y, {
@@ -330,9 +328,11 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 price: 50,
                 range: 800,
                 primaryWeaponConstructor: WeaponFactory.ThunderWeapon,
+                ultimateWeaponConstructor: WeaponFactory.LightningWeapon,
                 name: "Thunder",
                 effect: 'Fill in'
             });
+
         }
 
         shoot(enemy) {
@@ -500,6 +500,8 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         allTowers.forEach((tower) => {
             if (tower.update) tower.update(delta);
         });
+
+        WeaponFactory.updateLightnings();
     };
     let resetTowers = () => {
 
@@ -518,6 +520,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         savedTowers,
         stage,
         resetTowers,
+
     };
 
 });
