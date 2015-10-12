@@ -8,8 +8,14 @@ app.directive("sideBarPlay", function(){
 
 app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFactory, GameFactory, StateFactory, WaveFactory, EnemyFactory, TowerFactory) {
     $scope.player = PlayerFactory;
+    if(StateFactory.mode === "survival"){
+        $scope.survival = true;
+    }
     $scope.waves = WaveFactory.waves;
-    $scope.numOfEnemies = 0;
+    $scope.currentWave = 0;
+    $scope.totalEnemiesKilled = 0;
+    $scope.totalEnemies = 0;
+    $scope.enemiesKilled = EnemyFactory.terminatedEnemies.length;
     $scope.showTowers = true;
     $scope.firstWave = true;
     $scope.showPowerUps = false;
@@ -23,14 +29,17 @@ app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFacto
         let currentTower = new TowerFactory.towers[key](0,0);
         var img = currentTower.imgNum;
         currentTower.imgUrl = "./images/tower-defense-turrets/turret-" + img + "-1.png";
-        console.log(currentTower);
         $scope.towers.push(currentTower);
         currentTower.terminate();
     } 
     $rootScope.$on('wavesDone', () => {
         $scope.state = 'complete';
         $scope.$digest();
-    })
+    });
+    $rootScope.$on('updateNumberOfEnemies', () => {
+        $scope.enemiesKilled = EnemyFactory.terminatedEnemies.length;
+        $scope.$digest();
+    });
     $rootScope.$on("nextWave", () => {
         $scope.state = 'standby';
         $scope.$digest();
@@ -41,15 +50,13 @@ app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFacto
     $rootScope.$on('mapChosen', () => {
         $scope.state = 'standby';
     });
-    $rootScope.$on('updateNumberOfEnemies', () => {
-        $scope.numOfEnemies = EnemyFactory.enemies.length;
-        $scope.$digest();
-    });
     $scope.saveGame = () => {
         let player = {
             health: PlayerFactory.health,
-            money: PlayerFactory.money
-        }
+            money: PlayerFactory.money,
+            currentWave: $scope.currentWave,
+            totalEnemiesKilled: $scope.totalEnemiesKilled
+        };
         PlayerFactory.saveGame(player).then((savedInfo) => {
             console.log("Saved Info ", savedInfo);
         });
@@ -70,14 +77,17 @@ app.controller('SideBarPlayController', function($scope, $rootScope, PlayerFacto
         $rootScope.$emit("currentTower", tower);
     }
     $scope.initiateWave = () => {
+        $scope.currentWave++;
+        $scope.totalEnemiesKilled+= EnemyFactory.terminatedEnemies.length;
         GameFactory.changeStateTo("wave");
+        EnemyFactory.resetTerminatedEnemies();
         $scope.state = StateFactory.state;
-        $scope.numOfEnemies = WaveFactory.currentWaveLength();
+        $scope.totalEnemies = WaveFactory.currentWaveLength();
     }
 
-    $scope.initiateLevel = () => {
-        console.log("Next LEvel");
-    }
+    // $scope.initiateLevel = () => {
+    //     console.log("Next LEvel");
+    // }
 
 });
 

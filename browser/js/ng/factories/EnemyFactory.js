@@ -1,39 +1,49 @@
 'use strict'
 //FIXME
-app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, PlayerFactory) {
+app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, PlayerFactory, SpriteGenFactory) {
 
     let explosionEmitters = [];
     let enemies = [];
+    let terminatedEnemies = [];
     let stage = new PIXI.Stage();
     let findEnd = (img) => {
         if(img === "1") return 7;
         else return 5;
     }
+
+
+    function findRandomPath(opts){
+        var rando = Math.floor( Math.random() * opts.path.length);
+        let path = opts.path[rando];
+        let pathIndex = 0;
+        let position = {x: path[0].x, y: path[0].y};
+
+        return {path, pathIndex, position};
+    }
+
     class Enemy {
         constructor(opts) {
             this.particleEmitters = {};
             this.value = 0;
+            //this.value = opts.value; <---- silly
             this.radius = 10;
             if (opts) {
                 for(let opt in opts){
                     this[opt] = opts[opt];
                  }
+
+                Object.assign(this, findRandomPath.call(this, opts));
                 this.imgContainer = new PIXI.Container();
+                let array = [];
                 if (opts.img) {
-                    let array = [];
                     let end = findEnd(opts.img);
                     for(let i=1; i < end; i++){
                         let img = PIXI.Texture.fromImage("/images/creep/creep-" + opts.img + "-" + opts.color +"/" + i.toString() + ".png");
                         array.push(img)
                     }
-                    this.img = new PIXI.extras.MovieClip(array);
+                    SpriteGenFactory.attachSprite(this, new PIXI.extras.MovieClip(array));
                 }
-                this.position = {x: opts.path[0].x, y: opts.path[0].y};
                 this.img.position = this.position;
-                this.img.pivot.x = 0.5;
-                this.img.pivot.y = 0.5;
-                this.img.anchor.x  = 0.5;
-                this.img.anchor.y = 0.5;
                 this.img.animationSpeed = 0.5;
                 this.img.play();
                 if (opts.power) this.power = opts.power;
@@ -41,34 +51,35 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             this.healthBar = new PIXI.Graphics();
             this.healthBar.beginFill(0xFF0000);
             this.healthBar.drawRect(-20, -25, 40, 2);
-            this.imgContainer.addChild(this.img);
-            this.imgContainer.addChild(this.healthBar);
+            SpriteGenFactory.attachToContainer(this.imgContainer, this.img, this.healthBar)
             this.imgContainer.position = this.position;
             stage.addChild(this.imgContainer);
             this.slowFactor = 1;
             this.maxHealth = this.health;
-            this.path = opts.path;
-            this.pathIndex = 0;
         }
 
         moveTowards(delta) {
             let xdone = false;
             let ydone = false;
-            if(this.position.x > this.path[this.pathIndex].x + 5) {
-                if(!this.boss) this.img.rotation = 3.14;
-                this.position.x -= this.slowFactor * this.speed * delta;
+            console.log(this.position.x, this.position.y, this.path[this.pathIndex]);
 
-            } else if(this.position.x < this.path[this.pathIndex].x - 5) {
+            let deltaSpeed = this.slowFactor * this.speed * delta;
+
+            if(this.position.x > this.path[this.pathIndex].x + deltaSpeed) {
+                if(!this.boss) this.img.rotation = 3.14;
+                this.position.x -= deltaSpeed;
+
+            } else if(this.position.x < this.path[this.pathIndex].x - deltaSpeed) {
                 if(!this.boss) this.img.rotation = 3.14*2;
-                this.position.x += this.slowFactor * this.speed * delta;
+                this.position.x += deltaSpeed;
             } else{
                 xdone = true;
             }
-            if(this.position.y > this.path[this.pathIndex].y + 5) {
+            if(this.position.y > this.path[this.pathIndex].y + deltaSpeed) {
                 if(!this.boss) this.img.rotation = (3*3.14) / 2;
-                this.position.y -= this.slowFactor * this.speed * delta;
-            }else if(this.position.y < this.path[this.pathIndex].y - 5) {
-                this.position.y += this.slowFactor * this.speed * delta;
+                this.position.y -= deltaSpeed;
+            }else if(this.position.y < this.path[this.pathIndex].y - deltaSpeed) {
+                this.position.y += deltaSpeed;
                 if(!this.boss) this.img.rotation = 3.14 / 2;
             }else{
                 ydone = true;
@@ -79,6 +90,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
 
         terminate(){
+
+
             for(var i in this.particleEmitters){
                 if(this.particleEmitters[i])this.particleEmitters[i].destroy();
             }
@@ -91,10 +104,13 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
             $rootScope.$emit("updateNumberOfEnemies");
             //this.circle.destroy();
-            stage.removeChild(this.circle);
+            //stage.removeChild(this.circle);
             stage.removeChild(this.img);
             stage.removeChild(this.healthBar);
             stage.removeChild(this.imgContainer);
+
+            $rootScope.$emit("updateNumberOfEnemies");
+
 
         }
 
@@ -118,20 +134,20 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 this.terminate();
             }
             if(this.poisoned) this.takeDamage(this.poisonDamage);
-            if(!this.circle){
-                    this.circle = new PIXI.Graphics();
-                    this.circle.beginFill(0xFFFF99, 0.4);
-                    this.circle.lineStyle(2, 0xFFFF99);
-                    this.circle.drawCircle(this.img.position.x, this.img.position.y, this.radius);
-                    stage.addChild(this.circle);
-                }else{
-                    stage.removeChild(this.circle);
-                    this.circle = new PIXI.Graphics();
-                    this.circle.beginFill(0xFFFF99, 0.4);
-                    this.circle.lineStyle(2, 0xFFFF99);
-                    this.circle.drawCircle(this.img.position.x, this.img.position.y, this.radius);
-                    stage.addChild(this.circle);
-                }
+            // if(!this.circle){
+            //         this.circle = new PIXI.Graphics();
+            //         this.circle.beginFill(0xFFFF99, 0.4);
+            //         this.circle.lineStyle(2, 0xFFFF99);
+            //         this.circle.drawCircle(this.img.position.x, this.img.position.y, this.radius);
+            //         stage.addChild(this.circle);
+            //     }else{
+            //         stage.removeChild(this.circle);
+            //         this.circle = new PIXI.Graphics();
+            //         this.circle.beginFill(0xFFFF99, 0.4);
+            //         this.circle.lineStyle(2, 0xFFFF99);
+            //         this.circle.drawCircle(this.img.position.x, this.img.position.y, this.radius);
+            //         stage.addChild(this.circle);
+            //     }
         }
 
         takeDamage(damage){
@@ -143,6 +159,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
             if(this.health <= 0){
                 PlayerFactory.money += this.value;
+                terminatedEnemies.push(this);
                 $rootScope.$digest();
                 this.terminate();
             }
@@ -187,6 +204,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 health: 10,
                 color: "green"
             });
+
         }
     }
 
@@ -365,23 +383,29 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     };
 
     let restart = () => {
-        console.log("Number of enemies", enemies.length);
-        console.log("Enemies", enemies);
         for(let i = enemies.length -1; i >=0; i--){
             let enemy = enemies[i];
-            enemy.terminate();       
-        }
+            enemy.terminate();
+        };
+        terminatedEnemies = [];
+    };
+
+    let resetTerminatedEnemies = () => {
+        terminatedEnemies.length = 0;
     }
-    let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow, 
+
+    let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow,
                                BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,
                                SuperBigBugRed,SuperBigBugGreen,SuperBigBugBlue,SuperBigBugYellow,
                                BossBug};
     //adWare, worm
     return {
+        resetTerminatedEnemies,
         restart,
         stage,
         createEnemy,
         enemies,
-        updateAll
+        updateAll,
+        terminatedEnemies
     };
 });

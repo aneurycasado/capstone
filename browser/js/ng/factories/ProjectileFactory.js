@@ -1,6 +1,7 @@
-app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFactory){
-
+app.factory("ProjectileFactory", function(LightningFactory, StateFactory, ParticleFactory, EnemyFactory){
   let projectiles = [];
+
+  //LightningFactory.lightning();
 
   let stage = new PIXI.Stage();
 
@@ -17,7 +18,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
           projectiles.push(this);
           window.setTimeout(function(){
             if(projectiles.indexOf(this) !== -1) this.terminate();
-          }.bind(this), 30000);
+          }.bind(this), 20000);
       }
 
       terminate() {
@@ -27,20 +28,20 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
       }
 
       update(){
-            if(!this.circle){
-                this.circle = new PIXI.Graphics();
-                this.circle.beginFill(0xFF0000, 0.4);
-                this.circle.lineStyle(2, 0xFF0000);
-                this.circle.drawCircle(this.x, this.y, this.radius);
-                stage.addChild(this.circle);
-            }else{
-                stage.removeChild(this.circle);
-                this.circle = new PIXI.Graphics();
-                this.circle.beginFill(0xFF0000, 0.4);
-                this.circle.lineStyle(2, 0xFF0000);
-                this.circle.drawCircle(this.x, this.y, this.radius);
-                stage.addChild(this.circle);
-            }
+            // if(!this.circle){
+            //     this.circle = new PIXI.Graphics();
+            //     this.circle.beginFill(0xFF0000, 0.4);
+            //     this.circle.lineStyle(2, 0xFF0000);
+            //     this.circle.drawCircle(this.x, this.y, this.radius);
+            //     stage.addChild(this.circle);
+            // }else{
+            //     stage.removeChild(this.circle);
+            //     this.circle = new PIXI.Graphics();
+            //     this.circle.beginFill(0xFF0000, 0.4);
+            //     this.circle.lineStyle(2, 0xFF0000);
+            //     this.circle.drawCircle(this.x, this.y, this.radius);
+            //     stage.addChild(this.circle);
+            // }
       }
   }
 
@@ -94,7 +95,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
 
         if(this.particleEmitter.noSloMo){
           delta = delta*StateFactory.sloMoMod;
-        } 
+        }
 
         this.x += this.xVel * delta;
         this.y += this.yVel * delta;
@@ -108,10 +109,23 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
               if(!this.invincible) this.terminate();
               break;
             }
-        if(this.extendUpdate) this.extendUpdate(delta);
+
+        if(this.invincible && invincibleConditions.call(this)) this.terminate();
 
     }
 
+  }
+
+  function outOfBounds(mod){
+    return this.x - mod > StateFactory.width || this.x < -mod || this.y - mod > StateFactory.height || this.y < -mod;
+  }
+
+  function outOfTime(time){
+    return Date.now() > this.startTime + time;
+  }
+
+  function invincibleConditions(){
+       return outOfBounds.call(this, 200) && outOfTime.call(this, 3500);
   }
 
   class ThunderBallProjectile extends StraightProjectile{
@@ -129,6 +143,35 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
         this.slowDuration = 1000;
         this.particleEmitter = ParticleFactory.createEmitter('ice', stage);
         this.particleEmitter.updateOwnerPos(this.x, this.y);
+      }
+
+      specialEffect() {
+        this.target.lastSlowed = Date.now();
+        if(this.target.slowFactor > this.slowSpeed ) {
+            this.target.slowFactor = this.slowSpeed;
+            this.target.img.tint = 12168959;
+        }
+        window.setTimeout(function(){
+            if(Date.now() - this.target.lastSlowed >=  this.slowDuration) {
+              this.target.slowFactor = 1;
+              this.target.img.tint = 16777215;
+            }
+        }.bind(this), this.slowDuration);
+
+      }
+  }
+
+  class BlizzardProjectile extends StraightProjectile{
+      constructor(opts){
+        super(opts);
+        this.slowSpeed = 0.5;
+        this.slowDuration = 1000;
+        this.particleEmitter = ParticleFactory.createEmitter('blizzard', stage);
+        this.particleEmitter.updateOwnerPos(this.x, this.y);
+        this.particleEmitter.noSloMo = true;
+        this.invincible = true;
+        this.startTime = Date.now();
+
       }
 
       specialEffect() {
@@ -190,23 +233,27 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
       constructor(opts){
         super(opts);
 
-       
+
         this.particleEmitter = ParticleFactory.createEmitter('meteor', stage);
         this.particleEmitter.updateOwnerPos(this.x, this.y);
         this.particleEmitter.noSloMo = true;
-        
+
         this.extraImage = new PIXI.Sprite(PIXI.Texture.fromImage("/images/particles/meteor.png"));
         this.extraImage.anchor.x = .5;
         this.extraImage.anchor.y = .5;
         stage.addChild(this.extraImage);
         this.invincible = true;
+        this.startTime = Date.now();
 
 
       }
 
-      extendUpdate(delta){
+      update(delta){
+        super.update(delta);
+
         this.extraImage.position.x = this.x;
         this.extraImage.position.y = this.y;
+        this.extraImage.rotation = this.extraImage.rotation + (3 * delta);
 
       }
 
@@ -217,6 +264,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
         });
       }
   }
+
 
   class PoisonProjectile extends HomingProjectile{
       constructor(opts){
@@ -264,6 +312,7 @@ app.factory("ProjectileFactory", function(StateFactory, ParticleFactory, EnemyFa
     StraightProjectile,
     MeteorProjectile,
     ThunderBallProjectile,
+    BlizzardProjectile,
     updateAll
   };
 });

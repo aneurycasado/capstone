@@ -14,6 +14,15 @@ img {
   height: 100%;
 }
 
+#mainContainer {
+  margin: 0 auto;
+  width: 1000px;
+}
+
+canvas{
+	position:fixed;
+  float: left;
+}
 
 @import 'directives/main';
 @import 'edit/main';

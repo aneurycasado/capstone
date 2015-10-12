@@ -23,12 +23,7 @@ app.factory('WaveFactory', function($rootScope,EnemyFactory, StateFactory) {
         if(checkNodeClear(3)) {
             if(!currentWaveLength()) return;
             let newEn;
-            if(Array.isArray(StateFactory.map.path[0])){
-                let index = Math.floor(Math.random()*StateFactory.map.path.length);
-                newEn = EnemyFactory.createEnemy(popOffNextMonster(), StateFactory.map.path[index]);
-            }else{
-                newEn = EnemyFactory.createEnemy(popOffNextMonster(), StateFactory.map.path);
-            }
+            newEn = EnemyFactory.createEnemy(popOffNextMonster(), StateFactory.map.paths);
             EnemyFactory.stage.addChild(newEn.img);
         }
     };
@@ -41,20 +36,21 @@ app.factory('WaveFactory', function($rootScope,EnemyFactory, StateFactory) {
         return Math.floor(Math.random()*(max-min+1)+min);
     }
     let createWaves = () => {
+        let mode = StateFactory.mode;
         let waves = [];
         let numOfWaves;
-        if(StateFactory.mode = "survival"){
-             numOfWaves = 100;
+        if(mode === "survival"){
+             numOfWaves = 1000;
         }else{
             numOfWaves = 10;
         }
         for(let i = 1; i <= numOfWaves; i++){
-            let wave = generateWave(waves,numOfWaves);
+            let wave = generateWaveSurvival(waves,numOfWaves);
             waves.push(wave);
         }
         return waves;
     }
-    let generateWave = (waves,numOfWaves) => {
+    let generateWaveSurvival = (waves,numOfWaves) => {
         let wave = [];
         let enemies = ['SmallBugRed', 'SmallBugGreen', 'SmallBugBlue', 'SmallBugYellow', 'BigBugRed' ,'BigBugGreen' ,'BigBugBlue' ,'BigBugYellow' ,'SuperBigBugRed', 'SuperBigBugGreen', 'SuperBigBugBlue', 'SuperBigBugYellow']
         let numOfEnemies = waves.length * 5;
@@ -91,7 +87,7 @@ app.factory('WaveFactory', function($rootScope,EnemyFactory, StateFactory) {
         });
     }
 
-    wavesDefinition = createWaves();
+    wavesDefinition = createWaves(StateFactory.mode);
     wavesDefinition.forEach((wave) => {
         createWave(wave);
     });
