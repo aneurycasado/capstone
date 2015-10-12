@@ -64,15 +64,17 @@
             <tower-store></tower-store>
             <hr>
             <div class ="row" ng-show = "state === 'complete'">
-                <button class = "btn btn-primary" ng-click = "initiateLevel()">Next Level</button>
+                <button class = "btn btn-default" ng-click = "initiateLevel()">Next Level</button>
             </div>
             <div class ="row" ng-show = "state === 'standby'">
-                    <button class = "btn btn-primary col-md-5" ng-click = "initiateWave()" >
-                        <div class = "buttonText">Start Wave</div>
-                    </button>
-                    <button class = "btn btn-primary col-md-5 col-md-offset-2" ng-click = "saveGame()">
-                        <div class = "buttonText">Save Game</div>
-                    </button>
+                <button type = "button" class = "btn btn-default btn-block" ng-click = "initiateWave()" >
+                    Start Wave
+                </button>
+            </div>
+            <div class = "row">
+                <button type = "button" class = "btn btn-default btn-block" ng-click = "saveGame()">
+                    Save Game
+                </button>
             </div>
         </div>
     </div>

@@ -24,6 +24,13 @@ canvas{
   float: left;
 }
 
+h1 {
+    margin: 0;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
+    font-size: 5em;
+    color: #f8f8f8;
+}
+
 @import 'directives/main';
 @import 'edit/main';
 @import 'startScreen/main';
