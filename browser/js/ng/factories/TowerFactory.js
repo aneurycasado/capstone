@@ -279,7 +279,6 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
           this.activeWeapon = this.weaponArmory[weapon];
         }
         shoot(enemy) {
-          console.log('in the shoot');
           this.activeWeapon.shoot(enemy);
         }
     }
@@ -482,5 +481,4 @@ app.factory('TowerFactory', ($rootScope, EnemyFactory, ProjectileFactory, StateF
         stage,
         resetTowers,
     };
-
 });
