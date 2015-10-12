@@ -785,6 +785,55 @@ app.factory('ParticleFactory', () => {
                 "minR": 33
             }
         },
+
+        miniBlizz: {
+            "alpha": {
+                "start": 0.8,
+                "end": 0
+            },
+            "scale": {
+                "start": 0.2,
+                "end": 0.2,
+                "minimumScaleMultiplier": 1
+            },
+            "color": {
+                "start": "#ffffff",
+                "end": "#a1d9ff"
+            },
+            "speed": {
+                "start": 50,
+                "end": 0
+            },
+            "acceleration": {
+                "x": 0,
+                "y": 0
+            },
+            "startRotation": {
+                "min": 0,
+                "max": 0
+            },
+            "rotationSpeed": {
+                "min": 0,
+                "max": 0
+            },
+            "lifetime": {
+                "min": 2.1,
+                "max": 2.1
+            },
+            "blendMode": "normal",
+            "frequency": 0.8,
+            "emitterLifetime": 1.8,
+            "maxParticles": 1000,
+            "pos": {
+                "x": 0,
+                "y": 0
+            },
+            "addAtBack": false,
+            "spawnType": "burst",
+            "particlesPerWave": 8,
+            "particleSpacing": 45,
+            "angleStart": 0
+        },
     };
 
     let particleImageTable = {
@@ -799,6 +848,7 @@ app.factory('ParticleFactory', () => {
         critter1pieces: ["core1", "wing1", "eye1", "ball1"],
         meteor: [1, 2],
         blizzard: [1, 5, 3, 8],
+        miniBliz: [3],
         ice2: ["particle1", "sparks"]
     };
 

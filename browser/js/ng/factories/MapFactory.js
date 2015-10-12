@@ -21,8 +21,6 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory) => {
                     else this.img.width = StateFactory.cellSize;
                     if(opts.height) this.img.height = opts.height;
                     else this.img.height = StateFactory.cellSize;
-                    this.img.width = StateFactory.cellSize;
-                    this.img.height = StateFactory.cellSize;
                 }
             }
         }
@@ -227,7 +225,7 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory) => {
         platformBR: "19", platformUR: "20",
         platformH: "21", platformV: "22",
         platformX: "16", hangar: "23",
-        base: "turret-base",
+        base: "13",
     };
 
     const terrainToTexture = {
