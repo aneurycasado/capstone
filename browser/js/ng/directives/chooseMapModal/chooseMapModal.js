@@ -4,6 +4,7 @@ app.directive("chooseMapModal", (MapFactory, StateFactory, $rootScope) => {
 		templateUrl: "js/ng/directives/chooseMapModal/chooseMapModal.html",
 		link: (scope) => {
 			scope.maps = MapFactory.maps
+			console.log("Mode in chooseMap modal",StateFactory.mode)
 			if(StateFactory.mode !== "savedGame"){
 				$("#choseMapModal").modal("toggle");
 				scope.choseMap = (num) => {
