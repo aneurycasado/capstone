@@ -42,8 +42,7 @@ app.directive("sideBarLevelEditor", function(){
 //     "X": "platformX",
 // };
 
-
-app.controller('SideBarLevelEditorController', function($scope, $rootScope) {
+app.controller('SideBarLevelEditorController', function($scope, $rootScope, MapElementFactory, DesignFactory) {
 	$scope.mapElements = [
 		{name: "tile1", imgUrl: "/images/background-tilesets/01.png", mapNum: 6},{name: "tile2", imgUrl: "/images/background-tilesets/02.png", mapNum: 6},
 		{name: "tile3", imgUrl: "/images/background-tilesets/03.png", mapNum: 6},{name: "detail1", imgUrl: "/images/background-tilesets/08.png", mapNum: 2},
@@ -62,6 +61,17 @@ app.controller('SideBarLevelEditorController', function($scope, $rootScope) {
 		console.log("The element clicked ", element);
 	}
 	$scope.saveMap = () => {
+		let blankGrid = $.extend(true, [], DesignFactory.blankGrid);
+		console.log("DesignFactory", DesignFactory.blankGrid);
+		console.log("the blank grid", blankGrid);
+		let mapElements = MapElementFactory.mapElements;
+		console.log("the map elements", mapElements);
+		mapElements.forEach((element) => {
+			console.log("Element", element);
+			let position = element.position;
+			blankGrid[position.y][position.x] = element.mapNum;
+		});
+		console.log("The blank grid after", blankGrid);
 		console.log("Map is saved");
 	}
 });
