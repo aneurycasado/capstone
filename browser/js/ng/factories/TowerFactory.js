@@ -87,7 +87,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             if (this.target) {
                 //console.log(this.target.getSpeed());
                 return {
-                    enemyIndex: EnemyFactory.enemies.indexOf(this.target),
+                    index: EnemyFactory.enemies.indexOf(this.target),
                     health: this.target.getHealth(),
                     speed: this.target.getSpeed(),
                     position: this.target.getPosition(),
@@ -102,8 +102,8 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
 
 
-        setTargetBasedOnIndex(index) {
-            this.setTarget(EnemyFactory.enemies[index]);
+        setTargetBasedOnIndex(enemy) {
+            this.setTarget(EnemyFactory.enemies[enemy.index]);
         }
 
         getEnemies() {
@@ -112,7 +112,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             for (let i = enemies.length - 1; i >= 0; i--) {
                 if (this.isEnemyInRange(enemies[i])) {
                     arr.push({
-                        enemyIndex: i,
+                        index: i,
                         health: enemies[i].getHealth(),
                         speed: enemies[i].getSpeed(),
                         position: enemies[i].getPosition(),
@@ -303,7 +303,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
 
         }
     }
-    
+
 
     // class MeteorTower extends Tower {
     //     constructor(x, y){
