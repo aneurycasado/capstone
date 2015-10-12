@@ -62,10 +62,10 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             this.slowFactor = 1;
             this.maxHealth = this.health;
             this.enemyEncapsulated = {
-                getIndex: this.getIndex,
-                getHealth: this.getHealth,
-                getSpeed: this.getSpeed,
-                getPosition: this.getPosition,
+                getIndex: this.getIndex.bind(this),
+                getHealth: this.getHealth.bind(this),
+                getSpeed: this.getSpeed.bind(this),
+                getPosition: this.getPosition.bind(this),
                 name: this.getName()
             }
         }
