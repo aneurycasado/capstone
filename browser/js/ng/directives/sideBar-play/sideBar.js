@@ -18,7 +18,7 @@ app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, Game
     ]
     $scope.playerStats = PlayerFactory;
     $scope.waves = WaveFactory.waves;
-    if($scope.player.game){
+    if($scope.player.game.currentWave){
         console.log("Here");
         $scope.currentWave = $scope.player.game.currentWave
     }else{

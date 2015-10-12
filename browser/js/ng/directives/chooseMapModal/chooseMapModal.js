@@ -5,7 +5,7 @@ app.directive("chooseMapModal", (MapFactory, StateFactory, $rootScope) => {
 		link: (scope) => {
 			scope.maps = MapFactory.maps
 			console.log("Mode in chooseMap modal",StateFactory.mode)
-			if(StateFactory.mode !== "savedGame"){
+			if(scope.player.game.currentWave === "undefined"){
 				$("#choseMapModal").modal("toggle");
 				scope.choseMap = (num) => {
 					$rootScope.$emit("mapChosen",num);
