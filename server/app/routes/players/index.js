@@ -11,20 +11,21 @@ router.get("/me", function(req,res){
             res.json(foundUser);
         }) 
     }else{
-        res.json({});
+        res.json({player:"notLoggedIn"});
     }
 });
 
 router.put("/", function(req,res){
-    var game = {
-        player: req.body
+    if(req.user){
+        User.findOne({_id:req.user._id})
+        .then((foundUser) => {
+            foundUser.game = req.body;
+            return foundUser.save();
+        })
+        .then((savedUser) => {
+            res.json(savedUser);
+        })
+    }else{
+        res.json({player: "notLoggedIn"})
     }
-    User.findOne({_id:req.user._id})
-    .then((foundUser) => {
-        foundUser.game = game;
-        return foundUser.save();
-    })
-    .then((savedUser) => {
-        res.json(savedUser);
-    })
 });

@@ -1,5 +1,5 @@
 'use strict'
-app.factory('PlayerFactory', function($http) {
+app.factory('PlayerFactory', ($http) => {
     let factory = {health:20,money:500000};
     factory.saveGame = (player) => {
         console.log("Player in saveGame", player);

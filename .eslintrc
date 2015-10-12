@@ -39,7 +39,12 @@
     "_": 1,
     "inject": 1,
     "expect": 1,
-    "sinon": 1
+    "sinon": 1,
+    "PIXI": 1,
+    "$": 1,
+    "Yals": 1,
+    "cloudkid": 1,
+    "ace": 1
   },
 
   "rules": {

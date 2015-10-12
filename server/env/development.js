@@ -1,5 +1,5 @@
 module.exports = {
-  "DATABASE_URI": "mongodb://localhost:27017/fsg-app",
+  "DATABASE_URI": "mongodb://localhost:27017/tdJS",
   "SESSION_SECRET": "Optimus Prime is my real dad",
   "GITHUB": {
     "clientID": "4cbe9744a30f1a07032b",

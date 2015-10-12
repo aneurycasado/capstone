@@ -1,4 +1,4 @@
-app.factory('CodeEvalFactory', function() {
+app.factory('CodeEvalFactory', () => {
     let assignObjForContext = function(obj) {
         let keys = Object.keys(obj);
         console.log('keys' , keys);
@@ -34,9 +34,10 @@ app.factory('CodeEvalFactory', function() {
     let evalSnippet = function(tower) {
         if(!tower.codeSnippet) return;
         let funcStr = tower.codeSnippet.replace(/^function\s*\((\w+,\s*)*\w*\)\s*\{/, '').replace(/\}$/, '');
+        console.log(funcStr);
         let newFunc = new Function(funcStr);
+        console.log('newFunc', newFunc);
         let objProvided = assignObjForContext(tower.mods);
-        console.log('objProvided.getNearbyTowers', objProvided.surroundings.getNearbyTowers.toString());
         objProvided.surroundings.getCurrentTarget = tower.getCurrentTarget.bind(tower);
         objProvided.surroundings.setTarget = tower.setTargetBasedOnIndex.bind(tower);
         //console.log('objProvided', objProvided);
