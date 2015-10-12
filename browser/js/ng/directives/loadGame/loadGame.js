@@ -16,7 +16,7 @@ app.controller("LoadGameController", ($scope, $state) => {
 		console.log("Load Game");
 	}
 	$scope.makeAMap = () => {
-		// $state.go("mapCreatorMode");
+		$state.go("mapCreatorMode");
 		console.log("Make a Map");
 	}
 	$scope.testMaps = () => {
