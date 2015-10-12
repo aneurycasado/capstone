@@ -178,13 +178,14 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
 
         takeDamage(damage){
+            var healthBefore = this.health;
             this.health -= damage;
             var healthPercentage = this.health / this.maxHealth;
             this.healthBar.width = 40 * healthPercentage;
 
             if(!this.particleEmitters.damageSparks) this.particleEmitters.damageSparks = ParticleFactory.createEmitter('damageSparks', stage);
 
-            if(this.health <= 0){
+            if(this.health <= 0 && healthBefore > 0){
                 console.log("This is true");
                 PlayerFactory.money += this.value;
                 terminatedEnemies.push(this);

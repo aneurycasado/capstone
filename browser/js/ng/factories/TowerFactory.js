@@ -27,19 +27,19 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             this.kills = 0;
             this.reloading = false;
             this.imgNum = options.img;
-            $rootScope.$on('deadEnemy', function (event, deadEnemy) {
-                if (deadEnemy === this.target) {
+            $rootScope.$on('deadEnemy', (event, deadEnemy) => {
+                if(deadEnemy === this.target) {
                     this.target = null;
                     if (this.particleEmitter) {
                         this.particleEmitter.destroy();
                         this.particleEmitter = null;
                     }
                 }
-            }.bind(this));
+            });
             this.mods = {
                 surroundings: [
                     new ModFactory.Surrounding('getEnemies', this.getEnemies, this, true),
-                    new ModFactory.Surrounding('getNearbyTowers', this.getNearbyTowersEncapsulated, this, false)
+                    new ModFactory.Surrounding('getNearbyTowers', this.getNearbyTowersEncapsulated, this, true)
                 ],
                 abilities: [
                     new ModFactory.Ability('burst', burst, this, 25000, true),
@@ -295,9 +295,9 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 effect: 'Fill in'
             });
         }
-        shoot(enemy) {
-            this.activeWeapon.shoot(enemy);
-
+        shoot(enemy){
+            this.img.play();
+            this.activeWeapon.shoot(enemy);      
         }
     }
 

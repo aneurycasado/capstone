@@ -80,6 +80,7 @@ app.controller("PlayController", function ($scope, player, $state, $timeout, $ro
         StateFactory.stages.play.addChild(map.stage);//yaaaaa
         StateFactory.stages.play.addChild(TowerFactory.stage);//yaaaaa
         // StateFactory.stages.play.addChild(EnemyFactory.stage);//yaaaaa
+        console.log(StateFactory.stages.play);
         StateFactory.stages.play.addChild(EnemyFactory.stage);//yaaaaa
         StateFactory.stages.play.addChild(ProjectileFactory.stage);//yaaaas
         if(gameType === "loadGame"){
@@ -91,6 +92,7 @@ app.controller("PlayController", function ($scope, player, $state, $timeout, $ro
         StateFactory.state = "standby";
     };
     $rootScope.$on('mapChosen', (event, mapNum) => {
+        console.log("yo");
         init(mapNum);
     });
     $rootScope.$on('loadGame', () => {

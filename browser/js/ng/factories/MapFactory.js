@@ -181,13 +181,12 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory) => {
                 let width;
                 let height;
                 let nodeValue = newGrid[row][col];
+
                 if(typeof nodeValue === "number" && nodeValue >= 2 && nodeValue <= 8 && nodeValue !== 4){
                     width = 80;
                     height = 40;
                 }
-
                 texture = terrainToTexture[nodeValue];
-
                 if(texture){
                     if(texture.constructor === Array) texture = texture[Math.floor(Math.random() * (texture.length))];
                     img = textureToImage[texture];
@@ -199,6 +198,78 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory) => {
             }
         }
         return newGrid;
+    }
+
+
+    let Pathfinder = function(layout) {
+        let base = {}; 
+        let bases = [];
+        let destination = {};
+        let path = [];
+        let finalPath = [];
+        let gridRowLength = layout.length; 
+        let gridColLength = layout[0].length;
+        let barrenPath = new PF.Grid(DesignFactory.blankMap);
+        let finder = new PF.AStarFinder({
+             diagonalMovement: PF.DiagonalMovement.Never
+        });
+        let OptimalPath = [];
+        let returnedPath = [];
+        let array_lengths = [];
+
+        let PFwalkableGrid = function () {
+            for(let x = 0; x < gridRowLength; x++) {
+                for(let y = 0; y < gridColLength; y++) {
+                    if(layout[x][y] === 1 || layout[x][y] === 3 || layout[x][y] === 4) {
+                        barrenPath.nodes[x][y].walkable = true;
+                    }
+                    else {
+                        barrenPath.nodes[x][y].walkable = false;
+                    }
+                }
+            }
+        };
+        
+        let getStartandEndPts = function () {
+            for(let x = 0; x < layout.length; x++) {
+                 for(let y = 0; y < layout[x].length; y++) {
+                     if(layout[x][y] === 4) {
+                         bases.push({x: x, y: y, num: 4})
+                     }
+                     if(layout[x][y] === 3) {
+                        destination.column = y;
+                        destination.row = x;
+                     }
+                 }
+             }
+        };
+
+        let getPathforEnemy = function() {
+            PFwalkableGrid();
+            getStartandEndPts();
+            bases.forEach(function(startNode){
+                let walkablePath = barrenPath.clone();
+                OptimalPath.push(finder.findPath(startNode.y,startNode.x, destination.column, destination.row, walkablePath))
+            })
+            OptimalPath.forEach(function(arr){  
+                array_lengths.push(arr.length);
+            })
+            OptimalPath.forEach(function(sub_path){
+                sub_path.forEach(function(coords){
+                    let coordinates = {};
+                    coordinates.x = coords[0]*StateFactory.cellSize + StateFactory.cellSize/2; 
+                    coordinates.y = coords[1]*StateFactory.cellSize + StateFactory.cellSize/2;
+                    returnedPath.push(coordinates);
+                })
+            })
+            array_lengths.forEach(function(length){
+                finalPath.push(returnedPath.splice(0, length))
+            })
+        };
+        
+        getPathforEnemy();
+        return finalPath;
+
     }
 
     class Map {
