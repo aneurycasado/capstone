@@ -18,6 +18,8 @@ app.factory('GameFactory', function($rootScope, LightningFactory, WaveFactory, E
             ProjectileFactory.updateAll(delta);
             EnemyFactory.updateAll(delta);
             //put in standby logic
+            TowerFactory.updateAll(delta);
+
         }
         if (data.state === "wave") {
             WaveFactory.update();

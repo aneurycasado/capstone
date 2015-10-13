@@ -783,6 +783,57 @@ app.factory('ParticleFactory', () => {
             "particleSpacing": 45,
             "angleStart": 0
         },
+
+        toxic: {
+            "alpha": {
+                "start": 0.27,
+                "end": 0.11
+            },
+            "scale": {
+                "start": 1,
+                "end": 0.001,
+                "minimumScaleMultiplier": 1
+            },
+            "color": {
+                "start": "#a900bf",
+                "end": "#0d7300"
+            },
+            "speed": {
+                "start": 10,
+                "end": 30
+            },
+            "acceleration": {
+                "x": 0,
+                "y": 0
+            },
+            "startRotation": {
+                "min": 0,
+                "max": 360
+            },
+            "rotationSpeed": {
+                "min": 0,
+                "max": 0
+            },
+            "lifetime": {
+                "min": 6,
+                "max": 6
+            },
+            "blendMode": "normal",
+            "frequency": 0.008,
+            "emitterLifetime": -1,
+            "maxParticles": 1000,
+            "pos": {
+                "x": 0.5,
+                "y": 0.5
+            },
+            "addAtBack": true,
+            "spawnType": "circle",
+            "spawnCircle": {
+                "x": 0,
+                "y": 0,
+                "r": 75
+            }
+        }
     };
 
     let particleImageTable = {
@@ -798,7 +849,8 @@ app.factory('ParticleFactory', () => {
         meteor: [1, 2],
         blizzard: [1, 5, 3, 8],
         miniBliz: [3],
-        ice2: ["particle1", "sparks"]
+        ice2: ["particle1", "sparks"],
+        toxic: [1, 4],
     };
 
     let createEmitter = (emitterType, container, imageArr) => {

@@ -18,6 +18,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
   }
   
   const outOfTime = (time) => {
+    if(this.duration) time = this.duration;
     return Date.now() > this.startTime + time;
   }
 
@@ -36,7 +37,11 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
           }
           projectiles.push(this);
           window.setTimeout(() => {
-            if(this) this.terminate();
+            console.log("DESTROY", this);
+            if(this && !this.invincible){
+              console.log("DESTROHIGN");
+              this.terminate();
+            } 
           }, 10000);
       }
 
@@ -78,10 +83,13 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
 
      update(delta) {
          super.update(delta);
+
+          this.particleEmitter.update(delta);
+          this.particleEmitter.updateOwnerPos(this.x, this.y);
          if(checkCircleCollision(this, this.target)){
              this.target.takeDamage(this.power);
              if(this.specialEffect) this.specialEffect();
-             this.terminate();
+              if(!this.invincible) this.terminate();
          }else{
 
              this.theta = (Math.atan((this.target.position.x - this.x) / (this.target.position.y - this.y)));
@@ -95,9 +103,10 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
                this.y -= this.yVel;
              }
 
-             this.particleEmitter.update(delta);
-             this.particleEmitter.updateOwnerPos(this.x, this.y);
+           
          }
+        if(this.invincible && invincibleConditions.call(this)) this.terminate();
+
      }
 
     }
@@ -150,6 +159,17 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
     }
   }
 
+  class ToxicProjectile extends HomingProjectile{
+    constructor(opts){
+      super(opts);
+      this.invincible = true;
+      this.startTime = Date.now();
+
+      this.particleEmitter = ParticleFactory.createEmitter('toxic', stage);
+      this.particleEmitter.updateOwnerPos(this.x, this.y);
+    }
+  }
+
   class IceProjectile extends HomingProjectile{
       constructor(opts){
         super(opts);
@@ -185,6 +205,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
         this.particleEmitter.noSloMo = true;
         this.invincible = true;
         this.startTime = Date.now();
+        this.duration = 100000;
 
       }
 
@@ -315,6 +336,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
     MeteorProjectile,
     ThunderBallProjectile,
     BlizzardProjectile,
+    ToxicProjectile,
     updateAll
   };
 });

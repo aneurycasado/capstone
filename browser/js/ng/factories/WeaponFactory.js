@@ -117,6 +117,12 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
       this.reloadTime = 2100;
     }
     shoot(enemy){
+
+      var start = new LightningFactory.Yals.Vector2D(this.tower.img.position.x, this.tower.img.position.y);
+      var end = new LightningFactory.Yals.Vector2D(enemy.position.x, enemy.position.y);
+
+      lightnings.push( new LightningFactory.BranchLightning(start,end, '#FFFFFF', 1, .2) );
+
       enemy.takeDamage(this.power);
     }
   }
@@ -127,7 +133,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
       this.reloadTime = 4000;
     }
     shoot(enemy) {
-      super.shoot(enemy, 'PoisonProjectile', {speed: 150, radius: 8})
+      super.shoot(enemy, 'PoisonProjectile', {speed: 50, radius: 8})
     }
   }
 
@@ -163,6 +169,15 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     }
   }
 
+  class ToxicWeapon extends Weapon {
+    constructor(tower) {
+      super(tower, 4, 200, 'Toxic', 'Fill In');
+      this.reloadTime = 400;
+    }
+    shoot(enemy) {
+      super.shoot(enemy, 'ToxicProjectile', {speed: 50, radius: 8})
+    }
+  }
 
   class MeteorWeapon extends Weapon {
     constructor(tower) {
@@ -231,7 +246,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
             var start = new LightningFactory.Yals.Vector2D(enemy.position.x, -100);
             var end = new LightningFactory.Yals.Vector2D(enemy.position.x, enemy.position.y);
 
-            lightnings.push( new LightningFactory.BranchLightning(start,end, '#FFFFFF', 6) );
+            lightnings.push( new LightningFactory.BranchLightning(start,end, '#FFFFFF', 6, .03) );
             enemy.terminate(true);
 
         }.bind(this), 250);
@@ -265,8 +280,6 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
 
   }
 
-
-
   return {
     FlameWeapon,
     ThunderWeapon,
@@ -276,6 +289,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     MeteorWeapon,
     BlizzardWeapon,
     LightningWeapon,
+    ToxicWeapon,
     GasWeapon,
     ZapWeapon,
     updateLightnings,
