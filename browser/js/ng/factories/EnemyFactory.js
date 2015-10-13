@@ -216,7 +216,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 power: 2,
                 path: opts.path,
                 value: 3,
-                speed: 128,
+                speed: 64,
                 health: 10,
                 color: "red"
             });
@@ -230,8 +230,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 power: 2,
                 path: opts.path,
                 value: 3,
-                speed: 128,
-                health: 10,
+                speed: 64,
+                health: 30,
                 color: "green"
             });
 
@@ -245,8 +245,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 power: 2,
                 path: opts.path,
                 value: 3,
-                speed: 128,
-                health: 10,
+                speed: 64,
+                health: 30,
                 color: "blue"
             });
         }
@@ -259,8 +259,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 power: 2,
                 path: opts.path,
                 value: 3,
-                speed: 128,
-                health: 10,
+                speed: 64,
+                health: 30,
                 color: "yellow"
             });
         }
@@ -273,8 +273,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 power: 2,
                 path: opts.path,
                 value: 4,
-                speed: 90,
-                health: 30,
+                speed: 45,
+                health: 90,
                 color: "red"
             });
         }
@@ -287,8 +287,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 power: 2,
                 path: opts.path,
                 value: 4,
-                speed: 90,
-                health: 30,
+                speed: 45,
+                health: 90,
                 color: "green"
             });
         }
@@ -301,8 +301,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 power: 2,
                 path: opts.path,
                 value: 4,
-                speed: 90,
-                health: 30,
+                speed: 45,
+                health: 90,
                 color: "blue"
             });
         }
@@ -315,8 +315,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 power: 2,
                 path: opts.path,
                 value: 4,
-                speed: 90,
-                health: 30,
+                speed: 45,
+                health: 90,
                 color: "yellow"
             });
         }
@@ -329,8 +329,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 power: 2,
                 path: opts.path,
                 value: 4,
-                speed: 100,
-                health: 100,
+                speed: 50,
+                health: 300,
                 color: "red"
             });
         }
@@ -343,8 +343,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 power: 2,
                 path: opts.path,
                 value: 4,
-                speed: 100,
-                health: 100,
+                speed: 50,
+                health: 300,
                 color: "green"
             });
         }
@@ -357,8 +357,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 power: 2,
                 path: opts.path,
                 value: 4,
-                speed: 100,
-                health: 100,
+                speed: 50,
+                health: 300,
                 color: "blue"
             });
         }
@@ -371,8 +371,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 power: 2,
                 path: opts.path,
                 value: 4,
-                speed: 100,
-                health: 100,
+                speed: 50,
+                health: 300,
                 color: "yellow"
             });
         }
