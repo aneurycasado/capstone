@@ -13,7 +13,6 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
         options.x = this.tower.img.position.x;
         options.y = this.tower.img.position.y;
         options.enemy = enemy;
-        console.log(options.speed);
         new ProjectileFactory[projectile](options);
     }
   }
@@ -233,7 +232,6 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
         this.ultimate = true;
         this.sloMoTime = 400;
 
-        console.log('created one');
     }
 
     shoot(enemy) {

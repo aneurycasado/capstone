@@ -41,12 +41,15 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
       }
 
       terminate() {
+        console.log('terminate!', this);
           if(this.circle) stage.removeChild(this.circle);
           if(this.particleEmitter){
             this.particleEmitter.destroy();
             this.particleEmitter = null;
           }
-          projectiles.splice(projectiles.indexOf(this), 1);
+          if(projectiles.indexOf(this) !== -1){
+            projectiles.splice(projectiles.indexOf(this), 1);
+          }
       }
 
       update(){

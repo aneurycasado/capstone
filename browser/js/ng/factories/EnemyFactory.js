@@ -186,7 +186,6 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             if(!this.particleEmitters.damageSparks) this.particleEmitters.damageSparks = ParticleFactory.createEmitter('damageSparks', stage);
 
             if(this.health <= 0 && healthBefore > 0){
-                console.log("This is true");
                 PlayerFactory.money += this.value;
                 terminatedEnemies.push(this);
                 $rootScope.$digest();
