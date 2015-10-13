@@ -97,7 +97,7 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "normal",
             "frequency": 0.063,
-            "emitterLifetime": 500,
+            "emitterLifetime": 5,
             "maxParticles": 50,
             "pos": {
                 "x": 0,
@@ -149,7 +149,7 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "screen",
             "frequency": 0.02,
-            "emitterLifetime": -1,
+            "emitterLifetime": 10,
             "maxParticles": 150,
             "pos": {
                 "x": 0.5,
@@ -200,7 +200,7 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "normal",
             "frequency": 0.001,
-            "emitterLifetime": -1,
+            "emitterLifetime": 10,
             "maxParticles": 100,
             "pos": {
                 "x": 0,
@@ -302,7 +302,7 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "normal",
             "frequency": 0.0015,
-            "emitterLifetime": -1,
+            "emitterLifetime": 10,
             "maxParticles": 200,
             "pos": {
                 "x": 0,
@@ -353,7 +353,7 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "normal",
             "frequency": 0.001,
-            "emitterLifetime": -1,
+            "emitterLifetime": 300,
             "maxParticles": 1000,
             "pos": {
                 "x": 0,
@@ -405,7 +405,7 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "normal",
             "frequency": 0.001,
-            "emitterLifetime": -1,
+            "emitterLifetime": 5,
             "maxParticles": 100,
             "pos": {
                 "x": 0,
@@ -506,7 +506,7 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "normal",
             "frequency": 0.001,
-            "emitterLifetime": -1,
+            "emitterLifetime": 10,
             "maxParticles": 100,
             "pos": {
                 "x": 0,
@@ -555,7 +555,7 @@ app.factory('ParticleFactory', () => {
                 },
                 "blendMode": "normal",
                 "frequency": 0.001,
-                "emitterLifetime": -1,
+                "emitterLifetime": 10,
                 "maxParticles": 1000,
                 "pos": {
                     "x": 0,
@@ -668,7 +668,7 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "screen",
             "frequency": 0.0001,
-            "emitterLifetime": -1,
+            "emitterLifetime": 3,
             "maxParticles": 300,
             "pos": {
                 "x": 0,
@@ -719,7 +719,7 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "normal",
             "frequency": 0.001,
-            "emitterLifetime": -1,
+            "emitterLifetime": 10,
             "maxParticles": 1000,
             "pos": {
                 "x": 0,
@@ -770,7 +770,7 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "normal",
             "frequency": 0.001,
-            "emitterLifetime": -1,
+            "emitterLifetime": 30,
             "maxParticles": 2000,
             "pos": {
                 "x": 0,
@@ -784,6 +784,55 @@ app.factory('ParticleFactory', () => {
                 "r": 33,
                 "minR": 33
             }
+        },
+
+        miniBlizz: {
+            "alpha": {
+                "start": 0.8,
+                "end": 0
+            },
+            "scale": {
+                "start": 0.2,
+                "end": 0.2,
+                "minimumScaleMultiplier": 1
+            },
+            "color": {
+                "start": "#ffffff",
+                "end": "#a1d9ff"
+            },
+            "speed": {
+                "start": 50,
+                "end": 0
+            },
+            "acceleration": {
+                "x": 0,
+                "y": 0
+            },
+            "startRotation": {
+                "min": 0,
+                "max": 0
+            },
+            "rotationSpeed": {
+                "min": 0,
+                "max": 0
+            },
+            "lifetime": {
+                "min": 2.1,
+                "max": 2.1
+            },
+            "blendMode": "normal",
+            "frequency": 0.8,
+            "emitterLifetime": 1.8,
+            "maxParticles": 1000,
+            "pos": {
+                "x": 0,
+                "y": 0
+            },
+            "addAtBack": false,
+            "spawnType": "burst",
+            "particlesPerWave": 8,
+            "particleSpacing": 45,
+            "angleStart": 0
         },
     };
 
@@ -799,6 +848,7 @@ app.factory('ParticleFactory', () => {
         critter1pieces: ["core1", "wing1", "eye1", "ball1"],
         meteor: [1, 2],
         blizzard: [1, 5, 3, 8],
+        miniBliz: [3],
         ice2: ["particle1", "sparks"]
     };
 

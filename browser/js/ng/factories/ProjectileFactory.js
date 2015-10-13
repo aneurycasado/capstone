@@ -35,15 +35,21 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
             this[opt] = opts[opt];
           }
           projectiles.push(this);
-          window.setTimeout(function(){
-            if(projectiles.indexOf(this) !== -1) this.terminate();
-          }.bind(this), 20000);
+          window.setTimeout(() => {
+            if(this) this.terminate();
+          }, 10000);
       }
 
       terminate() {
+        console.log('terminate!', this);
           if(this.circle) stage.removeChild(this.circle);
-          this.particleEmitter.destroy();
-          projectiles.splice(projectiles.indexOf(this), 1);
+          if(this.particleEmitter){
+            this.particleEmitter.destroy();
+            this.particleEmitter = null;
+          }
+          if(projectiles.indexOf(this) !== -1){
+            projectiles.splice(projectiles.indexOf(this), 1);
+          }
       }
 
       update(){
@@ -140,6 +146,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
       super(opts);
       this.particleEmitter = ParticleFactory.createEmitter('lightningBall', stage);
       this.particleEmitter.updateOwnerPos(this.x, this.y);
+      window.setTimeout(() => this.terminate(), 3000);
     }
   }
 
@@ -147,7 +154,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
       constructor(opts){
         super(opts);
         this.slowSpeed = 0.5;
-        this.slowDuration = 1000;
+        this.slowDuration = 2000;
         this.particleEmitter = ParticleFactory.createEmitter('ice', stage);
         this.particleEmitter.updateOwnerPos(this.x, this.y);
       }

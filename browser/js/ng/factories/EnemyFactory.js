@@ -178,14 +178,14 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
 
         takeDamage(damage){
+            var healthBefore = this.health;
             this.health -= damage;
             var healthPercentage = this.health / this.maxHealth;
             this.healthBar.width = 40 * healthPercentage;
 
             if(!this.particleEmitters.damageSparks) this.particleEmitters.damageSparks = ParticleFactory.createEmitter('damageSparks', stage);
 
-            if(this.health <= 0){
-                console.log("This is true");
+            if(this.health <= 0 && healthBefore > 0){
                 PlayerFactory.money += this.value;
                 terminatedEnemies.push(this);
                 $rootScope.$digest();
@@ -215,7 +215,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '1',
                 power: 2,
                 path: opts.path,
-                value: 1,
+                value: 3,
                 speed: 128,
                 health: 10,
                 color: "red"
@@ -229,7 +229,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '1',
                 power: 2,
                 path: opts.path,
-                value: 1,
+                value: 3,
                 speed: 128,
                 health: 10,
                 color: "green"
@@ -244,7 +244,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '1',
                 power: 2,
                 path: opts.path,
-                value: 1,
+                value: 3,
                 speed: 128,
                 health: 10,
                 color: "blue"
@@ -258,7 +258,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '1',
                 power: 2,
                 path: opts.path,
-                value: 1,
+                value: 3,
                 speed: 128,
                 health: 10,
                 color: "yellow"
@@ -272,7 +272,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '2',
                 power: 2,
                 path: opts.path,
-                value: 2,
+                value: 4,
                 speed: 90,
                 health: 30,
                 color: "red"
@@ -286,7 +286,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '2',
                 power: 2,
                 path: opts.path,
-                value: 2,
+                value: 4,
                 speed: 90,
                 health: 30,
                 color: "green"
@@ -300,7 +300,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '2',
                 power: 2,
                 path: opts.path,
-                value: 2,
+                value: 4,
                 speed: 90,
                 health: 30,
                 color: "blue"
@@ -314,7 +314,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '2',
                 power: 2,
                 path: opts.path,
-                value: 3,
+                value: 4,
                 speed: 90,
                 health: 30,
                 color: "yellow"
@@ -328,7 +328,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '3',
                 power: 2,
                 path: opts.path,
-                value: 3,
+                value: 4,
                 speed: 100,
                 health: 100,
                 color: "red"
@@ -342,7 +342,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '3',
                 power: 2,
                 path: opts.path,
-                value: 3,
+                value: 4,
                 speed: 100,
                 health: 100,
                 color: "green"
@@ -356,7 +356,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '3',
                 power: 2,
                 path: opts.path,
-                value: 3,
+                value: 4,
                 speed: 100,
                 health: 100,
                 color: "blue"
@@ -370,7 +370,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 img: '3',
                 power: 2,
                 path: opts.path,
-                value: 3,
+                value: 4,
                 speed: 100,
                 health: 100,
                 color: "yellow"

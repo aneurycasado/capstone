@@ -426,6 +426,10 @@ app.factory('LightningFactory', function(StateFactory) {
         }
 
         if( this.isComplete() ){
+            this.complete = true;
+            $(StateFactory.renderer.view).css({'z-index' : '2'})
+            $(scene.canvasElement).css({'z-index' : '1'});
+
             // this = undefined;
         } 
 
