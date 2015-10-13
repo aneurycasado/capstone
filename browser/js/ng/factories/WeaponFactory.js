@@ -109,6 +109,23 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
       super.shoot(enemy, 'ThunderBallProjectile', {power: this.power, speed: 4000, radius: 14})
     }
   }
+
+  class ZapWeapon extends Weapon {
+    constructor(tower) {
+      super(tower, 25, 800, "Thunder", "Fill in")
+      this.reloadTime = 2100;
+    }
+    shoot(enemy){
+
+      var start = new LightningFactory.Yals.Vector2D(this.tower.img.position.x, this.tower.img.position.y);
+      var end = new LightningFactory.Yals.Vector2D(enemy.position.x, enemy.position.y);
+
+      lightnings.push( new LightningFactory.BranchLightning(start,end, '#FFFFFF', 6) );
+
+      enemy.takeDamage(this.power);
+    }
+  }
+
   class PoisonWeapon extends Weapon {
     constructor(tower) {
       super(tower, 4, 200, 'Poison', 'Fill in');
@@ -116,6 +133,28 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     }
     shoot(enemy) {
       super.shoot(enemy, 'PoisonProjectile', {speed: 50, radius: 8})
+    }
+  }
+
+  class GasWeapon extends Weapon {
+    constructor(tower) {
+        super(tower, 0.1, 100, 'Gas', 'Fill in');
+        this.reloadTime = 3000;
+    }
+
+    shoot(enemy){
+        tower.img.play();
+        tower.particleEmitter = ParticleFactory.createEmitter('gas', stage);
+        tower.particleEmitter.updateOwnerPos(tower.img.position.x, tower.img.position.y);
+        EnemyFactory.enemies.forEach(function(enemy){
+            if(tower.isEnemyInRange(enemy)){
+                enemy.poisoned = true;
+                enemy.poisonDamage = tower.power;
+                if(!enemy.particleEmitters.poison){
+                    enemy.particleEmitters.poison = ParticleFactory.createEmitter('poison', stage);
+                }
+            }
+        });
     }
   }
 
@@ -240,7 +279,6 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
 
   }
 
-
   return {
     FlameWeapon,
     ThunderWeapon,
@@ -251,6 +289,8 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     BlizzardWeapon,
     LightningWeapon,
     ToxicWeapon,
+    GasWeapon,
+    ZapWeapon,
     updateLightnings,
   };
 });

@@ -27,15 +27,18 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             this.kills = 0;
             this.reloading = false;
             this.imgNum = options.img;
-            $rootScope.$on('deadEnemy', (event, deadEnemy) => {
-                if(deadEnemy === this.target) {
+            this.eventRegister = {};
+            $rootScope.$on('deadEnemy', function (event, deadEnemy) {
+                //console.log('enemy is dead');
+                //console.log('this.target', this.target);
+                if (deadEnemy === this.target) {
                     this.target = null;
                     if (this.particleEmitter) {
                         this.particleEmitter.destroy();
                         this.particleEmitter = null;
                     }
                 }
-            });
+            }.bind(this));
             this.mods = {
                 surroundings: [
                     new ModFactory.Surrounding('getEnemies', this.getEnemies, this, true),
@@ -82,7 +85,24 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             //this.img.mouseout = SpriteEventFactory.towerMouseLeaveHandler.bind(this);
 
         }
+        on(name, cb) {
+            if(!this.eventRegister[name]) {
+                this.eventRegister[name] = [];
+            }
+            this.eventRegister[name].push(cb);
+        }
 
+        emit(name, ...args) {
+            if(!this.eventRegister[name]) return;
+            this.eventRegister[name].forEach(cb => {
+                cb(...args)
+            });
+            //if(this.eventRegister[name]) {
+            //    this.eventRegister[name].forEach(cb => {
+            //        cb(...args)
+            //    });
+            //}
+        }
         getCurrentTarget() {
             if (this.target) {
                 //console.log(this.target.getSpeed());
@@ -103,7 +123,8 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
 
 
         setTargetBasedOnIndex(enemy) {
-            this.setTarget(EnemyFactory.enemies[enemy.index]);
+            if(enemy) this.setTarget(EnemyFactory.enemies[enemy.getIndex()]);
+            else this.setTarget(null);
         }
 
         getEnemies() {
@@ -177,6 +198,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
 
         evalCodeSnippet() {
             CodeEvalFactory.evalSnippet(this);
+            this.on('shoot', this.towerControlFunction); //FIXME
         }
 
         addKill() {
@@ -201,7 +223,8 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             savedTowers.splice(removalIndex, 1);
         }
 
-        acquireTarget() { //FIXME: should have a better name
+        detectEnemy() { //FIXME: should have a better name
+
             for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
                 if (this.isEnemyInRange(EnemyFactory.enemies[i])) {
                     this.target = EnemyFactory.enemies[i];
@@ -215,18 +238,25 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
 
         update() {
-            if (this.towerControlFunction) this.towerControlFunction();
+            //if (this.towerControlFunction) this.towerControlFunction();
             if (!this.target) {
-                this.acquireTarget();
+                this.detectEnemy();
                 this.img.stop();
             }
             if (this.target) {
+                this.shootAttempt(this.target);
+            }
+        }
+        shootAttempt(enemy) {
+            this.emit('shoot', enemy);
+            if(this.target) {
                 if (!this.reloading) {
-                    this.shoot(this.target);
+                    //this.shotEnemy = this.target.enemyEncapsulated;
                     this.reloading = true;
-                    window.setTimeout(function () {
+                    window.setTimeout(() => {
                         this.reloading = false;
-                    }.bind(this), this.activeWeapon.reloadTime);
+                    }, this.activeWeapon.reloadTime);
+                    this.activeWeapon.shoot(this.target);
                 }
                 if (!this.isEnemyInRange(this.target)) this.target = null;
             }
@@ -247,8 +277,8 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             });
         }
 
-        shoot(enemy) {
-            this.activeWeapon.shoot(enemy);
+        shootAttempt(enemy) {
+            super.shootAttempt(enemy);
         }
     }
 
@@ -264,9 +294,9 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 effect: 'Fill in'
             });
         }
-        shoot(enemy){
-            this.img.play();
-            this.activeWeapon.shoot(enemy);      
+        shootAttempt(enemy) {
+            super.shootAttempt(enemy);
+
         }
     }
 
@@ -277,18 +307,17 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 price: 50,
                 range: 800,
                 primaryWeaponConstructor: WeaponFactory.ThunderWeapon,
+                secondaryWeaponConstructor: WeaponFactory.ZapWeapon,
                 ultimateWeaponConstructor: WeaponFactory.LightningWeapon,
                 name: "Thunder",
                 effect: 'Fill in'
             });
-
         }
 
-        shoot(enemy) {
-            this.activeWeapon.shoot(enemy);
+        shootAttempt(enemy) {
+            super.shootAttempt(enemy);
         }
-
-     }
+    }
 
     class PoisonTower extends Tower {
         constructor(x, y) {
@@ -298,7 +327,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 range: 400,
                 primaryWeaponConstructor: WeaponFactory.PoisonWeapon,
                 ultimateWeaponConstructor: WeaponFactory.ToxicWeapon,
-
+                secondaryWeaponConstructor: WeaponFactory.GasWeapon,
                 name: "Poison",
                 effect: 'Fill in'
             });
@@ -312,8 +341,8 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             this.activeWeapon = this.weaponArmory.secondary;
         }
 
-        shoot(enemy) {
-            // this.activeWeapon.shoot(enemy);
+        shootAttempt(enemy) {
+            super.shootAttempt(enemy);
         }
     }
 
@@ -344,6 +373,11 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                     }
                 }
             });
+
+        }
+
+        shootAttempt(enemy) {
+            super.shootAttempt(enemy);
         }
 
         update(delta){
@@ -354,6 +388,47 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
     }
 
+    // class GasTower extends Tower {
+    //     constructor(x, y) {
+    //         super(x, y, {
+    //             img: '6',
+    //             power: .1,
+    //             price: 50,
+    //             reloadTime: 3000,
+    //             range: 100,
+    //             name: 'Gas',
+    //             effect: 'Fill in'
+    //         });
+    //     }
+
+    //     shoot(enemy){
+    //         this.img.play();
+    //         var self = this;
+    //         this.particleEmitter = ParticleFactory.createEmitter('gas', stage);
+    //         this.particleEmitter.updateOwnerPos(this.img.position.x, this.img.position.y);
+    //         EnemyFactory.enemies.forEach(function(enemy){
+    //             if(self.isEnemyInRange(enemy)){
+    //                 enemy.poisoned = true;
+    //                 enemy.poisonDamage = self.power;
+    //                 if(!enemy.particleEmitters.poison){
+    //                     enemy.particleEmitters.poison = ParticleFactory.createEmitter('poison', stage);
+    //                 }
+    //             }
+    //         });
+    //     }
+
+    //     update(delta){
+    //         super.update(delta);
+    //         if(this.particleEmitter){
+    //             this.particleEmitter.update(delta);
+    //         }
+    //     }
+    // }
+
+    //let towers = {IceTower, ThunderTower, FireTower, FlameTower, PoisonTower, GasTower, BlizzardTower, MeteorTower};
+    // let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
+    //removed FlameTower, MeteorTower, and BlizzardTower to be refactored into weapons and abilities
+    //put back in IceTower
     let towers = {IceTower, ThunderTower, FireTower, PoisonTower};
 
     function createTower(x, y, name) {
