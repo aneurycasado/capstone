@@ -219,11 +219,8 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             if (!this.target) {
                 this.acquireTarget();
                 this.img.stop();
-                //this.target = EnemyFactory.enemies[0];
             }
-            // console.log('reloadTime', this.activeWeapon.reloadTime);
             if (this.target) {
-                // console.log('enemy health', this.target.health);
                 if (!this.reloading) {
                     this.shoot(this.target);
                     this.reloading = true;
@@ -255,34 +252,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
     }
 
-    // class BlizzardTower extends Tower {
-    //     constructor(x, y) {
-    //         super(x, y, {
-    //             img: '4',
-    //             power: .00001,
-    //             price: 50,
-    //             reloadTime: 400,
-    //             range: 200,
-    //             name: "Blizzard",
-    //             effect: 'Fill in'
-    //         });
-    //         this.ultimate = true;
-    //         this.sloMoTime = 3500;
-    //     }
-
-    //     shoot(enemy){
-    //         this.img.play();
-    //         if(!this.proj) this.proj= new ProjectileFactory.BlizzardProjectile({
-    //             power: this.power,
-    //             x: this.img.position.x, y:
-    //             this.img.position.y,
-    //             speed: 0,
-    //             radius: 200,
-    //             enemy: enemy
-    //         });
-    //     }
-    // }
-
     class FireTower extends Tower {
         constructor(x, y) {
             super(x, y, {
@@ -300,26 +269,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             this.activeWeapon.shoot(enemy);      
         }
     }
-
-
-    // class MeteorTower extends Tower {
-    //     constructor(x, y){
-    //         super(x, y, {
-    //             img: '7',
-    //             power: 10,
-    //             price:50,
-    //             reloadTime: 1000,
-    //             range: 200,
-    //             name: "Meteor",
-    //             effect: 'Fill in'
-    //         });
-    //     }
-    //
-    //     shoot(enemy){
-    //         this.img.play();
-    //         if(!this.projectile) this.projectile = new ProjectileFactory.MeteorProjectile({x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy});
-    //     }
-    // }
 
     class ThunderTower extends Tower {
         constructor(x, y) {
@@ -340,68 +289,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
 
      }
-
-//     class LightningTower extends Tower {
-//         constructor(x, y) {
-//             super(x, y, {
-//                 img: '5',
-//                 power: 30,
-//                 price: 50,
-//                 range: 120,
-//                 reloadTime: 300,
-//                 name: "Lightning",
-//                 effect: 'Fill in'
-//             });
-
-//             this.ultimate = true;
-//             this.sloMoTime = 400;
-//         }
-//         // shoot(enemy) {
-//         //     this.tower.img.play();
-
-//         //     setTimeout(function(){
-//         //         var start = new LightningFactory.Yals.Vector2D(enemy.position.x, -100);
-//         //         var end = new LightningFactory.Yals.Vector2D(enemy.position.x, enemy.position.y);
-
-//         //         this.proj = new LightningFactory.BranchLightning(start,end, '#FFFFFF', 6);
-//         //         enemy.terminate(true);
-
-
-//         //     }.bind(this), 250)
-
-//         // }
-
-//         // update(){
-//         //     super.update();
-
-// <<<<<<< HEAD
-//         //     if (this.proj) {
-                
-//         //         this.proj.update();
-// =======
-//             if (this.proj) {
-
-//                 this.proj.update();
-// >>>>>>> 7eda97d45381c9c9a9d068acca049735b7cb9395
-
-//         //     }
-
-//         //     LightningFactory.ctx.clearRect(0, 0, LightningFactory.scene.width, LightningFactory.scene.width);
-//         //     if (this.proj){
-
-//         //         $(StateFactory.renderer.view).css({'z-index' : '1'})
-//         //         $(LightningFactory.scene.canvasElement).css({'z-index' : '2'});
-
-//         //         this.proj.render(LightningFactory.ctx);
-
-// <<<<<<< HEAD
-//         //     } 
-// =======
-//             }
-// >>>>>>> 7eda97d45381c9c9a9d068acca049735b7cb9395
-
-//         // }
-//     }
 
     class PoisonTower extends Tower {
         constructor(x, y) {
@@ -465,10 +352,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
     }
 
-    //let towers = {IceTower, ThunderTower, FireTower, FlameTower, PoisonTower, GasTower, BlizzardTower, MeteorTower};
-    // let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
-    //removed FlameTower, MeteorTower, and BlizzardTower to be refactored into weapons and abilities
-    //put back in IceTower
     let towers = {IceTower, ThunderTower, FireTower, PoisonTower};
 
     function createTower(x, y, name) {
