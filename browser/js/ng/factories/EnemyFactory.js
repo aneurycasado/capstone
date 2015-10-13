@@ -66,7 +66,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 getHealth: this.getHealth.bind(this),
                 getSpeed: this.getSpeed.bind(this),
                 getPosition: this.getPosition.bind(this),
-                name: this.getName()
+                name: this.getName.bind(this)
             }
         }
 
