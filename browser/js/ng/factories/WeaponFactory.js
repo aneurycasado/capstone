@@ -116,7 +116,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
       this.reloadTime = 2100;
     }
     shoot(enemy){
-      super.shoot(enemy, 'ThunderBallProjectile', {power: this.power, speed: 4000, radius: 14})
+      enemy.takeDamage(this.power);
     }
   }
 
@@ -275,6 +275,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     BlizzardWeapon,
     LightningWeapon,
     GasWeapon,
+    ZapWeapon,
     updateLightnings,
   };
 });
