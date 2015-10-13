@@ -2,20 +2,23 @@
 	<div class = "row">
 		<h1>Welcome Player</h1>
 	</div>
-	<div class = "container">
-		<hr>
-		<div class = "row">
-			<button class = "btn btn-lg btn-block btn-default" ng-click = "newGame()">New Game</button>
+	<hr>
+	<div class = "row">
+		<div class = "col-md-3">
 		</div>
-<!-- 		<hr> -->
-		<div class = "row">
-			<button class = "btn btn-lg btn-block btn-default" ng-click = "loadGame()">Load Game</button>
+		<div class = "col-md-6" ng-click = "newGame()">
+			<h3>New Game</h3>
+			<img src = "./images/icons/play.png"/>
 		</div>
-<!-- 		<hr> -->
-		<div class = "row">
-			<button class = "btn btn-lg btn-block btn-default" ng-click = "makeAMap()">Make a Map</button>
 		</div>
-		<hr>
+	<div class = "row">
+		<div class = "col-md-3">
+		</div>
+		<div class = "col-md-6" ng-click = "loadGame()">
+			<h3>Load Game</h3>
+			<img src = "./images/icons/load.png" style = "height: 255px; color: white"/>
+		</div>
+	</div>
 <!-- 		<div class = "row">
 			<button class = "btn btn-lg btn-block btn-default" ng-click = "testMaps()">Test Maps</button>
 		</div> -->

@@ -29,6 +29,7 @@ app.config(($stateProvider) => {
 
 app.controller("PlayController", function ($scope, player, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, SpriteEventFactory, ProjectileFactory, GameFactory) {
     $scope.mode = StateFactory.mode;
+    document.getElementsByTagName('body')[0].style.backgroundImage="url(./images/bg.png)"
     console.log("StateFactory", StateFactory.mode);
     console.log("PlayController", player);
     $scope.player = player;
