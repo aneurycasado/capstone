@@ -13,15 +13,15 @@ app.config(($stateProvider) => {
                         StateFactory.loadGame = true; 
                     }
                     StateFactory.mode = $stateParams.mode;
-                },
-                maps: (MapElementFactory, MapFactory) => {
-                    MapElementFactory.getMaps().then((maps) => {
-                        maps.forEach((map) => {
-                            let parsedMap = JSON.parse(map.map);
-                            MapFactory.createMap(parsedMap);
-                        })
-                    })
                 }
+                // maps: (MapElementFactory, MapFactory) => {
+                //     MapElementFactory.getMaps().then((maps) => {
+                //         maps.forEach((map) => {
+                //             let parsedMap = JSON.parse(map.map);
+                //             MapElementFactory.createMap(parsedMap);
+                //         })
+                //     })
+                // }
             },
             controller: 'PlayController'
         });
@@ -29,6 +29,7 @@ app.config(($stateProvider) => {
 
 app.controller("PlayController", function ($scope, player, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, SpriteEventFactory, ProjectileFactory, GameFactory) {
     $scope.mode = StateFactory.mode;
+    document.getElementsByTagName('body')[0].style.backgroundImage="url(./images/bg.png)"
     console.log("StateFactory", StateFactory.mode);
     console.log("PlayController", player);
     $scope.player = player;
