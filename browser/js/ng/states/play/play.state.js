@@ -10,7 +10,7 @@ app.config(($stateProvider) => {
                 },
                 mode: ($stateParams, StateFactory) => {
                     if($stateParams.mode === "savedGame"){
-                        StateFactory.loadGame = true; 
+                        StateFactory.loadGame = true;
                     }
                     StateFactory.mode = $stateParams.mode;
                 }
@@ -29,6 +29,7 @@ app.config(($stateProvider) => {
 
 app.controller("PlayController", function ($scope, player, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, SpriteEventFactory, ProjectileFactory, GameFactory) {
     $scope.mode = StateFactory.mode;
+    $scope.terminalOn = true;
     document.getElementsByTagName('body')[0].style.backgroundImage="url(./images/bg.png)"
     console.log("StateFactory", StateFactory.mode);
     console.log("PlayController", player);
@@ -68,7 +69,7 @@ app.controller("PlayController", function ($scope, player, $state, $timeout, $ro
         WaveFactory.init(mode);
         $rootScope.$emit('resetSideBar');
         init(mapNum);
-    } 
+    }
     const start = (map, gameType) => {
         StateFactory.map = map;
         StateFactory.stages.play = new PIXI.Stage();
@@ -96,18 +97,24 @@ app.controller("PlayController", function ($scope, player, $state, $timeout, $ro
         console.log("yo");
         init(mapNum);
     });
+
+    $rootScope.$on('terminalOn', function(event, data) {
+        $scope.terminalOn = data;
+        $scope.$digest();
+    })
     $rootScope.$on('loadGame', () => {
         console.log("Load game in play state");
         loadGame();
     });
     $rootScope.$on('towerClicked', (event, tower) => {
-        $scope.editing = true;
+        $scope.terminalOn = false;
         $scope.selectedTower = tower;
         $scope.selectedTower.imgUrl = "/images/tower-defense-turrets/turret-" + $scope.selectedTower.imgNum + '-' + "1" + ".png";
         $scope.$digest();
     });
     $rootScope.$on('setEditing', (event, editing) => {
         $scope.editing = editing;
+        $scope.terminalOn = false;
         $scope.$digest();
     });
     $rootScope.$on('choseADifferentMap', (event, mapNum) => {

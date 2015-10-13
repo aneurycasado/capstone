@@ -320,7 +320,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 if(this.target && this.particleEmitter.particleImages) {
                     this.particleEmitter.update(delta);
                 }
-                else {
+                if(!this.target){
                     this.particleEmitter.destroy();
                     this.particleEmittter = null;
                 }

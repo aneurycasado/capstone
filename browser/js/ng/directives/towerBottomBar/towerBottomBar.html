@@ -1,9 +1,10 @@
 <div>
-    <div class="panel-group" ng-show = "selectedTower">
+    <div class="panel-group">
 	     <div class="panel panel-default">
 	            <div class="panel-body">
 	            	<div class = "row">
-	            		<div class = "col-md-3">
+
+	            		<div class = "col-md-6">
 	            			<div class = "row">
 		            			<div class = "col-md-4">
 		            				<img ng-src = "{{selectedTower.imgUrl}}" style = "width:80px;height:80px"/>
@@ -12,7 +13,7 @@
 		            				<div class = "row">
 		            					<div class = "col-md-12">
 		            						{{selectedTower.name}}
-		            					</div>	
+		            					</div>
 		            				</div>
 		            				<div class = "row">
 		            					<div class = "col-md-12">
@@ -21,31 +22,35 @@
 		            				</div>
 		            			</div>
 		            			<div class = "col-md-3">
-		            				<button class ="btn btn-danger" ng-click = "sellTower(selectedTower)">
-		            					<div class = "row">
-		            						 Sell
-		            					</div>
-		            					<div class = "row">
-		            						{{selectedTower.price *.7}} 
-		            					</div>
-		            				 </button>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button class ="btn btn-danger sell-button" ng-click = "sellTower(selectedTower)">
+                                                    Sell: {{selectedTower.price *.7}}
+                                            </button>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button class="btn btn-info" ng-click="goToEditor()">Go to Editor</button>
+                                        </div>
+
+                                    </div>
+
 		            			</div>
 		            		</div>
 		            	</div>
-	            		<div class = "col-md-3">
+
+	            		<div class = "col-md-2">
 	            			Mode 1
 	            		</div>
-	            		<div class = "col-md-3">
+
+	            		<div class = "col-md-2">
 	            			Mode 2
 	            		</div>
-	            		<div class = "col-md-3">
+
+	            		<div class = "col-md-2">
 	            			Special Ability
-	            		</div>	
+	            		</div>
 	            	</div>
 	            </div>
 	    	</div>
-    </div>
-    <div ng-hide ="selectedTower">
-    	cool
     </div>
 </div>

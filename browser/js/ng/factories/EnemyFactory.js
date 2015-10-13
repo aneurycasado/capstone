@@ -217,7 +217,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 path: opts.path,
                 value: 3,
                 speed: 64,
-                health: 10,
+                health: 50,
                 color: "red"
             });
         }
@@ -231,7 +231,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 path: opts.path,
                 value: 3,
                 speed: 64,
-                health: 30,
+                health: 50,
                 color: "green"
             });
 
@@ -246,7 +246,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 path: opts.path,
                 value: 3,
                 speed: 64,
-                health: 30,
+                health: 50,
                 color: "blue"
             });
         }
@@ -260,7 +260,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 path: opts.path,
                 value: 3,
                 speed: 64,
-                health: 30,
+                health: 50,
                 color: "yellow"
             });
         }
