@@ -1,4 +1,5 @@
 app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyFactory, StateFactory, LightningFactory) {
+    let towerStage = StateFactory.stages.towers;
   class Weapon {
     constructor(tower, power, range, name, effect) {
       this.tower = tower;
@@ -42,7 +43,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     }
     shoot() {
       if(!this.particleEmitter) {
-        this.particleEmitter = new ParticleFactory.createEmitter('flame', stage);
+        this.particleEmitter = new ParticleFactory.createEmitter('flame', towerStage);
         // this.calcRotation();
         this.particleEmitter.updateOwnerPos(this.tower.img.position.x, this.tower.img.position.y);
       }
@@ -65,7 +66,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
        });
     }
     calcRotation() {
-       this.particleEmitter.rotation = (-57.3 * (Math.atan2((this.tower.target.imgContainer.position.x - this.img.position.x) , (this.target.imgContainer.position.y - this.img.position.y))) + 180);
+       this.particleEmitter.rotation = (-57.3 * (Math.atan2((this.tower.target.imgContainer.position.x - this.tower.img.position.x) , (this.tower.target.imgContainer.position.y - this.tower.img.position.y))) + 180);
     }
     checkRadius(center, enemy) {
          let dx = center.x - enemy.img.position.x;
@@ -138,14 +139,14 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
 
     shoot(enemy){
         tower.img.play();
-        tower.particleEmitter = ParticleFactory.createEmitter('gas', stage);
+        tower.particleEmitter = ParticleFactory.createEmitter('gas', towerStage);
         tower.particleEmitter.updateOwnerPos(tower.img.position.x, tower.img.position.y);
         EnemyFactory.enemies.forEach(function(enemy){
             if(tower.isEnemyInRange(enemy)){
                 enemy.poisoned = true;
                 enemy.poisonDamage = tower.power;
                 if(!enemy.particleEmitters.poison){
-                    enemy.particleEmitters.poison = ParticleFactory.createEmitter('poison', stage);
+                    enemy.particleEmitters.poison = ParticleFactory.createEmitter('poison', towerStage);
                 }
             }
         });
@@ -180,7 +181,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
         setTimeout(function() {
           new ProjectileFactory.MeteorProjectile({power: this.power, x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy});
         }.bind(this), 1500)
-        
+
         StateFactory.sloMo = true;
         setTimeout(function() {
           StateFactory.sloMo = false;
@@ -201,7 +202,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
         this.tower.img.play();
         new ProjectileFactory.BlizzardProjectile({
             power: this.power,
-            x: this.tower.img.position.x, 
+            x: this.tower.img.position.x,
             y: this.tower.img.position.y,
             speed: 0,
             radius: 200,
@@ -234,7 +235,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
             enemy.terminate(true);
 
         }.bind(this), 250);
-        
+
         StateFactory.sloMo = true;
         setTimeout(function() {
             StateFactory.sloMo = false;
@@ -247,10 +248,10 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
   let lightnings = [];
 
   let updateLightnings = function(){
-      
+
       LightningFactory.ctx.clearRect(0, 0, LightningFactory.scene.width, LightningFactory.scene.width);
       lightnings = lightnings.filter(function(branch){
-          
+
           if(!branch.complete){
               $(StateFactory.renderer.view).css({'z-index' : '1'})
               $(LightningFactory.scene.canvasElement).css({'z-index' : '2'});
@@ -259,7 +260,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
               branch.render(LightningFactory.ctx);
               return true;
           }else return false;
-        
+
       });
 
   }
