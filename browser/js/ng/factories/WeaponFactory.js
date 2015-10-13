@@ -121,7 +121,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
       var start = new LightningFactory.Yals.Vector2D(this.tower.img.position.x, this.tower.img.position.y);
       var end = new LightningFactory.Yals.Vector2D(enemy.position.x, enemy.position.y);
 
-      lightnings.push( new LightningFactory.BranchLightning(start,end, '#FFFFFF', 6) );
+      lightnings.push( new LightningFactory.BranchLightning(start,end, '#FFFFFF', 1, .2) );
 
       enemy.takeDamage(this.power);
     }
@@ -246,7 +246,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
             var start = new LightningFactory.Yals.Vector2D(enemy.position.x, -100);
             var end = new LightningFactory.Yals.Vector2D(enemy.position.x, enemy.position.y);
 
-            lightnings.push( new LightningFactory.BranchLightning(start,end, '#FFFFFF', 6) );
+            lightnings.push( new LightningFactory.BranchLightning(start,end, '#FFFFFF', 6, .03) );
             enemy.terminate(true);
 
         }.bind(this), 250);

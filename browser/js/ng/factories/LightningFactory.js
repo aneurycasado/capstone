@@ -233,7 +233,7 @@ app.factory('LightningFactory', function(StateFactory) {
 
     };
 
-    function LightningBolt(startingPoint, endingPoint, color) {
+    function LightningBolt(startingPoint, endingPoint, color, fadeRate) {
 
         this.bolt = LightningBolt.createBolt(startingPoint, endingPoint, 1);
 
@@ -242,7 +242,7 @@ app.factory('LightningFactory', function(StateFactory) {
 
         this.color = color || '#FFFFFF';
         this.alpha = 1;
-        this.fadeRate = 0.03;
+        this.fadeRate = fadeRate;
         this.alphaMultiplier = 0.6;
 
     }
@@ -352,7 +352,7 @@ app.factory('LightningFactory', function(StateFactory) {
 
     };
 
-    function BranchLightning(startingPoint, endingPoint, color, numBranchesIn) {
+    function BranchLightning(startingPoint, endingPoint, color, numBranchesIn, fadeRate) {
 
         this.startingPoint = startingPoint;
         this.endingPoint = endingPoint;
@@ -363,15 +363,16 @@ app.factory('LightningFactory', function(StateFactory) {
 
         this.bolts = [];
 
-        this._createBranchs(numBranchesIn);
+        this._createBranchs(numBranchesIn, fadeRate);
 
     }
 
-    BranchLightning.prototype._createBranchs = function (numBranchesIn) {
+    BranchLightning.prototype._createBranchs = function (numBranchesIn, fadeRate) {
 
-        var mainBolt = new LightningBolt(this.startingPoint, this.endingPoint, this.color),
+        var mainBolt = new LightningBolt(this.startingPoint, this.endingPoint, this.color, fadeRate),
             bolts = this.bolts,
             numBranches = numBranchesIn || 3,
+            fadeRate = fadeRate || .03,
             branchPoints = [],
             i, len;
 
@@ -395,7 +396,7 @@ app.factory('LightningFactory', function(StateFactory) {
             // rotate 30 degrees. Alternate between rotating left and right.
             shouldInvert = ((i & 1) == 0 ? 1 : -1);
 
-            //prevents it from branching out, makes all branches end in one points
+            //prevents it from branching out, makes all branches end in one point
             shouldInvert = 0;
 
             diff.scale(1 - branchPoints[i]);
@@ -411,7 +412,7 @@ app.factory('LightningFactory', function(StateFactory) {
             //or them, the proper method in the Vector object:
             diff.add(boltStart).rotateAroundPivot(boltStart, (30 * shouldInvert) * DEGREES_TO_RADIANS);
 
-            bolts.push(new LightningBolt(boltStart, diff, this.color));
+            bolts.push(new LightningBolt(boltStart, diff, this.color, fadeRate));
         }
 
     };

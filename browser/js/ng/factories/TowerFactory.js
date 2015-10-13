@@ -255,6 +255,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         shootAttempt(enemy) {
             this.emit('shoot', enemy);
             if(this.target) {
+                if (!this.isEnemyInRange(this.target)) this.target = null;
                 if (!this.reloading) {
                     //this.shotEnemy = this.target.enemyEncapsulated;
                     this.reloading = true;
@@ -263,7 +264,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                     }, this.activeWeapon.reloadTime);
                     this.activeWeapon.shoot(this.target);
                 }
-                if (!this.isEnemyInRange(this.target)) this.target = null;
             }
         }
     }
