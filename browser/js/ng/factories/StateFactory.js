@@ -11,6 +11,7 @@ app.factory('StateFactory', function() {
     state.stages = {
         play: new PIXI.Stage(),
         menu: new PIXI.Stage(),
+        towers: new PIXI.Stage()
         //standby: new PIXI.Stage(),
         //complete: new PIXI.Stage()
     };

@@ -17,6 +17,11 @@ app.directive('editor', ($rootScope) => {
             });
             editor.getSession().setMode("ace/mode/javascript");
             editor.focus();
+            $rootScope.$on('saveCodeSuccessful', function(event, bool, error) {
+                if(bool) $rootScope.$broadcast('setEditing', false);
+                //else do something with error.message
+            });
+            scope.saveSnippet = false;
             if(scope.tower) {
                 if(scope.tower.codeSnippet === null) editor.session.setValue('function() {}');
                 else {
@@ -27,11 +32,12 @@ app.directive('editor', ($rootScope) => {
             scope.saveCodeSnippet = () => {
                 scope.tower.codeSnippet = editor.getValue();
                 scope.tower.evalCodeSnippet();
-                $rootScope.$broadcast('setEditing', false);
+                //let saveSnippet = true;
+                //console.log(saveSnippet);
+
                 //scope.$parent.$parent.editing = false;
             }
             scope.goBack = () => {
-                scope.$parent.$parent.editing = false;
                 $rootScope.$broadcast('setEditing', false);
             }
         }

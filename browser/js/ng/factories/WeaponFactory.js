@@ -1,4 +1,5 @@
 app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyFactory, StateFactory, LightningFactory) {
+    let towerStage = StateFactory.stages.towers;
   class Weapon {
     constructor(tower, power, range, name, effect) {
       this.tower = tower;
@@ -25,26 +26,26 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
       this.flameCircleRadius = 20;
       this.circles = [];
     }
-    update(delta) {
-      this.tower.acquireTarget();
-      if(!this.tower.target) {
-        this.tower.img.stop();
-      } else {
-        if(this.tower.isEnemyInRange(this.tower.target)) {
-          this.tower.target = null;
-          this.particleEmitter.destroy();
-          this.particleEmittter = null;
-        } else {
-          this.shoot()
-          this.particleEmitter.update(delta);
-        }
-      }
-    }
+    // update(delta) {
+    //   this.tower.acquireTarget();
+    //   if(!this.tower.target) {
+    //     this.tower.img.stop();
+    //   } else {
+    //     if(this.tower.isEnemyInRange(this.tower.target)) {
+    //       this.tower.target = null;
+    //       this.tower.particleEmitter.destroy();
+    //       this.tower.particleEmittter = null;
+    //     } else {
+    //       this.shoot()
+    //       this.particleEmitter.update(delta);
+    //     }
+    //   }
+    // }
     shoot() {
-      if(!this.particleEmitter) {
-        this.particleEmitter = new ParticleFactory.createEmitter('flame', stage);
+      if(!this.tower.particleEmitter) {
+        this.tower.particleEmitter = new ParticleFactory.createEmitter('flame', towerStage);
         // this.calcRotation();
-        this.particleEmitter.updateOwnerPos(this.tower.img.position.x, this.tower.img.position.y);
+        this.tower.particleEmitter.updateOwnerPos(this.tower.img.position.x, this.tower.img.position.y);
       }
       this.calcRotation();
       this.calcFlameCircleCenters();
@@ -65,7 +66,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
        });
     }
     calcRotation() {
-       this.particleEmitter.rotation = (-57.3 * (Math.atan2((this.tower.target.imgContainer.position.x - this.img.position.x) , (this.target.imgContainer.position.y - this.img.position.y))) + 180);
+       this.tower.particleEmitter.rotation = (-57.3 * (Math.atan2((this.tower.target.imgContainer.position.x - this.tower.img.position.x) , (this.tower.target.imgContainer.position.y - this.tower.img.position.y))) + 180);
     }
     checkRadius(center, enemy) {
          let dx = center.x - enemy.img.position.x;
@@ -123,7 +124,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
   class PoisonWeapon extends Weapon {
     constructor(tower) {
       super(tower, 4, 200, 'Poison', 'Fill in');
-      this.reloadTime = 1500;
+      this.reloadTime = 4000;
     }
     shoot(enemy) {
       super.shoot(enemy, 'PoisonProjectile', {speed: 150, radius: 8})
@@ -133,19 +134,19 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
   class GasWeapon extends Weapon {
     constructor(tower) {
         super(tower, 0.1, 100, 'Gas', 'Fill in');
-        this.reloadTime = 3000;
+        this.reloadTime = 5000;
     }
 
     shoot(enemy){
         tower.img.play();
-        tower.particleEmitter = ParticleFactory.createEmitter('gas', stage);
+        tower.particleEmitter = ParticleFactory.createEmitter('gas', towerStage);
         tower.particleEmitter.updateOwnerPos(tower.img.position.x, tower.img.position.y);
         EnemyFactory.enemies.forEach(function(enemy){
             if(tower.isEnemyInRange(enemy)){
                 enemy.poisoned = true;
                 enemy.poisonDamage = tower.power;
                 if(!enemy.particleEmitters.poison){
-                    enemy.particleEmitters.poison = ParticleFactory.createEmitter('poison', stage);
+                    enemy.particleEmitters.poison = ParticleFactory.createEmitter('poison', towerStage);
                 }
             }
         });
@@ -154,13 +155,14 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
 
   class IceWeapon extends Weapon {
     constructor(tower) {
-      super(tower, 2, 200, 'Ice', 'Fill In');
-      this.reloadTime = 400;
+      super(tower, 4, 200, 'Ice', 'Fill In');
+      this.reloadTime = 800;
     }
     shoot(enemy) {
-      super.shoot(enemy, 'IceProjectile', {speed: 200, radius: 8})
+      super.shoot(enemy, 'IceProjectile', {speed: 200, radius: 8});
     }
   }
+
 
   class MeteorWeapon extends Weapon {
     constructor(tower) {
@@ -179,7 +181,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
         setTimeout(function() {
           new ProjectileFactory.MeteorProjectile({power: this.power, x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy});
         }.bind(this), 1500)
-        
+
         StateFactory.sloMo = true;
         setTimeout(function() {
           StateFactory.sloMo = false;
@@ -200,7 +202,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
         this.tower.img.play();
         new ProjectileFactory.BlizzardProjectile({
             power: this.power,
-            x: this.tower.img.position.x, 
+            x: this.tower.img.position.x,
             y: this.tower.img.position.y,
             speed: 0,
             radius: 200,
@@ -233,7 +235,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
             enemy.terminate(true);
 
         }.bind(this), 250);
-        
+
         StateFactory.sloMo = true;
         setTimeout(function() {
             StateFactory.sloMo = false;
@@ -246,10 +248,10 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
   let lightnings = [];
 
   let updateLightnings = function(){
-      
+
       LightningFactory.ctx.clearRect(0, 0, LightningFactory.scene.width, LightningFactory.scene.width);
       lightnings = lightnings.filter(function(branch){
-          
+
           if(!branch.complete){
               $(StateFactory.renderer.view).css({'z-index' : '1'})
               $(LightningFactory.scene.canvasElement).css({'z-index' : '2'});
@@ -258,7 +260,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
               branch.render(LightningFactory.ctx);
               return true;
           }else return false;
-        
+
       });
 
   }
