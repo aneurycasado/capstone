@@ -13,10 +13,10 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         $timeout(function () {
             self.activeWeapon.reloadTime = temp;
         }, 3000);
-    }
+    };
     let launchUltimate = function() {
         this.ultimateWeapon.shoot(this.target);
-    }
+    };
 
     //name, functionToRun, context, coolDownPeriod, time=Date.now(), purchased=false
     class Tower {
@@ -105,14 +105,15 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
         getCurrentTarget() {
             if (this.target) {
+                return this.target.enemyEncapsulated;
                 //console.log(this.target.getSpeed());
-                return {
-                    index: EnemyFactory.enemies.indexOf(this.target),
-                    health: this.target.getHealth(),
-                    speed: this.target.getSpeed(),
-                    position: this.target.getPosition(),
-                    name: this.target.getName()
-                }
+                //return {
+                //    index: EnemyFactory.enemies.indexOf(this.target),
+                //    health: this.target.getHealth(),
+                //    speed: this.target.getSpeed(),
+                //    position: this.target.getPosition(),
+                //    name: this.target.getName()
+                //}
             }
             // return this.target;
         }
@@ -255,7 +256,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             }
         }
         shoot(enemy) {
-            this.emit('shoot', enemy);
+            this.emit('shoot', enemy.enemyEncapsulated);
             this.activeWeapon.shoot(this.target);
         }
     }
@@ -270,7 +271,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 // secondaryWeaponConstructor: WeaponFactory.FlameWeapon,
                 ultimateWeaponConstructor: WeaponFactory.BlizzardWeapon,
                 name: "Ice",
-                effect: 'Fill in',
+                effect: 'Fill in'
             });
         }
 

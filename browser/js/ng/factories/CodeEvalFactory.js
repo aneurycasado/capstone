@@ -1,4 +1,4 @@
-app.factory('CodeEvalFactory', (EventFactory) => {
+app.factory('CodeEvalFactory', (EventFactory, $rootScope) => {
     let assignObjForContext = function(obj) {
         let keys = Object.keys(obj);
         console.log('keys' , keys);
@@ -49,7 +49,11 @@ app.factory('CodeEvalFactory', (EventFactory) => {
         //    objProvided.emit('shoot', data);
         //});
         tower.towerControlFunction = () => {
-            return newFunc.call(objProvided);
+            try {
+                newFunc.call(objProvided);
+            } catch(error) {
+                $rootScope.$broadcast('error', error, tower);
+            }
         };
     };
 
