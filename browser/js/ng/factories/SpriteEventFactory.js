@@ -7,7 +7,7 @@ app.factory('SpriteEventFactory', function($rootScope) {
             $rootScope.$broadcast('setEditing', false);
         }
     };
-//Removed mouseData from all of these functions for ESLint warings to go away. 
+//Removed mouseData from all of these functions for ESLint warings to go away.
     let towerClickHandler = function() {
         selectedTowerRemover();
         $rootScope.$broadcast('towerClicked', this);
@@ -28,6 +28,7 @@ app.factory('SpriteEventFactory', function($rootScope) {
             selectedGrid = this;
         }
         selectedTowerRemover();
+        $rootScope.$broadcast('terminalOn', true)
     };
 
     let bgClickHandler = function() {
@@ -35,6 +36,7 @@ app.factory('SpriteEventFactory', function($rootScope) {
             selectedGrid = null;
         }
         selectedTowerRemover();
+        $rootScope.$broadcast('terminalOn', true)
     }
 
     return {
