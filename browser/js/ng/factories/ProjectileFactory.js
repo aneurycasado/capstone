@@ -154,7 +154,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
       constructor(opts){
         super(opts);
         this.slowSpeed = 0.5;
-        this.slowDuration = 2000;
+        this.slowDuration = 5000;
         this.particleEmitter = ParticleFactory.createEmitter('ice', stage);
         this.particleEmitter.updateOwnerPos(this.x, this.y);
       }

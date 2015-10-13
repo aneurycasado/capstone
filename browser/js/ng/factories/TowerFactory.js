@@ -28,7 +28,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             this.reloading = false;
             this.imgNum = options.img;
             this.eventRegister = {};
-            $rootScope.$on('deadEnemy', function (event, deadEnemy) {
+            $rootScope.$on('deadEnemy', (event, deadEnemy) => {
                 //console.log('enemy is dead');
                 //console.log('this.target', this.target);
                 if (deadEnemy === this.target) {
@@ -38,7 +38,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                         this.particleEmitter = null;
                     }
                 }
-            }.bind(this));
+            });
             this.mods = {
                 surroundings: [
                     new ModFactory.Surrounding('getEnemies', this.getEnemies, this, true),
@@ -277,10 +277,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 effect: 'Fill in',
             });
         }
-
-        shootAttempt(enemy) {
-            super.shootAttempt(enemy);
-        }
     }
 
     class FireTower extends Tower {
@@ -294,10 +290,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 name: "Fire",
                 effect: 'Fill in'
             });
-        }
-        shootAttempt(enemy) {
-            super.shootAttempt(enemy);
-
         }
     }
 
@@ -314,10 +306,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 effect: 'Fill in'
             });
         }
-
-        shootAttempt(enemy) {
-            super.shootAttempt(enemy);
-        }
     }
 
     class PoisonTower extends Tower {
@@ -331,18 +319,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 name: "Poison",
                 effect: 'Fill in'
             });
-        }
-
-        // swapToPrimary() {
-        //     this.activeWeapon = this.weaponArmory.primary;
-        // }
-
-        // swapToSecondary() {
-        //     this.activeWeapon = this.weaponArmory.secondary;
-        // }
-
-        shootAttempt(enemy) {
-            super.shootAttempt(enemy);
         }
 
         update(delta){

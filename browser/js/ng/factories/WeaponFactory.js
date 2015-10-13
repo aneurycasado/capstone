@@ -154,13 +154,14 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
 
   class IceWeapon extends Weapon {
     constructor(tower) {
-      super(tower, 2, 200, 'Ice', 'Fill In');
-      this.reloadTime = 400;
+      super(tower, 4, 200, 'Ice', 'Fill In');
+      this.reloadTime = 800;
     }
     shoot(enemy) {
-      super.shoot(enemy, 'IceProjectile', {speed: 200, radius: 8})
+      super.shoot(enemy, 'IceProjectile', {speed: 200, radius: 8});
     }
   }
+
 
   class MeteorWeapon extends Weapon {
     constructor(tower) {
