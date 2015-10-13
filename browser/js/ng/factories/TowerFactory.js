@@ -4,7 +4,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
     let allTowers = [];
     let savedTowers = [];
 
-    let stage = new PIXI.Stage();
+    let stage = StateFactory.stages.towers;
 
     let burst = function () {
         let self = this;
@@ -17,6 +17,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
     let launchUltimate = function() {
         this.ultimateWeapon.shoot(this.target);
     };
+
 
     //name, functionToRun, context, coolDownPeriod, time=Date.now(), purchased=false
     class Tower {
@@ -46,7 +47,9 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 ],
                 abilities: [
                     new ModFactory.Ability('burst', burst, this, 25000, true),
-                    new ModFactory.Ability('ultimateWeapon', launchUltimate, this, 30000, true)
+                    new ModFactory.Ability('ultimateWeapon', launchUltimate, this, 30000, true),
+                    new ModFactory.Ability('swapToSecondary', this.swapToSecondary, this, 0, true),
+                    new ModFactory.Ability('swapToPrimary', this.swapToPrimary, this, 0, true)
                 ],
                 effects: [],
                 consumables: []
@@ -157,6 +160,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
         swapToSecondary() {
             this.activeWeapon = this.secondaryWeapon;
+            console.log(this.activeWeapon, '=', this.secondaryWeapon);
         }
 
         swapToPrimary() {
@@ -297,7 +301,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
         shootAttempt(enemy) {
             super.shootAttempt(enemy);
-
         }
     }
 
