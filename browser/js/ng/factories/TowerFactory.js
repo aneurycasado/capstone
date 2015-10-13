@@ -27,7 +27,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             this.kills = 0;
             this.reloading = false;
             this.imgNum = options.img;
-            //this.eventRegister = {};
+            this.eventRegister = {};
             $rootScope.$on('deadEnemy', function (event, deadEnemy) {
                 if (deadEnemy === this.target) {
                     this.target = null;
@@ -83,18 +83,18 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             //this.img.mouseout = SpriteEventFactory.towerMouseLeaveHandler.bind(this);
 
         }
-        //on(name, cb) {
-        //    if(this.eventRegister[name]) {
-        //        this.eventRegister[name] = [];
-        //    }
-        //    this.eventRegister[name].push(cb);
-        //}
-        //
-        //emit(name, ...args) {
-        //    this.eventRegister[name].forEach(cb => {
-        //        cb(...args)
-        //    });
-        //}
+        on(name, cb) {
+            if(this.eventRegister[name]) {
+                this.eventRegister[name] = [];
+            }
+            this.eventRegister[name].push(cb);
+        }
+
+        emit(name, ...args) {
+            this.eventRegister[name].forEach(cb => {
+                cb(...args)
+            });
+        }
         getCurrentTarget() {
             if (this.target) {
                 //console.log(this.target.getSpeed());
@@ -189,6 +189,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
 
         evalCodeSnippet() {
             CodeEvalFactory.evalSnippet(this);
+            this.on('shoot', this.towerControlFunction); //FIXME
         }
 
         addKill() {
@@ -227,7 +228,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
 
         update() {
-            if (this.towerControlFunction) this.towerControlFunction();
+            //if (this.towerControlFunction) this.towerControlFunction();
             if (!this.target) {
                 this.acquireTarget();
                 this.img.stop();
@@ -238,6 +239,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 // console.log('enemy health', this.target.health);
                 if (!this.reloading) {
                     this.shoot(this.target);
+                    //this.shotEnemy = this.target.enemyEncapsulated;
                     this.reloading = true;
                     window.setTimeout(function () {
                         this.reloading = false;
@@ -247,7 +249,8 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             }
         }
         shoot(enemy) {
-
+            this.emit('shoot', enemy);
+            this.activeWeapon.shoot(this.target);
         }
     }
 
@@ -264,7 +267,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
 
         shoot(enemy) {
-            this.activeWeapon.shoot(enemy);
+            super.shoot(enemy);
         }
     }
 
@@ -309,7 +312,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             });
         }
         shoot(enemy) {
-            this.activeWeapon.shoot(enemy);
+            super.shoot(enemy);
 
         }
     }
@@ -349,6 +352,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
 
         shoot(enemy) {
+            super.shoot(enemy);
             this.activeWeapon.shoot(enemy);
         }
 
@@ -371,6 +375,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             this.sloMoTime = 400;
         }
         shoot(enemy) {
+            super.shoot(enemy);
             this.tower.img.play();
 
             setTimeout(function(){
@@ -428,7 +433,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
 
         shoot(enemy) {
-            this.activeWeapon.shoot(enemy);
+            super.shoot(enemy);
         }
     }
 
