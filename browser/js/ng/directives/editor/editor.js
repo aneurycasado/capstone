@@ -11,7 +11,10 @@ app.directive('editor', ($rootScope) => {
         },
         link: (scope, element, attrs) => {
             let editor = ace.edit("editor");
-            editor.setTheme("ace/theme/monokai");
+            editor.setTheme("ace/theme/ambiance");
+            editor.setOptions({
+                fontSize: "14pt"
+            });
             editor.getSession().setMode("ace/mode/javascript");
             editor.focus();
             if(scope.tower) {
