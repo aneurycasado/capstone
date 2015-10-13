@@ -84,7 +84,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
 
         }
         on(name, cb) {
-            if(this.eventRegister[name]) {
+            if(!this.eventRegister[name]) {
                 this.eventRegister[name] = [];
             }
             this.eventRegister[name].push(cb);
