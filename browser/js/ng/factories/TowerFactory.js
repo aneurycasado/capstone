@@ -159,12 +159,23 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             }
         }
         swapToSecondary() {
-            this.activeWeapon = this.secondaryWeapon;
-            console.log(this.activeWeapon, '=', this.secondaryWeapon);
+            if(this.activeWeapon !== this.secondaryWeapon){
+                if (this.particleEmitter) {
+                    this.particleEmitter.destroy();
+                    this.particleEmitter = null;
+                }
+                this.activeWeapon = this.secondaryWeapon;
+            }
         }
 
         swapToPrimary() {
-            this.activeWeapon = this.primaryWeapon;
+            if(this.activeWeapon !== this.primaryWeapon){
+                if (this.particleEmitter) {
+                    this.particleEmitter.destroy();
+                    this.particleEmitter = null;
+                }
+                this.activeWeapon = this.primaryWeapon;
+            }
         }
 
         towerInRange(tower) {
@@ -254,7 +265,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
         shootAttempt(enemy) {
             if (!this.reloading) {
-                console.log(this.reloading);
                 this.emit('shoot', enemy);
                 if (!this.isEnemyInRange(this.target)) this.target = null;
                 if(this.target) {
@@ -295,6 +305,19 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 name: "Fire",
                 effect: 'Fill in'
             });
+        }
+
+        update(delta){
+            super.update(delta);
+            if(this.particleEmitter){
+                if(this.target && this.particleEmitter.particleImages) {
+                    this.particleEmitter.update(delta);
+                }
+                else {
+                    this.particleEmitter.destroy();
+                    this.particleEmittter = null;
+                }
+            }            
         }
     }
 
