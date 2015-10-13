@@ -1,4 +1,4 @@
-app.factory('CodeEvalFactory', (EventFactory) => {
+app.factory('CodeEvalFactory', (EventFactory, $rootScope) => {
     let assignObjForContext = function(obj) {
         let keys = Object.keys(obj);
         console.log('keys' , keys);
@@ -34,23 +34,33 @@ app.factory('CodeEvalFactory', (EventFactory) => {
     let evalSnippet = function(tower) {
         if(!tower.codeSnippet) return;
         let funcStr = tower.codeSnippet.replace(/^function\s*\((\w+,\s*)*\w*\)\s*\{/, '').replace(/\}$/, '');
-        console.log(funcStr);
-        let newFunc = new Function(funcStr);
-        //console.log('newFunc', newFunc);
-        let objProvided = assignObjForContext(tower.mods);
-        objProvided.surroundings.getCurrentTarget = tower.getCurrentTarget.bind(tower);
-        objProvided.surroundings.setTarget = tower.setTargetBasedOnIndex.bind(tower);
-        //objProvided.on = function (name, cb) {
-        //    cb = cb.bind(objProvided);
-        //    tower.on(name, cb);
-        //};
-        //objProvided.emit = function (name, cb) {};
-        //tower.on('shoot', function () {
-        //    objProvided.emit('shoot', data);
-        //});
-        tower.towerControlFunction = () => {
-            return newFunc.call(objProvided);
-        };
+
+        try {
+            let newFunc = new Function(funcStr);
+            //console.log('newFunc', newFunc);
+            let objProvided = assignObjForContext(tower.mods);
+            objProvided.surroundings.getCurrentTarget = tower.getCurrentTarget.bind(tower);
+            objProvided.surroundings.setTarget = tower.setTargetBasedOnIndex.bind(tower);
+            //objProvided.on = function (name, cb) {
+            //    cb = cb.bind(objProvided);
+            //    tower.on(name, cb);
+            //};
+            //objProvided.emit = function (name, cb) {};
+            //tower.on('shoot', function () {
+            //    objProvided.emit('shoot', data);
+            //});
+            $rootScope.$broadcast('saveCodeSuccessful', true);
+            tower.towerControlFunction = () => {
+                try {
+                    newFunc.call(objProvided);
+                } catch(error) {
+                    $rootScope.$broadcast('runtimeError', error, tower);
+                }
+            };
+        } catch(error) {
+            $rootScope.$broadcast('saveCodeSuccessful', false, error);
+        }
+
     };
 
     return {

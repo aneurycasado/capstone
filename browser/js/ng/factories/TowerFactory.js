@@ -4,7 +4,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
     let allTowers = [];
     let savedTowers = [];
 
-    let stage = new PIXI.Stage();
+    let stage = StateFactory.stages.towers;
 
     let burst = function () {
         let self = this;
@@ -13,10 +13,11 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         $timeout(function () {
             self.activeWeapon.reloadTime = temp;
         }, 3000);
-    }
+    };
     let launchUltimate = function() {
         this.ultimateWeapon.shoot(this.target);
-    }
+    };
+
 
     //name, functionToRun, context, coolDownPeriod, time=Date.now(), purchased=false
     class Tower {
@@ -46,7 +47,9 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 ],
                 abilities: [
                     new ModFactory.Ability('burst', burst, this, 25000, true),
-                    new ModFactory.Ability('ultimateWeapon', launchUltimate, this, 30000, true)
+                    new ModFactory.Ability('ultimateWeapon', launchUltimate, this, 30000, true),
+                    new ModFactory.Ability('swapToSecondary', this.swapToSecondary, this, 0, true),
+                    new ModFactory.Ability('swapToPrimary', this.swapToPrimary, this, 0, true)
                 ],
                 effects: [],
                 consumables: []
@@ -105,14 +108,15 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
         getCurrentTarget() {
             if (this.target) {
+                return this.target.enemyEncapsulated;
                 //console.log(this.target.getSpeed());
-                return {
-                    index: EnemyFactory.enemies.indexOf(this.target),
-                    health: this.target.getHealth(),
-                    speed: this.target.getSpeed(),
-                    position: this.target.getPosition(),
-                    name: this.target.getName()
-                }
+                //return {
+                //    index: EnemyFactory.enemies.indexOf(this.target),
+                //    health: this.target.getHealth(),
+                //    speed: this.target.getSpeed(),
+                //    position: this.target.getPosition(),
+                //    name: this.target.getName()
+                //}
             }
             // return this.target;
         }
@@ -156,6 +160,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
         swapToSecondary() {
             this.activeWeapon = this.secondaryWeapon;
+            console.log(this.activeWeapon, '=', this.secondaryWeapon);
         }
 
         swapToPrimary() {
@@ -273,7 +278,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 // secondaryWeaponConstructor: WeaponFactory.FlameWeapon,
                 ultimateWeaponConstructor: WeaponFactory.BlizzardWeapon,
                 name: "Ice",
-                effect: 'Fill in',
+                effect: 'Fill in'
             });
         }
 
@@ -296,7 +301,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
         shootAttempt(enemy) {
             super.shootAttempt(enemy);
-
         }
     }
 

@@ -519,57 +519,6 @@ app.factory('ParticleFactory', () => {
             "angleStart": 0
         },
 
-            meteor: {
-                "alpha": {
-                    "start": 1,
-                    "end": 0.34
-                },
-                "scale": {
-                    "start": 2,
-                    "end": 0.001,
-                    "minimumScaleMultiplier": 1
-                },
-                "color": {
-                    "start": "#8f1d00",
-                    "end": "#ffb545"
-                },
-                "speed": {
-                    "start": 500,
-                    "end": 500
-                },
-                "acceleration": {
-                    "x": 0,
-                    "y": 0
-                },
-                "startRotation": {
-                    "min": 265,
-                    "max": 275
-                },
-                "rotationSpeed": {
-                    "min": 50,
-                    "max": 50
-                },
-                "lifetime": {
-                    "min": 0.1,
-                    "max": 0.75
-                },
-                "blendMode": "normal",
-                "frequency": 0.001,
-                "emitterLifetime": 10,
-                "maxParticles": 1000,
-                "pos": {
-                    "x": 0,
-                    "y": 0
-                },
-                "addAtBack": false,
-                "spawnType": "circle",
-                "spawnCircle": {
-                    "x": 0,
-                    "y": 0,
-                    "r": 0
-                }
-            },
-
             gas: {
                 "alpha": {
                     "start": 0.3,
