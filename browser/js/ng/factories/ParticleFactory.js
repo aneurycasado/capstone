@@ -268,42 +268,42 @@ app.factory('ParticleFactory', () => {
 
         fire: {
             "alpha": {
-                "start": 0.24,
+                "start": 0.62,
                 "end": 0
             },
             "scale": {
-                "start": 0.15,
-                "end": 0.45,
+                "start": 0.02,
+                "end": 0.5,
                 "minimumScaleMultiplier": 1
             },
             "color": {
-                "start": "#fff191",
-                "end": "#ff7029"
+                "start": "#fff191 ",
+                "end": "#ff622c "
             },
             "speed": {
-                "start": 100,
-                "end": 10
+                "start": 500,
+                "end": 500
             },
             "acceleration": {
                 "x": 0,
                 "y": 0
             },
             "startRotation": {
-                "min": 260,
-                "max": 280
+                "min": 265,
+                "max": 275
             },
             "rotationSpeed": {
                 "min": 50,
                 "max": 50
             },
             "lifetime": {
-                "min": 0.05,
-                "max": 0.1
+                "min": 0.02,
+                "max": 0.02
             },
             "blendMode": "normal",
-            "frequency": 0.0015,
-            "emitterLifetime": 10,
-            "maxParticles": 200,
+            "frequency": 0.001,
+            "emitterLifetime": 2000,
+            "maxParticles": 1000,
             "pos": {
                 "x": 0,
                 "y": 0
@@ -312,8 +312,8 @@ app.factory('ParticleFactory', () => {
             "spawnType": "circle",
             "spawnCircle": {
                 "x": 0,
-                "y": 20,
-                "r": 10
+                "y": 0,
+                "r": 4
             }
         },
 
@@ -837,7 +837,7 @@ app.factory('ParticleFactory', () => {
     };
 
     let particleImageTable = {
-        fire: [6],
+        fire: [1,2],
         ice: [3],
         poison: [4],
         damageSparks: [5],
