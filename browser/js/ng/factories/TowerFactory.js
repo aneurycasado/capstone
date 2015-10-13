@@ -410,6 +410,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 price: 50,
                 range: 400,
                 primaryWeaponConstructor: WeaponFactory.PoisonWeapon,
+                secondaryWeaponConstructor: WeaponFactory.GasWeapon,
                 name: "Poison",
                 effect: 'Fill in'
             });
@@ -426,36 +427,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         shoot(enemy) {
             this.activeWeapon.shoot(enemy);
         }
-    }
-
-    class GasTower extends Tower {
-        constructor(x, y) {
-            super(x, y, {
-                img: '6',
-                power: .1,
-                price: 50,
-                reloadTime: 3000,
-                range: 100,
-                name: 'Gas',
-                effect: 'Fill in'
-            });
-        }
-
-        shoot(enemy){
-            this.img.play();
-            var self = this;
-            this.particleEmitter = ParticleFactory.createEmitter('gas', stage);
-            this.particleEmitter.updateOwnerPos(this.img.position.x, this.img.position.y);
-            EnemyFactory.enemies.forEach(function(enemy){
-                if(self.isEnemyInRange(enemy)){
-                    enemy.poisoned = true;
-                    enemy.poisonDamage = self.power;
-                    if(!enemy.particleEmitters.poison){
-                        enemy.particleEmitters.poison = ParticleFactory.createEmitter('poison', stage);
-                    }
-                }
-            });
-        }
 
         update(delta){
             super.update(delta);
@@ -464,6 +435,43 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             }
         }
     }
+
+    // class GasTower extends Tower {
+    //     constructor(x, y) {
+    //         super(x, y, {
+    //             img: '6',
+    //             power: .1,
+    //             price: 50,
+    //             reloadTime: 3000,
+    //             range: 100,
+    //             name: 'Gas',
+    //             effect: 'Fill in'
+    //         });
+    //     }
+
+    //     shoot(enemy){
+    //         this.img.play();
+    //         var self = this;
+    //         this.particleEmitter = ParticleFactory.createEmitter('gas', stage);
+    //         this.particleEmitter.updateOwnerPos(this.img.position.x, this.img.position.y);
+    //         EnemyFactory.enemies.forEach(function(enemy){
+    //             if(self.isEnemyInRange(enemy)){
+    //                 enemy.poisoned = true;
+    //                 enemy.poisonDamage = self.power;
+    //                 if(!enemy.particleEmitters.poison){
+    //                     enemy.particleEmitters.poison = ParticleFactory.createEmitter('poison', stage);
+    //                 }
+    //             }
+    //         });
+    //     }
+
+    //     update(delta){
+    //         super.update(delta);
+    //         if(this.particleEmitter){
+    //             this.particleEmitter.update(delta);
+    //         }
+    //     }
+    // }
 
     //let towers = {IceTower, ThunderTower, FireTower, FlameTower, PoisonTower, GasTower, BlizzardTower, MeteorTower};
     // let prices = {"Ice": 50,"Fire": 50, "Poison": 50, "Thunder": 50 }
