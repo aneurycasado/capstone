@@ -248,9 +248,11 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             }
         }
         shootAttempt(enemy) {
-            this.emit('shoot', enemy);
-            if(this.target) {
-                if (!this.reloading) {
+            if (!this.reloading) {
+                console.log(this.reloading);
+                this.emit('shoot', enemy);
+                if (!this.isEnemyInRange(this.target)) this.target = null;
+                if(this.target) {
                     //this.shotEnemy = this.target.enemyEncapsulated;
                     this.reloading = true;
                     window.setTimeout(() => {
@@ -258,7 +260,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                     }, this.activeWeapon.reloadTime);
                     this.activeWeapon.shoot(this.target);
                 }
-                if (!this.isEnemyInRange(this.target)) this.target = null;
             }
         }
     }
@@ -332,13 +333,13 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             });
         }
 
-        swapToPrimary() {
-            this.activeWeapon = this.weaponArmory.primary;
-        }
+        // swapToPrimary() {
+        //     this.activeWeapon = this.weaponArmory.primary;
+        // }
 
-        swapToSecondary() {
-            this.activeWeapon = this.weaponArmory.secondary;
-        }
+        // swapToSecondary() {
+        //     this.activeWeapon = this.weaponArmory.secondary;
+        // }
 
         shootAttempt(enemy) {
             super.shootAttempt(enemy);
