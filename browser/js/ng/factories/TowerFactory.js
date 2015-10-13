@@ -29,8 +29,8 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             this.imgNum = options.img;
             this.eventRegister = {};
             $rootScope.$on('deadEnemy', function (event, deadEnemy) {
-                console.log('enemy is dead');
-                console.log('this.target', this.target);
+                //console.log('enemy is dead');
+                //console.log('this.target', this.target);
                 if (deadEnemy === this.target) {
                     this.target = null;
                     if (this.particleEmitter) {
