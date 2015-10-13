@@ -29,7 +29,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             this.reloading = false;
             this.imgNum = options.img;
             this.eventRegister = {};
-            $rootScope.$on('deadEnemy', function (event, deadEnemy) {
+            $rootScope.$on('deadEnemy', (event, deadEnemy) => {
                 //console.log('enemy is dead');
                 //console.log('this.target', this.target);
                 if (deadEnemy === this.target) {
@@ -39,7 +39,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                         this.particleEmitter = null;
                     }
                 }
-            }.bind(this));
+            });
             this.mods = {
                 surroundings: [
                     new ModFactory.Surrounding('getEnemies', this.getEnemies, this, true),
@@ -159,12 +159,23 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             }
         }
         swapToSecondary() {
-            this.activeWeapon = this.secondaryWeapon;
-            console.log(this.activeWeapon, '=', this.secondaryWeapon);
+            if(this.activeWeapon !== this.secondaryWeapon){
+                if (this.particleEmitter) {
+                    this.particleEmitter.destroy();
+                    this.particleEmitter = null;
+                }
+                this.activeWeapon = this.secondaryWeapon;
+            }
         }
 
         swapToPrimary() {
-            this.activeWeapon = this.primaryWeapon;
+            if(this.activeWeapon !== this.primaryWeapon){
+                if (this.particleEmitter) {
+                    this.particleEmitter.destroy();
+                    this.particleEmitter = null;
+                }
+                this.activeWeapon = this.primaryWeapon;
+            }
         }
 
         towerInRange(tower) {
@@ -253,9 +264,10 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             }
         }
         shootAttempt(enemy) {
-            this.emit('shoot', enemy);
-            if(this.target) {
-                if (!this.reloading) {
+            if (!this.reloading) {
+                this.emit('shoot', enemy);
+                if (!this.isEnemyInRange(this.target)) this.target = null;
+                if(this.target) {
                     //this.shotEnemy = this.target.enemyEncapsulated;
                     this.reloading = true;
                     window.setTimeout(() => {
@@ -263,7 +275,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                     }, this.activeWeapon.reloadTime);
                     this.activeWeapon.shoot(this.target);
                 }
-                if (!this.isEnemyInRange(this.target)) this.target = null;
             }
         }
     }
@@ -281,10 +292,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 effect: 'Fill in'
             });
         }
-
-        shootAttempt(enemy) {
-            super.shootAttempt(enemy);
-        }
     }
 
     class FireTower extends Tower {
@@ -299,8 +306,18 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 effect: 'Fill in'
             });
         }
-        shootAttempt(enemy) {
-            super.shootAttempt(enemy);
+
+        update(delta){
+            super.update(delta);
+            if(this.particleEmitter){
+                if(this.target && this.particleEmitter.particleImages) {
+                    this.particleEmitter.update(delta);
+                }
+                if(!this.target){
+                    this.particleEmitter.destroy();
+                    this.particleEmittter = null;
+                }
+            }            
         }
     }
 
@@ -317,10 +334,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 effect: 'Fill in'
             });
         }
-
-        shootAttempt(enemy) {
-            super.shootAttempt(enemy);
-        }
     }
 
     class PoisonTower extends Tower {
@@ -334,18 +347,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 name: "Poison",
                 effect: 'Fill in'
             });
-        }
-
-        swapToPrimary() {
-            this.activeWeapon = this.weaponArmory.primary;
-        }
-
-        swapToSecondary() {
-            this.activeWeapon = this.weaponArmory.secondary;
-        }
-
-        shootAttempt(enemy) {
-            super.shootAttempt(enemy);
         }
 
         update(delta){
