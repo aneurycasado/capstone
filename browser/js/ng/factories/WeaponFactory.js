@@ -162,20 +162,6 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     }
   }
 
-  // class BlizzardWeapon extends Weapon {
-  //   constructor(tower) {
-  //     super(tower, 0.00001, 200, 50, 'Blizzard', 'Fill in')
-  //     this.reloadTime = 400;
-  //   }
-  //   shoot(enemy) {
-  //     if(!this.projectile){
-  //       super.shoot(enemy, 'PoisonProjectile', {})
-  //     }
-  //
-  //
-  //
-  //   }
-  // }
   class MeteorWeapon extends Weapon {
     constructor(tower) {
       super(tower, 10, null, 'Meteor', 'Fill in');
@@ -198,41 +184,10 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
         setTimeout(function() {
           StateFactory.sloMo = false;
         }, this.sloMoTime);
-        // if(this.proj && this.proj.constructor == Array && this.proj.length){
 
-        // }else if(this.proj && this.proj.constructor !== Array){
-
-        // }else{
-        //     StateFactory.sloMo = true;
-        //     setTimeout(function () {
-        //         StateFactory.sloMo = false;
-        //     },this.sloMoTime)
-        // }
     }
   }
-    //     class MeteorTower extends Tower {
-    //     constructor(x, y){
-    //         super(x, y, {
-    //             power: 10,
-    //             price:50,
-    //             reloadTime: 1000,
-    //             range: 200,
-    //             name: "Meteor",
-    //             effect: 'Fill in'
-    //         });
 
-    //         this.ultimate = true;
-    //         this.sloMoTime = 3500;
-    //         this.proj = [];
-    //     }
-
-    //     shoot(enemy){
-    //         this.img.play();
-    //         if(this.proj.length < 3) this.proj.push(new ProjectileFactory.MeteorProjectile({x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy}));
-    //     }
-      
-
-    // }
 
   class BlizzardWeapon extends Weapon {
     constructor(tower) {
@@ -277,7 +232,6 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
             lightnings.push( new LightningFactory.BranchLightning(start,end, '#FFFFFF', 6) );
             enemy.terminate(true);
 
-
         }.bind(this), 250);
         
         StateFactory.sloMo = true;
@@ -292,15 +246,21 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
   let lightnings = [];
 
   let updateLightnings = function(){
-      $(StateFactory.renderer.view).css({'z-index' : '1'})
-      $(LightningFactory.scene.canvasElement).css({'z-index' : '2'});
-
+      
       LightningFactory.ctx.clearRect(0, 0, LightningFactory.scene.width, LightningFactory.scene.width);
-      lightnings.forEach(function(branch){
-          branch.update();
-          branch.render(LightningFactory.ctx);
+      lightnings = lightnings.filter(function(branch){
+          
+          if(!branch.complete){
+              $(StateFactory.renderer.view).css({'z-index' : '1'})
+              $(LightningFactory.scene.canvasElement).css({'z-index' : '2'});
+
+              branch.update();
+              branch.render(LightningFactory.ctx);
+              return true;
+          }else return false;
+        
       });
-     
+
   }
 
 
