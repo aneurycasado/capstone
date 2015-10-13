@@ -91,9 +91,15 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
 
         emit(name, ...args) {
+            if(!this.eventRegister[name]) return;
             this.eventRegister[name].forEach(cb => {
                 cb(...args)
             });
+            //if(this.eventRegister[name]) {
+            //    this.eventRegister[name].forEach(cb => {
+            //        cb(...args)
+            //    });
+            //}
         }
         getCurrentTarget() {
             if (this.target) {
