@@ -8,7 +8,7 @@ app.directive("loadGame", () => {
 
 app.controller("LoadGameController", ($scope, $state) => {
 	$scope.newGame = () => {
-		$scope.pickGameType = true;
+		$state.go("play", {"mode": "story"})
 		console.log("New Game");
 	}
 	$scope.loadGame = () => {
