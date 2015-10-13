@@ -264,17 +264,10 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             }
         }
         shootAttempt(enemy) {
-<<<<<<< HEAD
-            this.emit('shoot', enemy);
-            if(this.target) {
-                if (!this.isEnemyInRange(this.target)) this.target = null;
-                if (!this.reloading) {
-=======
-            if (!this.reloading) {
+           if (!this.reloading) {
                 this.emit('shoot', enemy);
                 if (!this.isEnemyInRange(this.target)) this.target = null;
                 if(this.target) {
->>>>>>> 3317d492828bcb0afb3d2bb5093cb5a82bc312f0
                     //this.shotEnemy = this.target.enemyEncapsulated;
                     this.reloading = true;
                     window.setTimeout(() => {
