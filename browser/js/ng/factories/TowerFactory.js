@@ -27,8 +27,9 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             this.kills = 0;
             this.reloading = false;
             this.imgNum = options.img;
-            $rootScope.$on('deadEnemy', (event, deadEnemy) => {
-                if(deadEnemy === this.target) {
+            this.eventRegister = {};
+            $rootScope.$on('deadEnemy', function (event, deadEnemy) {
+                if (deadEnemy === this.target) {
                     this.target = null;
                     if (this.particleEmitter) {
                         this.particleEmitter.destroy();
@@ -38,8 +39,8 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             });
             this.mods = {
                 surroundings: [
-                    new ModFactory.Surrounding('getEnemies', this.getEnemies, this, true),
-                    new ModFactory.Surrounding('getNearbyTowers', this.getNearbyTowersEncapsulated, this, true)
+                    new ModFactory.Surrounding('getEnemies', this.getEnemies, this, false),
+                    new ModFactory.Surrounding('getNearbyTowers', this.getNearbyTowersEncapsulated, this, false)
                 ],
                 abilities: [
                     new ModFactory.Ability('burst', burst, this, 25000, true),
@@ -82,7 +83,18 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             //this.img.mouseout = SpriteEventFactory.towerMouseLeaveHandler.bind(this);
 
         }
+        on(name, cb) {
+            if(!this.eventRegister[name]) {
+                this.eventRegister[name] = [];
+            }
+            this.eventRegister[name].push(cb);
+        }
 
+        emit(name, ...args) {
+            this.eventRegister[name].forEach(cb => {
+                cb(...args)
+            });
+        }
         getCurrentTarget() {
             if (this.target) {
                 //console.log(this.target.getSpeed());
@@ -177,6 +189,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
 
         evalCodeSnippet() {
             CodeEvalFactory.evalSnippet(this);
+            this.on('shoot', this.towerControlFunction); //FIXME
         }
 
         addKill() {
@@ -215,7 +228,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
 
         update() {
-            if (this.towerControlFunction) this.towerControlFunction();
+            //if (this.towerControlFunction) this.towerControlFunction();
             if (!this.target) {
                 this.acquireTarget();
                 this.img.stop();
@@ -223,6 +236,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             if (this.target) {
                 if (!this.reloading) {
                     this.shoot(this.target);
+                    //this.shotEnemy = this.target.enemyEncapsulated;
                     this.reloading = true;
                     window.setTimeout(function () {
                         this.reloading = false;
@@ -230,6 +244,10 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 }
                 if (!this.isEnemyInRange(this.target)) this.target = null;
             }
+        }
+        shoot(enemy) {
+            this.emit('shoot', enemy);
+            this.activeWeapon.shoot(this.target);
         }
     }
 
@@ -248,7 +266,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
 
         shoot(enemy) {
-            this.activeWeapon.shoot(enemy);
+            super.shoot(enemy);
         }
     }
 
@@ -264,9 +282,9 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 effect: 'Fill in'
             });
         }
-        shoot(enemy){
-            this.img.play();
-            this.activeWeapon.shoot(enemy);      
+        shoot(enemy) {
+            super.shoot(enemy);
+
         }
     }
 
@@ -281,14 +299,12 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 name: "Thunder",
                 effect: 'Fill in'
             });
-
         }
 
         shoot(enemy) {
-            this.activeWeapon.shoot(enemy);
+            super.shoot(enemy);
         }
-
-     }
+    }
 
     class PoisonTower extends Tower {
         constructor(x, y) {
@@ -311,7 +327,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
 
         shoot(enemy) {
-            this.activeWeapon.shoot(enemy);
+            super.shoot(enemy);
         }
     }
 
