@@ -29,6 +29,8 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             this.imgNum = options.img;
             this.eventRegister = {};
             $rootScope.$on('deadEnemy', function (event, deadEnemy) {
+                console.log('enemy is dead');
+                console.log('this.target', this.target);
                 if (deadEnemy === this.target) {
                     this.target = null;
                     if (this.particleEmitter) {
@@ -36,7 +38,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                         this.particleEmitter = null;
                     }
                 }
-            });
+            }.bind(this));
             this.mods = {
                 surroundings: [
                     new ModFactory.Surrounding('getEnemies', this.getEnemies, this, false),
@@ -221,6 +223,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
 
         acquireTarget() { //FIXME: should have a better name
+
             for (let i = EnemyFactory.enemies.length - 1; i >= 0; i--) {
                 if (this.isEnemyInRange(EnemyFactory.enemies[i])) {
                     this.target = EnemyFactory.enemies[i];
