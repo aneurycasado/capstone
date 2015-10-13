@@ -26,26 +26,26 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
       this.flameCircleRadius = 20;
       this.circles = [];
     }
-    update(delta) {
-      this.tower.acquireTarget();
-      if(!this.tower.target) {
-        this.tower.img.stop();
-      } else {
-        if(this.tower.isEnemyInRange(this.tower.target)) {
-          this.tower.target = null;
-          this.particleEmitter.destroy();
-          this.particleEmittter = null;
-        } else {
-          this.shoot()
-          this.particleEmitter.update(delta);
-        }
-      }
-    }
+    // update(delta) {
+    //   this.tower.acquireTarget();
+    //   if(!this.tower.target) {
+    //     this.tower.img.stop();
+    //   } else {
+    //     if(this.tower.isEnemyInRange(this.tower.target)) {
+    //       this.tower.target = null;
+    //       this.tower.particleEmitter.destroy();
+    //       this.tower.particleEmittter = null;
+    //     } else {
+    //       this.shoot()
+    //       this.particleEmitter.update(delta);
+    //     }
+    //   }
+    // }
     shoot() {
-      if(!this.particleEmitter) {
-        this.particleEmitter = new ParticleFactory.createEmitter('flame', towerStage);
+      if(!this.tower.particleEmitter) {
+        this.tower.particleEmitter = new ParticleFactory.createEmitter('flame', towerStage);
         // this.calcRotation();
-        this.particleEmitter.updateOwnerPos(this.tower.img.position.x, this.tower.img.position.y);
+        this.tower.particleEmitter.updateOwnerPos(this.tower.img.position.x, this.tower.img.position.y);
       }
       this.calcRotation();
       this.calcFlameCircleCenters();
@@ -66,7 +66,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
        });
     }
     calcRotation() {
-       this.particleEmitter.rotation = (-57.3 * (Math.atan2((this.tower.target.imgContainer.position.x - this.tower.img.position.x) , (this.tower.target.imgContainer.position.y - this.tower.img.position.y))) + 180);
+       this.tower.particleEmitter.rotation = (-57.3 * (Math.atan2((this.tower.target.imgContainer.position.x - this.tower.img.position.x) , (this.tower.target.imgContainer.position.y - this.tower.img.position.y))) + 180);
     }
     checkRadius(center, enemy) {
          let dx = center.x - enemy.img.position.x;
@@ -130,7 +130,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
   class PoisonWeapon extends Weapon {
     constructor(tower) {
       super(tower, 4, 200, 'Poison', 'Fill in');
-      this.reloadTime = 1500;
+      this.reloadTime = 4000;
     }
     shoot(enemy) {
       super.shoot(enemy, 'PoisonProjectile', {speed: 50, radius: 8})
@@ -140,7 +140,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
   class GasWeapon extends Weapon {
     constructor(tower) {
         super(tower, 0.1, 100, 'Gas', 'Fill in');
-        this.reloadTime = 3000;
+        this.reloadTime = 5000;
     }
 
     shoot(enemy){
@@ -161,11 +161,11 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
 
   class IceWeapon extends Weapon {
     constructor(tower) {
-      super(tower, 2, 200, 'Ice', 'Fill In');
-      this.reloadTime = 400;
+      super(tower, 4, 200, 'Ice', 'Fill In');
+      this.reloadTime = 800;
     }
     shoot(enemy) {
-      super.shoot(enemy, 'IceProjectile', {speed: 200, radius: 8})
+      super.shoot(enemy, 'IceProjectile', {speed: 200, radius: 8});
     }
   }
 
