@@ -297,6 +297,8 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 price: 50,
                 range: 400,
                 primaryWeaponConstructor: WeaponFactory.PoisonWeapon,
+                ultimateWeaponConstructor: WeaponFactory.ToxicWeapon,
+
                 name: "Poison",
                 effect: 'Fill in'
             });
@@ -311,7 +313,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
 
         shoot(enemy) {
-            this.activeWeapon.shoot(enemy);
+            // this.activeWeapon.shoot(enemy);
         }
     }
 

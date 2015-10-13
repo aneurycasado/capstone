@@ -115,7 +115,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
       this.reloadTime = 1500;
     }
     shoot(enemy) {
-      super.shoot(enemy, 'PoisonProjectile', {speed: 150, radius: 8})
+      super.shoot(enemy, 'PoisonProjectile', {speed: 50, radius: 8})
     }
   }
 
@@ -126,6 +126,16 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     }
     shoot(enemy) {
       super.shoot(enemy, 'IceProjectile', {speed: 200, radius: 8})
+    }
+  }
+
+  class ToxicWeapon extends Weapon {
+    constructor(tower) {
+      super(tower, 4, 200, 'Toxic', 'Fill In');
+      this.reloadTime = 400;
+    }
+    shoot(enemy) {
+      super.shoot(enemy, 'ToxicProjectile', {speed: 50, radius: 8})
     }
   }
 
@@ -231,7 +241,6 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
   }
 
 
-
   return {
     FlameWeapon,
     ThunderWeapon,
@@ -241,6 +250,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     MeteorWeapon,
     BlizzardWeapon,
     LightningWeapon,
+    ToxicWeapon,
     updateLightnings,
   };
 });
