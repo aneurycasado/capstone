@@ -18,12 +18,7 @@ app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, Game
     ]
     $scope.playerStats = PlayerFactory;
     $scope.waves = WaveFactory.waves;
-    if($scope.player.game.currentWave){
-        console.log("Here");
-        $scope.currentWave = $scope.player.game.currentWave
-    }else{
-       $scope.currentWave = 0; 
-    }
+    $scope.currentWave = 0; 
     $scope.totalEnemiesKilled = 0;
     $scope.totalEnemies = 0;
     $scope.enemiesKilled = EnemyFactory.terminatedEnemies.length;
@@ -63,20 +58,20 @@ app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, Game
     //     $scope.waves = WaveFactory.waves;
     //     $scope.state = StateFactory.state;
     // });
-    $scope.saveGame = () => {
-        let player = {
-            health: PlayerFactory.health,
-            money: PlayerFactory.money,
-            currentWave: $scope.currentWave,
-            totalEnemiesKilled: $scope.totalEnemiesKilled,
-            mapNum: $scope.mapNum,
-            towers: TowerFactory.savedTowers,
-            mode: StateFactory.mode,
-        };
-        PlayerFactory.saveGame(player).then((savedInfo) => {
-            console.log("Saved Info ", savedInfo);
-        });
-    }
+    // $scope.saveGame = () => {
+    //     let player = {
+    //         health: PlayerFactory.health,
+    //         money: PlayerFactory.money,
+    //         currentWave: $scope.currentWave,
+    //         totalEnemiesKilled: $scope.totalEnemiesKilled,
+    //         mapNum: $scope.mapNum,
+    //         towers: TowerFactory.savedTowers,
+    //         mode: StateFactory.mode,
+    //     };
+    //     PlayerFactory.saveGame(player).then((savedInfo) => {
+    //         console.log("Saved Info ", savedInfo);
+    //     });
+    // }
     $scope.towerClicked = (tower) => {
         $rootScope.$emit("currentTower", tower);
     }

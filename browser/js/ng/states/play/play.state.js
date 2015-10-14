@@ -5,15 +5,15 @@ app.config(($stateProvider) => {
             url: '/play/:mode',
             templateUrl: '/js/ng/states/play/play.state.html',
             resolve: {
-                player: (PlayerFactory) => {
-                    return PlayerFactory.getGame();
-                },
-                mode: ($stateParams, StateFactory) => {
-                    if($stateParams.mode === "savedGame"){
-                        StateFactory.loadGame = true;
-                    }
-                    StateFactory.mode = $stateParams.mode;
-                }
+                // player: (PlayerFactory) => {
+                //     return PlayerFactory.getGame();
+                // },
+                // mode: ($stateParams, StateFactory) => {
+                //     if($stateParams.mode === "savedGame"){
+                //         StateFactory.loadGame = true;
+                //     }
+                //     StateFactory.mode = $stateParams.mode;
+                // }
                 // maps: (MapElementFactory, MapFactory) => {
                 //     MapElementFactory.getMaps().then((maps) => {
                 //         maps.forEach((map) => {
@@ -27,18 +27,17 @@ app.config(($stateProvider) => {
         });
 });
 
-app.controller("PlayController", function ($scope, player, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, SpriteEventFactory, ProjectileFactory, GameFactory) {
-    $scope.mode = StateFactory.mode;
+app.controller("PlayController", function ($scope, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, SpriteEventFactory, ProjectileFactory, GameFactory) {
+    // $scope.mode = StateFactory.mode;
     $scope.terminalOn = true;
     document.getElementsByTagName('body')[0].style.backgroundImage="url(./images/bg2.png)"
-    console.log("StateFactory", StateFactory.mode);
-    console.log("PlayController", player);
-    $scope.player = player;
-    if($scope.player.player !== "notLoggedIn" && $scope.player.game.mode){
-        StateFactory.mode = $scope.player.game.mode;
-        WaveFactory.init();
-    }
-    console.log("We reached here");
+
+    // $scope.player = player;
+    // if($scope.player.player !== "notLoggedIn" && $scope.player.game.mode){
+    //     StateFactory.mode = $scope.player.game.mode;
+    //     WaveFactory.init();
+    // }
+
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(StateFactory.width, StateFactory.height, StateFactory.canvas);
     $("#mainContainer").append(StateFactory.renderer.view);
@@ -57,7 +56,7 @@ app.controller("PlayController", function ($scope, player, $state, $timeout, $ro
         start(MapFactory.maps[$scope.player.game.mapNum] ,"loadGame");
     };
     const restart = (mapNum) => {
-        let mode = StateFactory.mode;
+        // let mode = StateFactory.mode;
         ProjectileFactory.stage.removeChildren();
         TowerFactory.stage.removeChildren();
         EnemyFactory.restart();
@@ -66,7 +65,7 @@ app.controller("PlayController", function ($scope, player, $state, $timeout, $ro
         TowerFactory.resetTowers();
         PlayerFactory.restart();
         MapFactory.reset();
-        WaveFactory.init(mode);
+        WaveFactory.init();
         $rootScope.$emit('resetSideBar');
         init(mapNum);
     }

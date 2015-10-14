@@ -51,7 +51,7 @@ module.exports = function (app) {
     app.get('/auth/google/callback',
         passport.authenticate('google', { failureRedirect: '/login' }),
         function (req, res) {
-            res.redirect('/choose');
+            res.redirect('/play/story');
         });
 
 };
