@@ -7,10 +7,19 @@ body {
     padding: 0;
     width: 100%;
     font-family: 'Jura', sans-serif;
-    background: url(./images/binaryImages/boss.png) center;
+    background: url(./images/bosswhite.png) center;
     background-repeat: no-repeat;
-    background-color: #030303;
-    background-position: center 55px;
+    background-color: #000000;
+    background-size:cover;
+    background-position: center 70px;
+}
+
+.blink_me {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {  
+  100% { opacity: 0.0; }
 }
 
 img {
@@ -29,10 +38,7 @@ canvas{
 }
 
 h1 {
-    margin: 0;
-    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
-    font-size: 5em;
-    color: #f8f8f8;
+
 }
 
 h3 {

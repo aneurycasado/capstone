@@ -7,19 +7,21 @@
     background-size: cover;
 }
 
+.huge{
+    font-size:120px;
+}
+
 .intro-message {
      //position: relative;
-     padding-top: 20%;
-     padding-bottom: 20%;
+     margin-top: 5%;
      padding-right: auto;
      padding-left: auto;
 }
 
-.intro-message > h1 {
-    margin: 0;
-    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
-    font-size: 5em;
+a{
+    color:white;
 }
+
 
 .intro-divider {
     width: 400px;
