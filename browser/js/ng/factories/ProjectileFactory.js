@@ -228,8 +228,8 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
   class FirePuddle extends Projectile{
     constructor(opts){
       super(opts);
-      this.power = 0.1;
-      this.radius = 20;
+      this.power = 0.3;
+      this.radius = 30;
       this.particleEmitter = ParticleFactory.createEmitter('fire', stage);
       this.particleEmitter.updateOwnerPos(this.x, this.y);
       window.setTimeout(function(){
@@ -252,14 +252,14 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
   class IcePuddle extends Projectile{
     constructor(opts){
       super(opts);
-      this.slowSpeed = 0.4;
-      this.slowDuration = 5000;
+      this.slowSpeed = 0.3;
+      this.slowDuration = 2000;
       this.particleEmitter = ParticleFactory.createEmitter('cold', stage);
       this.particleEmitter.updateOwnerPos(this.x, this.y);
       this.radius = 30;
       window.setTimeout(() => {
         if(projectiles.indexOf(this) !== -1) this.terminate();
-      }, 5000);
+      }, 2000);
     }
 
     update(delta){
