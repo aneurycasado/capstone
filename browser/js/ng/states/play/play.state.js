@@ -30,7 +30,7 @@ app.config(($stateProvider) => {
 app.controller("PlayController", function ($scope, player, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, SpriteEventFactory, ProjectileFactory, GameFactory) {
     $scope.mode = StateFactory.mode;
     $scope.terminalOn = true;
-    document.getElementsByTagName('body')[0].style.backgroundImage="url(./images/bg.png)"
+    document.getElementsByTagName('body')[0].style.backgroundImage="url(./images/bg2.png)"
     console.log("StateFactory", StateFactory.mode);
     console.log("PlayController", player);
     $scope.player = player;
@@ -73,7 +73,7 @@ app.controller("PlayController", function ($scope, player, $state, $timeout, $ro
     const start = (map, gameType) => {
         StateFactory.map = map;
         StateFactory.stages.play = new PIXI.Stage();
-        let bg = new PIXI.Sprite(PIXI.Texture.fromImage("/images/bg.png"));
+        let bg = new PIXI.Sprite(PIXI.Texture.fromImage("/images/bg2.png"));
         bg.interactive = true;
         bg.click = SpriteEventFactory.bgClickHandler;
         bg.width = StateFactory.width;
