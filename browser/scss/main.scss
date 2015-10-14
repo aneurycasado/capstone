@@ -3,7 +3,13 @@
 }
 
 .tower-image{
-  
+  width: 40px; height:40px;
+}
+
+.tower{
+  .price{
+
+  }
 }
 
 
@@ -52,6 +58,7 @@ h3 {
 
 .square{
   border-radius:0px !important;
+  border:none;
 }
 
 @import 'directives/main';

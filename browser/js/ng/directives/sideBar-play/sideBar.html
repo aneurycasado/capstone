@@ -1,7 +1,7 @@
 <div class="panel-group sideBar">
-    <div class="panel panel-default square">
+    <div class="panel panel-default square no-bg">
         <div class="panel-body">
-        <h2>TD.js</h2>
+        <h2>td.js_</h2>
         <hr>
             <div class = "row">
                 <span href = "#" data=toggle = "tooltip" data-placement = "left" data-original-title = "Total # of waves" class = "toolTipSideBar">
@@ -58,12 +58,23 @@
             </div>
             <hr>
             <tower-store></tower-store>
-            <hr>
- 
+
+            <div class = "buttons">
             <div class ="row" ng-show = "state === 'standby'">
-                <button type = "button" class = "btn btn-default btn-block" ng-click = "initiateWave()" >
+                <button type = "button" class = "btn btn-default btn-block square" ng-click = "initiateWave()" >
                     Start Wave
                 </button>
+            </div>
+            <div class ="row" ng-show = "state === 'wave'">
+                <button type = "button" class = "btn btn-default btn-block square" ng-click = "initiateWave()" >
+                    Pause
+                </button>
+            </div>
+             <div class ="row" ng-show = "state === 'paused'">
+                <button type = "button" class = "btn btn-default btn-block square" ng-click = "initiateWave()" >
+                    Resume
+                </button>
+            </div>
             </div>
         </div>
     </div>
