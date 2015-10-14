@@ -71,6 +71,7 @@ app.controller('SideBarLevelEditorController', function($scope, $rootScope, MapE
 			let position = element.position;
 			newMapGrid[position.y][position.x] = element.mapNum;
 		});
+		console.log("New map grid", newMapGrid);
 		let mapObj = {};
 		newMapGrid.forEach((row,index) => {
 			mapObj[index] = row;

@@ -402,7 +402,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
     const createEnemiesOnBoard = () => {
         let enemies = ['SmallBugRed', 'SmallBugGreen', 'SmallBugBlue', 'SmallBugYellow', 'BigBugRed' ,'BigBugGreen' ,'BigBugBlue' ,'BigBugYellow' ,'SuperBigBugRed', 'SuperBigBugGreen', 'SuperBigBugBlue', 'SuperBigBugYellow']
-        let numOfEnemies = randomInt(0,10);
+        let numOfEnemies = randomInt(0,5);
         let enemiesOnBoard = []; 
         for(let i = 0; i < numOfEnemies; i++){
             let index = randomInt(0, enemies.length-1);
