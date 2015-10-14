@@ -21,7 +21,6 @@ app.controller('TowerBottomBarController', ($scope,$rootScope,$state, TowerFacto
 	}
     $scope.goToEditor = () => {
     	GameFactory.pause();
-    	
         $scope.editing = true;
         $scope.terminalOn = true;
     }

@@ -75,9 +75,26 @@ app.factory('GameFactory', function($rootScope, LightningFactory, WaveFactory, E
         if(state === 'gameOver'){
             $rootScope.$emit('gameOver');
         }
+        if(state === "pause"){
+
+        }
+
+
         StateFactory.state = state;
     }
+
+    let oldState = null;
+
+    let pause = function(){
+        oldState = StateFactory.state;
+        changeStateTo("pause");
+    }
+    let resume = function(){
+        changeStateTo(oldState);
+    }
     return {
+        pause,
+        resume,
         changeStateTo,
         loop
     }

@@ -1,7 +1,7 @@
 //Ace editor directive
 'use strict'
 
-app.directive('editor', ($rootScope) => {
+app.directive('editor', ($rootScope, GameFactory) => {
     return {
         restrict: 'E',
         templateUrl: '/js/ng/directives/editor/editor.html',
