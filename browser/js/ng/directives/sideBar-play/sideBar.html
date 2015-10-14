@@ -1,71 +1,65 @@
-<div class="panel-group">
-    <div class="panel panel-default">
+<div class="panel-group sideBar">
+    <div class="panel panel-default square">
         <div class="panel-body">
         <h2>TD.js</h2>
         <hr>
             <div class = "row">
-                <a href = "#" data=toggle = "tooltip" data-placement = "left" data-original-title = "Total # of waves" class = "toolTipSideBar">
+                <span href = "#" data=toggle = "tooltip" data-placement = "left" data-original-title = "Total # of waves" class = "toolTipSideBar">
                     <div class = "col-md-3">
                        <img src = "/images/icons/waves.png" />
                     </div>
                     <div class = "col-md-3">
                         {{waves.length}}
                     </div>
-                </a>
-                <a href = "#" data=toggle = "tooltip" data-placement = "left" data-original-title = "Current wave" class = "toolTipSideBar">
+                    </span>                <span href = "#" data=toggle = "tooltip" data-placement = "left" data-original-title = "Current wave" class = "toolTipSideBar">
                     <div class = "col-md-3">
                         <img src = "/images/icons/wave.png" />
                     </div>
                     <div class = "col-md-3">
                         {{currentWave}}
                     </div>
-                </a>
-            </div>
+                    </span></div>
             <div class = "row">
-                <a href = "#" data=toggle = "tooltip" data-placement = "left" data-original-title = "Total enemies in wave" class = "toolTipSideBar">
+                <span href = "#" data=toggle = "tooltip" data-placement = "left" data-original-title = "Total enemies in wave" class = "toolTipSideBar">
                     <div class = "col-md-3">
                         <img src = "/images/icons/enemies.png" />
                     </div>
                     <div class = "col-md-3">
                         {{totalEnemies}}
                     </div>
-                </a>
-                <a href = "#" data=toggle = "tooltip" data-placement = "left" data-original-title = "Total enemies killed in wave" class = "toolTipSideBar">
+                    </span>                <span href = "#" data=toggle = "tooltip" data-placement = "left" data-original-title = "Total enemies killed in wave" class = "toolTipSideBar">
                     <div class = "col-md-3">
                          <img src = "/images/icons/enemiesKilled.png" />
                     </div>
                     <div class = "col-md-3">
                         {{enemiesKilled}}
                     </div>
-                </a>
-            </div>
+                    </span></div>
             <hr>
             <div class = "row">
-                <a href = "#" data=toggle = "tooltip" data-placement = "left" data-original-title = "Total money" class = "toolTipSideBar">
+                <span href = "#" data=toggle = "tooltip" data-placement = "left" data-original-title = "Total money" class = "toolTipSideBar">
                     <div class = "col-md-4">
                         <img ng-src = "/images/icons/money.png"/>
                     </div>
                     <div class = "col-md-4">
                         ${{playerStats.money}}
                     </div>
-                </a>
+                </span>
             </div>
             <div class = "row">
-                <a href = "#" data=toggle = "tooltip" data-placement = "left" data-original-title = "Life left" class = "toolTipSideBar">
+                <span href = "#" data=toggle = "tooltip" data-placement = "left" data-original-title = "Life left" class = "toolTipSideBar">
                     <div class = "col-md-4">
                         <img ng-src = "/images/icons/life.png" />
                     </div>
                     <div class = "col-md-4">
                         {{playerStats.health}}
                     </div>
-                </a>
+                </span>
             </div>
             <hr>
             <tower-store></tower-store>
             <hr>
-            <div class ="row" ng-show = "state === 'complete'">
-                <button class = "btn btn-default" ng-click = "initiateLevel()">Next Level</button>
-            </div>
+ 
             <div class ="row" ng-show = "state === 'standby'">
                 <button type = "button" class = "btn btn-default btn-block" ng-click = "initiateWave()" >
                     Start Wave

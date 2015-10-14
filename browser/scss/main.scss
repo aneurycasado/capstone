@@ -2,6 +2,11 @@
   box-sizing: border-box;
 }
 
+.tower-image{
+  
+}
+
+
 body {
     margin: 0;
     padding: 0;
@@ -43,6 +48,10 @@ h1 {
 
 h3 {
   color: #f8f8f8;
+}
+
+.square{
+  border-radius:0px !important;
 }
 
 @import 'directives/main';

@@ -14,6 +14,9 @@ app.factory('GameFactory', function($rootScope, LightningFactory, WaveFactory, E
         if (data.state === "selection") {
             //more logic
         }
+        if (data.state === "paused") {
+            //nothing
+        }
         if (data.state === "standby") {
             ProjectileFactory.updateAll(delta);
             EnemyFactory.updateAll(delta);

@@ -6,7 +6,7 @@ app.directive('towerBottomBar', () => {
 	}
 });
 
-app.controller('TowerBottomBarController', ($scope,$rootScope,$state, TowerFactory, PlayerFactory) => {
+app.controller('TowerBottomBarController', ($scope,$rootScope,$state, TowerFactory, PlayerFactory, GameFactory, StateFactory) => {
 	//$rootScope.$on("setEditing",(event,data) => {
 	//	if(data !== false) {
 	//		$scope.selectedTower = null;
@@ -20,6 +20,8 @@ app.controller('TowerBottomBarController', ($scope,$rootScope,$state, TowerFacto
 		PlayerFactory.money += (tower.price *.7);
 	}
     $scope.goToEditor = () => {
+    	GameFactory.pause();
+    	
         $scope.editing = true;
         $scope.terminalOn = true;
     }

@@ -26,10 +26,11 @@ app.directive('editor', ($rootScope) => {
                 if(scope.tower.codeSnippet === null) editor.session.setValue('function(){//Need help console.log this}');
                 else {
                     editor.session.setValue(scope.tower.codeSnippet);
-
                 }
             }
             scope.saveCodeSnippet = () => {
+                GameFactory.resume();
+
                 scope.tower.codeSnippet = editor.getValue();
                 scope.tower.evalCodeSnippet();
                 //let saveSnippet = true;
@@ -38,6 +39,7 @@ app.directive('editor', ($rootScope) => {
                 //scope.$parent.$parent.editing = false;
             }
             scope.goBack = () => {
+                GameFactory.resume();
                 $rootScope.$broadcast('setEditing', false);
             }
         }
