@@ -215,6 +215,77 @@ app.factory('ParticleFactory', () => {
                 "minR": 0
             }
         },
+
+        cold: {
+            "alpha": {
+                "start": 0.73,
+                "end": 0.46
+            },
+            "scale": {
+                "start": 0.15,
+                "end": 0.2,
+                "minimumScaleMultiplier": 0.5
+            },
+            "color": {
+                "start": "#ffffff",
+                "end": "#ffffff"
+            },
+            "speed": {
+                "start": 200,
+                "end": 200
+            },
+            "acceleration": {
+                "x": 0,
+                "y": 0
+            },
+            "startRotation": {
+                "min": 50,
+                "max": 70
+            },
+            "rotationSpeed": {
+                "min": 0,
+                "max": 200
+            },
+            "lifetime": {
+                "min": 0.25,
+                "max": 0.25
+            },
+            "blendMode": "normal",
+            "ease": [
+                {
+                    "s": 0,
+                    "cp": 0.379,
+                    "e": 0.548
+                },
+                {
+                    "s": 0.548,
+                    "cp": 0.717,
+                    "e": 0.676
+                },
+                {
+                    "s": 0.676,
+                    "cp": 0.635,
+                    "e": 1
+                }
+            ],
+            "frequency": 0.014,
+            "emitterLifetime": 5,
+            "maxParticles": 1000,
+            "pos": {
+                "x": 0,
+                "y": 0
+            },
+            "addAtBack": false,
+            "spawnType": "rect",
+            "spawnRect": {
+                "x": -35,
+                "y": -25,
+                "w": 50,
+                "h": 20
+            }
+        },
+
+
         ice2: {
             "alpha": {
                 "start": 0.08,
@@ -849,6 +920,7 @@ app.factory('ParticleFactory', () => {
         meteor: [1, 2],
         blizzard: [1, 5, 3, 8],
         miniBliz: [3],
+        cold: [3],
         ice2: ["particle1", "sparks"],
         toxic: [1, 4],
     };
@@ -867,5 +939,5 @@ app.factory('ParticleFactory', () => {
 
     return {
         createEmitter
-    }
-})
+    };
+});

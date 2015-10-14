@@ -103,7 +103,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
 
   class ThunderWeapon extends Weapon {
     constructor(tower) {
-      super(tower, 30, 800, "Thunder", "Fill in")
+      super(tower, 30, 300, "Thunder", "Fill in")
       this.reloadTime = 2000;
     }
     shoot(enemy){
@@ -113,7 +113,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
 
   class ZapWeapon extends Weapon {
     constructor(tower) {
-      super(tower, 25, 800, "Thunder", "Fill in")
+      super(tower, 15, 800, "Thunder", "Fill in")
       this.reloadTime = 2100;
     }
     shoot(enemy){
@@ -144,6 +144,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     }
 
     shoot(enemy){
+        var tower = this.tower;
         tower.img.play();
         tower.particleEmitter = ParticleFactory.createEmitter('gas', towerStage);
         tower.particleEmitter.updateOwnerPos(tower.img.position.x, tower.img.position.y);
@@ -260,6 +261,19 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
 
   }
 
+  class ColdWeapon extends Weapon {
+    constructor(tower) {
+      super(tower, 4, 200, 'Cold', 'Fill In');
+      this.reloadTime = 15000;
+    }
+    shoot(enemy) {
+      new ProjectileFactory.IcePuddle({
+        x: enemy.img.position.x,
+        y: enemy.img.position.y
+      });
+    }
+  }
+
   let lightnings = [];
 
   let updateLightnings = function(){
@@ -292,6 +306,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     ToxicWeapon,
     GasWeapon,
     ZapWeapon,
+    ColdWeapon,
     updateLightnings,
   };
 });
