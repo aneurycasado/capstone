@@ -286,7 +286,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 price: 50,
                 // range: 200,
                 primaryWeaponConstructor: WeaponFactory.IceWeapon,
-                // secondaryWeaponConstructor: WeaponFactory.FlameWeapon,
+                secondaryWeaponConstructor: WeaponFactory.ColdWeapon,
                 ultimateWeaponConstructor: WeaponFactory.BlizzardWeapon,
                 name: "Ice",
                 effect: 'Fill in'
@@ -350,13 +350,26 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             });
         }
 
-        swapToPrimary() {
-            this.activeWeapon = this.weaponArmory.primary;
+        update(delta){
+            super.update(delta);
+            if(this.particleEmitter){
+                if(this.target && this.particleEmitter.particleImages) {
+                    this.particleEmitter.update(delta);
+                }
+                if(!this.target){
+                    this.particleEmitter.destroy();
+                    this.particleEmittter = null;
+                }
+            }            
         }
 
-        swapToSecondary() {
-            this.activeWeapon = this.weaponArmory.secondary;
-        }
+        // swapToPrimary() {
+        //     this.activeWeapon = this.weaponArmory.primary;
+        // }
+
+        // swapToSecondary() {
+        //     this.activeWeapon = this.weaponArmory.secondary;
+        // }
 
         shootAttempt(enemy) {
             super.shootAttempt(enemy);

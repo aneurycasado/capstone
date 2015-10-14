@@ -185,12 +185,12 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
             this.target.slowFactor = this.slowSpeed;
             this.target.img.tint = 12168959;
         }
-        window.setTimeout(function(){
+        window.setTimeout(() => {
             if(Date.now() - this.target.lastSlowed >= this.slowDuration) {
               this.target.slowFactor = 1;
               this.target.img.tint = 16777215;
             }
-        }.bind(this),this.slowDuration);
+        },this.slowDuration);
 
       }
   }
@@ -244,6 +244,42 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
            enemy.takeDamage(fire.power);
         }
       });
+      this.particleEmitter.update(delta);
+    }
+
+  }
+
+  class IcePuddle extends Projectile{
+    constructor(opts){
+      super(opts);
+      this.slowSpeed = 0.4;
+      this.slowDuration = 5000;
+      this.particleEmitter = ParticleFactory.createEmitter('cold', stage);
+      this.particleEmitter.updateOwnerPos(this.x, this.y);
+      this.radius = 30;
+      window.setTimeout(() => {
+        if(projectiles.indexOf(this) !== -1) this.terminate();
+      }, 5000);
+    }
+
+    update(delta){
+      var ice = this;
+      EnemyFactory.enemies.forEach(function(enemy){
+        if(checkCircleCollision(ice, enemy)){
+            enemy.lastSlowed = Date.now();
+            if(enemy.slowFactor > ice.slowSpeed ) {
+                enemy.slowFactor = ice.slowSpeed;
+                enemy.img.tint = 12168959;
+            }
+            window.setTimeout(() => {
+                if(Date.now() - enemy.lastSlowed >= ice.slowDuration) {
+                  enemy.slowFactor = 1;
+                  enemy.img.tint = 16777215;
+                }
+            },ice.slowDuration);
+        }
+      });
+      console.log(this.particleEmitter);
       this.particleEmitter.update(delta);
     }
 
@@ -337,6 +373,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
     ThunderBallProjectile,
     BlizzardProjectile,
     ToxicProjectile,
+    IcePuddle,
     updateAll
   };
 });
