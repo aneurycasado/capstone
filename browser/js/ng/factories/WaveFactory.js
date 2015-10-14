@@ -58,7 +58,8 @@ app.factory('WaveFactory', ($rootScope,EnemyFactory, StateFactory) => {
             for(let i = 0; i < numOfEnemies; i++){
                 let enemyindex = randomInt(0,3);
                 let enemy = enemies[enemyindex];
-                wave.push({name: enemy, num:1});
+                // wave.push({name: "BossBug", num:1});
+                wave.push({name: "EnemyShip", num:1});
             }
         }else if(newWaves.length >= (numOfWaves / 10) && newWaves.length < (numOfWaves / 5)){
              for(let i = 0; i < numOfEnemies; i++){
@@ -67,8 +68,8 @@ app.factory('WaveFactory', ($rootScope,EnemyFactory, StateFactory) => {
                 wave.push({name: enemy, num:1})
             }
         }else if(newWaves.length === numOfWaves-1){
-            wave.push({name: "SmallBugRed", num:1});
-            //wave.push({name: "BossBug", num:1});
+            //wave.push({name: "SmallBugRed", num:1});
+            wave.push({name: "BossBug", num:1});
         }else{
             for(let i = 0; i < numOfEnemies; i++){
                 let enemyindex = randomInt(0,enemies.length-1);

@@ -23,7 +23,7 @@ app.directive('editor', ($rootScope) => {
             });
             scope.saveSnippet = false;
             if(scope.tower) {
-                if(scope.tower.codeSnippet === null) editor.session.setValue('//Hello and welcome to the code editor. \n//The this within the function has access to the following variables abilities and surroundings. \n//Abilites give you access to your primary weapon, secondary weapon and ultimate. \n//Surroundings give you access to enemies and towers. \n function(){}');
+                if(scope.tower.codeSnippet === null) editor.session.setValue('function(){//Need help console.log this}');
                 else {
                     editor.session.setValue(scope.tower.codeSnippet);
 

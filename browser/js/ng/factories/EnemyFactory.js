@@ -8,7 +8,9 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     let terminatedEnemies = [];
     let stage = new PIXI.Stage();
     let findEnd = (img) => {
+        console.log("The img,",img);
         if(img === "1") return 7;
+        else if(img === "ship") return 2;
         else return 5;
     }
 
@@ -393,6 +395,27 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
     }
 
+    class EnemyShip extends Enemy {
+        constructor(opts) {
+            super({
+                img: 'ship',
+                path: opts.path,
+                value: 50, 
+                speed: 35,
+                health: 10,
+                color: 'none'
+            })
+        }
+        
+        terminate(){
+                super.terminate()
+                for(let i = 0; i < 5; i++){
+                     let newEn = EnemyFactory.createEnemy("SmallBugRed", this.path);
+                     EnemyFactory.stage.addChild(newEn.img);
+                }
+        }
+    }
+
     let createEnemy = (type, path) => {
         let newEnemy;
         let enemyConstructor = enemiesConstructors[type];
@@ -423,7 +446,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow,
                                BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,
                                SuperBigBugRed,SuperBigBugGreen,SuperBigBugBlue,SuperBigBugYellow,
-                               BossBug};
+                               BossBug, EnemyShip};
 
     //adWare, worm
     return {
