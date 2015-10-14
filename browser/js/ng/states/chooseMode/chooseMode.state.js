@@ -14,5 +14,6 @@ app.config(($stateProvider) => {
 
 app.controller("ChooseModeController", ($scope,$state, player) => {
     console.log("Player", player);
+    document.getElementsByTagName('body')[0].style.backgroundImage="";
     $scope.pickGameType = false;
 })
