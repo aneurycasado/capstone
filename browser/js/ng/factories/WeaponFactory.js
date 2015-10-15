@@ -1,3 +1,28 @@
+// setTimeout = function(func, time){
+
+//   setTimeouts.push({func: func, time: time});
+
+// }
+
+// setTimeouts = [{func: func, time: time}];
+
+// setTimeoutsCheck = function(){
+
+//     if(StateFactory.state !== "paused"){
+
+//     setTimeouts.forEach(function(timeOut){
+
+//       time -= delta;
+
+//       if(time < 0) func();
+
+//     })
+
+//   }
+
+// }
+
+
 app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyFactory, StateFactory, LightningFactory) {
     let towerStage = StateFactory.stages.towers;
   class Weapon {

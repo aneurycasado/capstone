@@ -10,10 +10,32 @@
 #editor {
   position: relative;
   width: 100%;
-  height: 486px;
+  height: 520px;
+}
+
+.topCorner{
+  position:absolute;
+  top:5px;
+  right:5px;
+  color:white;
+}
+
+.save-code{
+  position:absolute;
+  bottom:0px;
+  right:5px;
+  color:white;
+  font-size:50px;
+  cursor:pointer;
+}
+
+.save-code:hover{
+  opacity:0.5;
 }
 
 #editorButtons {
-	width: 400px;
+  position:absolute;
+  right:0px;
 	height: 40px;
+  bottom:0px;
 }
