@@ -39,17 +39,19 @@
             <div class = "row">
                 <span href = "#" data=toggle = "tooltip" data-placement = "left" data-original-title = "Total money" class = "toolTipSideBar">
                     <div class = "col-md-4">
-                        <img ng-src = "/images/icons/money.png"/>
+                        <span style = "color:white" class = "glyphicon glyphicon glyphicon-usd"></span>
                     </div>
                     <div class = "col-md-4">
-                        ${{playerStats.money}}
+                        {{playerStats.money}}
                     </div>
                 </span>
             </div>
             <div class = "row">
                 <span href = "#" data=toggle = "tooltip" data-placement = "left" data-original-title = "Life left" class = "toolTipSideBar">
                     <div class = "col-md-4">
-                        <img ng-src = "/images/icons/life.png" />
+
+                      <span style = "color:white" class = "glyphicon glyphicon-heart"></span>
+
                     </div>
                     <div class = "col-md-4">
                         {{playerStats.health}}
