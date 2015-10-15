@@ -84,7 +84,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
           this.particleEmitter.update(delta);
           this.particleEmitter.updateOwnerPos(this.x, this.y);
          if(checkCircleCollision(this, this.target)){
-             this.target.takeDamage(this.power);
+             this.target.takeDamage(this.power, this.tower);
              if(this.specialEffect) this.specialEffect();
               if(!this.invincible) this.terminate();
          }else{
@@ -135,7 +135,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
         this.particleEmitter.updateOwnerPos(this.x, this.y);
         for(let i = 0; i < EnemyFactory.enemies.length; i++)
             if(checkCircleCollision(this, EnemyFactory.enemies[i])){
-              EnemyFactory.enemies[i].takeDamage(this.power);
+              EnemyFactory.enemies[i].takeDamage(this.power, this.tower);
               if(this.specialEffect) this.specialEffect();
               if(!this.invincible) this.terminate();
               break;
@@ -241,6 +241,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
   class FirePuddle extends Projectile{
     constructor(opts){
       super(opts);
+      console.log(this.tower, opts)
       this.power = 0.3;
       this.radius = 30;
       this.particleEmitter = ParticleFactory.createEmitter('fire', stage);
@@ -254,7 +255,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
       var fire = this;
       EnemyFactory.enemies.forEach(function(enemy){
         if(checkCircleCollision(fire, enemy)){
-           enemy.takeDamage(fire.power);
+           enemy.takeDamage(fire.power, fire.tower);
         }
       });
       this.particleEmitter.update(delta);
@@ -307,7 +308,8 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
       specialEffect(){
         new FirePuddle({
           x: this.x,
-          y: this.y
+          y: this.y,
+          tower: this.tower
         });
       }
   }
@@ -358,6 +360,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
       }
 
       specialEffect() {
+        this.target.poisonedBy = this.tower;
         this.target.poisoned = true;
         this.target.poisonDamage = this.poisonDamage;
         if(!this.target.particleEmitters.poison){

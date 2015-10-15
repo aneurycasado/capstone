@@ -254,7 +254,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
 
         update(delta) {
-            console.log('sloMo', StateFactory.sloMo);
             this.mods.abilities.forEach(ability => {
                 ability.coolDownTimer.decrementCoolDown(delta)
             });

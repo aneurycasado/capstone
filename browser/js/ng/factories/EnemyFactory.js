@@ -161,7 +161,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
                 this.terminate(false);
             }
-            if(this.poisoned) this.takeDamage(this.poisonDamage);
+            if(this.poisoned) this.takeDamage(this.poisonDamage, this.poisonedBy);
             // if(!this.circle){
             //         this.circle = new PIXI.Graphics();
             //         this.circle.beginFill(0xFFFF99, 0.4);
@@ -178,7 +178,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             //     }
         }
 
-        takeDamage(damage){
+        takeDamage(damage, towerSource){
             var healthBefore = this.health;
             this.health -= damage;
             var healthPercentage = this.health / this.maxHealth;
@@ -187,6 +187,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             if(!this.particleEmitters.damageSparks) this.particleEmitters.damageSparks = ParticleFactory.createEmitter('damageSparks', stage);
 
             if(this.health <= 0 && healthBefore > 0){
+                towerSource.kills++;
                 PlayerFactory.money += this.value;
                 terminatedEnemies.push(this);
                 $rootScope.$digest();
