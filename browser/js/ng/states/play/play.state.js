@@ -120,6 +120,7 @@ app.controller("PlayController", function ($scope, $state, $timeout, $rootScope,
         restart(mapNum);
     });
     $rootScope.$on("currentTower", (event, tower) => {
+        console.log("We hit currentTower");
         $scope.tower = tower;
     });
     $rootScope.$on("initiateWave", (event, passedWave) => {
@@ -149,6 +150,7 @@ app.controller("PlayController", function ($scope, $state, $timeout, $rootScope,
                 console.log("Can't play");
             }
         }
+        document.getElementsByTagName('body')[0].style.cursor= "pointer";
         $scope.tower = null;
     })
     GameFactory.loop(Date.now());

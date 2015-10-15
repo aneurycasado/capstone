@@ -73,6 +73,7 @@ app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, Game
     //     });
     // }
     $scope.towerClicked = (tower) => {
+        document.getElementsByTagName('body')[0].style.cursor= "url("+tower.imgUrl+"), crosshair";
         $rootScope.$emit("currentTower", tower);
     }
     $scope.initiateWave = () => {
