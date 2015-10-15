@@ -407,9 +407,9 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         // else if(type === "BigBug") numOfEnemies = randomInt(1,6);
         // else if(type === "SuperBug") numOfEnemies = randomInt(1,3);  
         let enemiesOnBoard = [];
-        let color = colors[randomInt(0,colors.length-1)]; 
         for(let i = 0; i < numOfEnemies; i++){
             let index = randomInt(0, enemies.length-1);
+            let color = colors[randomInt(0,colors.length-1)]; 
             let enemy = type + color;
             console.log("Enemy ", enemy);
             enemiesOnBoard.push(enemy);
