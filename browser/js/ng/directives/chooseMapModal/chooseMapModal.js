@@ -10,6 +10,9 @@ app.directive("chooseMapModal", (MapFactory, StateFactory, $rootScope) => {
 					$rootScope.$emit("mapChosen",num);
 					$("#choseMapModal").modal("toggle");
 				}
+				scope.goToMapCreatorMode = () => {
+					$state.go("mapCreatorMode");
+				}
 			 // }
 		}
 	}
