@@ -8,11 +8,14 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     let terminatedEnemies = [];
     let stage = new PIXI.Stage();
     let findEnd = (img) => {
+        console.log("The img,",img);
         if(img === "1") return 7;
+        else if(img === "ship") return 2;
         else return 5;
     }
 
     const findRandomPath = (opts) => {
+        console.log("Opts in path", opts);
         let rando = Math.floor( Math.random() * opts.path.length);
         let path = opts.path[rando];
         let pathIndex = 0;
@@ -393,6 +396,48 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
     }
 
+    const randomInt = (min,max) => {
+        return Math.floor(Math.random()*(max-min+1)+min);
+    }
+
+    const createEnemiesOnBoard = () => {
+        let enemies = ['SmallBugRed', 'SmallBugGreen', 'SmallBugBlue', 'SmallBugYellow', 'BigBugRed' ,'BigBugGreen' ,'BigBugBlue' ,'BigBugYellow' ,'SuperBigBugRed', 'SuperBigBugGreen', 'SuperBigBugBlue', 'SuperBigBugYellow']
+        let numOfEnemies = randomInt(0,5);
+        let enemiesOnBoard = []; 
+        for(let i = 0; i < numOfEnemies; i++){
+            let index = randomInt(0, enemies.length-1);
+            let enemy = enemies[index];
+            enemiesOnBoard.push(enemy);
+        }
+        return enemiesOnBoard;
+    }
+
+    class EnemyShip extends Enemy {
+        constructor(opts) {
+            super({
+                img: 'ship',
+                path: opts.path,
+                value: 50, 
+                speed: 35,
+                health: 10,
+                color: 'none'
+            })
+            this.enemiesOnBoard = createEnemiesOnBoard();
+            this.numOfEnemies = this.enemiesOnBoard.length;
+        }
+        
+        terminate(){
+                super.terminate()
+                for(let i = 0; i < this.numOfEnemies; i++){
+                    window.setTimeout(() => {
+                        let newPath = this.path.slice(this.pathIndex + i);
+                        let newEn = createEnemy(this.enemiesOnBoard[i], [newPath]);
+                        stage.addChild(newEn.img);
+                    }, 100); 
+                }
+        }
+    }
+
     let createEnemy = (type, path) => {
         let newEnemy;
         let enemyConstructor = enemiesConstructors[type];
@@ -423,7 +468,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow,
                                BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,
                                SuperBigBugRed,SuperBigBugGreen,SuperBigBugBlue,SuperBigBugYellow,
-                               BossBug};
+                               BossBug, EnemyShip};
 
     //adWare, worm
     return {

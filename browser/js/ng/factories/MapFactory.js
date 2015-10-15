@@ -324,6 +324,8 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory) => {
     let maps = [];
 
     maps.push(new Map(DesignFactory.mapGrid1,1));
+    maps.push(new Map(DesignFactory.mapGrid2,2));
+     maps.push(new Map(DesignFactory.mapGrid3,3));
 
     const reset = () => {
         maps.forEach((map) => {

@@ -36,14 +36,15 @@ app.factory('WaveFactory', ($rootScope,EnemyFactory, StateFactory) => {
         return Math.floor(Math.random()*(max-min+1)+min);
     }
     const createWaves = () => {
-        let mode = StateFactory.mode;
+        // let mode = StateFactory.mode;
+
         let newWaves = [];
-        let numOfWaves;
-        if(mode === "survival"){
-             numOfWaves = 1000;
-        }else{
-            numOfWaves = 10;
-        }
+        let numOfWaves = 50;
+        // if(mode === "survival"){
+        //      numOfWaves = 1000;
+        // }else{
+        //     numOfWaves = 10;
+        // }
         for(let i = 1; i <= numOfWaves; i++){
             let wave = generateWaveSurvival(newWaves,numOfWaves);
             newWaves.push(wave);
@@ -59,6 +60,7 @@ app.factory('WaveFactory', ($rootScope,EnemyFactory, StateFactory) => {
                 let enemyindex = randomInt(0,3);
                 let enemy = enemies[enemyindex];
                 wave.push({name: enemy, num:1});
+                // wave.push({name: "EnemyShip", num:1});
             }
         }else if(newWaves.length >= (numOfWaves / 10) && newWaves.length < (numOfWaves / 5)){
              for(let i = 0; i < numOfEnemies; i++){
@@ -67,8 +69,8 @@ app.factory('WaveFactory', ($rootScope,EnemyFactory, StateFactory) => {
                 wave.push({name: enemy, num:1})
             }
         }else if(newWaves.length === numOfWaves-1){
-            wave.push({name: "SmallBugRed", num:1});
-            //wave.push({name: "BossBug", num:1});
+            //wave.push({name: "SmallBugRed", num:1});
+            wave.push({name: "BossBug", num:1});
         }else{
             for(let i = 0; i < numOfEnemies; i++){
                 let enemyindex = randomInt(0,enemies.length-1);
@@ -94,7 +96,7 @@ app.factory('WaveFactory', ($rootScope,EnemyFactory, StateFactory) => {
         setCurrentWave();
     }
 
-    wavesDefinition = createWaves(StateFactory.mode);
+    wavesDefinition = createWaves();
     wavesDefinition.forEach((wave) => {
         createWave(wave);
     });

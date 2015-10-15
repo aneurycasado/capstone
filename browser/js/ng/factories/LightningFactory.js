@@ -365,6 +365,8 @@ app.factory('LightningFactory', function(StateFactory) {
 
         this._createBranchs(numBranchesIn, fadeRate);
 
+        // lightnings.push(this);
+
     }
 
     BranchLightning.prototype._createBranchs = function (numBranchesIn, fadeRate) {
@@ -460,6 +462,28 @@ app.factory('LightningFactory', function(StateFactory) {
         LightningSegment : 'http://dl.dropbox.com/u/3902537/assets/imgs/lightning-segment-2.png'
     }, onImagesLoaded);
 
+
+
+  //   let lightnings = []; 
+
+  //     let updateLightnings = function(){
+
+  //     LightningFactory.ctx.clearRect(0, 0, LightningFactory.scene.width, LightningFactory.scene.width);
+  //     lightnings = lightnings.filter(function(branch){
+
+  //         if(!branch.complete){
+  //             $(StateFactory.renderer.view).css({'z-index' : '1'})
+  //             $(LightningFactory.scene.canvasElement).css({'z-index' : '2'});
+
+  //             branch.update();
+  //             branch.render(LightningFactory.ctx);
+  //             return true;
+  //         }else return false;
+
+  //     });
+
+  // }
+        
 
     return { 
         scene,

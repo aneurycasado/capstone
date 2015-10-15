@@ -45,7 +45,7 @@ module.exports = function (app) {
     app.get('/auth/github/callback',
         passport.authenticate('github', { failureRedirect: '/login' }),
         function (req, res) {
-            res.redirect('/choose');
+            res.redirect('/play/story');
         });
 
 };

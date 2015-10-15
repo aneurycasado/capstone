@@ -1,7 +1,7 @@
 //Ace editor directive
 'use strict'
 
-app.directive('editor', ($rootScope) => {
+app.directive('editor', ($rootScope, GameFactory) => {
     return {
         restrict: 'E',
         templateUrl: '/js/ng/directives/editor/editor.html',
@@ -23,13 +23,14 @@ app.directive('editor', ($rootScope) => {
             });
             scope.saveSnippet = false;
             if(scope.tower) {
-                if(scope.tower.codeSnippet === null) editor.session.setValue('//Hello and welcome to the code editor. \n//The this within the function has access to the following variables abilities and surroundings. \n//Abilites give you access to your primary weapon, secondary weapon and ultimate. \n//Surroundings give you access to enemies and towers. \n function(){}');
+                if(scope.tower.codeSnippet === null) editor.session.setValue('function(){//Need help console.log this}');
                 else {
                     editor.session.setValue(scope.tower.codeSnippet);
-
                 }
             }
             scope.saveCodeSnippet = () => {
+                GameFactory.resume();
+
                 scope.tower.codeSnippet = editor.getValue();
                 scope.tower.evalCodeSnippet();
                 //let saveSnippet = true;
@@ -38,6 +39,7 @@ app.directive('editor', ($rootScope) => {
                 //scope.$parent.$parent.editing = false;
             }
             scope.goBack = () => {
+                GameFactory.resume();
                 $rootScope.$broadcast('setEditing', false);
             }
         }
