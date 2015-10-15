@@ -44,7 +44,6 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                     }
                     this.img = new PIXI.extras.MovieClip(array);
                 }
-                this.img.position = this.position;
                 this.img.pivot.x = 0.5;
                 this.img.pivot.y = 0.5;
                 this.img.anchor.x  = 0.5;
@@ -161,7 +160,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
                 this.terminate(false);
             }
-            if(this.poisoned) this.takeDamage(this.poisonDamage);
+            if(this.poisoned) this.takeDamage(this.poisonDamage, this.poisonedBy);
             // if(!this.circle){
             //         this.circle = new PIXI.Graphics();
             //         this.circle.beginFill(0xFFFF99, 0.4);
@@ -178,7 +177,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             //     }
         }
 
-        takeDamage(damage){
+        takeDamage(damage, towerSource){
             var healthBefore = this.health;
             this.health -= damage;
             var healthPercentage = this.health / this.maxHealth;
@@ -187,6 +186,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             if(!this.particleEmitters.damageSparks) this.particleEmitters.damageSparks = ParticleFactory.createEmitter('damageSparks', stage);
 
             if(this.health <= 0 && healthBefore > 0){
+                towerSource.kills++;
                 PlayerFactory.money += this.value;
                 terminatedEnemies.push(this);
                 $rootScope.$digest();
@@ -443,9 +443,9 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             if(StateFactory.state !== "gameOver"){
                 for(let i = 0; i < this.numOfEnemies; i++){
                     StateFactory.setTimeout2(() => {
+                        if(this.pathIndex + i > this.path.length - 1) return;
                         let newPath = this.path.slice(this.pathIndex + i);
                         let newEn = createEnemy(this.enemiesOnBoard[i], [newPath]);
-                        stage.addChild(newEn.img);
                     }, 100); 
                 }
             }
@@ -479,9 +479,9 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             if(StateFactory.state !== "gameOver"){
                 for(let i = 0; i < this.numOfEnemies; i++){
                     StateFactory.setTimeout2(() => {
+                        if(this.pathIndex + i > this.path.length - 1) return;
                         let newPath = this.path.slice(this.pathIndex + i);
                         let newEn = createEnemy(this.enemiesOnBoard[i], [newPath]);
-                        stage.addChild(newEn.img);
                     }, 100); 
                 }
             }

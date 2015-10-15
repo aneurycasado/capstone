@@ -24,4 +24,5 @@ app.controller('TowerBottomBarController', ($scope,$rootScope,$state, TowerFacto
         $scope.editing = true;
         $scope.terminalOn = true;
     }
+    // $scope.killed = $scope.selectedTower.kills;
 });

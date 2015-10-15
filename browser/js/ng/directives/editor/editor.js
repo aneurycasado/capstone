@@ -29,6 +29,8 @@ app.directive('editor', ($rootScope, GameFactory) => {
                 }
             }
             scope.saveCodeSnippet = () => {
+
+                
                 GameFactory.resume();
 
                 scope.tower.codeSnippet = editor.getValue();
