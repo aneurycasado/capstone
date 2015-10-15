@@ -1,5 +1,5 @@
 'use strict'
-app.factory('GameFactory', function($rootScope, LightningFactory, WaveFactory, EnemyFactory, PlayerFactory, ParticleFactory, MapFactory, ProjectileFactory, StateFactory, TowerFactory) {
+app.factory('GameFactory', function($rootScope, InputFactory, LightningFactory, WaveFactory, EnemyFactory, PlayerFactory, ParticleFactory, MapFactory, ProjectileFactory, StateFactory, TowerFactory) {
 
     let data = StateFactory;
     let loop = then => {
@@ -54,7 +54,7 @@ app.factory('GameFactory', function($rootScope, LightningFactory, WaveFactory, E
 
         // }
         // if(data.state === 'gameOver'){
-
+        InputFactory.check();
 
         StateFactory.renderer.render(StateFactory.stages.play); //FIXME: should be StateFactory.stages[StateFactory.state]
         requestAnimationFrame(loop.bind(null, now));
