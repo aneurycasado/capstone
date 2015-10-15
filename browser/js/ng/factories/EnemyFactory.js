@@ -411,6 +411,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         for(let i = 0; i < numOfEnemies; i++){
             let index = randomInt(0, enemies.length-1);
             let enemy = type + color;
+            console.log("Enemy ", enemy);
             enemiesOnBoard.push(enemy);
         }
         return enemiesOnBoard;
@@ -474,7 +475,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
     }
 
-    class SuperBugShip extends Enemy {
+    class SuperBigBugShip extends Enemy {
         constructor(opts) {
             super({
                 img: 'ship3',
@@ -505,6 +506,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
 
     let createEnemy = (type, path) => {
         let newEnemy;
+        console.log("Type", type);
         let enemyConstructor = enemiesConstructors[type];
         newEnemy = new enemyConstructor({path: path});
         enemies.push(newEnemy);
@@ -533,7 +535,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow,
                                BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,
                                SuperBigBugRed,SuperBigBugGreen,SuperBigBugBlue,SuperBigBugYellow,
-                               BossBug,SmallBugShip,BigBugShip,SuperBugShip};
+                               BossBug,SmallBugShip,BigBugShip,SuperBigBugShip};
 
     //adWare, worm
     return {

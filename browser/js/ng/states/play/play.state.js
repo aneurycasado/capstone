@@ -150,7 +150,7 @@ app.controller("PlayController", function ($scope, $state, $timeout, $rootScope,
                 console.log("Can't play");
             }
         }
-        document.getElementsByTagName('body')[0].style.cursor= "pointer";
+        document.getElementsByTagName('body')[0].style.cursor= "default";
         $scope.tower = null;
     })
     GameFactory.loop(Date.now());
