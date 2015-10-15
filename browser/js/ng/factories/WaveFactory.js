@@ -37,7 +37,6 @@ app.factory('WaveFactory', ($rootScope,EnemyFactory, StateFactory) => {
     }
     const createWaves = () => {
         // let mode = StateFactory.mode;
-
         let newWaves = [];
         let numOfWaves = 50;
         // if(mode === "survival"){
@@ -57,10 +56,10 @@ app.factory('WaveFactory', ($rootScope,EnemyFactory, StateFactory) => {
         let numOfEnemies = (newWaves.length + 1) * 20;
         if(newWaves.length <= (numOfWaves / 10)){
             for(let i = 0; i < numOfEnemies; i++){
-                let enemyindex = randomInt(0,3);
-                let enemy = enemies[enemyindex];
-                wave.push({name: enemy, num:1});
-                // wave.push({name: "EnemyShip", num:1});
+                // let enemyindex = randomInt(0,3);
+                // let enemy = enemies[enemyindex];
+                // wave.push({name: enemy, num:1});
+                wave.push({name: "EnemyShip", num:1});
             }
         }else if(newWaves.length >= (numOfWaves / 10) && newWaves.length < (numOfWaves / 5)){
              for(let i = 0; i < numOfEnemies; i++){

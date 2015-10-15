@@ -427,7 +427,9 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
         
         terminate(){
-                super.terminate()
+            super.terminate();
+
+            if(StateFactory.state !== "gameOver"){
                 for(let i = 0; i < this.numOfEnemies; i++){
                     window.setTimeout(() => {
                         let newPath = this.path.slice(this.pathIndex + i);
@@ -435,6 +437,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                         stage.addChild(newEn.img);
                     }, 100); 
                 }
+            }
         }
     }
 
