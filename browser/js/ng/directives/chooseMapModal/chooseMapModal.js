@@ -1,4 +1,4 @@
-app.directive("chooseMapModal", (MapFactory, StateFactory, $rootScope) => {
+app.directive("chooseMapModal", (MapFactory, StateFactory, $rootScope, $state) => {
 	return {
 		restrict: "E",
 		templateUrl: "js/ng/directives/chooseMapModal/chooseMapModal.html",
@@ -11,6 +11,7 @@ app.directive("chooseMapModal", (MapFactory, StateFactory, $rootScope) => {
 					$("#choseMapModal").modal("toggle");
 				}
 				scope.goToMapCreatorMode = () => {
+					$("#choseMapModal").modal("toggle");
 					$state.go("mapCreatorMode");
 				}
 			 // }

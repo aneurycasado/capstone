@@ -8,12 +8,13 @@ app.config(($stateProvider) => {
 });
 
 app.controller("MapCreatorModeController", ($scope,$state, StateFactory, SpriteEventFactory, MapElementFactory, MapFactory, DesignFactory) => {
+    document.getElementsByTagName('body')[0].style.backgroundImage="url(./images/bg2.png)"
     let blankMap = new MapFactory.Map(DesignFactory.blankMap2,0)
-    console.log("blank map", blankMap);
     StateFactory.map = blankMap;
     StateFactory.canvas = document.getElementById("stage");
     StateFactory.renderer = PIXI.autoDetectRenderer(StateFactory.width, StateFactory.height, StateFactory.canvas);
-    $("#mainContainerCreateMap").append(StateFactory.renderer.view);
+    $("#mainContainer").append(StateFactory.renderer.view);
+    $(StateFactory.renderer.view).attr("id","pixiCanvas");
     StateFactory.stages.newMap = new PIXI.Stage();
     let bg = new PIXI.Sprite(PIXI.Texture.fromImage("/images/bg.png"));
     bg.interactive = true;
@@ -23,24 +24,22 @@ app.controller("MapCreatorModeController", ($scope,$state, StateFactory, SpriteE
     StateFactory.stages.newMap.addChild(bg);//yaaaas
     StateFactory.stages.newMap.addChild(blankMap.stage);
     StateFactory.stages.newMap.addChild(MapElementFactory.stage);
-    $('canvas').on('click', (e) => {
+    $("#pixiCanvas").on('click', (e) => {
         console.log("We register a click event");
         if ($scope.currentElement !== null) {
             console.log("currentElement != null")
             let elementPositionX = Math.floor(e.offsetX / StateFactory.cellSize);
             let elementPositionY = Math.floor(e.offsetY / StateFactory.cellSize);
             let selectedGridNode = StateFactory.map.grid[elementPositionY][elementPositionX];
-            console.log("Map", StateFactory.map.grid);
             if (!selectedGridNode.contains.element) {
-                console.log("grid node does not contain an element")
                 MapElementFactory.createMapElement(elementPositionX, elementPositionY, $scope.currentElement);
-                $scope.$digest();
             }
             else {
                 console.log("Can't play");
             }
         }
-        // $scope.currentElement = null;
+        $scope.currentElement = null;
+        $scope.$digest();
     })
     const draw = () => {
         requestAnimationFrame(draw);
