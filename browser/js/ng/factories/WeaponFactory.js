@@ -211,7 +211,8 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     constructor(tower) {
         super(tower, .0001, null, 'Blizzard', 'Fill in');
         this.ultimate = true;
-        this.sloMoTime = 3500;
+        this.sloMoTime = 5000;
+        this.reloadTime = 5000;
     }
 
     shoot(enemy){

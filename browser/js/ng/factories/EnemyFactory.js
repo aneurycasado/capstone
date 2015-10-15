@@ -8,14 +8,12 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     let terminatedEnemies = [];
     let stage = new PIXI.Stage();
     let findEnd = (img) => {
-        console.log("The img,",img);
         if(img === "1") return 7;
         else if(img === "ship") return 2;
         else return 5;
     }
 
     const findRandomPath = (opts) => {
-        console.log("Opts in path", opts);
         let rando = Math.floor( Math.random() * opts.path.length);
         let path = opts.path[rando];
         let pathIndex = 0;

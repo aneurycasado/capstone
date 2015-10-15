@@ -37,16 +37,13 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
           }
           projectiles.push(this);
           window.setTimeout(() => {
-            console.log("DESTROY", this);
             if(this && !this.invincible){
-              console.log("DESTROHIGN");
               this.terminate();
             } 
           }, 10000);
       }
 
       terminate() {
-        console.log('terminate!', this);
           if(this.circle) stage.removeChild(this.circle);
           if(this.particleEmitter){
             this.particleEmitter.destroy();
@@ -198,7 +195,8 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
   class BlizzardProjectile extends StraightProjectile{
       constructor(opts){
         super(opts);
-        this.slowSpeed = 0.5;
+        this.slowSpeed = 0.4;
+        this.radius = 200;
         this.slowDuration = 1000;
         this.particleEmitter = ParticleFactory.createEmitter('blizzard', stage);
         this.particleEmitter.updateOwnerPos(this.x, this.y);
@@ -206,22 +204,37 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
         this.invincible = true;
         this.startTime = Date.now();
         this.duration = 100000;
-
+        window.setTimeout(() => {
+            if(this){
+              this.terminate();
+            } 
+        }, 5000);
       }
 
-      specialEffect() {
-        this.target.lastSlowed = Date.now();
-        if(this.target.slowFactor > this.slowSpeed ) {
-            this.target.slowFactor = this.slowSpeed;
-            this.target.img.tint = 12168959;
+      slowEnemy(enemy) {
+        enemy.lastSlowed = Date.now();
+        if(enemy.slowFactor > this.slowSpeed ) {
+            enemy.slowFactor = this.slowSpeed;
+            enemy.img.tint = 12168959;
         }
-        window.setTimeout(function(){
-            if(Date.now() - this.target.lastSlowed >= this.slowDuration) {
-              this.target.slowFactor = 1;
-              this.target.img.tint = 16777215;
+        window.setTimeout(() => {
+          console.log(Date.now() - enemy.lastSlowed, this.slowDuration);  
+            if(Date.now() - enemy.lastSlowed >= this.slowDuration) {
+              enemy.slowFactor = 1;
+              enemy.img.tint = 16777215;
             }
-        }.bind(this),this.slowDuration);
+        },this.slowDuration);
+      }
 
+      update(delta){
+          super.update(delta);
+          var ice = this;
+          EnemyFactory.enemies.forEach(function(enemy){
+            if(checkCircleCollision(ice, enemy)){
+              ice.slowEnemy(enemy);
+            }
+          });
+          this.particleEmitter.update(delta);
       }
   }
 
@@ -279,7 +292,6 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
             },ice.slowDuration);
         }
       });
-      console.log(this.particleEmitter);
       this.particleEmitter.update(delta);
     }
 
