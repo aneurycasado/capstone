@@ -37,17 +37,15 @@
                     </span></div>
             <hr>
             <div class = "row">
-                <span href = "#" data=toggle = "tooltip" data-placement = "left" data-original-title = "Total money" class = "toolTipSideBar">
+             
                     <div class = "col-md-4">
                         <span style = "color:white" class = "glyphicon glyphicon glyphicon-usd"></span>
                     </div>
                     <div class = "col-md-4">
                         {{playerStats.money}}
                     </div>
-                </span>
             </div>
             <div class = "row">
-                <span href = "#" data=toggle = "tooltip" data-placement = "left" data-original-title = "Life left" class = "toolTipSideBar">
                     <div class = "col-md-4">
 
                       <span style = "color:white" class = "glyphicon glyphicon-heart"></span>
@@ -56,7 +54,6 @@
                     <div class = "col-md-4">
                         {{playerStats.health}}
                     </div>
-                </span>
             </div>
             <hr>
             <tower-store></tower-store>
@@ -68,12 +65,12 @@
                 </button>
             </div>
             <div class ="row" ng-show = "state === 'wave'">
-                <button type = "button" class = "btn btn-default btn-block square" ng-click = "initiateWave()" >
+                <button type = "button" class = "btn btn-default btn-block square" ng-click = "pause()" >
                     Pause
                 </button>
             </div>
              <div class ="row" ng-show = "state === 'paused'">
-                <button type = "button" class = "btn btn-default btn-block square" ng-click = "initiateWave()" >
+                <button type = "button" class = "btn btn-default btn-block square" ng-click = "resume()" >
                     Resume
                 </button>
             </div>
