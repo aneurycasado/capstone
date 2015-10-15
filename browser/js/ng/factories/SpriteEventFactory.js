@@ -15,13 +15,31 @@ app.factory('SpriteEventFactory', function($rootScope) {
         selectedTower = this;
     };
 
-    let towerMouseOverHandler = function() {
-        this.imgContainer.addChildAt(this.baseRangeCircle, 0);
-    };
+    let gridOverHandler = function() {
+        if(typeof this.terrain === 'string') {
+            var filter = new PIXI.filters.ColorMatrixFilter();
+            filter.matrix = [
+                1,0,0,0,
+                0,2,0,0.5,
+                0,0,1,0,
+                0,0,0,1
+            ];
+            console.log(filter.matrix[2]);
+            console.log(this.img.filters);
+            this.img.filters = [filter];
+        }
+    }
+    let gridLeaveHandler = function() {
+        this.img.filters = null;
+    }
 
-    let towerMouseLeaveHandler = function() {
-        this.imgContainer.removeChild(this.baseRangeCircle);
-    };
+    //let towerMouseOverHandler = function() {
+    //    this.imgContainer.addChildAt(this.baseRangeCircle, 0);
+    //};
+    //
+    //let towerMouseLeaveHandler = function() {
+    //    this.imgContainer.removeChild(this.baseRangeCircle);
+    //};
 
     let gridClickHandler = function() {
         if(selectedGrid) {
@@ -41,8 +59,8 @@ app.factory('SpriteEventFactory', function($rootScope) {
 
     return {
         towerClickHandler,
-        towerMouseOverHandler,
-        towerMouseLeaveHandler,
+        gridOverHandler,
+        gridLeaveHandler,
         gridClickHandler,
         bgClickHandler
     }

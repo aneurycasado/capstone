@@ -89,22 +89,21 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
 
         }
         on(name, cb) {
-            if(!this.eventRegister[name]) {
-                this.eventRegister[name] = [];
-            }
-            this.eventRegister[name].push(cb);
+            //if(!this.eventRegister[name]) {
+            //    this.eventRegister[name] = []
+            //}
+            //this.eventRegister[name].push(cb);
+            this.eventRegister[name] = cb;
         }
+        remove(name, cb) {
 
+        }
         emit(name, ...args) {
             if(!this.eventRegister[name]) return;
-            this.eventRegister[name].forEach(cb => {
-                cb(...args)
-            });
-            //if(this.eventRegister[name]) {
-            //    this.eventRegister[name].forEach(cb => {
-            //        cb(...args)
-            //    });
-            //}
+            //this.eventRegister[name].forEach(cb => {
+            //    cb(...args)
+            //});
+            this.eventRegister[name](...args);
         }
         getCurrentTarget() {
             if (this.target) {
