@@ -1,6 +1,12 @@
 app.factory('SpriteEventFactory', function($rootScope) {
     let selectedTower = null;
     let selectedGrid = null;
+    let buyingTower = false;
+
+    $rootScope.$on('currentTower', function() {
+        buyingTower = true;
+    });
+
     let selectedTowerRemover = () => {
         if(selectedTower) {
             selectedTower.imgContainer.removeChild(selectedTower.baseRangeCircle);
@@ -16,7 +22,7 @@ app.factory('SpriteEventFactory', function($rootScope) {
     };
 
     let gridOverHandler = function() {
-        if(typeof this.terrain === 'string') {
+        if(typeof this.terrain === 'string' && buyingTower) {
             var filter = new PIXI.filters.ColorMatrixFilter();
             filter.matrix = [
                 1,0,0,0,
@@ -24,8 +30,6 @@ app.factory('SpriteEventFactory', function($rootScope) {
                 0,0,1,0,
                 0,0,0,1
             ];
-            console.log(filter.matrix[2]);
-            console.log(this.img.filters);
             this.img.filters = [filter];
         }
     }
@@ -41,20 +45,23 @@ app.factory('SpriteEventFactory', function($rootScope) {
     //    this.imgContainer.removeChild(this.baseRangeCircle);
     //};
 
+    let basicTowerClickOff = () => {
+        selectedTowerRemover();
+        $rootScope.$broadcast('terminalOn', true)
+        buyingTower = false;
+    }
     let gridClickHandler = function() {
         if(selectedGrid) {
             selectedGrid = this;
         }
-        selectedTowerRemover();
-        $rootScope.$broadcast('terminalOn', true)
+        basicTowerClickOff();
     };
 
     let bgClickHandler = function() {
         if(selectedGrid) {
             selectedGrid = null;
         }
-        selectedTowerRemover();
-        $rootScope.$broadcast('terminalOn', true)
+        basicTowerClickOff();
     }
 
     return {
