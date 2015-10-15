@@ -27,6 +27,7 @@ app.config(($stateProvider) => {
         });
 });
 
+
 app.controller("PlayController", function ($scope, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, SpriteEventFactory, ProjectileFactory, GameFactory) {
     // $scope.mode = StateFactory.mode;
     $scope.terminalOn = true;

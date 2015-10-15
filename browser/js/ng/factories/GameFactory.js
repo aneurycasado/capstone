@@ -14,9 +14,7 @@ app.factory('GameFactory', function($rootScope, InputFactory, LightningFactory, 
         if (data.state === "selection") {
             //more logic
         }
-        if (data.state === "paused") {
-            //nothing
-        }
+
         if (data.state === "standby") {
             ProjectileFactory.updateAll(delta);
             EnemyFactory.updateAll(delta);
@@ -39,6 +37,7 @@ app.factory('GameFactory', function($rootScope, InputFactory, LightningFactory, 
                 changeStateTo('gameOver');
             }
 
+
             TowerFactory.updateAll(delta);
 
 
@@ -56,8 +55,11 @@ app.factory('GameFactory', function($rootScope, InputFactory, LightningFactory, 
         // if(data.state === 'gameOver'){
         InputFactory.check();
 
+        if( data.state !== "paused" ) StateFactory.setTimeoutsCheck(delta);
+
         StateFactory.renderer.render(StateFactory.stages.play); //FIXME: should be StateFactory.stages[StateFactory.state]
         requestAnimationFrame(loop.bind(null, now));
+
     };
     let changeStateTo = (state) => {
         if(state === 'wave') {
@@ -75,7 +77,7 @@ app.factory('GameFactory', function($rootScope, InputFactory, LightningFactory, 
         if(state === 'gameOver'){
             $rootScope.$emit('gameOver');
         }
-        if(state === "pause"){
+        if(state === "paused"){
 
         }
 
@@ -87,7 +89,7 @@ app.factory('GameFactory', function($rootScope, InputFactory, LightningFactory, 
 
     let pause = function(){
         oldState = StateFactory.state;
-        changeStateTo("pause");
+        changeStateTo("paused");
     }
     let resume = function(){
         changeStateTo(oldState);

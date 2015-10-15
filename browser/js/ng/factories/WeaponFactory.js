@@ -1,30 +1,6 @@
-// setTimeout = function(func, time){
-
-//   setTimeouts.push({func: func, time: time});
-
-// }
-
-// setTimeouts = [{func: func, time: time}];
-
-// setTimeoutsCheck = function(){
-
-//     if(StateFactory.state !== "paused"){
-
-//     setTimeouts.forEach(function(timeOut){
-
-//       time -= delta;
-
-//       if(time < 0) func();
-
-//     })
-
-//   }
-
-// }
-
-
 app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyFactory, StateFactory, LightningFactory) {
-    let towerStage = StateFactory.stages.towers;
+
+  let towerStage = StateFactory.stages.towers;
   class Weapon {
     constructor(tower, power, range, name, effect) {
       this.tower = tower;
@@ -212,19 +188,19 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     }
     shoot(enemy){
         this.tower.img.play();
-        setTimeout(function() {
+        setTimeout2(function() {
           new ProjectileFactory.MeteorProjectile({power: this.power, x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy});
         }.bind(this), 300)
-        setTimeout(function() {
+        setTimeout2(function() {
           new ProjectileFactory.MeteorProjectile({power: this.power, x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy});
         }.bind(this), 900)
 
-        setTimeout(function() {
+        setTimeout2(function() {
           new ProjectileFactory.MeteorProjectile({power: this.power, x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy});
         }.bind(this), 1500)
 
         StateFactory.sloMo = true;
-        setTimeout(function() {
+        setTimeout2(function() {
           StateFactory.sloMo = false;
         }, this.sloMoTime);
 
@@ -251,7 +227,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
         });
 
         StateFactory.sloMo = true;
-        setTimeout(function() {
+        setTimeout2(function() {
             StateFactory.sloMo = false;
         }, this.sloMoTime);
     }
@@ -268,7 +244,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     shoot(enemy) {
         this.tower.img.play();
 
-        setTimeout(function(){
+        setTimeout2(function(){
             var start = new LightningFactory.Yals.Vector2D(enemy.position.x, -100);
             var end = new LightningFactory.Yals.Vector2D(enemy.position.x, enemy.position.y);
 
@@ -278,7 +254,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
         }.bind(this), 250);
 
         StateFactory.sloMo = true;
-        setTimeout(function() {
+        setTimeout2(function() {
             StateFactory.sloMo = false;
         }, this.sloMoTime);
 
