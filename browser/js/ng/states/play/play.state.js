@@ -146,13 +146,14 @@ app.controller("PlayController", function ($scope, $state, $timeout, $rootScope,
                     TowerFactory.createTower(towerPositionX, towerPositionY, $scope.tower.name + "Tower");
                     PlayerFactory.money -= $scope.tower.price;
                     $scope.$digest();
+
                 }
             } else {
                 console.log("Can't play");
             }
+            document.getElementsByTagName('body')[0].style.cursor= "default";
+            $scope.tower = null;
         }
-        document.getElementsByTagName('body')[0].style.cursor= "default";
-        $scope.tower = null;
     })
     GameFactory.loop(Date.now());
 });
