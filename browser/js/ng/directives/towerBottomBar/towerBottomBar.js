@@ -20,7 +20,7 @@ app.controller('TowerBottomBarController', ($scope,$rootScope,$state, TowerFacto
 		PlayerFactory.money += (tower.price *.7);
 	}
     $scope.goToEditor = () => {
-    	GameFactory.pause();
+    	if(StateFactory.state !== "paused") GameFactory.pause();
         $scope.editing = true;
         $scope.terminalOn = true;
     }
