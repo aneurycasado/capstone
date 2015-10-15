@@ -1,22 +1,17 @@
 app.factory('ModFactory', function() {
     class CoolDownTimer {
-        constructor(coolDownPeriod, time=Date.now()) {
+        constructor(coolDownPeriod) {
             this.coolDownPeriod = coolDownPeriod;
-            this.timesSet = 1;
-            this.startTime = time;
+            this.currentCoolDown = 0;
         }
-        elapsedTime(time=Date.now()) {
-            return time - this.startTime;
+        checkCoolDownPassed() {
+            return this.currentCoolDown  <= 0;
         }
-        checkCoolDownPassed(time=Date.now()) {
-            return this.coolDownPeriod < this.elapsedTime(time);
+        decrementCoolDown(delta) {
+            this.currentCoolDown -= delta;
         }
-        checkCoolDownAndReset(time=Date.now()) {
-            if(this.checkCoolDownPassed(time)) this.setNewTime(time);
-        }
-        setNewTime(time=Date.now()) {
-            this.startTime = time;
-            this.timesSet++;
+        resetCoolDown() {
+            this.currentCoolDown = this.coolDownPeriod;
         }
     }
 
@@ -45,18 +40,15 @@ app.factory('ModFactory', function() {
     }
 
     class Ability extends Mod {
-        constructor(name, functionToRun, context, coolDownPeriod, purchased=false, time=Date.now()) {
+        constructor(name, functionToRun, context, coolDownPeriod, purchased=false) {
             super(name, functionToRun, context, purchased);
-            this.coolDownTimer = new CoolDownTimer(coolDownPeriod, time);
-        }
-        resetCoolDown() {
-            this.coolDownTimer.setNewTime();
+            this.coolDownTimer = new CoolDownTimer(coolDownPeriod);
         }
         runMod(...newArgs) {
-            if(this.coolDownTimer.timesSet === 1 || this.coolDownTimer.checkCoolDownPassed()) {
-                this.coolDownTimer.setNewTime();
+            if(this.coolDownTimer.checkCoolDownPassed()) {
+                this.coolDownTimer.resetCoolDown();
+                console.log('runMod console.log', this.coolDownTimer.currentCoolDown);
                 return super.runMod(...newArgs);
-
             }
         }
     }
