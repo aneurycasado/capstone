@@ -34,7 +34,6 @@ app.directive('editor', ($rootScope, GameFactory) => {
                 scope.tower.codeSnippet = editor.getValue();
                 scope.tower.evalCodeSnippet();
                 //let saveSnippet = true;
-                //console.log(saveSnippet);
 
                 //scope.$parent.$parent.editing = false;
             }

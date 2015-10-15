@@ -8,14 +8,12 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     let terminatedEnemies = [];
     let stage = new PIXI.Stage();
     let findEnd = (img) => {
-        console.log("The img,",img);
         if(img === "1") return 7;
         else if(img.indexOf("ship") > -1) return 2;
         else return 5;
     }
 
     const findRandomPath = (opts) => {
-        console.log("Opts in path", opts);
         let rando = Math.floor( Math.random() * opts.path.length);
         let path = opts.path[rando];
         let pathIndex = 0;
@@ -131,7 +129,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             }
 
             if(explode){
-                explosionEmitters.push(ParticleFactory.createEmitter('critter1pieces', stage, ["core1", "wing1", "eye1", "ball1"]));
+                explosionEmitters.push(ParticleFactory.createEmitter('explosionSmall', stage, ["core1", "wing1", "eye1", "ball1"]));
                 explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
             }
 
@@ -411,13 +409,14 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             let index = randomInt(0, enemies.length-1);
             let color = colors[randomInt(0,colors.length-1)]; 
             let enemy = type + color;
-            console.log("Enemy ", enemy);
             enemiesOnBoard.push(enemy);
         }
         return enemiesOnBoard;
     }
 
     class SmallBugShip extends Enemy {
+
+
         constructor(opts) {
             super({
                 img: 'ship1',
@@ -431,12 +430,19 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             this.numOfEnemies = this.enemiesOnBoard.length;
         }
         
-        terminate(){
+        terminate(explode){
             super.terminate();
 
+            if(explode){
+
+                explosionEmitters.push(ParticleFactory.createEmitter('explosionBig', stage, ["ship1part1", "ship1part2"]));
+                explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
+ 
+            }
+    
             if(StateFactory.state !== "gameOver"){
                 for(let i = 0; i < this.numOfEnemies; i++){
-                    window.setTimeout(() => {
+                    StateFactory.setTimeout2(() => {
                         let newPath = this.path.slice(this.pathIndex + i);
                         let newEn = createEnemy(this.enemiesOnBoard[i], [newPath]);
                         stage.addChild(newEn.img);
@@ -459,13 +465,20 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             this.enemiesOnBoard = createEnemiesOnBoard("BigBug");
             this.numOfEnemies = this.enemiesOnBoard.length;
         }
-        
-        terminate(){
+
+        terminate(explode){
             super.terminate();
 
+            if(explode){
+
+                explosionEmitters.push(ParticleFactory.createEmitter('explosionBig', stage, ["ship2part2", "ship2part3"]));
+                explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
+
+            }
+        
             if(StateFactory.state !== "gameOver"){
                 for(let i = 0; i < this.numOfEnemies; i++){
-                    window.setTimeout(() => {
+                    StateFactory.setTimeout2(() => {
                         let newPath = this.path.slice(this.pathIndex + i);
                         let newEn = createEnemy(this.enemiesOnBoard[i], [newPath]);
                         stage.addChild(newEn.img);
@@ -475,38 +488,8 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
     }
 
-    class SuperBigBugShip extends Enemy {
-        constructor(opts) {
-            super({
-                img: 'ship3',
-                path: opts.path,
-                value: 100, 
-                speed: 20,
-                health: 20,
-                color: 'none'
-            })
-            this.enemiesOnBoard = createEnemiesOnBoard("SuperBigBug");
-            this.numOfEnemies = this.enemiesOnBoard.length;
-        }
-        
-        terminate(){
-            super.terminate();
-
-            if(StateFactory.state !== "gameOver"){
-                for(let i = 0; i < this.numOfEnemies; i++){
-                    window.setTimeout(() => {
-                        let newPath = this.path.slice(this.pathIndex + i);
-                        let newEn = createEnemy(this.enemiesOnBoard[i], [newPath]);
-                        stage.addChild(newEn.img);
-                    }, 100); 
-                }
-            }
-        }
-    } 
-
     let createEnemy = (type, path) => {
         let newEnemy;
-        console.log("Type", type);
         let enemyConstructor = enemiesConstructors[type];
         newEnemy = new enemyConstructor({path: path});
         enemies.push(newEnemy);
@@ -535,7 +518,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
     let enemiesConstructors = {SmallBugRed,SmallBugGreen,SmallBugBlue,SmallBugYellow,
                                BigBugRed,BigBugGreen,BigBugBlue,BigBugYellow,
                                SuperBigBugRed,SuperBigBugGreen,SuperBigBugBlue,SuperBigBugYellow,
-                               BossBug,SmallBugShip,BigBugShip,SuperBigBugShip};
+                               BossBug,SmallBugShip,BigBugShip};
 
     //adWare, worm
     return {

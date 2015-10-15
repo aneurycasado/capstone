@@ -37,16 +37,13 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
           }
           projectiles.push(this);
           window.setTimeout(() => {
-            console.log("DESTROY", this);
             if(this && !this.invincible){
-              console.log("DESTROHIGN");
               this.terminate();
             } 
           }, 10000);
       }
 
       terminate() {
-        console.log('terminate!', this);
           if(this.circle) stage.removeChild(this.circle);
           if(this.particleEmitter){
             this.particleEmitter.destroy();
