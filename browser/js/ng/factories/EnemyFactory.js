@@ -44,7 +44,6 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                     }
                     this.img = new PIXI.extras.MovieClip(array);
                 }
-                this.img.position = this.position;
                 this.img.pivot.x = 0.5;
                 this.img.pivot.y = 0.5;
                 this.img.anchor.x  = 0.5;
@@ -436,9 +435,9 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             if(StateFactory.state !== "gameOver"){
                 for(let i = 0; i < this.numOfEnemies; i++){
                     window.setTimeout(() => {
+                        if(this.pathIndex + i > this.path.length - 1) return;
                         let newPath = this.path.slice(this.pathIndex + i);
                         let newEn = createEnemy(this.enemiesOnBoard[i], [newPath]);
-                        stage.addChild(newEn.img);
                     }, 100); 
                 }
             }
@@ -465,9 +464,9 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             if(StateFactory.state !== "gameOver"){
                 for(let i = 0; i < this.numOfEnemies; i++){
                     window.setTimeout(() => {
+                        if(this.pathIndex + i > this.path.length - 1) return;
                         let newPath = this.path.slice(this.pathIndex + i);
                         let newEn = createEnemy(this.enemiesOnBoard[i], [newPath]);
-                        stage.addChild(newEn.img);
                     }, 100); 
                 }
             }
@@ -494,9 +493,9 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             if(StateFactory.state !== "gameOver"){
                 for(let i = 0; i < this.numOfEnemies; i++){
                     window.setTimeout(() => {
+                        if(this.pathIndex + i > this.path.length - 1) return;
                         let newPath = this.path.slice(this.pathIndex + i);
                         let newEn = createEnemy(this.enemiesOnBoard[i], [newPath]);
-                        stage.addChild(newEn.img);
                     }, 100); 
                 }
             }

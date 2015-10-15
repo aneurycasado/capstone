@@ -25,7 +25,6 @@ app.factory('WaveFactory', ($rootScope,EnemyFactory, StateFactory) => {
             if(!currentWaveLength()) return;
             let newEn;
             newEn = EnemyFactory.createEnemy(popOffNextMonster(), StateFactory.map.paths);
-            EnemyFactory.stage.addChild(newEn.img);
         }
     };
     const update = () => {
@@ -56,10 +55,10 @@ app.factory('WaveFactory', ($rootScope,EnemyFactory, StateFactory) => {
         let numOfEnemies = (newWaves.length + 1) * 20;
         if(newWaves.length <= (numOfWaves / 10)){
             for(let i = 0; i < numOfEnemies; i++){
-                let enemyindex = randomInt(0,3);
-                let enemy = enemies[enemyindex];
-                wave.push({name: enemy, num:1});
-                // wave.push({name: "SmallBugShip", num:1}, {name: "BigBugShip", num:1}, {name: "SuperBugShip", num:1});
+                // let enemyindex = randomInt(0,3);
+                // let enemy = enemies[enemyindex];
+                // wave.push({name: enemy, num:1});
+                wave.push({name: "SmallBugShip", num:1}, {name: "BigBugShip", num:1}, {name: "SuperBigBugShip", num:1});
 
             }
         }else if(newWaves.length >= (numOfWaves / 10) && newWaves.length < (numOfWaves / 5)){
