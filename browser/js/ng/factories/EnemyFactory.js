@@ -484,7 +484,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 health: 20,
                 color: 'none'
             })
-            this.enemiesOnBoard = createEnemiesOnBoard("SuperBug");
+            this.enemiesOnBoard = createEnemiesOnBoard("SuperBigBug");
             this.numOfEnemies = this.enemiesOnBoard.length;
         }
         
