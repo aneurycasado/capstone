@@ -46,8 +46,8 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                     new ModFactory.Surrounding('getNearbyTowers', this.getNearbyTowersEncapsulated, this, true)
                 ],
                 abilities: [
-                    new ModFactory.Ability('burst', burst, this, 25000, true),
-                    new ModFactory.Ability('ultimateWeapon', launchUltimate, this, 30000, true),
+                    new ModFactory.Ability('burst', burst, this, 25, true),
+                    new ModFactory.Ability('ultimateWeapon', launchUltimate, this, 30, true),
                     new ModFactory.Ability('swapToSecondary', this.swapToSecondary, this, 0, true),
                     new ModFactory.Ability('swapToPrimary', this.swapToPrimary, this, 0, true)
                 ],
@@ -253,7 +253,11 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             return ((Math.pow(enemy.position.x - this.img.position.x, 2) + Math.pow(enemy.position.y - this.img.position.y, 2) <= Math.pow(this.activeWeapon.range, 2)));
         }
 
-        update() {
+        update(delta) {
+            console.log('sloMo', StateFactory.sloMo);
+            this.mods.abilities.forEach(ability => {
+                ability.coolDownTimer.decrementCoolDown(delta)
+            });
             //if (this.towerControlFunction) this.towerControlFunction();
             if (!this.target) {
                 this.detectEnemy();
@@ -317,7 +321,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                     this.particleEmitter.destroy();
                     this.particleEmittter = null;
                 }
-            }            
+            }
         }
     }
 
@@ -360,7 +364,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                     this.particleEmitter.destroy();
                     this.particleEmittter = null;
                 }
-            }            
+            }
         }
 
         // swapToPrimary() {
