@@ -1,14 +1,11 @@
-<div class="modal fade" id="levelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+<div class="modal" id="levelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
+        <div class="modal-content square">
+     
             <div class="modal-body">
                 <h4>Congratulations You made it through the level!</h4>
-                <h4><button class="btn btn-info" ng-click = "restartLevel()" data-dismiss="modal">Restart Level</button></h4>
-                <h4><button class="btn btn-info" ng-click = "choseDifferentMap()" data-dismiss="modal">Chose a different Level</button></h4>
+                <h4><button class="btn btn-default square" ng-click = "restartLevel()" data-dismiss="modal">Restart Level</button></h4>
+                <h4><button class="btn btn-default square" ng-click = "choseDifferentMap()" data-dismiss="modal">Chose a different Level</button></h4>
             </div>
         </div>
     </div>

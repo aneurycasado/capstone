@@ -489,7 +489,7 @@ app.factory('ParticleFactory', () => {
             "angleStart": 0
         },
 
-        critter1pieces: {
+        explosionSmall: {
             "alpha": {
                 "start": 1,
                 "end": 0.41
@@ -525,6 +525,58 @@ app.factory('ParticleFactory', () => {
             },
             "blendMode": "normal",
             "frequency": 0.002,
+            "emitterLifetime": .009,
+            "maxParticles": 4,
+            "pos": {
+                "x": 0,
+                "y": 0
+            },
+            "addAtBack": true,
+            "spawnType": "rect",
+            "spawnRect": {
+                "x": 0,
+                "y": 0,
+                "w": 30,
+                "h": 30
+            }
+        },
+
+        explosionBig: {
+            "alpha": {
+                "start": 1,
+                "end": 0.41
+            },
+            "scale": {
+                "start": 1,
+                "end": 1,
+                "minimumScaleMultiplier": 1
+            },
+            "color": {
+                "start": "#ffffff",
+                "end": "#ffffff"
+            },
+            "speed": {
+                "start": 300,
+                "end": 300
+            },
+            "acceleration": {
+                "x": 0,
+                "y": 0
+            },
+            "startRotation": {
+                "min": 0,
+                "max": 360
+            },
+            "rotationSpeed": {
+                "min": 1000,
+                "max": 1000
+            },
+            "lifetime": {
+                "min": 5,
+                "max": 5
+            },
+            "blendMode": "normal",
+            "frequency": 0.0005,
             "emitterLifetime": .009,
             "maxParticles": 4,
             "pos": {
@@ -916,7 +968,7 @@ app.factory('ParticleFactory', () => {
         fire2: [1, 2],
         gas:['gas'],
         lightningBall: ['lightning1', 'lightning2', 'HardCircle'],
-        critter1pieces: ["core1", "wing1", "eye1", "ball1"],
+        explosionSmall: ["core1", "wing1", "eye1", "ball1"],
         meteor: [1, 2],
         blizzard: [1, 5, 3, 8],
         miniBliz: [3],

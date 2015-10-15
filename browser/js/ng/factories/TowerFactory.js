@@ -272,7 +272,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 if(this.target) {
                     //this.shotEnemy = this.target.enemyEncapsulated;
                     this.reloading = true;
-                    window.setTimeout(() => {
+                    StateFactory.setTimeout2(() => {
                         this.reloading = false;
                     }, this.activeWeapon.reloadTime);
                     this.activeWeapon.shoot(this.target);
