@@ -31,7 +31,7 @@ app.config(($stateProvider) => {
 app.controller("PlayController", function ($scope, $state, $timeout, $rootScope, ParticleFactory, WaveFactory, MapFactory, StateFactory, TowerFactory, PlayerFactory, EnemyFactory, SpriteEventFactory, ProjectileFactory, GameFactory) {
     // $scope.mode = StateFactory.mode;
     $scope.terminalOn = true;
-    document.getElementsByTagName('body')[0].style.backgroundImage="url(./images/bg2.png)"
+    document.getElementsByTagName('body')[0].style.background="black";
 
     // $scope.player = player;
     // if($scope.player.player !== "notLoggedIn" && $scope.player.game.mode){
@@ -73,7 +73,7 @@ app.controller("PlayController", function ($scope, $state, $timeout, $rootScope,
     const start = (map, gameType) => {
         StateFactory.map = map;
         StateFactory.stages.play = new PIXI.Stage();
-        let bg = new PIXI.Sprite(PIXI.Texture.fromImage("/images/bg2.png"));
+        let bg = new PIXI.Sprite(PIXI.Texture.fromImage("/images/bgnew.png"));
         bg.interactive = true;
         bg.click = SpriteEventFactory.bgClickHandler;
         bg.width = StateFactory.width;

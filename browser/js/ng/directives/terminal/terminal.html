@@ -1,14 +1,15 @@
 <div class="panel panel-default square" id="terminal">
-    <div class="panel-heading terminal-heading">Terminal</div>
+ 
     <div class="panel-body terminal-body border">
-        <div class="scene">
+        <span class="scene">
             <div id="welcome"></div>
             <div id="savePrompt" ng-style="savePromptColor"></div>
             <div id="runtimePrompt" ng-style="runtimePromptColor">
                 <p ng-repeat="runtimeError in runtimeErrors track by $index">{{runtimeError}}</p>
             </div>
             <!--<div id="computer"></div>-->
-        </div>
+        </span>
+        
 
     </div>
 </div>
