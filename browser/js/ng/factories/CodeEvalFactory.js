@@ -1,4 +1,4 @@
-app.factory('CodeEvalFactory', (EventFactory, $rootScope) => {
+app.factory('CodeEvalFactory', (EventFactory, $rootScope, PlayerFactory) => {
     let assignObjForContext = function(obj) {
         let keys = Object.keys(obj);
         console.log('keys' , keys);
@@ -11,7 +11,6 @@ app.factory('CodeEvalFactory', (EventFactory, $rootScope) => {
                 }
             })
         }
-        console.log('newObj', newObj);
         return newObj;
     };
 
@@ -33,14 +32,20 @@ app.factory('CodeEvalFactory', (EventFactory, $rootScope) => {
 
     let evalSnippet = function(tower) {
         if(!tower.codeSnippet) return;
-        let funcStr = tower.codeSnippet.replace(/^function\s*\((\w+,\s*)*\w*\)\s*\{/, '').replace(/\}$/, '');
+        let name = tower.codeSnippet.match(/^function\s*(\w+)?/)[1];
+        let funcStr = tower.codeSnippet.replace(/^function\s*\w*\s*\((\w+,\s*)*\w*\)\s*\{/, '').replace(/\}$/, '');
 
         try {
             let newFunc = new Function(funcStr);
-            //console.log('newFunc', newFunc);
+            if(name) PlayerFactory.codeSnippets[name] = newFunc;
             let objProvided = assignObjForContext(tower.mods);
             objProvided.surroundings.getCurrentTarget = tower.getCurrentTarget.bind(tower);
             objProvided.surroundings.setTarget = tower.setTargetBasedOnIndex.bind(tower);
+            let userSnippets = Object.keys(PlayerFactory.codeSnippets);
+            for(let i=0; i < userSnippets.length; i++) {
+                objProvided[userSnippets[i]] = PlayerFactory.codeSnippets[userSnippets[i]];
+            }
+            console.log('objProvided', objProvided);
             //objProvided.on = function (name, cb) {
             //    cb = cb.bind(objProvided);
             //    tower.on(name, cb);
@@ -65,9 +70,12 @@ app.factory('CodeEvalFactory', (EventFactory, $rootScope) => {
         } catch(error) {
             $rootScope.$broadcast('saveCodeSuccessful', false, error);
         }
-
     };
 
+    //let evalGobalSnippet = function(codeSnippet) {
+    //    let funcStr = codeSnippet.match(/\s*function\s*\w*\s*\{\w*\s*\w*\}/)
+    //    let funcStr = codeSnippet.split(/\}\s*\n+\s*\{/)
+    //}
     return {
         evalSnippet
     }

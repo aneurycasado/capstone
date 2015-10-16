@@ -1,6 +1,7 @@
 'use strict'
 app.factory('PlayerFactory', ($http) => {
-    let player = {health:20,money:200};
+    let player = {health:20,money:200, codeSnippets: {}};
+    player.codeSnippets = {};
     player.saveGame = (player) => {
         console.log("Player in saveGame", player);
     	return $http.put("/api/players/",player).then(response => response.data);
@@ -14,4 +15,3 @@ app.factory('PlayerFactory', ($http) => {
     }.bind(player);
     return player;
 });
-    
