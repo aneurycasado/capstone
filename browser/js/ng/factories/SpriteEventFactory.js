@@ -42,13 +42,13 @@ app.factory('SpriteEventFactory', function($rootScope) {
         this.img.filters = null;
     }
 
-    //let towerMouseOverHandler = function() {
-    //    this.imgContainer.addChildAt(this.baseRangeCircle, 0);
-    //};
-    //
-    //let towerMouseLeaveHandler = function() {
-    //    this.imgContainer.removeChild(this.baseRangeCircle);
-    //};
+    let towerMouseOverHandler = function() {
+        document.body.style.cursor = 'pointer';
+    };
+
+    let towerMouseLeaveHandler = function() {
+        document.body.style.cursor = 'default';
+    };
 
     let basicTowerClickOff = () => {
         selectedTowerRemover();
@@ -81,6 +81,8 @@ app.factory('SpriteEventFactory', function($rootScope) {
     return {
         towerClickHandler,
         mapElementClickHandler,
+        towerMouseOverHandler,
+        towerMouseLeaveHandler,
         gridOverHandler,
         gridLeaveHandler,
         gridClickHandler,

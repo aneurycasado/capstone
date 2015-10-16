@@ -2,8 +2,20 @@
   position: fixed;
   top: 520px;
   width: 970px;
-
 }
+
+#welcome{
+  padding-bottom: 12px;
+}
+
+#save{
+  padding-bottom: 12px;
+}
+
+#runtimePrompt{
+  color: red !important;
+}
+
 
 .terminal-heading{
   padding-top: 2px;

@@ -50,9 +50,14 @@ app.factory('CodeEvalFactory', (EventFactory, $rootScope) => {
             //    objProvided.emit('shoot', data);
             //});
             $rootScope.$broadcast('saveCodeSuccessful', true);
+            var runSuccessful = false;
             tower.towerControlFunction = () => {
                 try {
                     newFunc.call(objProvided);
+                    if(runSuccessful === false) {
+                        runSuccessful = true;
+                        $rootScope.$broadcast('runtimeSuccessful', tower);
+                    }
                 } catch(error) {
                     $rootScope.$broadcast('runtimeError', error, tower);
                 }

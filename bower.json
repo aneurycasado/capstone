@@ -15,6 +15,7 @@
   ],
   "dependencies": {
     "angular-ui-ace": "bower",
-    "pathfinding": "~0.4.17"
+    "pathfinding": "~0.4.17",
+    "TheaterJS": "theaterjs#~1.4.2"
   }
 }
