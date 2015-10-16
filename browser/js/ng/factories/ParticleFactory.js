@@ -909,8 +909,8 @@ app.factory('ParticleFactory', () => {
 
         toxic: {
             "alpha": {
-                "start": 0.27,
-                "end": 0.11
+                "start": 0.13,
+                "end": 0.05
             },
             "scale": {
                 "start": 1,
@@ -944,7 +944,7 @@ app.factory('ParticleFactory', () => {
             "blendMode": "normal",
             "frequency": 0.008,
             "emitterLifetime": -1,
-            "maxParticles": 1000,
+            "maxParticles": 500,
             "pos": {
                 "x": 0.5,
                 "y": 0.5

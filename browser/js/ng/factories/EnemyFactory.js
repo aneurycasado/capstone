@@ -146,7 +146,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             for(var i in this.particleEmitters){
                 if(this.particleEmitters[i]){
                     this.particleEmitters[i].update(delta);
-                    this.particleEmitters[i].updateOwnerPos(this.img.position.x, this.img.position.y);
+                    this.particleEmitters[i].updateOwnerPos(this.imgContainer.position.x, this.imgContainer.position.y);
                 }
             }
             if(!this.path[this.pathIndex]) {
