@@ -1,14 +1,32 @@
 #towerBottomBar{ 
    position: fixed; 
    top: 480px;
-   width: 920px;
-   height: 80px;  
 
-   width: 970px;
-     text-align:center;
+   width: 120px;
+   height: 120px;  
 
-     background-color:#222;
 
+}
+
+.antipadup{
+  position:relative;
+  top:-6px;
+}
+
+.padup{
+  padding-top:6px;
+   background:#222 !important;
+
+}
+.towerBottom{
+display:block;
+  position:relative;
+  left:801px;
+     height: 120px;  
+     top:-220px;
+width:153px;
+  background:#222 !important;
+  text-align:center;
 }
 
 .modal-button{
@@ -17,8 +35,12 @@
 }
 
 .tower-detail{
-  width:60px;
-  height:60px;
-     margin:0 auto;
+  width:80px;
+  height:80px;
 
+}
+
+.full{
+
+  width:120px;
 }
