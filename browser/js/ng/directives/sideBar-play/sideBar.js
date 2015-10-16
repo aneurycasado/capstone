@@ -6,7 +6,7 @@ app.directive("sideBarPlay", () => {
     }
 });
 
-app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, GameFactory, StateFactory, WaveFactory, EnemyFactory, TowerFactory) => {
+app.controller('SideBarPlayController', ($scope, $rootScope, $timeout, PlayerFactory, GameFactory, StateFactory, WaveFactory, EnemyFactory, TowerFactory) => {
     $(document).ready(() => {
         $('.toolTipSideBar').tooltip();
     });
@@ -89,13 +89,13 @@ app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, Game
 
     $scope.pause = () => {
         GameFactory.pause();
-                $scope.state = StateFactory.state;
+        $scope.state = StateFactory.state;
 
     }
 
     $scope.resume = () => {
         GameFactory.resume();
-                $scope.state = StateFactory.state;
+        $scope.state = StateFactory.state;
 
     }
 });
