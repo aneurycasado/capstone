@@ -2,7 +2,7 @@
 app.factory('StateFactory', function() {
     let state = {
         width: 800,
-        rows: 13,
+        rows: 12,
         cols: 20
     };
     state.mode = "unset";

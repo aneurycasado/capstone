@@ -1,7 +1,8 @@
 #terminal{
   position: fixed;
-  top: 520px;
+  top: 480px;
   width: 970px;
+
 }
 
 #welcome{
@@ -21,12 +22,17 @@
   padding-top: 2px;
   padding-bottom: 2px;
   width: 100%;
+         background-color:#333;
+
 }
 .terminal-body{
   background-color: black;
   color: white;
-  //min-height: 200px;
+
   height: 100px;
   width: 100%;
   overflow: auto;
+  width: 100%;
+  background-color:#222;
+
 }
