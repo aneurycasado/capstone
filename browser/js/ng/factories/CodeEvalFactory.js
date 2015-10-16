@@ -37,15 +37,12 @@ app.factory('CodeEvalFactory', (EventFactory, $rootScope, PlayerFactory) => {
 
         try {
             let newFunc = new Function(funcStr);
-            console.log(newFunc);
             if(name) PlayerFactory.codeSnippets[name] = newFunc;
-            //console.log('newFunc', newFunc);
             let objProvided = assignObjForContext(tower.mods);
             objProvided.surroundings.getCurrentTarget = tower.getCurrentTarget.bind(tower);
             objProvided.surroundings.setTarget = tower.setTargetBasedOnIndex.bind(tower);
             let userSnippets = Object.keys(PlayerFactory.codeSnippets);
             for(let i=0; i < userSnippets.length; i++) {
-                //console.log(userSnippets[i]);
                 objProvided[userSnippets[i]] = PlayerFactory.codeSnippets[userSnippets[i]];
             }
             console.log('objProvided', objProvided);

@@ -25,6 +25,8 @@
 .terminal-body{
   background-color: black;
   color: white;
-  min-height: 200px;
+  //min-height: 200px;
+  height: 100px;
   width: 100%;
+  overflow: auto;
 }
