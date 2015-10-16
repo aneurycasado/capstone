@@ -3,8 +3,6 @@ app.factory('TypingFactory', function() {
     theater
         .describe("welcomePrompt", {speed: 1, accuracy: 1}, '#welcome')
         .describe("savePrompt", {speed: 1, accuracy: 1}, '#savePrompt')
-
-   return {
-       theater
-   };
+        .describe("runtimePrompt", {speed:1, accuracy: 1}, '#runtimePrompt')
+   return theater
 });
