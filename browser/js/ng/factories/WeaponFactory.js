@@ -185,7 +185,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
       this.reloadTime = 400;
     }
     shoot(enemy) {
-      super.shoot(enemy, 'ToxicProjectile', {speed: 50, radius: 8, tower: this.tower})
+      super.shoot(enemy, 'ToxicProjectile', {speed: 30, radius: 8, tower: this.tower})
     }
   }
 
