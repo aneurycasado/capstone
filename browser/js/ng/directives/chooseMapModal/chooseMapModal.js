@@ -17,14 +17,13 @@ app.directive("chooseMapModal", (MapFactory, MapElementFactory, StateFactory, $r
 
 				scope.loadUserMaps = () => {
 					MapElementFactory.getMaps().then((maps) => {
-						let realMaps = maps.map((map) => {
-							let objectMap = JSON.parse(map.map);
-							let realMap = [];
-							for(let key in objectMap){
-								realMap.push(objectMap[key])
-							}
-							return realMap;
-						}); 
+						let jsonMaps = maps.map((map) => JSON.parse(map.map));
+						$("#choseMapModal").modal("toggle");
+						MapFactory.maps.length = 0;
+						jsonMaps.forEach((map) => {
+							MapFactory.createMap(map);
+						})
+						$("#choseMapModal").modal("toggle");
 						//console.log("Maps", realMaps);
 					});
 				}
