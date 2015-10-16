@@ -7,23 +7,28 @@ app.directive('terminal', function() {
 })
 
 app.controller('TerminalController', function($scope, $rootScope, $timeout, TypingFactory) {
+    $scope.runtimeErrors = [];
+
     //TypingFactory.write('computer', 'Welcome to td.js');
     function containsSaveError(text){
-        console.log('text',text);
-        console.log('savePrompt', $('#savePrompt').text());
         if($('#savePrompt').text() === text) return true;
         return false;
     }
     function containsRunTimeError(tower) {
-        if($('#runtimePrompt').text().indexOf('RUNTIME ERROR') !== -1) return true;
-        //if($('#runtimePrompt').text().indexOf('RUNTIME ERROR') !== -1 && $('#runtimePrompt').text().indexOf(`(${tower.img.x}, ${tower.img.y})`) !== -1) return true;
-        return false;
+        var num = -1;
+        $scope.runtimeErrors.forEach(function(errorMessage, index) {
+            var  inMessage = errorMessage.indexOf(`${tower.img.x}, ${tower.img.y}`) !== -1;
+            if(inMessage) {
+                num = index;
+            }
+        });
+        return num;
     }
     $rootScope.$on('mapChosen', function() {
             TypingFactory.write('welcomePrompt: welcome to td.js.', 200).write(' prepare to face your fate.', 600)
     })
     $rootScope.$on('saveCodeSuccessful', (event, bool, error) => {
-        $('#runtimePrompt').text('');
+        $scope.runtimeErrors = [];
         if(!bool){
             let text = `savePrompt: SAVE ERROR: ${error.message}`;
             console.log('error', error);
@@ -38,8 +43,13 @@ app.controller('TerminalController', function($scope, $rootScope, $timeout, Typi
         }
     })
     $rootScope.$on('runtimeError', (event, error, tower) => {
-        if(containsRunTimeError(tower)) return;
-        TypingFactory.write(`runtimePrompt: RUNTIME ERROR: ${error.message} for tower at (${tower.img.x}, ${tower.img.y})`);
+        var text = `RUNTIME ERROR: ${error.message} for tower at (${tower.img.x}, ${tower.img.y})`;
+        if(containsRunTimeError(tower) !== -1) $scope.runtimeErrors[containsRunTimeError(tower)] = text;
+        else {
+            $scope.runtimeErrors.push(text);
+        }
+        $scope.$digest();
+        //TypingFactory.write(`runtimePrompt: RUNTIME ERROR: ${error.message} for tower at (${tower.img.x}, ${tower.img.y})`);
         var colorFilter = new PIXI.filters.ColorMatrixFilter();
         colorFilter.matrix = [
             2,0,0,0,
