@@ -88,11 +88,12 @@ app.factory('GameFactory', function($rootScope, InputFactory, LightningFactory, 
     let oldState = null;
 
     let pause = function(){
-        oldState = StateFactory.state;
+
+        if(StateFactory.state !== "paused") oldState = StateFactory.state;
         changeStateTo("paused");
     }
     let resume = function(){
-        changeStateTo(oldState);
+        StateFactory.state = oldState;
     }
     return {
         pause,
