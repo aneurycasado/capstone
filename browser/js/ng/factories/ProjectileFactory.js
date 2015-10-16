@@ -258,7 +258,6 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
   class FirePuddle extends Projectile{
     constructor(opts){
       super(opts);
-      console.log(this.tower, opts)
       this.power = 0.3;
       this.radius = 30;
       this.particleEmitter = ParticleFactory.createEmitter('fire', stage);
@@ -362,7 +361,8 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
       specialEffect(){
         new FirePuddle({
           x: this.x,
-          y: this.y
+          y: this.y,
+          tower: this.tower
         });
       }
   }

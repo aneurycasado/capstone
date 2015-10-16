@@ -178,6 +178,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
         }
 
         takeDamage(damage, towerSource){
+            console.log(damage, towerSource);
             var healthBefore = this.health;
             this.health -= damage;
             var healthPercentage = this.health / this.maxHealth;
