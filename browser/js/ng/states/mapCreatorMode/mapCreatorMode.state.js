@@ -7,7 +7,7 @@ app.config(($stateProvider) => {
         })
 });
 
-app.controller("MapCreatorModeController", ($scope,$state, StateFactory, SpriteEventFactory, MapElementFactory, MapFactory, DesignFactory) => {
+app.controller("MapCreatorModeController", ($scope, $rootScope, $state, StateFactory, SpriteEventFactory, MapElementFactory, MapFactory, DesignFactory) => {
     document.getElementsByTagName('body')[0].style.backgroundImage="url(./images/bg2.png)"
     let blankMap = new MapFactory.Map(DesignFactory.blankMap2,0)
     StateFactory.map = blankMap;
@@ -24,10 +24,20 @@ app.controller("MapCreatorModeController", ($scope,$state, StateFactory, SpriteE
     StateFactory.stages.newMap.addChild(bg);//yaaaas
     StateFactory.stages.newMap.addChild(blankMap.stage);
     StateFactory.stages.newMap.addChild(MapElementFactory.stage);
+    $rootScope.$on('mapElementClicked', function(event, data){
+        $scope.mapElementClicked = data;
+        console.log("Data in mapElementClicked Event",data);
+        $scope.$digest();
+    });
+    $rootScope.$on("mapElementRemoved", function(event,data){
+        $scope.$digest();
+    });
+    $rootScope.$on("mapElementClickOff", function(event,data){
+        $scope.mapElementClicked = null;
+        $scope.$digest();
+    });
     $("#pixiCanvas").on('click', (e) => {
-        console.log("We register a click event");
         if ($scope.currentElement !== null) {
-            console.log("currentElement != null")
             let elementPositionX = Math.floor(e.offsetX / StateFactory.cellSize);
             let elementPositionY = Math.floor(e.offsetY / StateFactory.cellSize);
             let selectedGridNode = StateFactory.map.grid[elementPositionY][elementPositionX];

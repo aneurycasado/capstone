@@ -6,19 +6,19 @@
 	            		<div class = "col-md-6">
 	            			<div class = "row">
 		            			<div class = "col-md-4">
-		            				<img ng-src = "{{currentElement.imgUrl}}" style = "width:80px;height:80px"/>
+		            				<img ng-src = "{{mapElementClicked.imgUrl}}" style = "width:80px;height:80px"/>
 		            			</div>
 		            			<div class = "col-md-5">
 		            				<div class = "row">
 		            					<div class = "col-md-12">
-		            						{{currentElement.name}}
+		            						{{mapElementClicked.name}}
 		            					</div>
 		            				</div>
 		            			</div>
 		            			<div class = "col-md-3">
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            <button class ="btn btn-danger square" ng-click = "remove()">Remove</button>
+                                            <button class ="btn btn-danger square" ng-click = "remove(mapElementClicked)">Remove</button>
                                         </div>
                                     </div>
                                 </div>

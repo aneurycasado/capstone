@@ -6,11 +6,9 @@ app.directive('mapElementBottomBar', () => {
 	}
 });
 
-app.controller('MapElementBottomBarController', ($scope,$rootScope,$state, TowerFactory, PlayerFactory, GameFactory, StateFactory) => {
+app.controller('MapElementBottomBarController', ($scope, $rootScope, MapElementFactory) => {
 	$scope.remove = (element) => {
-		$scope.selectedTower = null;
-		console.log("The tower being sold ", tower);
-		console.log("Sell Tower");
-		TowerFactory.removeTower(tower);
+		MapElementFactory.remove(element);
+		$scope.mapElementClicked = null;
 	}
 });
