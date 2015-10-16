@@ -84,8 +84,8 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             SpriteGenFactory.drawWeaponRangeCircle(this, this.activeWeapon.range);
             this.img.click = SpriteEventFactory.towerClickHandler.bind(this);
             this.towerControlFunction = null;
-            //this.img.mouseover = SpriteEventFactory.towerMouseOverHandler.bind(this);
-            //this.img.mouseout = SpriteEventFactory.towerMouseLeaveHandler.bind(this);
+            this.img.mouseover = SpriteEventFactory.towerMouseOverHandler.bind(this);
+            this.img.mouseout = SpriteEventFactory.towerMouseLeaveHandler.bind(this);
 
         }
         on(name, cb) {

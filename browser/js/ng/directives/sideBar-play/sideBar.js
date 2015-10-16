@@ -11,14 +11,14 @@ app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, Game
         $('.toolTipSideBar').tooltip();
     });
     const towersToBuy = [
-            {name: "Ice", price: 50, effect: "Fill in", imgUrl: "./images/tower-defense-turrets/turret-4-1.png"}, 
-            {name: "Thunder", price: 50, effect: "Fill in", imgUrl: "./images/tower-defense-turrets/turret-5-1.png"}, 
+            {name: "Ice", price: 50, effect: "Fill in", imgUrl: "./images/tower-defense-turrets/turret-4-1.png"},
+            {name: "Thunder", price: 50, effect: "Fill in", imgUrl: "./images/tower-defense-turrets/turret-5-1.png"},
             {name: "Poison", price: 50, effect: "Fill in", imgUrl: "./images/tower-defense-turrets/turret-6-1.png"},
             {name: "Fire", price: 50, effect: "Fill in", imgUrl: "./images/tower-defense-turrets/turret-7-1.png"}
     ]
     $scope.playerStats = PlayerFactory;
     $scope.waves = WaveFactory.waves;
-    $scope.currentWave = 0; 
+    $scope.currentWave = 0;
     $scope.totalEnemiesKilled = 0;
     $scope.totalEnemies = 0;
     $scope.enemiesKilled = EnemyFactory.terminatedEnemies.length;
@@ -46,7 +46,7 @@ app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, Game
     });
     $rootScope.$on('restartLevel', () => {
         $scope.currentWave = 0;
-        $scope.totalEnemiesKilled = 0; 
+        $scope.totalEnemiesKilled = 0;
         $scope.totalEnemies = 0;
         $scope.enemiesKilled = 0;
     });
