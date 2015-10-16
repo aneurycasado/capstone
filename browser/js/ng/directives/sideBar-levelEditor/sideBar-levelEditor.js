@@ -5,42 +5,6 @@ app.directive("sideBarLevelEditor", function(){
         controller: 'SideBarLevelEditorController'
     }
 });
-//"/images/background-tilesets/" + opts.img + ".png"
-
-// const textureToImage = {
-//     tile1: "01", tile2: "02",
-//     tile3: "03", detail1: "08",
-//     detail2: "09", detail3: "10",
-//     detail4: "11", lights1: "04",
-//     lights2: "05", lights3: "06",
-//     lights4: "07", panelTop: "14",
-//     panelBottom: "15", base1: "12",
-//     base2: "13-1", base3: "13-2",
-//     base4: "13-3", path: "13",
-//     platformBL: "17",platformUL: "18",
-//     platformBR: "19", platformUR: "20",
-//     platformH: "21", platformV: "22",
-//     platformX: "16", hangar: "23",
-// };
-
-// const terrainToTexture = {
-//     0: "none",
-//     1: "none",
-//     3: "base1",
-//     2: ["detail1", "detail2", "detail3"],
-//     5: ["lights1", "lights2", "lights3", "lights4"],
-//     6: ["tile1", "tile2", "tile3"],
-//     4: "hangar",
-//     7: "panelBottom",
-//     8: "panelTop",
-//     "BL": "platformBL",
-//     "BR": "platformBR",
-//     "H": "platformH",
-//     "V": "platformV",
-//     "UL": "platformUL",
-//     "UR": "platformUR",
-//     "X": "platformX",
-// };
 
 app.controller('SideBarLevelEditorController', function($scope, $rootScope, MapElementFactory, DesignFactory) {
 	$scope.mapElements = [
@@ -57,9 +21,11 @@ app.controller('SideBarLevelEditorController', function($scope, $rootScope, MapE
 		{name: 'path', imgUrl: "/images/background-tilesets/p.png", mapNum: 1}, {name: "base1", imgUrl: "/images/background-tilesets/12.png", mapNum: 3}
 	]
 	$scope.elementClicked = (element) => {
+		document.getElementsByTagName('body')[0].style.cursor= "url("+element.imgUrl+") 20 20, crosshair";
 		$scope.currentElement = element;
 	}
 	$scope.saveMap = () => {
+		$scope.currentElement = null;
 		let newMapGrid = $.extend(true, [], DesignFactory.blankGrid);
 		console.log("DesignFactory", DesignFactory.blankGrid);
 		console.log("the new map grid", newMapGrid);
@@ -81,6 +47,7 @@ app.controller('SideBarLevelEditorController', function($scope, $rootScope, MapE
 		MapElementFactory.createMap(stringifyMap).then((savedMapGrid) => {
 			console.log("Map saved string", savedMapGrid.map);
 			console.log("Map saved json", JSON.parse(savedMapGrid.map));
+			$("#saveMapModal").modal("toggle");
 		});
 	}
 });
