@@ -23,14 +23,14 @@ app.directive('editor', ($rootScope, GameFactory) => {
                 //else do something with error.message
             });
             if(scope.tower) {
-                if(scope.tower.codeSnippet === null) editor.session.setValue('function(){//Need help console.log this}');
+                if(scope.tower.codeSnippet === null) editor.session.setValue('function(){\n//Need help?? Try console.log\(this\). \n}');
                 else {
                     editor.session.setValue(scope.tower.codeSnippet);
                 }
             }
             scope.saveCodeSnippet = () => {
 
-                
+
                 GameFactory.resume();
 
                 scope.tower.codeSnippet = editor.getValue();
@@ -38,7 +38,7 @@ app.directive('editor', ($rootScope, GameFactory) => {
                 //let saveSnippet = true;
 
                 //scope.$parent.$parent.editing = false;
-            }
+            };
             scope.goBack = () => {
                 GameFactory.resume();
                 $rootScope.$broadcast('setEditing', false);
