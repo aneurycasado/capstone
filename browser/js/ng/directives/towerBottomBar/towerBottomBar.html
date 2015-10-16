@@ -1,58 +1,43 @@
-<div>
-    <div class="panel-group border">
-	     <div class="panel panel-default square no-bg">
-	            <div class="panel-body no-padding">
-	            	<div class = "row">
+<div class="panel-group towerBottom no-padding">
+     <div class="panel panel-default square no-bg no-padding">
+            <div class="panel-body no-padding no-padding">
 
-	            		<div class = "col-xs-6">
-	            			<div class = "row">
-		            			<div class = "col-xs-4">
-		            				<img class = "tower-detail img-responsive" ng-src = "{{selectedTower.imgUrl}}" />
-		            					<div class = "col-xs-12">
-		            						{{selectedTower.name}}
-		            					</div>
-		            			</div>
-		            			<div class = "col-xs-5">
-		            				<div class = "row">
-		            				
-		            				</div>
-		            				<div class = "row">
+             <span class="glyphicon glyphicon-remove topCorner" ng-click=""></span>
+            	<div class = "row">
+<img class = "tower-detail" ng-src = "{{selectedTower.imgUrl}}" />	<div class = "col-xs-12">{{selectedTower.name}} Tower
+        					</div>
+        					</div>
 
-		            					<div class = "col-xs-12">
-		            						Kill Count: {{selectedTower.kills}}
-		            					</div>
-		            				</div>
-		            			</div>
-		            			<div class = "col-xs-3">
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <button class ="btn btn-danger sell-button" ng-click = "sellTower(selectedTower)">
-                                                    Sell: {{selectedTower.price *.7}}
-                                            </button>
-                                        </div>
-                                        <div class="col-xs-12">
-                                            <button class="btn btn-info" ng-click="goToEditor()">Go to Editor</button>
-                                        </div>
 
-                                    </div>
 
-		            			</div>
-		            		</div>
-		            	</div>
-<!-- 
-	            		<div class = "col-xs-2">
-	            			Mode 1
-	            		</div>
+<div class = "row padup">
+        					Kills: {{selectedTower.kills}}
+		
+			</div>
+			<div class = "row padup">
 
-	            		<div class = "col-xs-2">
-	            			Mode 2
-	            		</div>
 
-	            		<div class = "col-xs-2">
-	            			Special Ability
-	            		</div> -->
-	            	</div>
-	            </div>
-	    	</div>
-    </div>
+                        <!--         <button class ="btn btn-default square sell-button full" ng-click = "sellTower(selectedTower)">
+                                        Sell for ${{selectedTower.price *.7}}
+                                </button> -->
+                                <button class="btn btn-default square full" ng-click="goToEditor()">Go to Editor</button>
+
+                                </div>
+
+			</div>
+
+
+        		<!--		<div class = "col-xs-2">
+    			Mode 1
+    		</div>
+
+    		<div class = "col-xs-2">
+    			Mode 2
+    		</div>
+
+    		<div class = "col-xs-2">
+    			Special Ability
+    		</div> -->
+	    </div>     
+  	</div>
 </div>

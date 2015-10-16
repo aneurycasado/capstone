@@ -277,7 +277,7 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory) => {
     class Map {
         constructor(grid,num){
             this.stage = new PIXI.Stage();
-            this.paths = findPath(grid);
+            this.paths = Pathfinder(grid);
             this.grid = insertNodes(grid, this);
 
             this.imgSrc = "/images/maps/"+num+".png";
@@ -325,9 +325,25 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory) => {
 
     let maps = [];
 
+    const loadGameMaps = () => {
+        maps.push(new Map(DesignFactory.mapGrid1,1));
+        maps.push(new Map(DesignFactory.mapGrid2,2));
+        maps.push(new Map(DesignFactory.mapGrid3,3));
+    }
+
+    const createMap = (mapGrid) => {
+        let grid = [];
+        for(let key in mapGrid){
+            console.log("key",key);
+            grid.push(mapGrid[key]);
+        }
+        console.log("The grid ", grid);
+        maps.push(new Map(grid,4));
+     }
+
     maps.push(new Map(DesignFactory.mapGrid1,1));
     maps.push(new Map(DesignFactory.mapGrid2,2));
-     maps.push(new Map(DesignFactory.mapGrid3,3));
+    maps.push(new Map(DesignFactory.mapGrid3,3));
 
     const reset = () => {
         maps.forEach((map) => {
@@ -342,6 +358,8 @@ app.factory('MapFactory', (StateFactory, DesignFactory, SpriteEventFactory) => {
     return {
         reset,
         Map,
-        maps
+        maps,
+        loadGameMaps,
+        createMap,
     };
 })

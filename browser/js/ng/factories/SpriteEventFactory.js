@@ -2,7 +2,7 @@ app.factory('SpriteEventFactory', function($rootScope) {
     let selectedTower = null;
     let selectedGrid = null;
     let buyingTower = false;
-
+    let selectedMapElement = null;
     $rootScope.$on('currentTower', function() {
         buyingTower = true;
     });
@@ -20,6 +20,11 @@ app.factory('SpriteEventFactory', function($rootScope) {
         this.imgContainer.addChildAt(this.baseRangeCircle, 0);
         selectedTower = this;
     };
+
+    let mapElementClickHandler = function() {
+        selectedMapElement = this;
+        $rootScope.$broadcast('mapElementClicked', this);
+    }
 
     let gridOverHandler = function() {
         if(typeof this.terrain === 'string' && buyingTower) {
@@ -50,11 +55,19 @@ app.factory('SpriteEventFactory', function($rootScope) {
         $rootScope.$broadcast('terminalOn', true)
         buyingTower = false;
     }
+
+    let mapElementClickOff = () => {
+        if(selectedMapElement){
+            $rootScope.$broadcast("mapElementClickOff");
+        }
+    }
+
     let gridClickHandler = function() {
         if(selectedGrid) {
             selectedGrid = this;
         }
         basicTowerClickOff();
+        mapElementClickOff();
     };
 
     let bgClickHandler = function() {
@@ -62,12 +75,14 @@ app.factory('SpriteEventFactory', function($rootScope) {
             selectedGrid = null;
         }
         basicTowerClickOff();
+        mapElementClickOff();
     }
 
     return {
         towerClickHandler,
         towerMouseOverHandler,
         towerMouseLeaveHandler,
+        mapElementClickHandler,
         gridOverHandler,
         gridLeaveHandler,
         gridClickHandler,
