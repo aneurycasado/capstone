@@ -27,26 +27,17 @@ app.controller('SideBarLevelEditorController', function($scope, $rootScope, MapE
 	$scope.saveMap = () => {
 		$scope.currentElement = null;
 		let newMapGrid = $.extend(true, [], DesignFactory.blankGrid);
-		console.log("DesignFactory", DesignFactory.blankGrid);
-		console.log("the new map grid", newMapGrid);
 		let mapElements = MapElementFactory.mapElements;
-		console.log("the map elements", mapElements);
 		mapElements.forEach((element) => {
-			console.log("Element", element);
 			let position = element.position;
 			newMapGrid[position.y][position.x] = element.mapNum;
 		});
-		console.log("New map grid", newMapGrid);
 		let mapObj = {};
 		newMapGrid.forEach((row,index) => {
 			mapObj[index] = row;
-		})
-		console.log("newMapGrid", newMapGrid);
-		console.log("The mapObj", mapObj);
+		});
 		let stringifyMap = JSON.stringify(mapObj);
 		MapElementFactory.createMap(stringifyMap).then((savedMapGrid) => {
-			console.log("Map saved string", savedMapGrid.map);
-			console.log("Map saved json", JSON.parse(savedMapGrid.map));
 			$("#saveMapModal").modal("toggle");
 		});
 	}
