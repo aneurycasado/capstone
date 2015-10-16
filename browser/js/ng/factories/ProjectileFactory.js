@@ -37,16 +37,13 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
           }
           projectiles.push(this);
           window.setTimeout(() => {
-            console.log("DESTROY", this);
             if(this && !this.invincible){
-              console.log("DESTROHIGN");
               this.terminate();
             } 
           }, 10000);
       }
 
       terminate() {
-        console.log('terminate!', this);
           if(this.circle) stage.removeChild(this.circle);
           if(this.particleEmitter){
             this.particleEmitter.destroy();
@@ -87,7 +84,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
           this.particleEmitter.update(delta);
           this.particleEmitter.updateOwnerPos(this.x, this.y);
          if(checkCircleCollision(this, this.target)){
-             this.target.takeDamage(this.power);
+             this.target.takeDamage(this.power, this.tower);
              if(this.specialEffect) this.specialEffect();
               if(!this.invincible) this.terminate();
          }else{
@@ -138,7 +135,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
         this.particleEmitter.updateOwnerPos(this.x, this.y);
         for(let i = 0; i < EnemyFactory.enemies.length; i++)
             if(checkCircleCollision(this, EnemyFactory.enemies[i])){
-              EnemyFactory.enemies[i].takeDamage(this.power);
+              EnemyFactory.enemies[i].takeDamage(this.power, this.tower);
               if(this.specialEffect) this.specialEffect();
               if(!this.invincible) this.terminate();
               break;
@@ -198,7 +195,8 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
   class BlizzardProjectile extends StraightProjectile{
       constructor(opts){
         super(opts);
-        this.slowSpeed = 0.5;
+        this.slowSpeed = 0.4;
+        this.radius = 200;
         this.slowDuration = 1000;
         this.particleEmitter = ParticleFactory.createEmitter('blizzard', stage);
         this.particleEmitter.updateOwnerPos(this.x, this.y);
@@ -206,28 +204,44 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
         this.invincible = true;
         this.startTime = Date.now();
         this.duration = 100000;
-
+        window.setTimeout(() => {
+            if(this){
+              this.terminate();
+            } 
+        }, 5000);
       }
 
-      specialEffect() {
-        this.target.lastSlowed = Date.now();
-        if(this.target.slowFactor > this.slowSpeed ) {
-            this.target.slowFactor = this.slowSpeed;
-            this.target.img.tint = 12168959;
+      slowEnemy(enemy) {
+        enemy.lastSlowed = Date.now();
+        if(enemy.slowFactor > this.slowSpeed ) {
+            enemy.slowFactor = this.slowSpeed;
+            enemy.img.tint = 12168959;
         }
-        window.setTimeout(function(){
-            if(Date.now() - this.target.lastSlowed >= this.slowDuration) {
-              this.target.slowFactor = 1;
-              this.target.img.tint = 16777215;
+        window.setTimeout(() => {
+          console.log(Date.now() - enemy.lastSlowed, this.slowDuration);  
+            if(Date.now() - enemy.lastSlowed >= this.slowDuration) {
+              enemy.slowFactor = 1;
+              enemy.img.tint = 16777215;
             }
-        }.bind(this),this.slowDuration);
+        },this.slowDuration);
+      }
 
+      update(delta){
+          super.update(delta);
+          var ice = this;
+          EnemyFactory.enemies.forEach(function(enemy){
+            if(checkCircleCollision(ice, enemy)){
+              ice.slowEnemy(enemy);
+            }
+          });
+          this.particleEmitter.update(delta);
       }
   }
 
   class FirePuddle extends Projectile{
     constructor(opts){
       super(opts);
+      console.log(this.tower, opts)
       this.power = 0.3;
       this.radius = 30;
       this.particleEmitter = ParticleFactory.createEmitter('fire', stage);
@@ -241,7 +255,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
       var fire = this;
       EnemyFactory.enemies.forEach(function(enemy){
         if(checkCircleCollision(fire, enemy)){
-           enemy.takeDamage(fire.power);
+           enemy.takeDamage(fire.power, fire.tower);
         }
       });
       this.particleEmitter.update(delta);
@@ -279,7 +293,6 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
             },ice.slowDuration);
         }
       });
-      console.log(this.particleEmitter);
       this.particleEmitter.update(delta);
     }
 
@@ -295,7 +308,8 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
       specialEffect(){
         new FirePuddle({
           x: this.x,
-          y: this.y
+          y: this.y,
+          tower: this.tower
         });
       }
   }
@@ -346,6 +360,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
       }
 
       specialEffect() {
+        this.target.poisonedBy = this.tower;
         this.target.poisoned = true;
         this.target.poisonDamage = this.poisonDamage;
         if(!this.target.particleEmitters.poison){

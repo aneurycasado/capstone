@@ -58,7 +58,6 @@ app.controller('SideBarLevelEditorController', function($scope, $rootScope, MapE
 	]
 	$scope.elementClicked = (element) => {
 		$scope.currentElement = element;
-		console.log("The element clicked ", element);
 	}
 	$scope.saveMap = () => {
 		let newMapGrid = $.extend(true, [], DesignFactory.blankGrid);

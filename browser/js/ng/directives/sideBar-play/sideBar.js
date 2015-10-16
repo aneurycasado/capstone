@@ -86,6 +86,18 @@ app.controller('SideBarPlayController', ($scope, $rootScope, PlayerFactory, Game
         $scope.totalEnemies = WaveFactory.currentWaveLength();
         $scope.enemiesKilled = EnemyFactory.terminatedEnemies.length;
     }
+
+    $scope.pause = () => {
+        GameFactory.pause();
+                $scope.state = StateFactory.state;
+
+    }
+
+    $scope.resume = () => {
+        GameFactory.resume();
+                $scope.state = StateFactory.state;
+
+    }
 });
 
 

@@ -22,7 +22,9 @@ app.controller('TowerBottomBarController', ($scope,$rootScope,$state, TowerFacto
     $scope.goToEditor = () => {
         $('#savePrompt').text('');
     	GameFactory.pause();
+    	if(StateFactory.state !== "paused") GameFactory.pause();
         $scope.editing = true;
         $scope.terminalOn = true;
     }
+    // $scope.killed = $scope.selectedTower.kills;
 });

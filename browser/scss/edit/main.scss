@@ -2,10 +2,15 @@
     position: fixed;
     width: 800px;
     z-index: 5;
-    filter: alpha(opacity=50);
     opacity: 0.9;
     height: 520px;
+    background-color: rgba(0,0,0,0.5);
+
 }
+.no-padding{
+  padding: 0px !important;
+}
+
 
 #editor {
   position: relative;
@@ -30,12 +35,16 @@
 }
 
 .save-code:hover{
-  opacity:0.5;
+
 }
 
-#editorButtons {
-  position:absolute;
-  right:0px;
-	height: 40px;
-  bottom:0px;
+.editorButtons {
+    position: relative;
+    right: -802px;
+    height: 33px;
+    top: -31px;
+    bottom: 0px;
+    width: 168px;
+    background-color: rgba(255,255,255,1);
+
 }
