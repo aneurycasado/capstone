@@ -48,8 +48,10 @@ app.controller("MapCreatorModeController", ($scope, $rootScope, $state, StateFac
                 console.log("Can't play");
             }
         }
-        $scope.currentElement = null;
-        document.getElementsByTagName('body')[0].style.cursor = "default";
+        if($scope.currentElement.name !== "path"){
+            $scope.currentElement = null;
+            document.getElementsByTagName('body')[0].style.cursor = "default";
+        } 
         $scope.$digest();
     })
     const draw = () => {
