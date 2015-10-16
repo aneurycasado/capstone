@@ -156,14 +156,31 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
     }
   }
 
-  class ToxicProjectile extends HomingProjectile{
+  class ToxicProjectile extends StraightProjectile{
     constructor(opts){
       super(opts);
       this.invincible = true;
       this.startTime = Date.now();
-
+      this.poisonDamage = 0.3;
+      this.radius = 70;
       this.particleEmitter = ParticleFactory.createEmitter('toxic', stage);
       this.particleEmitter.updateOwnerPos(this.x, this.y);
+    }
+
+    update(delta){
+      super.update(delta);
+      var toxic = this;
+      EnemyFactory.enemies.forEach(function(enemy){
+        if(checkCircleCollision(toxic, enemy)){
+            toxic.target.poisonedBy = toxic.tower;
+            toxic.target.poisoned = true;
+            toxic.target.poisonDamage = toxic.poisonDamage;
+            if(!toxic.target.particleEmitters.poison){
+              toxic.target.particleEmitters.poison = ParticleFactory.createEmitter('poison', stage);
+            }
+        }
+      });
+
     }
   }
 
