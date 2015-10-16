@@ -6,7 +6,7 @@ app.directive('editor', ($rootScope, GameFactory) => {
         restrict: 'E',
         templateUrl: '/js/ng/directives/editor/editor.html',
         scope: {
-            tower: '=',
+            tower: '='
             //toggleEditing: '&'
         },
         link: (scope, element, attrs) => {
@@ -18,10 +18,10 @@ app.directive('editor', ($rootScope, GameFactory) => {
             editor.getSession().setMode("ace/mode/javascript");
             editor.focus();
             $rootScope.$on('saveCodeSuccessful', function(event, bool, error) {
+                console.log(bool);
                 if(bool) $rootScope.$broadcast('setEditing', false);
                 //else do something with error.message
             });
-            scope.saveSnippet = false;
             if(scope.tower) {
                 if(scope.tower.codeSnippet === null) editor.session.setValue('function(){//Need help console.log this}');
                 else {
