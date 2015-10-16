@@ -5,36 +5,39 @@
         <hr>
             <div class = "row">
                 <span href = "#" data='toggle = "tooltip"' data-placement = "left" data-original-title = "Total # of waves" class = "toolTipSideBar">
-                    <div class = "col-md-3">
-                       <img src = "/images/icons/waves.png" />
+                    <div class = "col-md-4">
+                       <img class = "small" src = "/images/icons/waves.png" />
                     </div>
-                    <div class = "col-md-3">
-                        {{waves.length}}
+                    <div class = "col-md-6">
+                       {{currentWave}} / {{waves.length}}
                     </div>
-                    </span>                <span href = "#" data='toggle = "tooltip"' data-placement = "left" data-original-title = "Current wave" class = "toolTipSideBar">
+                </span>
+            </div>              
+                 <!--  <span href = "#" data='toggle = "tooltip"' data-placement = "left" data-original-title = "Current wave" class = "toolTipSideBar">
                     <div class = "col-md-3">
                         <img src = "/images/icons/wave.png" />
                     </div>
                     <div class = "col-md-3">
-                        {{currentWave}}
+                        
                     </div>
-                    </span></div>
+                    </span></div> -->
             <div class = "row">
                 <span href = "#" data='toggle = "tooltip"' data-placement = "left" data-original-title = "Total enemies in wave" class = "toolTipSideBar">
-                    <div class = "col-md-3">
-                        <img src = "/images/icons/enemies.png" />
+                    <div class = "col-md-4">
+                        <img class = "small" src = "/images/icons/enemies.png" />
                     </div>
-                    <div class = "col-md-3">
-                        {{totalEnemies}}
+                    <div class = "col-md-6">
+                        {{enemiesKilled}} / {{totalEnemies}}
                     </div>
-                    </span>                <span href = "#" data='toggle = "tooltip"' data-placement = "left" data-original-title = "Total enemies killed in wave" class = "toolTipSideBar">
+                   <!--  </span>                <span href = "#" data='toggle = "tooltip"' data-placement = "left" data-original-title = "Total enemies killed in wave" class = "toolTipSideBar">
                     <div class = "col-md-3">
                          <img src = "/images/icons/enemiesKilled.png" />
                     </div>
                     <div class = "col-md-3">
-                        {{enemiesKilled}}
+                        
                     </div>
-                    </span></div>
+                    </span> -->
+            </div>
             <hr>
             <div class = "row">
                     <div class = "col-md-4">
