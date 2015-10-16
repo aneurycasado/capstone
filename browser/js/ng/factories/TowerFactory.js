@@ -34,10 +34,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 //console.log('this.target', this.target);
                 if (deadEnemy === this.target) {
                     this.target = null;
-                    if (this.particleEmitter) {
-                        this.particleEmitter.destroy();
-                        this.particleEmitter = null;
-                    }
                 }
             });
             this.mods = {
@@ -159,10 +155,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
         }
         swapToSecondary() {
             if(this.activeWeapon !== this.secondaryWeapon){
-                if (this.particleEmitter) {
-                    this.particleEmitter.destroy();
-                    this.particleEmitter = null;
-                }
                 this.activeWeapon = this.secondaryWeapon;
             }
         }
@@ -307,19 +299,22 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 name: "Fire",
                 effect: 'Fill in'
             });
+            this.particleEmitter = new ParticleFactory.createEmitter('flame', stage);
+            this.particleEmitter.updateOwnerPos(this.img.position.x, this.img.position.y);
+            console.log(this.particleEmitter)
         }
 
         update(delta){
             super.update(delta);
-            if(this.particleEmitter){
-                if(this.target && this.particleEmitter.particleImages) {
-                    this.particleEmitter.update(delta);
-                }
-                if(!this.target){
-                    this.particleEmitter.destroy();
-                    this.particleEmittter = null;
-                }
-            }
+            console.log(this.particleEmitter)
+            if(this.target){
+                console.log(this.particleEmitter);
+                this.particleEmitter.emit = true;
+            }else{
+                console.log('destruction');
+                this.particleEmitter.emit = false;                
+            }     
+            this.particleEmitter.update(delta);
         }
     }
 

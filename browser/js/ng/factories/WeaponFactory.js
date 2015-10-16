@@ -21,11 +21,12 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
 
   class FlameWeapon extends Weapon {
     constructor(tower) {
-      super(tower, 0.2, 150, "Flame", 'Fill in')
+      super(tower, .5, 150, "Flame", 'Fill in')
       this.flameCircleCenters = [];
       this.numOfFlameCircles = 10;
       this.flameCircleRadius = 20;
       this.circles = [];
+      this.reloadTime = 0;
     }
     // update(delta) {
     //   this.tower.acquireTarget();
@@ -43,11 +44,11 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     //   }
     // }
     shoot() {
-      if(!this.tower.particleEmitter) {
-        this.tower.particleEmitter = new ParticleFactory.createEmitter('flame', towerStage);
-        // this.calcRotation();
-        this.tower.particleEmitter.updateOwnerPos(this.tower.img.position.x, this.tower.img.position.y);
-      }
+      // if(!this.tower.particleEmitter) {
+      //   this.tower.particleEmitter = new ParticleFactory.createEmitter('flame', towerStage);
+      //   // this.calcRotation();
+      //   this.tower.particleEmitter.updateOwnerPos(this.tower.img.position.x, this.tower.img.position.y);
+      // }
       this.calcRotation();
       this.calcFlameCircleCenters();
       this.dealDamage();
@@ -70,14 +71,19 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
        this.tower.particleEmitter.rotation = (-57.3 * (Math.atan2((this.tower.target.imgContainer.position.x - this.tower.img.position.x) , (this.tower.target.imgContainer.position.y - this.tower.img.position.y))) + 180);
     }
     checkRadius(center, enemy) {
-         let dx = center.x - enemy.img.position.x;
-         let dy = center.y - enemy.img.position.y;
+         let dx = center.x - enemy.imgContainer.position.x;
+         let dy = center.y - enemy.imgContainer.position.y;
          let distance = Math.sqrt(dx * dx + dy * dy);
+        // if(center.x - enemy.imgContainer.position.x < 100){
+        //   console.log(distance, this.flameCircleRadius + enemy.radius);
+        //   console.log(center, enemy);
+        // }
          return (distance < this.flameCircleRadius + enemy.radius);
     }
     calcFlameCircleCenters(){
-       var xDiff = this.tower.target.img.position.x - this.tower.img.position.x;
-       var yDiff = this.tower.target.img.position.y - this.tower.img.position.y;
+      //console.log(this.tower.target.imgContainer.position.x, )
+       var xDiff = this.tower.target.imgContainer.position.x - this.tower.img.position.x;
+       var yDiff = this.tower.target.imgContainer.position.y - this.tower.img.position.y;
        var theta = Math.atan2(xDiff, yDiff);
        var farthestPoint = {
            x: this.range*Math.sin(theta),
@@ -88,6 +94,19 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
                x: (farthestPoint.x / this.numOfFlameCircles) * i + this.tower.img.position.x,
                y: (farthestPoint.y / this.numOfFlameCircles) * i + this.tower.img.position.y
            };
+           // if(!this.circles[i]){
+           //  this.circles[i] = new PIXI.Graphics();
+           //  this.circles[i].beginFill(0xFF0000, 0.4);
+           //  this.circles[i].lineStyle(2, 0xFF0000);
+           //  towerStage.addChild(this.circles[i]);
+           // }else{
+           //      towerStage.removeChild(this.circles[i]);
+           //      this.circles[i] = new PIXI.Graphics();
+           //      this.circles[i].beginFill(0xFF0000, 0.4);
+           //      this.circles[i].lineStyle(2, 0xFF0000);
+           //      this.circles[i].drawCircle(this.flameCircleCenters[i].x, this.flameCircleCenters[i].y, this.flameCircleRadius);
+           //      towerStage.addChild(this.circles[i]);
+           // }
        }
     }
   }
@@ -197,14 +216,14 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     shoot(enemy){
         this.tower.img.play();
         StateFactory.setTimeout2(function() {
-          new ProjectileFactory.MeteorProjectile({power: this.power, x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy});
+          new ProjectileFactory.MeteorProjectile({power: this.power, x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy, tower: this.tower});
         }.bind(this), 300)
         StateFactory.setTimeout2(function() {
-          new ProjectileFactory.MeteorProjectile({power: this.power, x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy});
+          new ProjectileFactory.MeteorProjectile({power: this.power, x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy, tower: this.tower});
         }.bind(this), 900)
 
         StateFactory.setTimeout2(function() {
-          new ProjectileFactory.MeteorProjectile({power: this.power, x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy});
+          new ProjectileFactory.MeteorProjectile({power: this.power, x: enemy.position.x, y: -50, speed: 300, radius: 50, enemy: enemy, tower: this.tower});
         }.bind(this), 1500)
 
         StateFactory.sloMo = true;
@@ -279,8 +298,8 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     }
     shoot(enemy) {
       new ProjectileFactory.IcePuddle({
-        x: enemy.img.position.x,
-        y: enemy.img.position.y
+        x: enemy.imgContainer.position.x,
+        y: enemy.imgContainer.position.y
       });
     }
   }

@@ -944,7 +944,7 @@ app.factory('ParticleFactory', () => {
             "blendMode": "normal",
             "frequency": 0.008,
             "emitterLifetime": -1,
-            "maxParticles": 500,
+            "maxParticles": 1000,
             "pos": {
                 "x": 0.5,
                 "y": 0.5
