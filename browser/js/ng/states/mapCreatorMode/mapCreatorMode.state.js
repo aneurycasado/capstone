@@ -49,6 +49,7 @@ app.controller("MapCreatorModeController", ($scope, $rootScope, $state, StateFac
             }
         }
         $scope.currentElement = null;
+        document.getElementsByTagName('body')[0].style.cursor = "default";
         $scope.$digest();
     })
     const draw = () => {
