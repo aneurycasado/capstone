@@ -25,6 +25,7 @@ app.controller('SideBarLevelEditorController', function($scope, $rootScope, MapE
 		$scope.currentElement = element;
 	}
 	$scope.saveMap = () => {
+		$scope.currentElement = null;
 		let newMapGrid = $.extend(true, [], DesignFactory.blankGrid);
 		console.log("DesignFactory", DesignFactory.blankGrid);
 		console.log("the new map grid", newMapGrid);
@@ -46,6 +47,7 @@ app.controller('SideBarLevelEditorController', function($scope, $rootScope, MapE
 		MapElementFactory.createMap(stringifyMap).then((savedMapGrid) => {
 			console.log("Map saved string", savedMapGrid.map);
 			console.log("Map saved json", JSON.parse(savedMapGrid.map));
+			$("#saveMapModal").modal("toggle");
 		});
 	}
 });
