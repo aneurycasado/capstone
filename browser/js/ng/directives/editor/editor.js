@@ -38,7 +38,7 @@ app.directive('editor', ($rootScope, GameFactory) => {
                 //let saveSnippet = true;
 
                 //scope.$parent.$parent.editing = false;
-            }
+            };
             scope.goBack = () => {
                 GameFactory.resume();
                 $rootScope.$broadcast('setEditing', false);
