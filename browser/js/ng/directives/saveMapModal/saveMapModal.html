@@ -1,29 +1,17 @@
-<div class="modal" id="choseMapModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+<div class="modal" id="saveMapModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" role="document">
         <div class="modal-content square">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Welcome Player. Chose a map</h4>
+                <h4 class="modal-title" id="myModalLabel">Congrats on your new map.</h4>
             </div>
             <div class="modal-body">
                 <div class = "row" >
-                    <div class = "col-xs-3" ng-repeat = "map in maps" ng-click = "choseMap($index)">
-                        <div class = "row">
-                            <div class = "col-md-12">
-                                Map {{$index + 1}}
-                            </div>
-                        </div>
-                        <div class = "row">
-                            <div class = "col-md-12">
-                                <img ng-src = "{{map.imgSrc}}" />
-                            </div>
-                        </div>
-                    </div>
                     <div class = "col-xs-3">
                         <div class = "row">
                             <div class = "col-md-12">
-                                Make a map
+                                Make another map
                             </div>
                         </div>
                         <div class = "row">
@@ -37,12 +25,12 @@
                     <div class = "col-xs-3">
                         <div class = "row">
                             <div class = "col-md-12">
-                                Test User Generated Maps
+                                Play the Game
                             </div>
                         </div>
                         <div class = "row">
                             <div class = "col-md-12">
-                                <button type="button" class="btn btn-default" aria-label="Left Align" ng-click = "loadUserMaps()">
+                                <button type="button" class="btn btn-default" aria-label="Left Align" ng-click = "goToPlayState()">
                                  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                                 </button>
                             </div>

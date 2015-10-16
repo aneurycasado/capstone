@@ -58,7 +58,7 @@ app.factory('WaveFactory', ($rootScope,EnemyFactory, StateFactory) => {
                 // let enemyindex = randomInt(0,3);
                 // let enemy = enemies[enemyindex];
                 // wave.push({name: enemy, num:1});
-                wave.push({name: "SmallBugShip", num:1}, {name: "BigBugShip", num:1}, {name: "SuperBigBugShip", num:1});
+                wave.push({name: "SmallBugShip", num:1}, {name: "BigBugShip", num:1});
 
             }
         }else if(newWaves.length >= (numOfWaves / 10) && newWaves.length < (numOfWaves / 5)){

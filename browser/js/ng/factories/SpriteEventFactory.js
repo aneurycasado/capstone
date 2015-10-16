@@ -2,7 +2,7 @@ app.factory('SpriteEventFactory', function($rootScope) {
     let selectedTower = null;
     let selectedGrid = null;
     let buyingTower = false;
-
+    let selectedMapElement = null;
     $rootScope.$on('currentTower', function() {
         buyingTower = true;
     });
@@ -21,6 +21,11 @@ app.factory('SpriteEventFactory', function($rootScope) {
         selectedTower = this;
     };
 
+    let mapElementClickHandler = function() {
+        selectedMapElement = this;
+        $rootScope.$broadcast('mapElementClicked', this);
+    }
+
     let gridOverHandler = function() {
         if(typeof this.terrain === 'string' && buyingTower) {
             var filter = new PIXI.filters.ColorMatrixFilter();
@@ -37,24 +42,32 @@ app.factory('SpriteEventFactory', function($rootScope) {
         this.img.filters = null;
     }
 
-    //let towerMouseOverHandler = function() {
-    //    this.imgContainer.addChildAt(this.baseRangeCircle, 0);
-    //};
-    //
-    //let towerMouseLeaveHandler = function() {
-    //    this.imgContainer.removeChild(this.baseRangeCircle);
-    //};
+    let towerMouseOverHandler = function() {
+        document.body.style.cursor = 'pointer';
+    };
+
+    let towerMouseLeaveHandler = function() {
+        document.body.style.cursor = 'default';
+    };
 
     let basicTowerClickOff = () => {
         selectedTowerRemover();
         $rootScope.$broadcast('terminalOn', true)
         buyingTower = false;
     }
+
+    let mapElementClickOff = () => {
+        if(selectedMapElement){
+            $rootScope.$broadcast("mapElementClickOff");
+        }
+    }
+
     let gridClickHandler = function() {
         if(selectedGrid) {
             selectedGrid = this;
         }
         basicTowerClickOff();
+        mapElementClickOff();
     };
 
     let bgClickHandler = function() {
@@ -62,10 +75,14 @@ app.factory('SpriteEventFactory', function($rootScope) {
             selectedGrid = null;
         }
         basicTowerClickOff();
+        mapElementClickOff();
     }
 
     return {
         towerClickHandler,
+        mapElementClickHandler,
+        towerMouseOverHandler,
+        towerMouseLeaveHandler,
         gridOverHandler,
         gridLeaveHandler,
         gridClickHandler,

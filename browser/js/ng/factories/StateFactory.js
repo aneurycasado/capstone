@@ -19,5 +19,37 @@ app.factory('StateFactory', function() {
     state.map = null;
     state.sloMoMod = 4;
     state.sloMo = false;
+
+
+        //there be dragons
+    state.setTimeouts = [];
+
+    state.setTimeout2 = function(func, time){
+    
+        state.setTimeouts.push({func: func, time: time});
+
+    }
+
+    state.setTimeoutsCheck = function(delta){
+
+      if(state.state !== "paused"){
+
+            state.setTimeouts = state.setTimeouts.filter(function(timeOut){
+
+                  timeOut.time -= (delta * 1000);
+
+                  if(timeOut.time < 0){
+                    timeOut.func();
+                    return false;
+
+                  } 
+
+                  return true;
+
+            });
+
+        }
+
+    }
     return state;
 });

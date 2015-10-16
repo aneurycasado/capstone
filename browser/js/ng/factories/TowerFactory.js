@@ -84,8 +84,8 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             SpriteGenFactory.drawWeaponRangeCircle(this, this.activeWeapon.range);
             this.img.click = SpriteEventFactory.towerClickHandler.bind(this);
             this.towerControlFunction = null;
-            //this.img.mouseover = SpriteEventFactory.towerMouseOverHandler.bind(this);
-            //this.img.mouseout = SpriteEventFactory.towerMouseLeaveHandler.bind(this);
+            this.img.mouseover = SpriteEventFactory.towerMouseOverHandler.bind(this);
+            this.img.mouseout = SpriteEventFactory.towerMouseLeaveHandler.bind(this);
 
         }
         on(name, cb) {
@@ -272,7 +272,7 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 if(this.target) {
                     //this.shotEnemy = this.target.enemyEncapsulated;
                     this.reloading = true;
-                    window.setTimeout(() => {
+                    StateFactory.setTimeout2(() => {
                         this.reloading = false;
                     }, this.activeWeapon.reloadTime);
                     this.activeWeapon.shoot(this.target);

@@ -47,7 +47,6 @@ app.factory('ModFactory', function() {
         runMod(...newArgs) {
             if(this.coolDownTimer.checkCoolDownPassed()) {
                 this.coolDownTimer.resetCoolDown();
-                console.log('runMod console.log', this.coolDownTimer.currentCoolDown);
                 return super.runMod(...newArgs);
             }
         }
