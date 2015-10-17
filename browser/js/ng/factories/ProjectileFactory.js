@@ -44,7 +44,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
       }
 
       terminate() {
-          if(this.circle) stage.removeChild(this.circle);
+          // if(this.circle) stage.removeChild(this.circle);
           if(this.particleEmitter){
             this.particleEmitter.destroy();
             this.particleEmitter = null;
@@ -268,6 +268,7 @@ app.factory("ProjectileFactory", function(LightningFactory, StateFactory, Partic
     }
 
     update(delta){
+      // super.update(delta);
       var fire = this;
       EnemyFactory.enemies.forEach(function(enemy){
         if(checkCircleCollision(fire, enemy)){
