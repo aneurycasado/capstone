@@ -301,18 +301,17 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
             });
             this.particleEmitter = new ParticleFactory.createEmitter('flame', stage);
             this.particleEmitter.updateOwnerPos(this.img.position.x, this.img.position.y);
-            console.log(this.particleEmitter)
         }
 
         update(delta){
             super.update(delta);
-            console.log(this.particleEmitter)
-            if(this.target){
-                console.log(this.particleEmitter);
+            if(this.target && this.activeWeapon.name === 'flame'){
                 this.particleEmitter.emit = true;
             }else{
-                console.log('destruction');
-                this.particleEmitter.emit = false;                
+                this.particleEmitter.emit = false;
+                // if(this.activeWeapon.circles) this.activeWeapon.circles.forEach(function(circle){
+                //     stage.removeChild(circle);
+                // });                 
             }     
             this.particleEmitter.update(delta);
         }
