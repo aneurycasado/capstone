@@ -131,6 +131,7 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
                 explosionEmitters.push(ParticleFactory.createEmitter('explosionSmall', stage, ["core1", "wing1", "eye1", "ball1"]));
                 explosionEmitters[explosionEmitters.length-1].updateOwnerPos(this.position.x, this.position.y);
             }
+            // if(this.circle) stage.removeChild(this.circle);
 
             stage.removeChild(this.img);
             stage.removeChild(this.healthBar);
@@ -165,14 +166,14 @@ app.factory('EnemyFactory', function($rootScope, ParticleFactory, StateFactory, 
             //         this.circle = new PIXI.Graphics();
             //         this.circle.beginFill(0xFFFF99, 0.4);
             //         this.circle.lineStyle(2, 0xFFFF99);
-            //         this.circle.drawCircle(this.img.position.x, this.img.position.y, this.radius);
+            //         this.circle.drawCircle(this.imgContainer.position.x, this.imgContainer.position.y, this.radius);
             //         stage.addChild(this.circle);
             //     }else{
             //         stage.removeChild(this.circle);
             //         this.circle = new PIXI.Graphics();
             //         this.circle.beginFill(0xFFFF99, 0.4);
             //         this.circle.lineStyle(2, 0xFFFF99);
-            //         this.circle.drawCircle(this.img.position.x, this.img.position.y, this.radius);
+            //         this.circle.drawCircle(this.imgContainer.position.x, this.imgContainer.position.y, this.radius);
             //         stage.addChild(this.circle);
             //     }
         }

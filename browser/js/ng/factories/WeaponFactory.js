@@ -25,8 +25,9 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
       this.flameCircleCenters = [];
       this.numOfFlameCircles = 10;
       this.flameCircleRadius = 20;
-      this.circles = [];
+      // this.circles = [];
       this.reloadTime = 0;
+      this.name = 'flame';
     }
     // update(delta) {
     //   this.tower.acquireTarget();
@@ -44,11 +45,6 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
     //   }
     // }
     shoot() {
-      // if(!this.tower.particleEmitter) {
-      //   this.tower.particleEmitter = new ParticleFactory.createEmitter('flame', towerStage);
-      //   // this.calcRotation();
-      //   this.tower.particleEmitter.updateOwnerPos(this.tower.img.position.x, this.tower.img.position.y);
-      // }
       this.calcRotation();
       this.calcFlameCircleCenters();
       this.dealDamage();
@@ -110,6 +106,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
        }
     }
   }
+
   class FireWeapon extends Weapon {
     constructor(tower) {
       super(tower, 3, 200, "Fire", "Fill in")
@@ -158,7 +155,7 @@ app.factory('WeaponFactory', function(ProjectileFactory, ParticleFactory, EnemyF
       this.reloadTime = 4000;
     }
     shoot(enemy) {
-      super.shoot(enemy, 'PoisonProjectile', {speed: 100, radius: 8, tower: this.tower})
+      super.shoot(enemy, 'PoisonProjectile', {speed: 100, radius: 0, tower: this.tower})
     }
   }
 
