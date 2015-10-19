@@ -43,11 +43,15 @@ app.factory('SpriteEventFactory', function($rootScope) {
     }
 
     let towerMouseOverHandler = function() {
-        document.body.style.cursor = 'pointer';
+        if(!buyingTower) {
+            document.body.style.cursor = 'pointer';
+        }
     };
 
     let towerMouseLeaveHandler = function() {
-        document.body.style.cursor = 'default';
+        if(!buyingTower) {
+            document.body.style.cursor = 'default';
+        }
     };
 
     let basicTowerClickOff = () => {
