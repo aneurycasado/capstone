@@ -161,10 +161,6 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
 
         swapToPrimary() {
             if(this.activeWeapon !== this.primaryWeapon){
-                if (this.particleEmitter) {
-                    this.particleEmitter.destroy();
-                    this.particleEmitter = null;
-                }
                 this.activeWeapon = this.primaryWeapon;
             }
         }
@@ -311,8 +307,8 @@ app.factory('TowerFactory', function($rootScope, EnemyFactory, ProjectileFactory
                 this.particleEmitter.emit = false;
                 // if(this.activeWeapon.circles) this.activeWeapon.circles.forEach(function(circle){
                 //     stage.removeChild(circle);
-                // });                 
-            }     
+                // });
+            }
             this.particleEmitter.update(delta);
         }
     }
